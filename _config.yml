@@ -1,0 +1,10 @@
+title: HMCTS technical guidance
+
+permalink: pretty
+
+defaults:
+  -
+    scope:
+      path: "standards"
+    values:
+      standard: true
