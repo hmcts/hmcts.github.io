@@ -43,14 +43,12 @@
           <div class="toc" data-module="table-of-contents">
             <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
             <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading">
-              
               <ul>
                 <li><a href="/" class="{% if page.url == '/' %}toc-link--in-view{% endif %}">Home</a></li>
                 {% for p in site.pages %}
                   <li><a href="{{ p.permalink }}" class="{% if page.url == p.permalink %}toc-link--in-view{% endif %}">{{ p.title }}</a></li>
                 {% endfor %}
               </ul>
-
             </nav>
           </div>
         </div>
