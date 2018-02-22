@@ -1,1 +1,5 @@
+---
+permalink: /
+title: Home
+---
 # Home
