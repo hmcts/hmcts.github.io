@@ -1,3 +1,4 @@
 _site
 .idea
-technical-guidance.iml
+*.iml
+*.sublime-project
