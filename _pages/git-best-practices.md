@@ -2,7 +2,9 @@
 permalink: /git-best-practices
 title: Git Best Practices
 ---
+
 # Git Best Practices
+
 The basis for conducting government projects in digital space was described in the [Service Manual](https://www.gov.uk/service-manual). Contributing to HMCTS projects is important. This is an addendum to [Maintaining version control in coding](https://www.gov.uk/service-manual/technology/maintaining-version-control-in-coding) from .
 
 [Git style guide](https://github.com/alphagov/styleguides/blob/master/git.md) contains bare set of principles. At HMCTS we propose:
