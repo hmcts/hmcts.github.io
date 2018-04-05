@@ -2,14 +2,13 @@ title: HMCTS technical guidance
 
 permalink: /:title/
 
-collections_dir: ["pages"]
 collections:
   pages:
     output: true
 
 defaults:
-  - 
-    scope:
-      path: "_pages"
+  - scope:
+      path: ""
+      type: pages
     values:
       layout: default
