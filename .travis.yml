@@ -1,7 +1,4 @@
 language: ruby
-rvm:
-  - 2.5.3
-
-script:
-  - bundle exec danger
-  - bundle exec jekyll serve &
+cache: bundler
+bundler_args: "--without development"
+script: bundle exec middleman build
