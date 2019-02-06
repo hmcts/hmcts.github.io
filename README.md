@@ -1,67 +1,85 @@
-# Technical guidance
-
-How we build and operate products at the Ministry of Justice. This repo
-is inspired by, and borrows from, [GDS's technical guidance][gds-tech]
-site.
-
-It's built using [Jekyll][], and hosted using [GitHub Pages][]. It
-incorporates HTML, SCSS, JavaScript, and images from [GDS's Tech Docs
-Template][tech-docs-template], and reworks them to work with Jekyll
-instead of [Middleman][].
-
-[gds-tech]: https://github.com/alphagov/gds-tech
-[Jekyll]: https://jekyllrb.com
-[GitHub Pages]: https://pages.github.com
-[tech-docs-template]: https://github.com/alphagov/tech-docs-template
-[Middleman]: https://middlemanapp.com
+# Technical Documentation
 
 ## Getting started
 
-To preview the site locally, we need to use the terminal.
+To preview or build the website, we need to use the terminal.
 
-Install Ruby and [Bundler][bundler], preferably with a [Ruby version
-manager][rvm].
+Install Ruby with Rubygems, perferably with a [Ruby version manager][rvm],
+and the [Bundler gem][bundler].
 
-[rvm]: https://www.ruby-lang.org/en/documentation/installation/#managers
-[bundler]: http://bundler.io/
+In the application folder type the following to install the required gems:
 
-Once you have Ruby and Bundler set up, you can install this project's
-dependencies by running the following in this directory:
-
-```bash
+```
 bundle install
 ```
 
 ## Making changes
 
-To make changes, edit the appropriate Markdown files in this project.
-Jekyll (and therefore this site) uses [kramdown][] for its Markdown
-processing.
+To make changes edit the source files in the `source` folder.
 
-Make sure to make changes in a branch, and issue a pull request when
-you want them to be reviewed and published.
+### Single page output
 
-[kramdown]: https://kramdown.gettalong.org/syntax.html
+Although a single page of HTML is generated the markdown is spread across
+multiple files to make it easier to manage. They can be found in
+`source/documentation`.
 
-## Previewing
+A new markdown file isn't automatically included in the generated output. If we
+add a new markdown file at the location `source/documentation/agile/scrum.md`,
+the following snippet in `source/index.html.md.erb`, includes it in the
+generated output.
 
-We can preview our changes locally by running this command:
-
-```bash
-bundle exec jekyll serve --watch
+```
+<%= partial 'documentation/agile/scrum' %>
 ```
 
-This will create a local web server, probably at http://127.0.0.1:4000
-(look for the `Server address:` line). This is only accessible on our
-own computer, and won't be accessible to anyone else. It's also set up
-to automatically update (thanks to `--watch`) when we make changes to
-the working Markdown files.
+Including files manually like this lets us specify the position they appear in
+the page.
 
-## Publishing changes
+### Multiple pages
 
-Because we're using GitHub Pages, any changes merged into the `master`
-branch will be published automatically. Every change should be reviewed
-in a pull request, no matter how minor, and we've enabled [branch
-protection][] to enforce this.
+To add a completely new page, create a file with a `.html.md` extension in the `/source` directory.
 
-[branch protection]: https://help.github.com/articles/about-protected-branches/
+For example, `source/about.html.md` will be accessible on <http://localhost:4567/about.html>.
+
+## Preview
+
+Whilst writing documentation we can run a middleman server to preview how the
+published version will look in the browser. After saving a change the preview in
+the browser will automatically refresh.
+
+The preview is only available on our own computer. Others won't be able to
+access it if they are given the link.
+
+Type the following to start the server:
+
+```
+bundle exec middleman server
+```
+
+If all goes well something like the following output will be displayed:
+
+```
+== The Middleman is loading
+== LiveReload accepting connections from ws://192.168.0.8:35729
+== View your site at "http://Laptop.local:4567", "http://192.168.0.8:4567"
+== Inspect your site configuration at "http://Laptop.local:4567/__middleman", "http://192.168.0.8:4567/__middleman"
+```
+
+You should now be able to view a live preview at http://localhost:4567.
+
+## Build
+
+If you want to publish the website without using a build script you may need to
+build the static HTML files.
+
+Type the following to build the HTML:
+
+```
+bundle exec middleman build
+```
+
+This will create a `build` subfolder in the application folder which contains
+the HTML and asset files ready to be published.
+
+[rvm]: https://www.ruby-lang.org/en/documentation/installation/#managers
+[bundler]: http://bundler.io/
