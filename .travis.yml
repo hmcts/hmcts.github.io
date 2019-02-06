@@ -1,9 +1,4 @@
 language: ruby
-rvm:
-  - 2.3.3
-
-script:
-  - bundle exec danger
-  - bundle exec jekyll serve &
-  - npm install -g pa11y-ci
-  - pa11y-ci
+cache: bundler
+bundler_args: "--without development"
+script: bundle exec middleman build

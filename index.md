@@ -1,5 +1,0 @@
----
-permalink: /
-title: Home
----
-# Home
