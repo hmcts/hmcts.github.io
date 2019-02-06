@@ -1,5 +1,5 @@
 # Host to use for canonical URL generation (without trailing slash)
-host: hmcts.github.io/testing-new-hmcts-docs
+host: hmcts.github.io
 
 # Header-related options
 show_govuk_logo: false
