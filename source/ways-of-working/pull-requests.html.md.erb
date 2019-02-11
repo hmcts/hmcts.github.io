@@ -34,6 +34,7 @@ Just take the 10 minutes to create a new branch and open a separate PR, it can b
 * avoid unrelated whitespace changes if possible, they distract the reviewer and can cause conflicts with other people working in similar areas
 * look at the code before you start coding and see roughly what you need to do, perhaps do this with another developer, this can also make the review easier that on
     if two developers were involved in the design there’s more buy in
+* mention in your PR description that there is going to be more PRs and what is still to come
 
 ## When should review happen
 Reviews need to happen often, otherwise you will build up a backlog of changes.
@@ -70,6 +71,7 @@ and resolving conflicts due to other people’s merges.
 
 ## Tooling to help
 
+### Stale PRs
 In order to reduce the length of time PRs are open, 
 the cognitive load on having to see them all the time, 
 wonder whether they should be merged, and the cost of running any infrastructure related to the PRs.
@@ -107,6 +109,39 @@ These should be reviewed regularly and closed if no longer required.
 
 Note that you don’t have to finish the PR within the period you set, it is the time from the last commit or activity on the PR
 and you can add a comment or remove the label on the PR if it is not actually stale.
+
+### Templates for PRs
+
+Our standard template for PRs is:
+
+```markdown
+**Before creating a pull request make sure that:**
+
+- [ ] commit messages are meaningful and follow good commit message guidelines
+- [ ] README and other documentation has been updated / added (if needed)
+- [ ] tests have been updated / new tests has been added (if needed)
+
+Please remove this line and everything above and fill the following sections:
+
+
+### JIRA link (if applicable) ###
+
+
+
+### Change description ###
+<!-- Include what your change is here, any testing you have done, etc -->
+
+
+**Does this PR introduce a breaking change?** (check one with "x")
+
+\``` (remove backslack and this comment when copy pasting)
+[ ] Yes
+[ ] No
+\```
+
+```
+You should start with this and adopt for your needs
+
 
 ## Additional reading
 Highly recommend reading at least the hackernoon article, some very good points there:
