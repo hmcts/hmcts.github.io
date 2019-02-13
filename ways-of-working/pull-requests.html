@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Pull requests | HMCTS</title>
+
+    <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
+    <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
+
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/pull-requests.html">
+
+
+    <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
+    <script src="/javascripts/application.js"></script>
+
+      <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta property="og:site_name" content="HMCTS" />
+      <meta property="og:title" content="Pull requests" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/pull-requests.html" />
+      <meta property="twitter:card" content="summary" />
+      <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta property="twitter:title" content="Pull requests | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/pull-requests.html" />
+
+    
+  </head>
+
+  <body class="has-sidebar">
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="skip-link">Skip to main content</a>
+
+        <header class="header header--full-width">
+  <div class="header__container">
+    <div class="header__brand">
+        <a href="https://github.com/hmcts">
+        <span class="header__title">
+          HMCTS
+            <span class="phase-banner">Beta</span>
+        </span>
+        </a>
+    </div>
+
+      <div data-module="navigation">
+        <button type="button" class="header__navigation-toggle js-nav-toggle" aria-controls="navigation" aria-label="Show or hide top level navigation">Menu</button>
+
+        <nav id="navigation" class="header__navigation js-nav" aria-label="Top Level Navigation" aria-hidden="true">
+          <ul>
+              <li>
+                <a href="https://hmcts-reform.slack.com/#rpe">Support</a>
+              </li>
+              <li>
+                <a href="/">Documentation</a>
+              </li>
+              <li>
+                <a href="https://github.com/hmcts">GitHub</a>
+              </li>
+          </ul>
+        </nav>
+      </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </a>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents">
+              <div class="search" data-module="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search">
+    <input type="hidden" name="as_sitesearch" value="hmcts.github.io"/>
+    <label for="search"  class="search__label">Search (via Google)</label>
+    <input type="text" id="search" name="q" placeholder="Search" aria-controls="search-results" class="form-control" />
+  </form>
+  <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
+    <div class="search-results__inner">
+      <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
+      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <div class="search-results__content"></div>
+    </div>
+  </div>
+</div>
+
+              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading">
+                      <ul>
+  <li>
+    <a href="#pull-requests">Pull requests</a>
+    <ul>
+      <li>
+        <a href="#size">Size</a>
+      </li>
+      <li>
+        <a href="#when-should-review-happen">When should review happen</a>
+      </li>
+      <li>
+        <a href="#who-should-review">Who should review</a>
+      </li>
+      <li>
+        <a href="#review-techniques">Review techniques</a>
+      </li>
+      <li>
+        <a href="#how-long-should-a-pr-be-open">How long should a PR be open</a>
+      </li>
+      <li>
+        <a href="#tooling-to-help">Tooling to help</a>
+        <ul>
+          <li>
+            <a href="#stale-prs"> Stale PRs</a>
+          </li>
+          <li>
+            <a href="#templates-for-prs">Templates for PRs</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#additional-reading">Additional reading</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="pull-requests">Pull requests</h1><p>As a PR writer I will:</p>
+
+<ul>
+<li>keep PRs small</li>
+</ul>
+<p>As a PR reviewer I will:</p>
+
+<ul>
+<li>make an effort to review as soon as I get a second.</li>
+<li>approve, as long as it’s better than before</li>
+<li>favour suggestions over rejections, particularly when a multipart PR is indicated</li>
+</ul>
+<p>We practise code review on all changes at HMCTS to:</p>
+
+<ul>
+<li>improve code quality</li>
+<li>get team buy in on changes</li>
+<li>validate change correctness</li>
+<li>knowledge sharing</li>
+</ul>
+<p>Pull requests should not be opened when everything is finished.
+They should be opened as soon as you have something to show.</p>
+<p>Leaving it to the last minute leaves a lot of pressure to the reviewer, 
+often someone is told the code is done but they aren’t 
+told that the review hasn’t happened, pressure comes on to ship the code but there’s design problems
+ in it that need addressing, this could take hours, or days.</p>
+<h2 id="size">Size</h2><p>The smaller your pull request the easier it is to review, to test and the safer it is to send to production.
+Separating your changes out is a great skill to practice, some tips:</p>
+
+<ul>
+<li>don’t make unrelated changes in a PR, you should still make the change if you think it improves the code
+Just take the 10 minutes to create a new branch and open a separate PR, it can be quickly merged and you can continue with your task</li>
+<li>refactor the code to make your change easier first</li>
+<li>avoid unrelated whitespace changes if possible, they distract the reviewer and can cause conflicts with other people working in similar areas</li>
+<li>look at the code before you start coding and see roughly what you need to do, perhaps do this with another developer, this can also make the review easier that on
+if two developers were involved in the design there’s more buy in</li>
+<li>mention in your PR description that there is going to be more PRs and what is still to come</li>
+</ul>
+<h2 id="when-should-review-happen">When should review happen</h2><p>Reviews need to happen often, otherwise you will build up a backlog of changes.
+Before you start your task for the day check all the open PRs to see if there’s any code that needs a review or if someone needs a bit of help.
+The daily reminder can be automated by slack bot</p>
+<div class="highlight"><pre class="highlight plaintext"><code>/remind #my-pr-channel every weekday at 8:30am Why not start the day with coffee and reviewing code? :wink: Link in channel topic
+</code></pre></div><p>But importantly reviews should not happen just first thing in the morning, 
+they should be done after every break, before you start a new ticket or after you’ve opened a PR yourself.</p>
+<p>Once you make your review comments especially if you block the merge you need to be ready to respond quickly to follow up comments so as not to hold up the person who has created the PR.</p>
+<h2 id="who-should-review">Who should review</h2><p>All developers in the team should be reviewing, junior developers to tech lead.
+Code review isn’t just about improving the code and the solution being correct, it is also about 
+sharing knowledge of the code and different techniques that can be used in software engineering.</p>
+<p>If you know that someone has particular experience in an area, send the PR to them and ask if they would be able to review it when they have time.</p>
+<h2 id="review-techniques">Review techniques</h2>
+<ul>
+<li>think &ldquo;how could I make it easier for myself if I was reviewing it?&rdquo;</li>
+<li>pre-empt the reviewer by explaining (as comments) on your PR any compromises / or limitations that your implementation has</li>
+<li>if there’s conflict occurring on the PR on the next steps to proceed on it, take it offline, go sit next to the person, chat on slack or call them
+agree the next step, and involve someone else if needed, post the result on the PR so that other people can see why the direction has changed.</li>
+</ul>
+<h2 id="how-long-should-a-pr-be-open">How long should a PR be open</h2><p>Pull requests should be small and often, if it is open for more than 2-3 days there is probably something wrong.
+It is much better to have work flowing quickly than a backlog of work building up.
+You’re introducing a much riskier change and will have to do a lot more work to get it merged, satisfying reviewers
+and resolving conflicts due to other people’s merges.</p>
+<h2 id="tooling-to-help">Tooling to help</h2><h3 id="stale-prs"> Stale PRs</h3><p>In order to reduce the length of time PRs are open, 
+the cognitive load on having to see them all the time, 
+wonder whether they should be merged, and the cost of running any infrastructure related to the PRs.</p>
+<p>We use <a href="https://probot.github.io/apps/stale/">probot-stale</a> to automate reminders about PRs and close them if no response or further work happens on it.</p>
+<p>We recommend config like:</p>
+<div class="highlight"><pre class="highlight yaml"><code><span class="c1"># Number of days of inactivity before an issue becomes stale</span>
+<span class="na">daysUntilStale</span><span class="pi">:</span> <span class="s">7</span>
+<span class="c1"># Number of days of inactivity before a stale issue is closed</span>
+<span class="na">daysUntilClose</span><span class="pi">:</span> <span class="s">4</span>
+<span class="c1"># Issues with these labels will never be considered stale</span>
+<span class="na">exemptLabels</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">pinned</span>
+  <span class="pi">-</span> <span class="s">dependencies</span>
+<span class="c1"># Label to use when marking an issue as stale</span>
+<span class="na">staleLabel</span><span class="pi">:</span> <span class="s">stale</span>
+<span class="c1"># Comment to post when marking an issue as stale. Set to `false` to disable</span>
+<span class="na">markComment</span><span class="pi">:</span> <span class="pi">&gt;</span>
+  <span class="no">This issue has been automatically marked as stale because it has not had</span>
+  <span class="no">recent activity. It will be closed if no further activity occurs. Thank you</span>
+  <span class="no">for your contributions.</span>
+<span class="c1"># Comment to post when closing a stale issue. Set to `false` to disable</span>
+<span class="na">closeComment</span><span class="pi">:</span> <span class="pi">&gt;</span>
+  <span class="no">This issue is being closed automatically as it was stale</span>
+</code></pre></div><p>You can tune the numbers slightly but please make sure pull requests are closed within 2 weeks
+If you have a PR that needs to stay around because you are demoing it or some other valid reason
+you can add to the configuration a permanent label such as <code>demoing</code> this will never become stale</p>
+<p>These should be reviewed regularly and closed if no longer required.</p>
+<p>Note that you don’t have to finish the PR within the period you set, it is the time from the last commit or activity on the PR
+and you can add a comment or remove the label on the PR if it is not actually stale.</p>
+<h3 id="templates-for-prs">Templates for PRs</h3><p>Our standard template for PRs is:</p>
+<div class="highlight"><pre class="highlight markdown"><code><span class="gs">**Before creating a pull request make sure that:**</span>
+<span class="p">
+-</span> <span class="p">[</span><span class="nv"> </span><span class="p">]</span> commit messages are meaningful and follow good commit message guidelines
+<span class="p">-</span> <span class="p">[</span><span class="nv"> </span><span class="p">]</span> README and other documentation has been updated / added (if needed)
+<span class="p">-</span> <span class="p">[</span><span class="nv"> </span><span class="p">]</span> tests have been updated / new tests has been added (if needed)
+
+Please remove this line and everything above and fill the following sections:<span class="sb">
+
+
+</span><span class="gu">### JIRA link (if applicable) ###</span><span class="sb">
+
+
+
+</span><span class="gu">### Change description ###</span>
+<span class="c">&lt;!-- Include what your change is here, any testing you have done, etc --&gt;</span><span class="sb">
+
+
+</span><span class="gs">**Does this PR introduce a breaking change?**</span> (check one with "x")
+
+<span class="se">\`</span><span class="sb">`` (remove backslash and this comment when copy pasting)
+[ ] Yes
+[ ] No
+\```</span>
+
+</code></pre></div><p>You should start with this and adopt for your needs</p>
+<h2 id="additional-reading">Additional reading</h2><p>Highly recommend reading at least the hackernoon article, some very good points there:</p>
+
+<ul>
+<li><a href="https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9">https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9</a></li>
+<li><a href="https://www.atlassian.com/blog/git/written-unwritten-guide-pull-requests">https://www.atlassian.com/blog/git/written-unwritten-guide-pull-requests</a></li>
+<li><a href="https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104">https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104</a></li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2019-05-08">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 8 February 2019.
+
+      It needs to be reviewed again on 8 May 2019
+.
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 8 May 2019.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
+          </main>
+
+            <ul class="contribution-banner">
+              <li><a href="https://github.com/hmcts/hmcts.github.io/blob/master/source/ways-of-working/pull-requests.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Pull%20requests'&amp;body=Problem%20with%20'Pull%20requests'%20(hmcts.github.io/ways-of-working/pull-requests.html)">Report problem</a></li>
+              <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
+            </ul>
+
+          <footer class="footer">
+  <div class="footer__licence">
+    <a class="footer__licence-logo" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a>
+    <p class="footer__licence-description">All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
+  </div>
+
+  <div class="footer__copyright">
+    <a class="footer__copyright-logo" href="http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/">© Crown copyright</a>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
