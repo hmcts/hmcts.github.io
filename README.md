@@ -83,3 +83,10 @@ the HTML and asset files ready to be published.
 
 [rvm]: https://www.ruby-lang.org/en/documentation/installation/#managers
 [bundler]: http://bundler.io/
+
+## Publishing
+
+Run:
+```
+bundle exec rake publish
+```
