@@ -17,8 +17,12 @@ jobs:
         with:
           ruby-version: 2.4
           architecture: 'x64'
-      - run: |
+      - name: Install dependencies
+        run: |
           gem install bundler
-          bundle exec middleman build
-      - run: bundle exec rake publish
+          bundle install
+      - name: Build
+        run: bundle exec middleman build
+      - name: Publish
+        run: bundle exec rake publish
         #if: equals(github.ref, 'refs/head/source')
