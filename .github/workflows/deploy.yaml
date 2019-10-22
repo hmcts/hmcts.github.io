@@ -40,12 +40,10 @@ jobs:
       - name: Build
         run: bundle exec middleman build
       - name: Publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           rm -rf build
           git config --global user.email "PlatformTeam@HMCTS.NET"
           git config --global user.name "Platform Team"
-          git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_TOKEN}"; echo "password=x-oauth-basic"; }; f'
+          git remote set origin https://${{ secrets.GITHUB_TOKEN }}@github.com/hmcts/hmcts.github.io
           bundle exec rake publish
         #if: equals(github.ref, 'refs/head/source')
