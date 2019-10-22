@@ -25,7 +25,7 @@ jobs:
         run: bundle exec middleman build
       - name: Publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_OTKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           rm -rf build
           git config --global user.email "PlatformTeam@HMCTS.NET"
