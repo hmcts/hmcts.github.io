@@ -44,6 +44,6 @@ jobs:
           rm -rf build
           git config --global user.email "PlatformTeam@HMCTS.NET"
           git config --global user.name "Platform Team"
-          git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/${{ github.repository }}
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           bundle exec rake publish
         #if: equals(github.ref, 'refs/head/source')
