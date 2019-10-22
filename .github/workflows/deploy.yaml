@@ -30,5 +30,6 @@ jobs:
           rm -rf build
           git config --global user.email "PlatformTeam@HMCTS.NET"
           git config --global user.name "Platform Team"
+          git config credential.helper '!f() { sleep 1; echo "username=dummy"; echo "password=${GITHUB_TOKEN}"; }; f'
           bundle exec rake publish
         #if: equals(github.ref, 'refs/head/source')
