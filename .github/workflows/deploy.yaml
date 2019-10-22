@@ -12,8 +12,6 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -42,9 +40,12 @@ jobs:
       - name: Build
         run: bundle exec middleman build
       - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           rm -rf build
           git config --global user.email "PlatformTeam@HMCTS.NET"
           git config --global user.name "Platform Team"
+          git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_TOKEN}"; echo "password=x-oauth-basic"; }; f'
           bundle exec rake publish
         #if: equals(github.ref, 'refs/head/source')
