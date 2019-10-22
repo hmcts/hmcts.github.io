@@ -12,10 +12,10 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@master
-      - name: Setup ruby
+      - name: Setup Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.4
+          ruby-version: 2.5.3
           architecture: 'x64'
       - name: Install dependencies
         run: |
@@ -24,5 +24,7 @@ jobs:
       - name: Build
         run: bundle exec middleman build
       - name: Publish
-        run: bundle exec rake publish
+        run: |
+          rm -rf build
+          bundle exec rake publish
         #if: equals(github.ref, 'refs/head/source')
