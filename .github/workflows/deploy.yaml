@@ -12,6 +12,24 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
       - name: Setup Ruby
         uses: actions/setup-ruby@v1
         with:
@@ -24,12 +42,9 @@ jobs:
       - name: Build
         run: bundle exec middleman build
       - name: Publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           rm -rf build
           git config --global user.email "PlatformTeam@HMCTS.NET"
           git config --global user.name "Platform Team"
-          git config credential.helper '!f() { sleep 1; echo "username=dummy"; echo "password=${GITHUB_TOKEN}"; }; f'
           bundle exec rake publish
         #if: equals(github.ref, 'refs/head/source')
