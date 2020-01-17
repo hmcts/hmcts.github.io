@@ -149,8 +149,22 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="team">Team</h1><p>Slack -&gt; create channels</p>
-<p>Config -&gt; https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml</p>
+            <h1 id="team">Team</h1><h2 id="slack">Slack</h2><p>Once you&rsquo;ve received your <code>hmcts.net</code> email account you can self service sign-up to our slack workspace
+Visit <a href="https://hmcts-reform.slack.com/">https://hmcts-reform.slack.com/</a> and click <code>create an account</code></p>
+<p>After you&rsquo;ve created your account please make sure to fill out your profile,
+set at least your full name, and in the what I do section put your team name and role.</p>
+<p>Now that you&rsquo;ve got a slack account you&rsquo;ll need to create a couple of channels:</p>
+
+<ul>
+<li>a team contact channel, this must be public as this is where people on other teams will come to contact you,
+this is often your regular developer chat channel, i.e. <code>team-dev</code> or <code>team-tech</code>.</li>
+<li>a build notices channel, this should be public as there&rsquo;s no reason to hide your build failures.</li>
+</ul>
+<p>Once you&rsquo;ve created a build notices channel you will need to invite our &lsquo;Jenkins&rsquo; bot user into the channel.</p>
+<div class="highlight"><pre class="highlight shell"><code>/invite @Jenkins
+</code></pre></div><p>Make sure you pick the Jenkins [app] user:</p>
+<p><img src="/images/slack-jenkins-user-invite.png"/></p>
+<p>Config -&gt; <a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml">https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml</a></p>
 <p>Jenkins org -&gt; see old doc</p>
 <p>AAD groups -&gt; request 2 groups, 1 for team, 1 for LaunchDarkly</p>
 <p>Github config - &gt; request 2 teams, 1 for devs, 1 for admins</p>
