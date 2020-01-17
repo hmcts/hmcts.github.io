@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
 
-    <title>API Standards | HMCTS</title>
+    <title>Glossary | HMCTS</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="hmcts.github.io/standards/apis.html">
+    <link rel="canonical" href="hmcts.github.io/glossary/">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -18,13 +18,13 @@
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="API Standards" />
+      <meta property="og:title" content="Glossary" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/standards/apis.html" />
+      <meta property="og:url" content="hmcts.github.io/glossary/" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="API Standards | HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/standards/apis.html" />
+      <meta property="twitter:title" content="Glossary | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/glossary/" />
 
     
   </head>
@@ -92,10 +92,53 @@
 </div>
 
               <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
-              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading">
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
-    <a href="#api-standards">API Standards</a>
+    <a href="/#the-hmcts-way">The HMCTS way</a>
+  </li>
+</ul>
+<ul><li><a href="/onboarding/">Platform onboarding</a>
+<ul>
+  <li>
+    <a href="/onboarding/team/#team-2">Team</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/onboarding/person/#person">Person</a>
+  </li>
+</ul>
+</li></ul><ul>
+  <li>
+    <a href="/glossary/#glossary">Glossary</a>
+  </li>
+</ul>
+<ul><li><a href="/ways-of-working/">Ways of working</a>
+<ul>
+  <li>
+    <a href="/ways-of-working/principles/#principles">Principles</a>
+  </li>
+</ul>
+<ul><li><a href="/ways-of-working/standards/">Concepts and standards</a>
+<ul>
+  <li>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests">Pull requests</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/standards/apis.html#api-design">API design</a>
+  </li>
+</ul>
+</li></ul><ul>
+  <li>
+    <a href="/ways-of-working/new-component/#starting-a-new-component">Starting a new component</a>
+  </li>
+</ul>
+</li></ul><ul>
+  <li>
+    <a href="/api-docs/#api-documentation">API Documentation</a>
   </li>
 </ul>
 
@@ -106,20 +149,26 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="api-standards">API Standards</h1><p>Rather than reinvent the wheel, we&rsquo;ve decided to reuse and amend the good work done by zalando. 
-Our fork of their standards can be found <a href="https://github.com/hmcts/restful-api-standards">here</a> 
-and is published <a href="https://hmcts.github.io/restful-api-standards/">here</a>.</p>
+            <h1 id="glossary">Glossary</h1><h3 id="component">Component</h3><p>An independently deployable piece of software. Synonymous with a microservice, the two terms
+are often used interchangeably.</p>
+<h3 id="platform">Platform</h3><p>A collection of environments, build pipelines, code modules, libraries and tools used to deliver
+working software to users.</p>
+<h3 id="product">Product</h3><p>A collection of software <a href="#component">components</a> which form a single line of business. A single product may be
+built by multiple <a href="#team">teams</a> or multiple products may be built by a single team.</p>
+<h3 id="team">Team</h3><p>A group of people who build software. It may consist of software engineers,
+QAs, infrastructure engineers, testers, scrum master, UX designers, content designers and
+many others. A single team may build many <a href="#product">products</a> or many teams may build a single product.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-05-26">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 26 November 2019.
+      This page was last reviewed on 15 January 2020.
 
-      It needs to be reviewed again on 26 May 2020
+      It needs to be reviewed again on 15 July 2020
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 26 May 2020.
+      This page was set to be reviewed before 15 July 2020.
       This might mean the content is out of date.
     </div>
   </div>
@@ -127,8 +176,8 @@ and is published <a href="https://hmcts.github.io/restful-api-standards/">here</
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/standards/apis.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'API%20Standards'&amp;body=Problem%20with%20'API%20Standards'%20(hmcts.github.io/standards/apis.html)">Report problem</a></li>
+              <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/glossary/index.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Glossary'&amp;body=Problem%20with%20'Glossary'%20(hmcts.github.io/glossary/)">Report problem</a></li>
               <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
             </ul>
 

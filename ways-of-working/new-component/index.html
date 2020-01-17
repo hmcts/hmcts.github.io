@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
 
-    <title>The HMCTS way | HMCTS</title>
+    <title>Starting a new component | HMCTS</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="hmcts.github.io/">
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -18,13 +18,13 @@
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="The HMCTS way" />
+      <meta property="og:title" content="Starting a new component" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="The HMCTS way | HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/" />
+      <meta property="twitter:title" content="Starting a new component | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/" />
 
     
   </head>
@@ -53,7 +53,7 @@
               <li>
                 <a href="https://hmcts-reform.slack.com/#rpe">Support</a>
               </li>
-              <li class="active">
+              <li>
                 <a href="/">Documentation</a>
               </li>
               <li>
@@ -149,31 +149,58 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="the-hmcts-way">The HMCTS way</h1><p>This guide will help you onboard teams and people, explain our ways of working and the standards we expect.</p>
+            <h1 id="starting-a-new-component">Starting a new component</h1>
+<ul>
+<li>create new Github repo
 
 <ul>
-<li>The <a href="/glossary/">Glossary</a> explains how we use certain words</li>
-<li><a href="/onboarding/">Platform onboarding</a>
-
-<ul>
-<li>A new <a href="/onboarding/team/">Team</a></li>
-<li>A new <a href="/onboarding/person/">Person</a></li>
+<li>assign roles to developer and admin teams</li>
 </ul></li>
-<li><a href="/ways-of-working/">Ways of working</a>
+<li>create component from existing template
 
 <ul>
-<li><a href="/ways-of-working/principles/">Principles</a></li>
-<li><a href="/ways-of-working/standards/">Concepts and standards</a></li>
-<li><a href="/ways-of-working/new-component/">Starting a new component</a></li>
+<li>https://github.com/hmcts/spring-boot-template</li>
+<li>https://github.com/hmcts/expressjs-template</li>
+</ul></li>
+<li><a href="https://github.com/hmcts/cnp-jenkins-library">use common pipeline</a></li>
+<li>secrets management</li>
+<li>infrastructure as code</li>
+<li>configuration management</li>
+<li>logging and monitoring</li>
+<li>database schema management</li>
+<li>Helm chart</li>
+<li>Environment-specific concepts</li>
+<li><a href="https://github.com/hmcts/cnp-flux-config">Flux config</a></li>
+<li><a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml">Production approvals</a></li>
+<li>Path-to-live
+
+<ul>
+<li>RBAC pipeline - app gateway config</li>
+<li>SSL certs</li>
+<li>Front Door config</li>
+<li>External DNS</li>
 </ul></li>
 </ul>
 
-            
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 15 January 2020.
+
+      It needs to be reviewed again on 15 July 2020
+.
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 15 July 2020.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/index.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'The%20HMCTS%20way'&amp;body=Problem%20with%20'The%20HMCTS%20way'%20(hmcts.github.io/)">Report problem</a></li>
+              <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/index.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Starting%20a%20new%20component'&amp;body=Problem%20with%20'Starting%20a%20new%20component'%20(hmcts.github.io/ways-of-working/new-component/)">Report problem</a></li>
               <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
             </ul>
 
