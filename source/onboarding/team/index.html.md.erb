@@ -32,12 +32,67 @@ Make sure you pick the Jenkins \[app] user:
 
 <img src="/images/slack-jenkins-user-invite.png"/>
 
-Config -> [https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml)
+## Team GitHub config
 
-Jenkins org -> see old doc
+Each team needs to add configuration for their team to the [https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml](team-config file)
+in the cnp-jenkins-config repository.
 
-AAD groups -> request 2 groups, 1 for team, 1 for LaunchDarkly
+Please send a [https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests](pull request) with your configuration.
 
-Github config - > request 2 teams, 1 for devs, 1 for admins
+All fields are mandatory, 
 
-Create Office 365 team group
+Copy another teams config and adjust to meet your needs.
+
+```yaml
+sscs: # <- product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known for
+  team: "SSCS" # <- team 'display name', useful for longer more recognisable names for tagging
+  namespace: "sscs" # <- Kubernetes namespace, usually the same as your 'product name'
+  slack:
+    contact_channel: "#sscs-tech"
+    build_notices_channel: "#sscs-tech"
+```
+
+Make sure your product name is not too long as some Azure resources have constraints on their length 
+which can easily be hit if names are too long.
+
+## Jenkins org -> see old doc
+
+
+
+## Azure Active Directory (AAD) groups
+
+Create a ticket in [https://tools.hmcts.net/jira/secure/CreateIssue!default.jspa](Jira)
+
+Details:
+
+- Project: 'Reform: DevOps (RDO)'
+- Issue Type: 'Task'
+- Summary: New team (<team-name>) AAD groups
+- Component: Azure Active Directory
+
+Description:
+
+> Hi
+> I have just started on the 'team name' team,
+
+> Can you please create the following AAD groups for my team:
+
+> * dcd_group_<team-short-name>_v2
+> * dcd_group_ld_<team-short-name>_v2
+
+> Thanks
+
+Once the group is created you can get the object IDs with:
+
+```shell
+TEAM_NAME=fpla # adjust as needed
+az ad group list --query "[?contains(displayName, '${TEAM_NAME}_v2')].{DisplayName: displayName, ObjectID: objectId}" -o table
+```
+
+You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.
+
+To join the groups see 'TODO section in person onboarding'.
+
+## Github config - > request 2 teams, 1 for devs, 1 for admins
+
+## Create Office 365 team group
