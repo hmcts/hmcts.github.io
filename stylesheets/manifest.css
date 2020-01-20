@@ -1,22 +1,7 @@
 .govuk-link, .technical-documentation a {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
-
-/*! Copyright (c) 2011 by Margaret Calvert & Henrik Kubel. All rights reserved. The font has been customised for exclusive use on gov.uk. This cut is not commercially available. */
-@font-face {
-  font-family: "GDS Transport";
-  src: url("/assets/govuk/assets/fonts/light-94a07e06a1-v2.woff2") format("woff2"), url("/assets/govuk/assets/fonts/light-f591b13f7d-v2.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: fallback; }
-
-@font-face {
-  font-family: "GDS Transport";
-  src: url("/assets/govuk/assets/fonts/bold-b542beb274-v2.woff2") format("woff2"), url("/assets/govuk/assets/fonts/bold-affa96571d-v2.woff") format("woff");
-  font-weight: bold;
-  font-style: normal;
-  font-display: fallback; }
   @media print {
     .govuk-link, .technical-documentation a {
       font-family: sans-serif; } }
@@ -71,7 +56,7 @@
 
 .govuk-list, .technical-documentation > ul,
 .technical-documentation > ol {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -149,7 +134,7 @@
 
 .govuk-heading-xl, .technical-documentation > h1 {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -180,7 +165,7 @@
 
 .govuk-heading-l, .technical-documentation > h2 {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -211,7 +196,7 @@
 
 .govuk-heading-m, .technical-documentation > h3 {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -242,7 +227,7 @@
 
 .govuk-heading-s, .technical-documentation > h4 {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -272,7 +257,7 @@
       margin-bottom: 20px; } }
 
 .govuk-caption-xl {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -296,7 +281,7 @@
       line-height: 1.15; } }
 
 .govuk-caption-l {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -323,7 +308,7 @@
       margin-bottom: 0; } }
 
 .govuk-caption-m {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -347,7 +332,7 @@
 
 .govuk-body-l, .govuk-body-lead {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -377,7 +362,7 @@
 
 .govuk-body-m, .govuk-body, .technical-documentation > p, .technical-documentation > a {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -407,7 +392,7 @@
 
 .govuk-body-s {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -437,7 +422,7 @@
 
 .govuk-body-xs {
   color: #0b0c0c;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -752,7 +737,7 @@
           margin: 0 auto; } } }
 
 .govuk-footer {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -948,7 +933,7 @@
   margin-bottom: 0; }
 
 .govuk-header {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1004,7 +989,7 @@
   vertical-align: middle; }
 
 .govuk-header__product-name {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1040,7 +1025,7 @@
     text-decoration: none; }
 
 .govuk-header__link--homepage {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1062,7 +1047,7 @@
 .govuk-header__link--service-name {
   display: inline-block;
   margin-bottom: 10px;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1106,7 +1091,7 @@
     float: left; } }
 
 .govuk-header__menu-button {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1213,7 +1198,7 @@
       padding: 5px 0;
       border: 0; } }
   .govuk-header__navigation-item a {
-    font-family: "GDS Transport", Arial, sans-serif;
+    font-family: nta, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 700;
@@ -1256,7 +1241,7 @@
     display: none; } }
 
 .govuk-inset-text {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1297,7 +1282,7 @@
     margin-bottom: 0; }
 
 .govuk-error-message {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1322,7 +1307,7 @@
       line-height: 1.15; } }
 
 .govuk-hint {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1356,7 +1341,7 @@
   margin-top: -5px; }
 
 .govuk-label {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1383,7 +1368,7 @@
       color: #000000; } }
 
 .govuk-label--xl {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1405,7 +1390,7 @@
       line-height: 1.15; } }
 
 .govuk-label--l {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1427,7 +1412,7 @@
       line-height: 1.05; } }
 
 .govuk-label--m {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1449,7 +1434,7 @@
       line-height: 1.15; } }
 
 .govuk-label--s {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1473,7 +1458,7 @@
   margin: 0; }
 
 .govuk-input {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1551,7 +1536,7 @@
   letter-spacing: 1px;
   text-decoration: none;
   text-transform: uppercase;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1588,7 +1573,7 @@
   -webkit-clip-path: inset(50%) !important;
   clip-path: inset(50%) !important;
   white-space: nowrap !important;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
@@ -1632,7 +1617,7 @@
     background-color: #ffdd00; }
 
 .govuk-warning-text {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -1676,7 +1661,7 @@
   white-space: nowrap !important; }
 
 .govuk-warning-text__icon {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -2792,7 +2777,7 @@
 
 .page-expiry--not-expired,
 .page-expiry--default {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -2919,7 +2904,7 @@ html.has-search-results-open {
         background-size: contain; } }
 
 .search-results__title {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -2941,7 +2926,7 @@ html.has-search-results-open {
       line-height: 1.15; } }
 
 .search-results__close {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -3009,7 +2994,7 @@ html.has-search-results-open {
   font-weight: bold; }
 
 .contribution-banner {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -3039,7 +3024,7 @@ html.has-search-results-open {
       margin-right: 32px; } }
   .contribution-banner a {
     margin-right: 15px;
-    font-family: "GDS Transport", Arial, sans-serif;
+    font-family: nta, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
     @media print {
@@ -3067,7 +3052,7 @@ html.has-search-results-open {
     margin: 2px 0; }
 
 .technical-documentation {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: nta, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -3123,7 +3108,7 @@ html.has-search-results-open {
       .technical-documentation ol + p, .technical-documentation ul + p, .technical-documentation .table-container + p {
         margin-top: 30px; } }
   .technical-documentation blockquote {
-    font-family: "GDS Transport", Arial, sans-serif;
+    font-family: nta, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
@@ -3204,7 +3189,7 @@ html.has-search-results-open {
     background-color: transparent;
     border-bottom: 1px solid #b1b4b6;
     border-width: 0 0 1px 0;
-    font-family: "GDS Transport", Arial, sans-serif;
+    font-family: nta, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
@@ -3236,7 +3221,7 @@ html.has-search-results-open {
 
 @media screen {
   .toc {
-    font-family: "GDS Transport", Arial, sans-serif;
+    font-family: nta, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
@@ -3285,7 +3270,7 @@ html.has-search-results-open {
       .toc__list li a:hover:focus {
         text-decoration: none; }
     .toc__list > ul > li > a:link {
-      font-family: "GDS Transport", Arial, sans-serif;
+      font-family: nta, Helvetica, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       font-weight: 700;
@@ -3333,7 +3318,7 @@ html.has-search-results-open {
       width: 100%;
       z-index: 10; }
       .js .toc-show__label {
-        font-family: "GDS Transport", Arial, sans-serif;
+        font-family: nta, Helvetica, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         font-weight: 400;
@@ -3512,3 +3497,6 @@ html.has-search-results-open {
 
 .fixedsticky-on + .fixedsticky-dummy {
   display: block; }
+
+
+
