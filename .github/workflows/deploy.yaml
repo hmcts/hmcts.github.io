@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-18.04
     name: Deploy
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - name: Setup Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.5
+          ruby-version: 2.6.5
           architecture: 'x64'
       - name: Install dependencies
         run: |
