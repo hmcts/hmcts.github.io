@@ -19,17 +19,17 @@ By default the following shutter page is used as per the Gov.uk patterns [servic
 
 
 ## Implementation and Customization
-Creating and Enabling the shutter solution for an application is a 3 step process outlined below:
+Creating and Enabling the shutter solution for an application is a 3 step process as outlined below:
 
-- CDN infrastructure creation
-- Uploading static shutter pages to Azure storage account
+- Create CDN infrastructure
+- Upload static content to Azure storage account
 - Enable shutter with a DNS swap
 
 ## Pre-requisite
-Before we start creating the the CDN profiles we need to register the DNS for the custom domains. 
-For more details click [Azure CDN custom Domain](https://docs.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain#map-the-temporary-cdnverify-subdomain)
+Before creating the the CDN profiles, custom domains needs to registered with Azure public DNS. 
+For more details about custom domains click [Azure CDN custom Domain](https://docs.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain#map-the-temporary-cdnverify-subdomain)
 
-Below steps make sure you have correct DNS entries:
+Following steps ensures DNS entries:
 
 - Clone the [Azure Public DNS](https://github.com/hmcts/azure-public-dns) repository.
 - Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment. There can be multiple zones in one environment.
@@ -48,14 +48,14 @@ Below steps make sure you have correct DNS entries:
   record: "hmcts-${env}.azurefd.net"
 ```
 
-Here:
+Where:
 
 `${env}`  =  Name of the environment for which you are creating the recordsets. Valid values are `sbox` or `prod`. 
 
 `${name}` =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
-This will be the `name` attribute from env.tfvars file e.g. [name attribute](https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17)
+This should be the `name` attribute from env.tfvars file e.g. [name attribute](https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17)
 
-Send the PR for review to Platform-Engineering/Devops teams. Once the PR is merged terraform will create appropriate records.
+Send the PR for review to Platform-Engineering/Devops team. Once the PR is merged terraform will create appropriate records.
 
 ### CDN infrastructure
 CDN infrastructure comprise of the following Azure resources:
@@ -63,13 +63,11 @@ CDN infrastructure comprise of the following Azure resources:
 - Azure storage account
 - Azure CDN profile
 
-[shutter_page terraform module] (https://github.com/hmcts/azure-platform-terraform/tree/master/modules/shutter_page) is used to create the required resources in Azure 
+[shutter_page terraform module] (https://github.com/hmcts/azure-platform-terraform/tree/master/modules/shutter_page) is used to create the required resources in Azure. 
 
-CDN infrastructure is automatically created when you enable your frontend configuration with respective env.tfvars file.
+CDN infrastructure is automatically created by enabling frontend configuration with respective env.tfvars file e.g. [Frontend config](https://github.com/hmcts/azure-platform-terraform/pull/91/files)
 
-- [Frontend config](https://github.com/hmcts/azure-platform-terraform/pull/91/files)
-
-This creates the following resources:
+Above config creates the following resources:
 
  - Azure storage account using `name` attribute for each of the frontends
  - Enable azure static website with `$web` blob conatiner
@@ -79,10 +77,10 @@ This creates the following resources:
  - Enable https on the custom domain using certificates in the Azure Keyvault
 
 ### Uploading static shutter pages to Azure storage account
-Now that we have the shutter infrastructure create we need to upload static pages to the storage account created above.
-Following repository is created [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages)
+Once the shutter infrastructure is created, static content needs to be uploaded to the storage account.
+Following repository is used [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages)
 
-There is a default shutter page for legacy apps and ones that haven`t had time / need to create an app specific one. 
+There is a default shutter page available to be used. 
 
 In order to use the [default](https://github.com/hmcts/azure-shutter-pages/tree/master/default) shutter page follow the below steps:
 
@@ -92,7 +90,6 @@ In order to use the [default](https://github.com/hmcts/azure-shutter-pages/tree/
 ${shuttername}:
   name: '${shuttername}'
   shutter: 'default'
-  subscription: DCD-CFTAPPS-PROD
 ```
 
 where:
@@ -101,33 +98,34 @@ where:
 
 Few key things:
 
-- Do not `name` folders with dashes as storage accounts can`t have them in their name.
-- Use the first 8 characters only from the `name` attribute e.g. If the `name` attribute in env.tfvars file is `xui-manage-org` then ${shuttername} will be `xuimanag`.
+- Do not use dashes with `${shuttername}` as storage accounts doesn't allow it.
+- Use the first 8 characters only, of the `name` attribute from the env.tfvar file e.g. If the `name` attribute in env.tfvars file is `xui-manage-org` then ${shuttername} will be `xuimanag`.
 
-You can also create/upload customized shutter pages using the below steps:
+Customized shutter pages can also be created/uploaded by following the below steps:
 
-- Create a PR with the following:
-    - Create directories for your shutter page(s), e.g. mkdir sscscor 
+- Create a PR with:
+    - Directories for your shutter page(s), e.g. mkdir sscscor 
     - Copy your static contents in sscscor/
     - Update the CODEOWNERS file with your teams folders and GitHub team
-    - Following changes in the [azure-pipelines.yml](https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml) file.
+    - Make following changes in the [azure-pipelines.yml](https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml) file.
 
     ```
     sscscor:
       name: 'sscscor'
       shutter: 'sscscor' 
-      subscription: DCD-CFTAPPS-PROD
     ```
-    `shutter: 'sscscor'` shold be the name of the directory created in this repository with your static contents in it. 
+    Where:
+
+    `shutter: 'sscscor'` shou ld be the name of the directory created in this repository with the static contents. 
 
 Once the PR is reviewed and merged all the static contents will be uploaded to the respective storage accounts.
 
 ### Enable shutter with a DNS swap
-Now you have everything setup to render shutter page. We swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps
+Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps
 
 - Clone the [azure-public-dns](https://github.com/hmcts/azure-public-dns) repository
-- Lets assume that we need to shutter `www.decree-absolute.apply-divorce.service.gov.uk`
-- Create a PR with with the appropriate [prod zone](https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41)
+- Lets assume this application need to be shuttered `www.decree-absolute.apply-divorce.service.gov.uk`
+- Create a PR with the appropriate [prod zone](https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41)
 - The above contents will be updated as follows:
 
 ```
