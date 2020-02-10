@@ -96,6 +96,11 @@
     <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
   </li>
 </ul>
+<ul>
+  <li>
+    <a href="/glossary/#glossary"><span>Glossary</span></a>
+  </li>
+</ul>
 <ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
@@ -107,29 +112,24 @@
     <a href="/onboarding/person/#person"><span>Person</span></a>
   </li>
 </ul>
-</li></ul><ul>
-  <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
-  </li>
-</ul>
-<ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
-  </li>
-</ul>
+</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
-  </li>
-</ul>
 <ul>
   <li>
     <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+  </li>
+</ul>
 </li></ul><ul>
+  <li>
+    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
+  </li>
+</ul>
+<ul>
   <li>
     <a href="/ways-of-working/new-component/#starting-a-new-component"><span>Starting a new component</span></a>
   </li>
@@ -202,7 +202,20 @@ I have just started on the &ldquo;team name&rdquo; team,</p>
 az ad group list <span class="nt">--query</span> <span class="s2">"[?contains(displayName, '</span><span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="s2">_v2')].{DisplayName: displayName, ObjectID: objectId}"</span> <span class="nt">-o</span> table
 </code></pre></div><p>You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.</p>
 <p>To join the groups see &#39;TODO section in person onboarding&rsquo;.</p>
-<h2 id="github-config-gt-request-2-teams-1-for-devs-1-for-admins">Github config - &gt; request 2 teams, 1 for devs, 1 for admins</h2><h2 id="create-office-365-team-group">Create Office 365 team group</h2>
+<h2 id="github-config">Github config</h2><p>Request GitHub access through your PMO, (probably who you showed your documents to on your first day, 
+if in doubt ask your delivery manager).</p>
+<p>You should receive an email inviting you to the GitHub organisation, visit <a href="https://github.com/hmcts">https://github.com/hmcts</a>
+to accept the invite.</p>
+<p>Now you need to create two &#39;GitHub teams&rsquo; for your team.</p>
+
+<ol>
+<li>Click on the &#39;teams&rsquo; tab</li>
+<li>Create a team called &lt;team-name&gt;</li>
+<li>Create a team called &lt;team-name&gt;-admins</li>
+</ol>
+
+<!-- TODO add link to creating a repository and setting up the expected branch protection -->
+<h2 id="create-office-365-team-group">Create Office 365 team group</h2>
               <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 15 January 2020.
