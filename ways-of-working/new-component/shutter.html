@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en" class="govuk-template no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Shutter Implementation and Design | HMCTS</title>
+
+    <link href="/stylesheets/manifest.css" rel="stylesheet" />
+
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/shutter.html">
+
+
+      <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta property="og:site_name" content="HMCTS" />
+      <meta property="og:title" content="Shutter Implementation and Design" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/shutter.html" />
+      <meta property="twitter:card" content="summary" />
+      <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta property="twitter:title" content="Shutter Implementation and Design | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/shutter.html" />
+
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="govuk-skip-link">Skip to main content</a>
+
+        <header class="govuk-header app-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-header__container--full-width">
+    <div class="govuk-header__logo">
+      <a href="https://github.com/hmcts" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__product-name">
+          HMCTS
+        </span>
+      </a>
+        <strong class="govuk-tag">Beta</strong>
+    </div>
+    <div class="govuk-header__content">
+      <button type="button" role="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+      <nav>
+        <ul id="navigation" class="govuk-header__navigation govuk-header__navigation--end" aria-label="Top Level Navigation">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://hmcts-reform.slack.com/#rpe">Support</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/">Documentation</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://github.com/hmcts">GitHub</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </a>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents">
+              <div class="search" data-module="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search">
+    <input type="hidden" name="as_sitesearch" value="hmcts.github.io"/>
+    <label class="govuk-label search__label" for="search">
+      Search (via Google)
+    </label>
+    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+  </form>
+  <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
+    <div class="search-results__inner">
+      <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
+      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <div class="search-results__content"></div>
+    </div>
+  </div>
+</div>
+
+              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/glossary/#glossary"><span>Glossary</span></a>
+  </li>
+</ul>
+<ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
+<ul>
+  <li>
+    <a href="/onboarding/team/#team-2"><span>Team</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/onboarding/person/#person"><span>Person</span></a>
+  </li>
+</ul>
+</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
+<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+  </li>
+</ul>
+</li></ul><ul>
+  <li>
+    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
+  </li>
+</ul>
+<ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/new-component/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+  </li>
+</ul>
+</li></ul></li></ul><ul>
+  <li>
+    <a href="/api-docs/#api-documentation"><span>API Documentation</span></a>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="shutter-implementation-and-design">Shutter Implementation and Design</h1><h2 id="purpose">Purpose</h2><p>The purpose of this document is to describe the shutter solution design and its end to end implementation.</p>
+<h2 id="solution">Solution</h2><p><a href="/images/Shuttersolution_v2.png" target="_blank" rel="noopener noreferrer"><img src="/images/Shuttersolution_v2.png" alt="Shutter Solution Design Docs" /></a></p>
+<h2 id="default-shutter-page">Default shutter page</h2><p>By default the following shutter page is used as per the GOV.UK patterns <a href="https://design-system.service.gov.uk/patterns/service-unavailable-pages/">service-unavailable-pages</a></p>
+<h2 id="implementation-and-customization">Implementation and Customization</h2><p>Creating and Enabling the shutter solution for an application is a 3 step process as outlined below:</p>
+
+<ul>
+<li>Create CDN infrastructure</li>
+<li>Upload static content to Azure storage account</li>
+<li>Enable shutter with a DNS swap</li>
+</ul>
+<h2 id="pre-requisite">Pre-requisite</h2><p>Before creating the the CDN profiles, custom domains needs to registered with Azure public DNS. 
+For more details about custom domains see <a href="https://docs.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain#map-the-temporary-cdnverify-subdomain">Azure CDN custom Domain</a></p>
+<p>Following steps ensures DNS entries:</p>
+
+<ul>
+<li>Clone the <a href="https://github.com/hmcts/azure-public-dns">Azure Public DNS</a> repository.</li>
+<li>Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment. There can be multiple zones in one environment.</li>
+<li>Create afdverify and cdnverify CNAME records in the appropriate zone file for environments. Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/43/files">Pull Request</a></li>
+<li>Create a PR with records as per the below convention (make sure you replace the variables with the correct values)</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>- name: "afdverify.${name}"
+  ttl: 300
+  record: "afdverify.hmcts-${env}.azurefd.net"
+- name: "cdnverify.${name}"
+  ttl: 300
+  record: "cdnverify.hmcts-${name}-shutter-${env}.azureedge.net"
+- name: "${name}"
+  ttl: 300
+  record: "hmcts-${env}.azurefd.net"
+</code></pre></div><p>Where:</p>
+<p><code>${env}</code>  =  Name of the environment for which you are creating the recordsets. Valid values are <code>sbox</code> or <code>prod</code>.</p>
+<p><code>${name}</code> =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
+This should be the <code>name</code> attribute from env.tfvars file e.g. <a href="https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17">name attribute</a></p>
+<p>Send the PR for review to the <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">Platform Engineering</a> team. Once the PR is merged terraform will create appropriate records.</p>
+<h3 id="cdn-infrastructure">CDN infrastructure</h3><p>CDN infrastructure comprise of the following Azure resources:</p>
+
+<ul>
+<li>Azure storage account</li>
+<li>Azure CDN profile</li>
+</ul>
+<p>[shutter_page] terraform module (https://github.com/hmcts/azure-platform-terraform/tree/master/modules/shutter_page) is used to create the required resources in Azure.</p>
+<p>CDN infrastructure is automatically created by enabling frontend configuration with respective env.tfvars file e.g. <a href="https://github.com/hmcts/azure-platform-terraform/pull/91/files">Frontend config</a></p>
+<p>Above config creates the following resources:</p>
+
+<ul>
+<li>Azure storage account using <code>name</code> attribute for each of the frontends</li>
+<li>Enable azure static website with <code>$web</code> blob conatiner</li>
+<li>Common Azure CDN profile for the environment e.g. <code>hmcts-shutter-prod</code></li>
+<li>Azure CDN endpoint for each of the frontend with the origin as the primary endpoint of the corresponding azure storage account</li>
+<li>Enable custom domain for the static website</li>
+<li>Enable https on the custom domain using certificates in the Azure Keyvault</li>
+</ul>
+<h3 id="uploading-static-shutter-pages-to-azure-storage-account">Uploading static shutter pages to Azure storage account</h3><p>Once the shutter infrastructure is created, static content needs to be uploaded to the storage account.
+Following repository is used <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a></p>
+<p>There is a default shutter page available to be used.</p>
+<p>In order to use the <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/default">default</a> shutter page follow the below steps:</p>
+
+<ul>
+<li>Create a PR with the following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>${shuttername}:
+  name: '${shuttername}'
+  shutter: 'default'
+</code></pre></div><p>where:</p>
+<p><code>${shuttername}</code> is the <code>name</code> attribute from env.tfvars file without the <code>-</code> dashes e.g. <a href="https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17">name attribute</a></p>
+<p>Few key things:</p>
+
+<ul>
+<li>Do not use dashes with <code>${shuttername}</code> as storage accounts doesn&rsquo;t allow it.</li>
+<li>Use the first 8 characters only, of the <code>name</code> attribute from the env.tfvar file e.g. If the <code>name</code> attribute in env.tfvars file is <code>xui-manage-org</code> then ${shuttername} will be <code>xuimanag</code>.</li>
+</ul>
+<p>Customized shutter pages can also be created/uploaded by following the below steps:</p>
+
+<ul>
+<li><p>Create a PR with:</p>
+
+<ul>
+<li>Directories for your shutter page(s), e.g. mkdir sscscor </li>
+<li>Copy your static contents in sscscor/</li>
+<li>Update the CODEOWNERS file with your teams folders and GitHub team</li>
+<li>Make following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>sscscor:
+  name: 'sscscor'
+  shutter: 'sscscor' 
+</code></pre></div><p>Where:</p>
+<p><code>shutter: &#39;sscscor&#39;</code> shou ld be the name of the directory created in this repository with the static contents.</p></li>
+</ul>
+<p>Once the PR is reviewed and merged all the static contents will be uploaded to the respective storage accounts.</p>
+<h3 id="enable-shutter-with-a-dns-swap">Enable shutter with a DNS swap</h3><p>Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps</p>
+
+<ul>
+<li>Clone the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a> repository</li>
+<li>Lets assume this application need to be shuttered <code>www.decree-absolute.apply-divorce.service.gov.uk</code></li>
+<li>Create a PR with the appropriate <a href="https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41">prod zone</a></li>
+<li>The above contents will be updated as follows:</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>- name: "www.decree-absolute"
+  ttl: 300
+  record: "hmcts-prod.azurefd.net"
+  shutter: true
+</code></pre></div><p><code>shutter: true</code> will enable the shutter page and redirect all the traffic to Azure CDN. 
+<code>shutter: false</code> will disable the shutter page and redirect all the traffic back to Azure Frontdoor.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-10">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 10 February 2020.
+
+        It needs to be reviewed again on 10 August 2020
+.
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 10 August 2020.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
+          </main>
+
+          <aside>
+              <ul class="contribution-banner">
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/shutter.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Shutter%20Implementation%20and%20Design'&amp;body=Problem%20with%20'Shutter%20Implementation%20and%20Design'%20(hmcts.github.io/ways-of-working/new-component/shutter.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
+              </ul>
+          </aside>
+
+          <footer class="govuk-footer app-footer" role="contentinfo">
+  <div class="govuk-footer__meta">
+    <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+
+
+      <svg
+        role="presentation"
+        focusable="false"
+        class="govuk-footer__licence-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 483.2 195.7"
+        height="17"
+        width="41"
+      >
+        <path
+          fill="currentColor"
+          d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+        />
+      </svg>
+      <span class="govuk-footer__licence-description">
+        All content is available under the
+        <a
+          class="govuk-footer__link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="license"
+        >Open Government Licence v3.0</a>, except where otherwise stated
+      </span>
+    </div>
+    <div class="govuk-footer__meta-item">
+      <a
+        class="govuk-footer__link govuk-footer__copyright-logo"
+        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+      >© Crown copyright</a>
+    </div>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <script src="/javascripts/application.js"></script>
+  </body>
+</html>
