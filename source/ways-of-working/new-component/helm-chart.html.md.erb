@@ -1,0 +1,177 @@
+---
+title: Helm chart
+last_reviewed_on: 2020-02-10
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+[Helm](https://helm.sh) is the package manager for Kubernetes.
+
+We deploy all of our applications using a helm chart to Kubernetes.
+
+## Installing helm
+
+Install helm along with the other tools using the links on the 
+[person onboarding doc](/onboarding/person/#the-following-tools-are-commonly-used).
+
+## Base charts
+
+We provide opinionated, batteries included helm charts that give:
+
+1. a simple interface to provide application configuration,
+2. features that a wide variety of applications require,
+3. a standard approach for all applications,
+4. in built support for secrets from Azure KeyVault,
+
+You shouldn't need to understand helm to use our charts,
+for a simple app this is all the configuration you need:
+
+```yaml
+java:
+  applicationPort: 4550
+  image: 'hmctspublic.azurecr.io/rpe/spring-boot-template:latest'
+  environment:
+    A_KEY: 'a value'
+```
+
+To see the full helm chart take a look at 
+[spring-boot-template](https://github.com/hmcts/spring-boot-template/tree/master/charts/rpe-spring-boot-template).
+
+The main base charts are:
+
+- [chart-java](https://github.com/hmcts/chart-java)
+- [chart-nodejs](https://github.com/hmcts/chart-nodejs)
+- [chart-job](https://github.com/hmcts/chart-job)
+
+## What are values.*.template.yaml for?
+
+We deploy the microservice helm charts for testing using Jenkins only on preview and AAT,
+
+Jenkins will override the configuration of the helm chart using these files.
+
+- `values.preview.template.yaml` is for preview
+- `values.aat.template.yaml` is for AAT
+
+It is expected that `values.yaml` will provide a working chart out of the box that someone can install on their own machine,
+
+The `values.aat.template.yaml` file should only include the absolute minimum config:
+
+```yaml
+java:
+  environment:
+  # Don't modify below here
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
+```
+
+The `values.preview.template.yaml` may contain additional config if other services are being
+spun up on pull requests,
+
+Some common examples:
+
+- a postgresql database - this is included in [chart-java](https://github.com/hmcts/chart-java#postgresql) , with sensible defaults built in,
+- a Redis cache,
+- [chart-idam-pr](https://github.com/hmcts/chart-idam-pr) - a job that registers your `redirect_uri` in IDAM,
+- [chart-blobstorage](https://github.com/hmcts/chart-blobstorage) - creates Azure Blob storage for you, using [OSBA](https://osba.sh/),
+- [chart-servicebus](https://github.com/hmcts/chart-servicebus) - creates Azure Service Bus for you, using [OSBA](https://osba.sh/).
+
+
+If you are using another sub-chart just for preview such as an embedded redis container,
+then you should make this conditional with:
+
+requirements.yaml:
+
+```yaml 
+dependencies:
+   - name: redis
+     version: 5.1.2
+     repository: '@stable'
+     condition: redis.enabled
+```
+
+values.yaml:
+
+```yaml
+redis:
+  enabled: false
+```
+
+values.preview.template.yaml:
+
+```yaml
+redis:
+    enabled: true
+    master:
+      persistence:
+        enabled: false
+```
+
+
+## Publishing helm charts
+
+We publish charts in two different ways depending on the type of chart.
+
+Microservice charts are published via Jenkins as they live with the code and changes
+to them are tested via the standard pipeline that everyone uses.
+
+Base charts and non application charts are published via Azure DevOps.
+
+### Jenkins
+
+Jenkins will deploy your application using your helm chart in the application's repository
+on every master and pull request build.
+
+On a master build after functional testing has passed the chart will be published
+if it has not already been published.
+
+To publish a new version:
+
+- Bump the version field in Chart.yaml in a pull request
+- After approval and a passing build merge it to master
+
+You should always publish a new version if you change values.yaml or requirements.yaml,
+Jenkins will fail the build if you don't do this, so you don't need to worry too much.
+
+### Azure DevOps
+
+Chart builds are run against the 'preview' AKS cluster, 
+and chart are published to 'hmctspublic' Azure Container Registry.
+
+See the [chart-java pipeline](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) for an example.
+
+It does:
+
+- on pull request: trigger a build that performs helm lint, helm install and helm test
+- on tag: trigger a build that performs helm lint, helm install, helm test, helm package and 
+publish to 'hmctspublic' ACR
+
+There are [reusable jobs](https://github.com/hmcts/cnp-azuredevops-libraries/tree/master/jobs/charts) that you can use.
+
+#### Performing a Release
+
+Performing a release consists of the following steps:
+
+1. Submit your PR which also includes a chart version bump (the version field in Chart.yaml)
+2. Wait for the PR validation build to pass and a colleague's approval
+3. Merge the PR
+4. Create a Github release, tagging it with the same version number used in Chart.yaml
+5. The release build will be triggered, publishing the new chart version
+
+#### Setting up an AzureDevOps chart build
+
+Join the `dcd_group_ado_user_v2` AzureAD group, this will give you:
+
+1. Access to AzureDevOps,
+2. Read access to the CNP project where the chart builds live.
+
+Add an azure-pipelines.yml file to your repo, using 
+[chart-java](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) as a base.
+
+Ask on [#rpe](https://hmcts-reform.slack.com/app_redirect?channel=rpe) on slack for someone to setup the pipeline for you in AzureDevOps.
+
+## All charts
+
+We follow a standard naming convention of `chart-<name>` for all Helm charts, you can find a list of all
+charts using [GitHub search](https://github.com/hmcts/?utf8=%25E2%259C%2593&q=chart-&type=&language=).

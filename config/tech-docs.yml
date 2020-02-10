@@ -9,7 +9,7 @@ phase: Beta
 
 # Links to show on right-hand-side of header
 header_links:
-  Support: https://hmcts-reform.slack.com/#rpe
+  Support: https://hmcts-reform.slack.com/app_redirect?channel=rpe
   Documentation: /
   GitHub: https://github.com/hmcts
 
