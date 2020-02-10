@@ -47,7 +47,7 @@ The main base charts are:
 
 ## What are values.*.template.yaml for?
 
-We deploy the microservice helm charts for testing using Jenkins,
+We deploy the microservice helm charts for testing using Jenkins only on preview and AAT,
 
 Jenkins will override the configuration of the helm chart using these files.
 
@@ -71,14 +71,14 @@ spun up on pull requests,
 
 Some common examples:
 
-- a database - this is included in chart-java, with sensible defaults built in,
+- a postgresql database - this is included in [chart-java](https://github.com/hmcts/chart-java#postgresql) , with sensible defaults built in,
 - a Redis cache,
 - [chart-idam-pr](https://github.com/hmcts/chart-idam-pr) - a job that registers your `redirect_uri` in IDAM,
 - [chart-blobstorage](https://github.com/hmcts/chart-blobstorage) - creates Azure Blob storage for you, using [OSBA](https://osba.sh/),
 - [chart-servicebus](https://github.com/hmcts/chart-servicebus) - creates Azure Service Bus for you, using [OSBA](https://osba.sh/).
 
 
-If you are using another sub-chart just for preview such as an embedded postgres container,
+If you are using another sub-chart just for preview such as an embedded redis container,
 then you should make this conditional with:
 
 requirements.yaml:
