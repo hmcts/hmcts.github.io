@@ -1,6 +1,6 @@
 ---
 title: Shutter Implementation and Design
-last_reviewed_on: 2020-02-10
+last_reviewed_on: 2020-02-11
 review_in: 6 months
 ---
 
@@ -28,33 +28,8 @@ Creating and Enabling the shutter solution for an application is a 3 step proces
 Before creating the the CDN profiles, custom domains needs to registered with Azure public DNS. 
 For more details about custom domains see [Azure CDN custom Domain](https://docs.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain#map-the-temporary-cdnverify-subdomain)
 
-Following steps ensures DNS entries:
-
-- Clone the [Azure Public DNS](https://github.com/hmcts/azure-public-dns) repository.
-- Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment. There can be multiple zones in one environment.
-- Create afdverify and cdnverify CNAME records in the appropriate zone file for environments. Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull/43/files)
-- Create a PR with records as per the below convention (make sure you replace the variables with the correct values)
-
-```
-- name: "afdverify.${name}"
-  ttl: 300
-  record: "afdverify.hmcts-${env}.azurefd.net"
-- name: "cdnverify.${name}"
-  ttl: 300
-  record: "cdnverify.hmcts-${name}-shutter-${env}.azureedge.net"
-- name: "${name}"
-  ttl: 300
-  record: "hmcts-${env}.azurefd.net"
-```
-
-Where:
-
-`${env}`  =  Name of the environment for which you are creating the recordsets. Valid values are `sbox` or `prod`. 
-
-`${name}` =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
-This should be the `name` attribute from env.tfvars file e.g. [name attribute](https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17)
-
-Send the PR for review to the [Platform Engineering](https://hmcts-reform.slack.com/app_redirect?channel=rpe) team. Once the PR is merged terraform will create appropriate records.
+Follow [Setup required for an application](public-dns.html#setup-required-for-an-application) to get your
+DNS records created.
 
 ### CDN infrastructure
 CDN infrastructure comprise of the following Azure resources:
@@ -62,11 +37,11 @@ CDN infrastructure comprise of the following Azure resources:
 - Azure storage account
 - Azure CDN profile
 
-[shutter_page] terraform module (https://github.com/hmcts/azure-platform-terraform/tree/master/modules/shutter_page) is used to create the required resources in Azure. 
+[shutter_page](https://github.com/hmcts/azure-platform-terraform/tree/master/modules/shutter_page) terraform module is used to create the required resources in Azure. 
 
 CDN infrastructure is automatically created by enabling frontend configuration with respective env.tfvars file e.g. [Frontend config](https://github.com/hmcts/azure-platform-terraform/pull/91/files)
 
-Above config creates the following resources:
+The above configuration creates the following resources:
 
  - Azure storage account using `name` attribute for each of the frontends
  - Enable azure static website with `$web` blob conatiner
@@ -76,12 +51,14 @@ Above config creates the following resources:
  - Enable https on the custom domain using certificates in the Azure Keyvault
 
 ### Uploading static shutter pages to Azure storage account
+
 Once the shutter infrastructure is created, static content needs to be uploaded to the storage account.
 Following repository is used [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages)
 
 There is a default shutter page available to be used. 
 
-In order to use the [default](https://github.com/hmcts/azure-shutter-pages/tree/master/default) shutter page follow the below steps:
+In order to use the [default](https://github.com/hmcts/azure-shutter-pages/tree/master/default) 
+shutter page follow the below steps:
 
 - Create a PR with the following changes in the [azure-pipelines.yml](https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml) file.
 
@@ -103,9 +80,9 @@ Few key things:
 Customized shutter pages can also be created/uploaded by following the below steps:
 
 - Create a PR with:
-    - Directories for your shutter page(s), e.g. mkdir sscscor 
-    - Copy your static contents in sscscor/
-    - Update the CODEOWNERS file with your teams folders and GitHub team
+    - Directories for your shutter page(s), e.g. `mkdir sscscor`
+    - Copy your static contents in `sscscor/`
+    - Update the [CODEOWNERS](https://github.com/hmcts/azure-shutter-pages/blob/master/CODEOWNERS) file with your teams folders and GitHub team
     - Make following changes in the [azure-pipelines.yml](https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml) file.
 
     ```

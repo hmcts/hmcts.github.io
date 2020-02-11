@@ -1,0 +1,18 @@
+---
+title: TLS certificates
+last_reviewed_on: 2020-02-11
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+In non production environments we have a wildcard certificate for `*.<env>.platform.hmcts.net`,
+make sure you use a domain that matches that pattern.
+
+For production we require a cert per frontend application, this is procured by the 'devops' team.
+
+You will need to fill out a form that can be found on the 
+[Requesting a SSL / TLS certificate](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=947882506)
+confluence page, and then create a ticket on JIRA in the RDO project.
+
+The vault the certificate should go into is cft-apps-prod.
