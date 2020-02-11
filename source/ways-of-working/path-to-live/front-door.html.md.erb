@@ -1,0 +1,26 @@
+---
+title: Front Door configuration
+last_reviewed_on: 2020-02-11
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Purpose
+
+## Configuration
+
+We use [Azure Front Door](https://azure.microsoft.com/en-gb/services/frontdoor/) as our entry point
+into the HMCTS estate.
+
+Configuration is managed in the frontends section of 
+[azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod.tfvars).
+
+Before sending a pull request to this repo ensure that:
+
+- your DNS pull request has been merged,
+- your TLS certificate has been stored in vault, if you aren't sure then just create the pull request,
+the build will fail if it isn't present.
+
+Once the above is complete, send a pull request with your configuration change,
+you can ask for review in [#rpe-pull-requests](https://hmcts-reform.slack.com/app_redirect?channel=rpe-pull-requests).
