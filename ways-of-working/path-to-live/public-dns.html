@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Shutter Implementation and Design | HMCTS</title>
+    <title>Public DNS | HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/shutter.html">
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/path-to-live/public-dns.html">
 
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Shutter Implementation and Design" />
+      <meta property="og:title" content="Public DNS" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/shutter.html" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/path-to-live/public-dns.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Shutter Implementation and Design | HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/shutter.html" />
+      <meta property="twitter:title" content="Public DNS | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/path-to-live/public-dns.html" />
 
     
   </head>
@@ -135,9 +135,30 @@
     <a href="/ways-of-working/new-component/helm-chart.html#helm-chart"><span>Helm chart</span></a>
   </li>
 </ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
   </li>
 </ul>
 </li></ul></li></ul><ul>
@@ -153,25 +174,20 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="shutter-implementation-and-design">Shutter Implementation and Design</h1><h2 id="purpose">Purpose</h2><p>The purpose of this document is to describe the shutter solution design and its end to end implementation.</p>
-<h2 id="solution">Solution</h2><p><a href="/images/Shuttersolution_v2.png" target="_blank" rel="noopener noreferrer"><img src="/images/Shuttersolution_v2.png" alt="Shutter Solution Design Docs" /></a></p>
-<h2 id="default-shutter-page">Default shutter page</h2><p>By default the following shutter page is used as per the GOV.UK patterns <a href="https://design-system.service.gov.uk/patterns/service-unavailable-pages/">service-unavailable-pages</a></p>
-<h2 id="implementation-and-customization">Implementation and Customization</h2><p>Creating and Enabling the shutter solution for an application is a 3 step process as outlined below:</p>
-
-<ul>
-<li>Create CDN infrastructure</li>
-<li>Upload static content to Azure storage account</li>
-<li>Enable shutter with a DNS swap</li>
-</ul>
-<h2 id="pre-requisite">Pre-requisite</h2><p>Before creating the the CDN profiles, custom domains needs to registered with Azure public DNS. 
-For more details about custom domains see <a href="https://docs.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain#map-the-temporary-cdnverify-subdomain">Azure CDN custom Domain</a></p>
-<p>Following steps ensures DNS entries:</p>
-
+            <h1 id="public-dns">Public DNS</h1><h2 id="external-dns">External DNS</h2><p>We use <a href="https://azure.microsoft.com/en-gb/services/dns/">Azure DNS</a> for managing our public DNS.</p>
+<p>The DNS is self-service, managed in the 
+<a href="https://github.com/hmcts/azure-public-dns/tree/master/environments">azure-public-dns</a> repository, 
+follow the <a href="/ways-of-working/path-to-live/shutter.html#pre-requisite">shuttering</a> instructions for which records you need to add
+for a new service.</p>
+<h2 id="setup-required-for-an-application">Setup required for an application</h2>
 <ul>
 <li>Clone the <a href="https://github.com/hmcts/azure-public-dns">Azure Public DNS</a> repository.</li>
-<li>Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment. There can be multiple zones in one environment.</li>
-<li>Create afdverify and cdnverify CNAME records in the appropriate zone file for environments. Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/43/files">Pull Request</a></li>
-<li>Create a PR with records as per the below convention (make sure you replace the variables with the correct values)</li>
+<li>Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment. 
+There can be multiple zones in one environment,</li>
+<li>Create afdverify and cdnverify CNAME records in the appropriate zone file for environments. 
+Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/43/files">Pull Request</a>,</li>
+<li>Create a PR with records as per the below convention 
+(make sure you replace the variables with the correct values).</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext"><code>- name: "afdverify.${name}"
   ttl: 300
@@ -186,87 +202,18 @@ For more details about custom domains see <a href="https://docs.microsoft.com/en
 <p><code>${env}</code>  =  Name of the environment for which you are creating the recordsets. Valid values are <code>sbox</code> or <code>prod</code>.</p>
 <p><code>${name}</code> =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
 This should be the <code>name</code> attribute from env.tfvars file e.g. <a href="https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17">name attribute</a></p>
-<p>Send the PR for review to the <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">Platform Engineering</a> team. Once the PR is merged terraform will create appropriate records.</p>
-<h3 id="cdn-infrastructure">CDN infrastructure</h3><p>CDN infrastructure comprise of the following Azure resources:</p>
+<p>Send the PR for review to the <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe-pull-requests">Platform Engineering</a> team. Once the PR is merged terraform will create appropriate records.</p>
 
-<ul>
-<li>Azure storage account</li>
-<li>Azure CDN profile</li>
-</ul>
-<p>[shutter_page] terraform module (https://github.com/hmcts/azure-platform-terraform/tree/master/modules/shutter_page) is used to create the required resources in Azure.</p>
-<p>CDN infrastructure is automatically created by enabling frontend configuration with respective env.tfvars file e.g. <a href="https://github.com/hmcts/azure-platform-terraform/pull/91/files">Frontend config</a></p>
-<p>Above config creates the following resources:</p>
-
-<ul>
-<li>Azure storage account using <code>name</code> attribute for each of the frontends</li>
-<li>Enable azure static website with <code>$web</code> blob conatiner</li>
-<li>Common Azure CDN profile for the environment e.g. <code>hmcts-shutter-prod</code></li>
-<li>Azure CDN endpoint for each of the frontend with the origin as the primary endpoint of the corresponding azure storage account</li>
-<li>Enable custom domain for the static website</li>
-<li>Enable https on the custom domain using certificates in the Azure Keyvault</li>
-</ul>
-<h3 id="uploading-static-shutter-pages-to-azure-storage-account">Uploading static shutter pages to Azure storage account</h3><p>Once the shutter infrastructure is created, static content needs to be uploaded to the storage account.
-Following repository is used <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a></p>
-<p>There is a default shutter page available to be used.</p>
-<p>In order to use the <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/default">default</a> shutter page follow the below steps:</p>
-
-<ul>
-<li>Create a PR with the following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>${shuttername}:
-  name: '${shuttername}'
-  shutter: 'default'
-</code></pre></div><p>where:</p>
-<p><code>${shuttername}</code> is the <code>name</code> attribute from env.tfvars file without the <code>-</code> dashes e.g. <a href="https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17">name attribute</a></p>
-<p>Few key things:</p>
-
-<ul>
-<li>Do not use dashes with <code>${shuttername}</code> as storage accounts doesn&rsquo;t allow it.</li>
-<li>Use the first 8 characters only, of the <code>name</code> attribute from the env.tfvar file e.g. If the <code>name</code> attribute in env.tfvars file is <code>xui-manage-org</code> then ${shuttername} will be <code>xuimanag</code>.</li>
-</ul>
-<p>Customized shutter pages can also be created/uploaded by following the below steps:</p>
-
-<ul>
-<li><p>Create a PR with:</p>
-
-<ul>
-<li>Directories for your shutter page(s), e.g. mkdir sscscor </li>
-<li>Copy your static contents in sscscor/</li>
-<li>Update the CODEOWNERS file with your teams folders and GitHub team</li>
-<li>Make following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>sscscor:
-  name: 'sscscor'
-  shutter: 'sscscor' 
-</code></pre></div><p>Where:</p>
-<p><code>shutter: &#39;sscscor&#39;</code> shou ld be the name of the directory created in this repository with the static contents.</p></li>
-</ul>
-<p>Once the PR is reviewed and merged all the static contents will be uploaded to the respective storage accounts.</p>
-<h3 id="enable-shutter-with-a-dns-swap">Enable shutter with a DNS swap</h3><p>Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps</p>
-
-<ul>
-<li>Clone the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a> repository</li>
-<li>Lets assume this application need to be shuttered <code>www.decree-absolute.apply-divorce.service.gov.uk</code></li>
-<li>Create a PR with the appropriate <a href="https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41">prod zone</a></li>
-<li>The above contents will be updated as follows:</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>- name: "www.decree-absolute"
-  ttl: 300
-  record: "hmcts-prod.azurefd.net"
-  shutter: true
-</code></pre></div><p><code>shutter: true</code> will enable the shutter page and redirect all the traffic to Azure CDN. 
-<code>shutter: false</code> will disable the shutter page and redirect all the traffic back to Azure Frontdoor.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 February 2020.
+      This page was last reviewed on 11 February 2020.
 
-        It needs to be reviewed again on 10 August 2020
+        It needs to be reviewed again on 11 August 2020
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 August 2020.
+      This page was set to be reviewed before 11 August 2020.
       This might mean the content is out of date.
     </div>
   </div>
@@ -275,8 +222,8 @@ Following repository is used <a href="https://github.com/hmcts/azure-shutter-pag
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/shutter.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Shutter%20Implementation%20and%20Design'&amp;body=Problem%20with%20'Shutter%20Implementation%20and%20Design'%20(hmcts.github.io/ways-of-working/new-component/shutter.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/path-to-live/public-dns.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Public%20DNS'&amp;body=Problem%20with%20'Public%20DNS'%20(hmcts.github.io/ways-of-working/path-to-live/public-dns.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

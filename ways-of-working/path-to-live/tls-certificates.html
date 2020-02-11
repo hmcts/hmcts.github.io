@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Platform onboarding | HMCTS</title>
+    <title>TLS certificates | HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="hmcts.github.io/onboarding/">
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/path-to-live/tls-certificates.html">
 
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Platform onboarding" />
+      <meta property="og:title" content="TLS certificates" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/onboarding/" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/path-to-live/tls-certificates.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Platform onboarding | HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/onboarding/" />
+      <meta property="twitter:title" content="TLS certificates | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/path-to-live/tls-certificates.html" />
 
     
   </head>
@@ -174,27 +174,24 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="platform-onboarding">Platform onboarding</h1><h2 id="prerequisites">Prerequisites</h2><p>The following guide assumes that people have completed their programme onboarding and have the following accounts, memberships and tools.</p>
+            <h1 id="tls-certificates">TLS certificates</h1><p>In non production environments we have a wildcard certificate for <code>*.&lt;env&gt;.platform.hmcts.net</code>,
+make sure you use a domain that matches that pattern.</p>
+<p>For production we require a cert per frontend application, this is procured by the &lsquo;devops&rsquo; team.</p>
+<p>You will need to fill out a form that can be found on the 
+<a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=947882506">Requesting a SSL / TLS certificate</a>
+confluence page, and then create a ticket on JIRA in the RDO project.</p>
+<p>The vault the certificate should go into is cft-apps-prod.</p>
 
-<ul>
-<li><code>@hmcts.net</code> email</li>
-<li>Member of <a href="https://hmcts-reform.slack.com">HMCTS Reform Slack</a></li>
-<li>Jira and Confluence</li>
-<li>Member of Github org https://github.com/hmcts</li>
-<li>VPN access</li>
-</ul>
-<h2 id="guides">Guides</h2><p>There are different guides for the onboarding of a new <a href="/onboarding/team/">team</a> or <a href="/onboarding/person/">person</a>.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 January 2020.
+      This page was last reviewed on 11 February 2020.
 
-        It needs to be reviewed again on 15 July 2020
+        It needs to be reviewed again on 11 August 2020
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 July 2020.
+      This page was set to be reviewed before 11 August 2020.
       This might mean the content is out of date.
     </div>
   </div>
@@ -203,8 +200,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Platform%20onboarding'&amp;body=Problem%20with%20'Platform%20onboarding'%20(hmcts.github.io/onboarding/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/path-to-live/tls-certificates.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'TLS%20certificates'&amp;body=Problem%20with%20'TLS%20certificates'%20(hmcts.github.io/ways-of-working/path-to-live/tls-certificates.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

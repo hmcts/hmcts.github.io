@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Platform onboarding | HMCTS</title>
+    <title>Load balancer configuration | HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="hmcts.github.io/onboarding/">
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/path-to-live/load-balancer-configuration.html">
 
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Platform onboarding" />
+      <meta property="og:title" content="Load balancer configuration" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/onboarding/" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/path-to-live/load-balancer-configuration.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Platform onboarding | HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/onboarding/" />
+      <meta property="twitter:title" content="Load balancer configuration | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/path-to-live/load-balancer-configuration.html" />
 
     
   </head>
@@ -174,27 +174,27 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="platform-onboarding">Platform onboarding</h1><h2 id="prerequisites">Prerequisites</h2><p>The following guide assumes that people have completed their programme onboarding and have the following accounts, memberships and tools.</p>
+            <h1 id="load-balancer-configuration">Load balancer configuration</h1><p>In all our path-to-live environments we run two clusters for high availability
+and zero down-time upgrades. We load balance across these clusters using an
+<a href="#">Azure Application Gateway</a> which has a health probe for each application
+deployed to an environment.</p>
+<p>For backend applications a couple of lines of config need to be added:</p>
+<p><a href="https://github.com/hmcts/cnp-aks-rbac-pipelines/blob/master/team-config/prod/all.yaml">load balancer config</a>,</p>
+<p>Frontend applications are automatically handled as part of the 
+<a href="/ways-of-working/path-to-live/front-door.html">front door config</a>,
+that config provides all the information we need for setting up the load balancer,
+so frontend apps can skip the above step.</p>
 
-<ul>
-<li><code>@hmcts.net</code> email</li>
-<li>Member of <a href="https://hmcts-reform.slack.com">HMCTS Reform Slack</a></li>
-<li>Jira and Confluence</li>
-<li>Member of Github org https://github.com/hmcts</li>
-<li>VPN access</li>
-</ul>
-<h2 id="guides">Guides</h2><p>There are different guides for the onboarding of a new <a href="/onboarding/team/">team</a> or <a href="/onboarding/person/">person</a>.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 January 2020.
+      This page was last reviewed on 10 February 2020.
 
-        It needs to be reviewed again on 15 July 2020
+        It needs to be reviewed again on 10 August 2020
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 July 2020.
+      This page was set to be reviewed before 10 August 2020.
       This might mean the content is out of date.
     </div>
   </div>
@@ -203,8 +203,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Platform%20onboarding'&amp;body=Problem%20with%20'Platform%20onboarding'%20(hmcts.github.io/onboarding/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/path-to-live/load-balancer-configuration.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Load%20balancer%20configuration'&amp;body=Problem%20with%20'Load%20balancer%20configuration'%20(hmcts.github.io/ways-of-working/path-to-live/load-balancer-configuration.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
