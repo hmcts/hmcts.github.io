@@ -8,7 +8,7 @@ review_in: 6 months
 
 In all our path-to-live environments we run two clusters for high availability
 and zero down-time upgrades. We load balance across these clusters using an
-[Azure Application Gateway]() which has a health probe for each application
+[Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview) which has a health probe for each application
 deployed to an environment. 
 
 For backend applications a couple of lines of config need to be added:
