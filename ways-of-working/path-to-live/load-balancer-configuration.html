@@ -176,7 +176,7 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="load-balancer-configuration">Load balancer configuration</h1><p>In all our path-to-live environments we run two clusters for high availability
 and zero down-time upgrades. We load balance across these clusters using an
-<a href="#">Azure Application Gateway</a> which has a health probe for each application
+<a href="https://docs.microsoft.com/en-us/azure/application-gateway/overview">Azure Application Gateway</a> which has a health probe for each application
 deployed to an environment.</p>
 <p>For backend applications a couple of lines of config need to be added:</p>
 <p><a href="https://github.com/hmcts/cnp-aks-rbac-pipelines/blob/master/team-config/prod/all.yaml">load balancer config</a>,</p>
