@@ -113,23 +113,23 @@
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
   </li>
 </ul>
+<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
   </li>
 </ul>
-</li></ul><ul>
+<ul>
   <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
+    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
-<ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
+</li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/new-component/helm-chart.html#helm-chart"><span>Helm chart</span></a>
@@ -138,12 +138,12 @@
 </li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
   </li>
 </ul>
 <ul>
@@ -158,7 +158,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
   </li>
 </ul>
 </li></ul></li></ul><ul>
@@ -202,7 +202,19 @@ in the cnp-jenkins-config repository.</p>
     <span class="na">build_notices_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span>
 </code></pre></div><p>Make sure your product name is not too long as some Azure resources have constraints on their length 
 which can easily be hit if names are too long.</p>
-<h2 id="jenkins-org-gt-see-old-doc">Jenkins org -&gt; see old doc</h2><h2 id="azure-active-directory-aad-groups">Azure Active Directory (AAD) groups</h2><p>Create a ticket in <a href="https://tools.hmcts.net/jira/secure/CreateIssue!default.jspa">the RDO project on Jira</a>.</p>
+<h2 id="jenkins-org-setup">Jenkins org setup</h2>
+<ol>
+<li>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">#rpe</a> to add a <a href="https://github.com/timja/github-branch-source-plugin/blob/github-app-support/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.<br></li>
+<li><p>RPE team will store the private key of app secrets to keyvault and <a href="https://github.com/hmcts/cnp-flux-config/pull/2148/files">add credentials to Jenkins</a> .</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">TEAM_NAME</span><span class="o">=</span><span class="nv">$1</span>
+az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftptl-intsvc
+az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftsbox-intsvc
+</code></pre></div></li>
+<li><p>Add your organisation config in <a href="https://github.com/hmcts/cnp-jenkins-config/pull/402">cnp-jenkins-config</a></p></li>
+<li><p>Add a Jenkins build dashboard in <a href="https://github.com/hmcts/cnp-flux-config/pull/2153">cnp-flux-config</a></p></li>
+<li><p>Scan the organisation manually on Jenkins if it doesn&rsquo;t scan automatically.</p></li>
+</ol>
+<h2 id="azure-active-directory-aad-groups">Azure Active Directory (AAD) groups</h2><p>Create a ticket in <a href="https://tools.hmcts.net/jira/secure/CreateIssue!default.jspa">the RDO project on Jira</a>.</p>
 <p>Details:</p>
 
 <ul>
