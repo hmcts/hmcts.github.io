@@ -56,7 +56,19 @@ sscs: # <- product name in Jenkinsfile_CNP, this will be a 'short name' that you
 Make sure your product name is not too long as some Azure resources have constraints on their length 
 which can easily be hit if names are too long.
 
-## Jenkins org -> see old doc
+## Jenkins org setup
+
+ 1. Jenkins uses GitHub App Authentication, Request on [#rpe] (https://hmcts-reform.slack.com/app_redirect?channel=rpe) to add a [Github app for your Jenkins Org](https://github.com/timja/github-branch-source-plugin/blob/github-app-support/docs/github-app.adoc#github-app-authentication-guide).  
+ 2. RPE team will store the private key of app secrets to keyvault and [add credentials to Jenkins](https://github.com/hmcts/cnp-flux-config/pull/2148/files) .
+    
+    ```bash
+    TEAM_NAME=$1
+    az keyvault secret set -n  hmcts-jenkins-${TEAM_NAME}-ghapp -f converted-github-app.pem --vault-name cftptl-intsvc
+    az keyvault secret set -n  hmcts-jenkins-${TEAM_NAME}-ghapp -f converted-github-app.pem --vault-name cftsbox-intsvc
+    ``` 
+ 3. Add your organisation config in [cnp-jenkins-config](https://github.com/hmcts/cnp-jenkins-config/pull/402)
+ 4. Add a Jenkins build dashboard in [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/pull/2153)
+ 5. Scan the organisation manually on Jenkins if it doesn't scan automatically.
 
 ## Azure Active Directory (AAD) groups
 
