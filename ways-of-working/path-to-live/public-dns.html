@@ -192,7 +192,7 @@ Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/43/fi
 <div class="highlight"><pre class="highlight plaintext"><code>- name: "afdverify.${name}"
   ttl: 300
   record: "afdverify.hmcts-${env}.azurefd.net"
-- name: "cdnverify.${name}"
+- name: "cdnverify.${name}" # only needed on prod as we don't shutter non production apps
   ttl: 300
   record: "cdnverify.hmcts-${name}-shutter-${env}.azureedge.net"
 - name: "${name}"
