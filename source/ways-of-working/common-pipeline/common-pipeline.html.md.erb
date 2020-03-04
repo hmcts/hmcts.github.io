@@ -1,0 +1,71 @@
+---
+title: Common pipeline
+last_reviewed_on: 2020-02-27
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+The common pipeline is a Jenkins pipeline defined by [code](https://github.com/hmcts/cnp-jenkins-library)
+which implements Continuous Delivery to production while enforcing a standard set of 
+checks on the code processed. 
+
+It enables HMCTS Reform to deploy changes to the platform in a well defined 
+manner providing the confidence that all the test and verification 
+stages have been executed in a structured and repeatable sequence. 
+This allows for fast feedback to developers to improve code development velocity. 
+
+The delivery pipeline combines infrastructure and database schema changes with the 
+application deployment, therefore taking advantage of the microservices architecture 
+in use at HMCTS.
+
+Code changes are subjected to a round of static tests - consisting of unit tests, static 
+code analysis and security checks - before being deployed to a non-prod environment in a 
+non-publicly accessible AKS (Kubernetes) deployment. Here, a range of smoke tests and 
+non-destructive functional tests verifies the app is functioning. At this point a promotion 
+process is started which labels the Docker image produced by the previous stages of the 
+pipeline as production-ready. Production deployments are managed by flux which takes care 
+of keeping an application deployment up to date with the latest production-ready image generated 
+by the delivery pipeline.
+
+Smoke tests are available in production as part of a flux deployment and run from a separate container.  
+
+The entire Delivery Pipeline is a hands-off, automated process, triggered at the point of change. Code merged 
+to master is deployed to production without any further human intervention. For this reason:
+
+- PRs need to be carefully reviewed
+- Feature Flagging, to separate the deployment of changes from their activation, is a practical necessity for all apps.
+
+[Helm](https://helm.sh) is the package manager for Kubernetes. 
+We deploy all of our applications using a helm chart to Kubernetes.
+For more information about Helm, please see the related new component 
+[docs](../new-component/helm-chart.html)
+
+
+![The Common Pipeline](/images/common-pipeline.png)
+
+
+### Troubleshooting build issues
+
+Important steps to verify a deployment failure, or sanity check a successful deployment are as follows:
+
+- Check and read carefully the Jenkins pipeline logs for your build. Most failure causes are available there.
+
+- Describe (at least one of) the staging, aat or production pods just deployed: 
+
+```
+  kubectl describe po <pod> -n <namespace>
+```
+
+- Check the pod logs: 
+
+```
+kubectl logs <pod> -n <namespace>
+```
+
+- Check the events for the namespace where the pods are deployed: 
+
+```
+kubectl get events -n <namespace>
+```
