@@ -1,0 +1,43 @@
+---
+title: Create Github Repository
+last_reviewed_on: 2020-03-06
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+Any developer added to [hmcts org](https://github.com/hmcts) would be able to create a new Github repo.
+
+
+1. Naming convention for repository name is `{product}-{component}`.
+2. Choose from a template in the drop down depending on whether it's a front end or backend component. These templates provide all the boiler plate code needed for a new app. 
+    - [spring-boot-template](https://github.com/hmcts/spring-boot-template)
+    - [expressjs-template](https://github.com/hmcts/expressjs-template)
+3. Repository should be public.
+4. Give permissions to GitHub teams created in [Team Onboarding](/onboarding/team/#github-config)
+    <table>
+     <tr>
+       <th>Github Team</th>
+       <th>Role</th>
+     </tr>
+     <tr>
+       <td>`<team-name>`</td>
+       <td>Write</td>
+     </tr>
+     <tr>
+       <td>`<team-name>-admins`</td>
+       <td>admin</td>
+     </tr>
+     <tr>
+       <td>[bots](https://github.com/orgs/hmcts/teams/bots) (super humans at HMCTS who have magical powers to do CI)</td>
+       <td>admin</td>
+     </tr>
+    </table>
+
+    `Note: You need to revoke the user level admin access you might have got while creating the repository.`
+    
+5. Add a branch protection rule for `master` branch with recommended settings
+   - Enable `Require pull request reviews before merging`
+   - Choose which status checks needs to be mandatory for merging PRs (this can be done only after checks like Jenkins are setup)
+   - We recommend enabling `Include administrators`.
