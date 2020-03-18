@@ -1,6 +1,8 @@
 ---
-<h1> title: The HMCTS way </h1>
-weight: 1
+title: ElasticSearch
+last_reviewed_on: 2020-03-18
+review_in: 6 months
+weight: 2
 ---
 
 We have recently implemented a fix to ElasticSearch to give us more reliability and integrity that the cases in ES will match those in the CCD-Data-Store database.
