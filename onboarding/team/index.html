@@ -225,7 +225,7 @@ in the cnp-jenkins-config repository.</p>
 which can easily be hit if names are too long.</p>
 <h2 id="jenkins-org-setup">Jenkins org setup</h2>
 <ol>
-<li>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">#rpe</a> to add a <a href="https://github.com/timja/github-branch-source-plugin/blob/github-app-support/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.<br></li>
+<li>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">#rpe</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.<br></li>
 <li><p>RPE team will store the private key of app secrets to keyvault and <a href="https://github.com/hmcts/cnp-flux-config/pull/2148/files">add credentials to Jenkins</a> .</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">TEAM_NAME</span><span class="o">=</span><span class="nv">$1</span>
 az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftptl-intsvc
