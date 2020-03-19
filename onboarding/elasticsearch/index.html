@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Secrets Management | HMCTS</title>
+    <title>ElasticSearch | HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/secrets-management.html">
+    <link rel="canonical" href="hmcts.github.io/onboarding/elasticsearch/">
 
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Secrets Management" />
+      <meta property="og:title" content="ElasticSearch" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/secrets-management.html" />
+      <meta property="og:url" content="hmcts.github.io/onboarding/elasticsearch/" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Secrets Management | HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/secrets-management.html" />
+      <meta property="twitter:title" content="ElasticSearch | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/onboarding/elasticsearch/" />
 
     
   </head>
@@ -195,37 +195,26 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="secrets-management">Secrets Management</h1><p>We use <a href="https://docs.microsoft.com/en-us/azure/key-vault/">Azure Key Vault</a> for managing secrets.</p>
+            <h1 id="elasticsearch">ElasticSearch</h1><p>At the time of writing Probate, CMC, SSCS, Employment, Divorce and FPLA are the only approved consumers of production ElasticSearch, we understand that this may change in the future as teams will want to utilise the enhanced functionality and performance that ElasticSearch provides. The following process must be adhered to for teams wanting to consume ElasticSearch in production</p>
 
-<ul>
-<li>Use <a href="https://github.com/hmcts/cnp-module-key-vault">cnp-module-key-vault</a> terraform module to create key vaults.</li>
-<li>Naming convention for keyvaults is <code>{product}-{component}-{env}</code></li>
-<li>Your team will <a href="https://github.com/hmcts/cnp-module-key-vault#writing-secrets-to-key-vaults">manage the secrets</a>, use the CLI to write secrets as you won&rsquo;t be able to see the vault in production, only write and list access is given out, if you&rsquo;re unsure if a credential is correct you can just overwrite it with the correct one.</li>
-<li>Use shared vaults (<code>{product}-{env}</code>) created through shared infrastructure repository if there are more secrets shared across multiple components in your product. </li>
-<li>If any secrets are exposed in the open, raise a security incident, by reporting it to &lsquo;Security Operations&rsquo;, create a new secret, update the application configuration and revoke the old secret. </li>
-</ul>
-<h2 id="setup-application-access">Setup application access.</h2>
 <ol>
-<li>Applications running in Kubernetes use <a href="https://github.com/Azure/aad-pod-identity">managed identity</a> to access secrets from keyvaults.</li>
-<li>Use <a href="https://github.com/hmcts/ops-resource-groups#getting-started">ops-resource-groups</a> to create managed identities for your product. </li>
-<li>Client and Object Id can be retrieved from terraform output logs of the Azure DevOps pipeline run when you merge your PR.</li>
-<li>Add <code>AzureIdentity</code> k8s resources to <a href="https://github.com/hmcts/cnp-flux-config/blob/master/bin/base-ns-id-gen.sh">Flux</a>.</li>
-<li><p>Add Managed Identity Object Id to keyvault through <a href="https://github.com/hmcts/cnp-module-key-vault/blob/master/README.md#managed_identity_object_id">terraform</a>.</p>
-<p><code>Note: You need to run your infrastructure pipeline on each environment for this to be added</code></p></li>
-<li><p>All base helm charts support <a href="https://github.com/hmcts/chart-java#adding-azure-key-vault-secrets">configuring keyvaults</a> to mount secrets on container file system using <a href="https://github.com/Azure/kubernetes-keyvault-flexvol">kubernetes-keyvault-flexvol</a>.</p></li>
-<li><p>Applications should use <a href="https://github.com/hmcts/properties-volume-nodejs">properties-volume-nodejs</a> or <a href="https://github.com/hmcts/properties-volume-spring-boot-starter">properties-volume-spring-boot-starter</a> to set secrets from file systems as environment variables.</p></li>
+<li>Contact CCD and talk through your requirements with them explaining your circumstances and why you want to use ES in prod</li>
+<li>Provide detailed information consumption/ usage thresholds and obtain approval from QA/performance team usage is supportable by the system</li>
+<li>Ensure the latest definition file you want to be used in prod is applied in the ccd-definition-store</li>
+<li>Once approval has been obtained from CCD that they are happy for you to go live please raise an RDO ticket on JIRA with DevOps and attach your latest definition file to the ticket. You must include the jurisdiction you wish elasticsearch to pull in.</li>
+<li>After DevOps have confirmed that the work has been done on their end validate the results</li>
 </ol>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-09-11">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 11 March 2020.
+      This page was last reviewed on 18 March 2020.
 
-        It needs to be reviewed again on 11 September 2020
+        It needs to be reviewed again on 18 September 2020
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 11 September 2020.
+      This page was set to be reviewed before 18 September 2020.
       This might mean the content is out of date.
     </div>
   </div>
@@ -234,8 +223,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/secrets-management.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Secrets%20Management'&amp;body=Problem%20with%20'Secrets%20Management'%20(hmcts.github.io/ways-of-working/new-component/secrets-management.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/elasticsearch/index.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'ElasticSearch'&amp;body=Problem%20with%20'ElasticSearch'%20(hmcts.github.io/onboarding/elasticsearch/)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
