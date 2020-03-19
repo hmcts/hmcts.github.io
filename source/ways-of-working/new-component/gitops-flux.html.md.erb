@@ -1,0 +1,39 @@
+---
+title: GitOps
+last_reviewed_on: 2020-03-11
+review_in: 6 months
+weight: 6
+---
+
+# <%= current_page.data.title %>
+
+One of our principles being <b>Everything as Code</b>, we practise [Gitops](https://www.weave.works/technologies/gitops/) for application deployment to Kubernetes.
+
+- Git as single source of truth.
+- Declarative Infrastructure and Application deployment through pull requests.
+
+
+## Flux
+
+[Flux](https://docs.fluxcd.io/) is a tool that automatically ensures that the state of a cluster matches the config in [Git](https://github.com/hmcts/cnp-flux-config). 
+
+- It is an operator in the cluster to trigger deployments inside Kubernetes, which means you don't need a separate CD tool.
+- It monitors all relevant image repositories, detects new images, triggers deployments and updates the desired running configuration. 
+
+## Helm Operator
+
+[Helm operator](https://docs.fluxcd.io/projects/helm-operator/) is a Kubernetes operator, allowing one to declaratively manage Helm chart releases. 
+
+- Combined with Flux this can be utilized to automate releases in a GitOps manner.
+- The desired state of a Helm release is described through a Kubernetes Custom Resource named `HelmRelease`. 
+- Based on the creation, mutation or removal of a HelmRelease resource in the cluster, Helm actions are performed by the operator.
+
+## Application config in flux
+
+1. Adding a new application to an environment is by simply adding a `HelmRelease` resource to [Flux Config](https://github.com/hmcts/cnp-flux-config/blob/master/k8s/prod/common/rpe/rpe-service-auth-provider.yaml) in the corresponding environment.
+2. `HelmRelease` should refer to latest Helm Chart version [published to Azure container Registry](helm-chart.html#jenkins)
+3. Flux configuration should be light, values should be templated within application's chart wherever possible to avoid duplication in each environment. Use `{{ .Values.global.environment }}` to refer to the environment in your chart.
+4. Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.
+5. Chart versions need to be managed manually by developers in flux config once [chart is published](helm-chart.html#jenkins). 
+6. <b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.
+7. Make sure you follow [codeowners guidelines](https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines) on the repo.
