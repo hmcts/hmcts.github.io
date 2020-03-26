@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Person | HMCTS</title>
+    <title>Infrastructure as Code | HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="hmcts.github.io/onboarding/person/">
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html">
 
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Person" />
+      <meta property="og:title" content="Infrastructure as Code" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/onboarding/person/" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Person | HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/onboarding/person/" />
+      <meta property="twitter:title" content="Infrastructure as Code | HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html" />
 
     
   </head>
@@ -205,52 +205,78 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="person">Person</h1><p>Join the following</p>
+            <h1 id="infrastructure-as-code">Infrastructure as Code</h1><p>We prefer <a href="https://en.wikipedia.org/wiki/Software_as_a_service">Software as a Service</a> (SaaS) over <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform as a Service</a> (PaaS) over <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service">Infrastructure as a Service</a> (IaaS).</p>
+<p>With this in mind, infrastructure as code refers to</p>
 
 <ul>
-<li>AAD groups - submit pull request to the <a href="https://github.com/hmcts/ansible-management/blob/master/azure-aad-vars/main.yml">group management repository</a></li>
-<li>Github - join the appropriate team group</li>
-<li>Office 365 team</li>
+<li>configuration for SaaS offerings</li>
+<li>provisioning and configuration of PaaS offerings</li>
+<li>provisioning and configuration of IaaS devices.</li>
 </ul>
-<p>Add <a href="https://github.com/hmcts/github-slack-user-mappings">Github Slack user mapping</a></p>
-<p>Sign &ldquo;ways of working&rdquo; agreement</p>
-<p>Recommended reading</p>
+<p>All our infrastructure is public cloud-based. We use <a href="https://www.terraform.io/docs/index.html">Terraform</a> to manage infrastructure as code.</p>
+<p>Service and common component teams are responsible for defining their own infrastructure for their products
+and components.</p>
+<p>All configuration code is managed under source control in GitHub and should be public as described in the <a href="https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable">GDS Service Manual</a>.</p>
+<p>The infrastructure code will be used to provision and configure <strong>one set of infrastructure in each environment</strong>.</p>
+<h2 id="infrastructure-levels">Infrastructure levels</h2><p>Infrastructure is layered into the following levels</p>
 
 <ul>
-<li><a href="https://continuousdelivery.com/">Continuous Delivery</a></li>
+<li>Platform</li>
+<li>Product</li>
+<li>Component</li>
 </ul>
-<h3 id="how-when-and-where-to-ask-for-help">How, when and where to ask for help?</h3>
-<ul>
-<li>Slack <a href="https://hmcts-reform.slack.com/messages/cloud-native">#cloud-native</a> channel</li>
-</ul>
-<h3 id="guides-for-specific-roles">Guides for specific roles</h3><h4 id="software-engineer">Software engineer</h4><p>Recommended reading</p>
+<p>Each level builds on lower levels so, in order to provision and configure product-level infrastructure, the platform-level
+infrastructure must first have been provisioned and configured. Similarly product-level infrastructure must
+have been provisioned before component-level infrastructure.</p>
+<p>In each environment, there will be <strong>one set</strong> of all platform-level infrastructure and <strong>one set</strong> of each of the product- and component-level infrastructure configurations.</p>
+<p>The following diagram shows the layers and the types of infrastructure that might be found in each.</p>
+<p><img src="/images/infrastructure-levels.png"/></p>
+<h3 id="platform-level-infrastructure">Platform-level infrastructure</h3><p>This is the base-level infrastructure you can expect to find in each environment. It&rsquo;s managed by the Platform Engineering team.
+Service and common component teams can assume that this infrastructure exists in every environment.</p>
+<p>The code is managed in various repositories in GitHub. For some configuration, service and common component teams may need to update
+these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then be reviewed and approved appropriately. Examples of this can be found in the <a href="/ways-of-working/path-to-live">path-to-live documentation</a>.</p>
+<h3 id="product-and-component-level-infrastructure">Product- and component-level infrastructure</h3><p>These levels of infrastructure are provisioned by service and common component teams. It is often called &ldquo;shared infrastructure&rdquo; and that
+is the naming convention that has been adopted for repositories.</p>
+<p>There are no hard rules around what infrastructure belongs in product-level or component-level but, in general,
+if something can be shared between components within a product then it should belong in the product-level infrastructure.
+The diagram above shows the types of things that might exist in each level.</p>
+<h4 id="product-level-shared-infrastructure">Product-level (shared) infrastructure</h4><p>This is infrastructure provisioned by the product team and is shared between all components within the product.</p>
+<p>The infrastructure code must be managed in a GitHub repository. The repository should be named <code>{product}-shared-infrastructure</code>.</p>
+<p>Terraform <code>.tf</code> files must be placed in the root of the repository.</p>
+<p>The <a href="../common-pipeline">common build pipeline</a> must be used to build the infrastructure.</p>
+<h4 id="component-level-infrastructure">Component-level infrastructure</h4><p>This is infrastructure provisioned by the product team and is specific to a single component within the product.</p>
+<p>The infrastructure code must be managed in the component GitHub repository.</p>
+<p>Terraform <code>.tf</code> files must be placed in the <code>/infrastructure</code> directory in the repository.</p>
+<p>The <a href="https://github.com/hmcts/draft-store/tree/master/infrastructure">draft-store</a> component is a good example.</p>
+<p>The <a href="../common-pipeline">common build pipeline</a> must be used to build the infrastructure.</p>
+<h2 id="infrastructure-modules">Infrastructure modules</h2><p>For infrastructure resources commonly used by teams a set of pre-packaged Terraform modules is provided to make it easier to provision them.
+These modules provide sensible defaults for many configuration options and also include mandated security settings enabling faster
+development.</p>
+<p>Some frequently used modules are</p>
 
 <ul>
-<li><a href="https://trunkbaseddevelopment.com/">Trunk Based Development</a></li>
-<li><a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/">Kubernetes Basics</a></li>
-<li><a href="https://helm.sh/docs/intro/using_helm/">Using Helm</a></li>
+<li><a href="https://github.com/hmcts/cnp-module-postgres">Azure Database for Postgres</a></li>
+<li><a href="https://github.com/hmcts/cnp-module-key-vault">Azure Key Vault</a></li>
+<li><a href="https://github.com/hmcts/cnp-module-redis">Azure Cache for Redis</a></li>
 </ul>
-<h4 id="the-following-tools-are-commonly-used">The following tools are commonly used</h4>
-<ul>
-<li>an IDE (e.g. IntelliJ or Visual Studio Code)</li>
-<li><a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">Azure CLI</a></li>
-<li><a href="https://docs.docker.com/install/">Docker</a></li>
-<li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">Kubectl</a></li>
-<li><a href="https://helm.sh/docs/intro/install/">Helm CLI</a></li>
-</ul>
-<h4 id="tech-lead">Tech lead</h4><p>This should be read in addition to the guide for all people and software engineers.</p>
-<p>Join the <a href="https://hmcts-reform.slack.com/messages/reform-tech-leads">reform-tech-leads Slack channel</a></p>
+<p>A full list of modules can be <a href="https://github.com/hmcts?q=cnp-module">found in GitHub</a>.</p>
+<h2 id="whitelisted-infrastructure">Whitelisted infrastructure</h2><p>To maintain integrity and security of our environments, service and common component teams may only use
+a pre-defined set of Azure resources and Terraform infrastructure modules. The whitelist is managed in <a href="https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder">a GitHub repository</a>.
+It is possible to add addtional whitelisted resources for specific products and components with appropriate approval.</p>
+<p>The <a href="../common-pipeline">common build pipeline</a> will enforce the whitelist and will halt with an error if non-approved resources or modules are used.</p>
+<h2 id="environment-specific-variables">Environment-specific variables</h2><p>The <a href="../common-pipeline">common build pipeline</a> supports environment-specific values for Terraform variables. The values can be defined in files named <code>{environment}.tfvars</code> (e.g. <code>prod.tfvars</code>, <code>sandbox.tfvars</code>) placed alongside your <code>.tf</code> files. The appropropriate <code>.tfvars</code> file will
+be passed into Terraform when the pipeline builds infrastrucuture.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 January 2020.
+      This page was last reviewed on 19 March 2020.
 
-        It needs to be reviewed again on 15 July 2020
+        It needs to be reviewed again on 19 September 2020
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 July 2020.
+      This page was set to be reviewed before 19 September 2020.
       This might mean the content is out of date.
     </div>
   </div>
@@ -259,8 +285,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/person/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Person'&amp;body=Problem%20with%20'Person'%20(hmcts.github.io/onboarding/person/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/infrastructure-as-code.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Infrastructure%20as%20Code'&amp;body=Problem%20with%20'Infrastructure%20as%20Code'%20(hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
