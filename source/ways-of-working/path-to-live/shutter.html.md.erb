@@ -94,7 +94,17 @@ Customized shutter pages can also be created/uploaded by following the below ste
 
     `shutter: 'sscscor'` shou ld be the name of the directory created in this repository with the static contents. 
 
+- The easiest way to check rendering is with:
+
+    ```shell
+    cd default/
+    python3 -m http.server
+    open http://localhost:8000
+    ```
+
 Once the PR is reviewed and merged all the static contents will be uploaded to the respective storage accounts.
+
+- If you are migrating from the legacy shuttering solution, update the list of apps in [cnp-shutter-application](https://github.com/hmcts/cnp-shutter-application/blob/master/Jenkinsfile#L8)
 
 ### Enable shutter with a DNS swap
 Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps
