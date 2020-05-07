@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.6.5
           architecture: 'x64'

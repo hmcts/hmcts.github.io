@@ -37,3 +37,24 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
 5. Chart versions need to be managed manually by developers in flux config once [chart is published](helm-chart.html#jenkins). 
 6. <b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.
 7. Make sure you follow [codeowners guidelines](https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines) on the repo.
+
+## Troubleshooting issues
+
+- For issue like latest image not updated to git or a HelmRelease  CRD not updated/created in cluster , you need to look at flux pod logs. 
+
+    `kubectl logs -n admin -l app=flux --tail=100 `
+    
+    To search for your application specific logs :
+        
+    `kubectl logs -n admin -l app=flux --tail=100 | grep <Release Name>`
+    
+  
+- When HelmRelease is updated but application pods are not created/ updated , you need to look at helm-operator pod logs. 
+
+    `kubectl logs -n admin -l app=helm-operator --tail=100`
+    
+    To search for your application specific logs :
+            
+    `kubectl logs -n admin -l app=helm-operator --tail=100 | grep <Release Name>`
+ 
+ 
