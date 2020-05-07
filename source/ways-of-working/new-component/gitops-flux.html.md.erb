@@ -42,9 +42,19 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
 
 - For issue like latest image not updated to git or a HelmRelease  CRD not updated/created in cluster , you need to look at flux pod logs. 
 
+    `kubectl logs -n admin -l app=flux --tail=100 `
+    
+    To search for your application specific logs :
+        
     `kubectl logs -n admin -l app=flux --tail=100 | grep <Release Name>`
+    
   
 - When HelmRelease is updated but application pods are not created/ updated , you need to look at helm-operator pod logs. 
 
+    `kubectl logs -n admin -l app=helm-operator --tail=100`
+    
+    To search for your application specific logs :
+            
     `kubectl logs -n admin -l app=helm-operator --tail=100 | grep <Release Name>`
+ 
  
