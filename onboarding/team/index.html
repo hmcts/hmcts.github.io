@@ -96,11 +96,6 @@
     <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
   </li>
 </ul>
-<ul>
-  <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
-  </li>
-</ul>
 <ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
@@ -112,16 +107,21 @@
     <a href="/onboarding/person/#person"><span>Person</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
+</li></ul><ul>
+  <li>
+    <a href="/glossary/#glossary"><span>Glossary</span></a>
+  </li>
+</ul>
+<ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -129,12 +129,13 @@
     <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
   </li>
 </ul>
-<ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
   </li>
 </ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
@@ -147,12 +148,17 @@
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
   </li>
 </ul>
 <ul>
   <li>
     <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
@@ -184,12 +190,6 @@
 <ul>
   <li>
     <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -225,17 +225,29 @@ this is often your regular developer chat channel, i.e. <code>team-dev</code> or
 <div class="highlight"><pre class="highlight shell"><code>/invite @Jenkins
 </code></pre></div><p>Make sure you pick the Jenkins [app] user:</p>
 <p><img src="/images/slack-jenkins-user-invite.png"/></p>
-<h2 id="team-github-config">Team GitHub config</h2><p>Each team needs to add configuration for their team to the <a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml">team-config</a> file</a>
+<h2 id="github-config">Github config</h2><h3 id="access">Access</h3><p>Request GitHub access through your PMO, (probably who you showed your documents to on your first day, 
+if in doubt ask your delivery manager).</p>
+<p>You should receive an email inviting you to the GitHub organisation, visit <a href="https://github.com/hmcts">https://github.com/hmcts</a>
+to accept the invite.</p>
+<h3 id="github-teams">GitHub Teams</h3><p>Now you need to create two &#39;GitHub teams&rsquo; for your team.</p>
+
+<ol>
+<li>Click on the &#39;teams&rsquo; tab</li>
+<li>Create a team called &lt;team-name&gt;</li>
+<li>Create a team called &lt;team-name&gt;-admins</li>
+</ol>
+<p>see also <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository">creating a GitHub repository</a>.</p>
+<h3 id="team-metadata-required-for-pipelines">Team metadata required for pipelines</h3><p>Each team needs to add configuration for their team to the <a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml">team-config</a> file</a>
 in the cnp-jenkins-config repository.</p>
 <p>Please send a <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests">pull request</a> with your configuration.</p>
 <p>All fields are mandatory,</p>
 <p>Copy another teams config and adjust to meet your needs.</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="na">sscs</span><span class="pi">:</span> <span class="c1"># &lt;- product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known for</span>
-  <span class="na">team</span><span class="pi">:</span> <span class="s2">"</span><span class="s">SSCS"</span> <span class="c1"># &lt;- team 'display name', useful for longer more recognisable names for tagging</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">sscs"</span> <span class="c1"># &lt;- Kubernetes namespace, usually the same as your 'product name'</span>
+<div class="highlight"><pre class="highlight yaml"><code><span class="na">sscs</span><span class="pi">:</span> <span class="c1"># product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known by</span>
+  <span class="na">team</span><span class="pi">:</span> <span class="s2">"</span><span class="s">SSCS"</span> <span class="c1"># team 'display name', useful for longer more recognisable names for tagging</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">sscs"</span> <span class="c1"># Kubernetes namespace, usually the same as your 'product name'</span>
   <span class="na">slack</span><span class="pi">:</span>
-    <span class="na">contact_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span>
-    <span class="na">build_notices_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span>
+    <span class="na">contact_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># public channel that you can be contacted at</span>
+    <span class="na">build_notices_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># all build notices will be sent here</span>
 </code></pre></div><p>Make sure your product name is not too long as some Azure resources have constraints on their length 
 which can easily be hit if names are too long.</p>
 <h2 id="jenkins-org-setup">Jenkins org setup</h2>
@@ -278,19 +290,6 @@ I have just started on the &ldquo;team name&rdquo; team,</p>
 az ad group list <span class="nt">--query</span> <span class="s2">"[?contains(displayName, '</span><span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="s2">_v2')].{DisplayName: displayName, ObjectID: objectId}"</span> <span class="nt">-o</span> table
 </code></pre></div><p>You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.</p>
 <p>To join the groups see &#39;TODO section in person onboarding&rsquo;.</p>
-<h2 id="github-config">Github config</h2><p>Request GitHub access through your PMO, (probably who you showed your documents to on your first day, 
-if in doubt ask your delivery manager).</p>
-<p>You should receive an email inviting you to the GitHub organisation, visit <a href="https://github.com/hmcts">https://github.com/hmcts</a>
-to accept the invite.</p>
-<p>Now you need to create two &#39;GitHub teams&rsquo; for your team.</p>
-
-<ol>
-<li>Click on the &#39;teams&rsquo; tab</li>
-<li>Create a team called &lt;team-name&gt;</li>
-<li>Create a team called &lt;team-name&gt;-admins</li>
-</ol>
-
-<!-- TODO add link to creating a repository and setting up the expected branch protection -->
 <h2 id="create-office-365-team-group">Create Office 365 team group</h2>
               <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
     <div class='page-expiry--not-expired'>
