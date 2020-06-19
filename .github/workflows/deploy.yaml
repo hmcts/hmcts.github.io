@@ -27,7 +27,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           gem install bundler
-          bundle install
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: Build
         run: bundle exec middleman build
       - name: Publish
