@@ -33,7 +33,27 @@ Make sure you pick the Jenkins \[app] user:
 
 <img src="/images/slack-jenkins-user-invite.png"/>
 
-## Team GitHub config
+## Github config
+
+### Access
+
+Request GitHub access through your PMO, (probably who you showed your documents to on your first day, 
+if in doubt ask your delivery manager).
+
+You should receive an email inviting you to the GitHub organisation, visit [https://github.com/hmcts](https://github.com/hmcts)
+to accept the invite.
+
+### GitHub Teams
+
+Now you need to create two 'GitHub teams' for your team.
+
+1. Click on the 'teams' tab
+2. Create a team called \<team-name>
+3. Create a team called \<team-name>-admins
+
+see also [creating a GitHub repository](/ways-of-working/new-component/github-repo.html#create-a-github-repository).
+
+### Team metadata required for pipelines
 
 Each team needs to add configuration for their team to the [team-config](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml) file</a>
 in the cnp-jenkins-config repository.
@@ -45,12 +65,12 @@ All fields are mandatory,
 Copy another teams config and adjust to meet your needs.
 
 ```yaml
-sscs: # <- product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known for
-  team: "SSCS" # <- team 'display name', useful for longer more recognisable names for tagging
-  namespace: "sscs" # <- Kubernetes namespace, usually the same as your 'product name'
+sscs: # product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known by
+  team: "SSCS" # team 'display name', useful for longer more recognisable names for tagging
+  namespace: "sscs" # Kubernetes namespace, usually the same as your 'product name'
   slack:
-    contact_channel: "#sscs-tech"
-    build_notices_channel: "#sscs-tech"
+    contact_channel: "#sscs-tech" # public channel that you can be contacted at
+    build_notices_channel: "#sscs-tech" # all build notices will be sent here
 ```
 
 Make sure your product name is not too long as some Azure resources have constraints on their length 
@@ -105,21 +125,5 @@ az ad group list --query "[?contains(displayName, '${TEAM_NAME}_v2')].{DisplayNa
 You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.
 
 To join the groups see 'TODO section in person onboarding'.
-
-## Github config
-
-Request GitHub access through your PMO, (probably who you showed your documents to on your first day, 
-if in doubt ask your delivery manager).
-
-You should receive an email inviting you to the GitHub organisation, visit [https://github.com/hmcts](https://github.com/hmcts)
-to accept the invite.
-
-Now you need to create two 'GitHub teams' for your team.
-
-1. Click on the 'teams' tab
-2. Create a team called \<team-name>
-3. Create a team called \<team-name>-admins
-
-<!-- TODO add link to creating a repository and setting up the expected branch protection -->
 
 ## Create Office 365 team group
