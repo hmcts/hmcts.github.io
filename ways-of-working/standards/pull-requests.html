@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Pull requests | HMCTS</title>
+    <title>Pull requests - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
@@ -19,7 +19,7 @@
       <meta property="og:url" content="hmcts.github.io/ways-of-working/standards/pull-requests.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Pull requests | HMCTS" />
+      <meta property="twitter:title" content="Pull requests - HMCTS" />
       <meta property="twitter:url" content="hmcts.github.io/ways-of-working/standards/pull-requests.html" />
 
     
@@ -43,7 +43,7 @@
         <strong class="govuk-tag">Beta</strong>
     </div>
     <div class="govuk-header__content">
-      <button type="button" role="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+      <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
       <nav>
         <ul id="navigation" class="govuk-header__navigation govuk-header__navigation--end" aria-label="Top Level Navigation">
             <li class="govuk-header__navigation-item">
@@ -276,9 +276,9 @@ wonder whether they should be merged, and the cost of running any infrastructure
 <p>We use <a href="https://probot.github.io/apps/stale/">probot-stale</a> to automate reminders about PRs and close them if no response or further work happens on it.</p>
 <p>We recommend config like:</p>
 <div class="highlight"><pre class="highlight yaml"><code><span class="c1"># Number of days of inactivity before an issue becomes stale</span>
-<span class="na">daysUntilStale</span><span class="pi">:</span> <span class="s">7</span>
+<span class="na">daysUntilStale</span><span class="pi">:</span> <span class="m">7</span>
 <span class="c1"># Number of days of inactivity before a stale issue is closed</span>
-<span class="na">daysUntilClose</span><span class="pi">:</span> <span class="s">4</span>
+<span class="na">daysUntilClose</span><span class="pi">:</span> <span class="m">4</span>
 <span class="c1"># Issues with these labels will never be considered stale</span>
 <span class="na">exemptLabels</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">pinned</span>
@@ -287,12 +287,12 @@ wonder whether they should be merged, and the cost of running any infrastructure
 <span class="na">staleLabel</span><span class="pi">:</span> <span class="s">stale</span>
 <span class="c1"># Comment to post when marking an issue as stale. Set to `false` to disable</span>
 <span class="na">markComment</span><span class="pi">:</span> <span class="pi">&gt;</span>
-  <span class="no">This issue has been automatically marked as stale because it has not had</span>
-  <span class="no">recent activity. It will be closed if no further activity occurs. Thank you</span>
-  <span class="no">for your contributions.</span>
+  <span class="s">This issue has been automatically marked as stale because it has not had</span>
+  <span class="s">recent activity. It will be closed if no further activity occurs. Thank you</span>
+  <span class="s">for your contributions.</span>
 <span class="c1"># Comment to post when closing a stale issue. Set to `false` to disable</span>
 <span class="na">closeComment</span><span class="pi">:</span> <span class="pi">&gt;</span>
-  <span class="no">This issue is being closed automatically as it was stale</span>
+  <span class="s">This issue is being closed automatically as it was stale</span>
 </code></pre></div><p>You can tune the numbers slightly but please make sure pull requests are closed within 2 weeks
 If you have a PR that needs to stay around because you are demoing it or some other valid reason
 you can add to the configuration a permanent label such as <code>demoing</code> this will never become stale</p>
@@ -302,9 +302,9 @@ and you can add a comment or remove the label on the PR if it is not actually st
 <h3 id="templates-for-prs">Templates for PRs</h3><p>Our standard template for PRs is:</p>
 <div class="highlight"><pre class="highlight markdown"><code><span class="gs">**Before creating a pull request make sure that:**</span>
 <span class="p">
--</span> <span class="p">[</span><span class="nv"> </span><span class="p">]</span> commit messages are meaningful and follow good commit message guidelines
-<span class="p">-</span> <span class="p">[</span><span class="nv"> </span><span class="p">]</span> README and other documentation has been updated / added (if needed)
-<span class="p">-</span> <span class="p">[</span><span class="nv"> </span><span class="p">]</span> tests have been updated / new tests has been added (if needed)
+-</span> [ ] commit messages are meaningful and follow good commit message guidelines
+<span class="p">-</span> [ ] README and other documentation has been updated / added (if needed)
+<span class="p">-</span> [ ] tests have been updated / new tests has been added (if needed)
 
 Please remove this line and everything above and fill the following sections:<span class="sb">
 
@@ -363,7 +363,7 @@ Please remove this line and everything above and fill the following sections:<sp
 
 
       <svg
-        role="presentation"
+        aria-hidden="true"
         focusable="false"
         class="govuk-footer__licence-logo"
         xmlns="http://www.w3.org/2000/svg"

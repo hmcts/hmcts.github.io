@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Team | HMCTS</title>
+    <title>Team - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
@@ -19,7 +19,7 @@
       <meta property="og:url" content="hmcts.github.io/onboarding/team/" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Team | HMCTS" />
+      <meta property="twitter:title" content="Team - HMCTS" />
       <meta property="twitter:url" content="hmcts.github.io/onboarding/team/" />
 
     
@@ -43,7 +43,7 @@
         <strong class="govuk-tag">Beta</strong>
     </div>
     <div class="govuk-header__content">
-      <button type="button" role="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+      <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
       <nav>
         <ul id="navigation" class="govuk-header__navigation govuk-header__navigation--end" aria-label="Top Level Navigation">
             <li class="govuk-header__navigation-item">
@@ -229,10 +229,10 @@ this is often your regular developer chat channel, i.e. <code>team-dev</code> or
 if in doubt ask your delivery manager).</p>
 <p>You should receive an email inviting you to the GitHub organisation, visit <a href="https://github.com/hmcts">https://github.com/hmcts</a>
 to accept the invite.</p>
-<h3 id="github-teams">GitHub Teams</h3><p>Now you need to create two &#39;GitHub teams&rsquo; for your team.</p>
+<h3 id="github-teams">GitHub Teams</h3><p>Now you need to create two &lsquo;GitHub teams&rsquo; for your team.</p>
 
 <ol>
-<li>Click on the &#39;teams&rsquo; tab</li>
+<li>Click on the &lsquo;teams&rsquo; tab</li>
 <li>Create a team called &lt;team-name&gt;</li>
 <li>Create a team called &lt;team-name&gt;-admins</li>
 </ol>
@@ -290,7 +290,7 @@ and give the team group access to Jenkins</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">TEAM_NAME</span><span class="o">=</span>fpla <span class="c"># adjust as needed</span>
 az ad group list <span class="nt">--query</span> <span class="s2">"[?contains(displayName, '</span><span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="s2">_v2')].{DisplayName: displayName, ObjectID: objectId}"</span> <span class="nt">-o</span> table
 </code></pre></div><p>You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.</p>
-<p>To join the groups see &#39;TODO section in person onboarding&rsquo;.</p>
+<p>To join the groups see &lsquo;TODO section in person onboarding&rsquo;.</p>
 <h2 id="create-office-365-team-group">Create Office 365 team group</h2>
               <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
     <div class='page-expiry--not-expired'>
@@ -322,7 +322,7 @@ az ad group list <span class="nt">--query</span> <span class="s2">"[?contains(di
 
 
       <svg
-        role="presentation"
+        aria-hidden="true"
         focusable="false"
         class="govuk-footer__licence-logo"
         xmlns="http://www.w3.org/2000/svg"
