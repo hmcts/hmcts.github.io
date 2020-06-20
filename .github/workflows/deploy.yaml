@@ -17,10 +17,18 @@ jobs:
         with:
           ruby-version: 2.6.5
           architecture: 'x64'
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           gem install bundler
-          bundle install
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: Build
         run: bundle exec middleman build
       - name: Publish
