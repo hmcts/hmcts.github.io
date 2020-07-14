@@ -31,12 +31,19 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
 ## Application config in flux
 
 1. Adding a new application to an environment is by simply adding a `HelmRelease` resource to [Flux Config](https://github.com/hmcts/cnp-flux-config/blob/master/k8s/prod/common/rpe/rpe-service-auth-provider.yaml) in the corresponding environment.
-2. `HelmRelease` should refer to latest Helm Chart version [published to Azure container Registry](helm-chart.html#jenkins)
+2. `HelmRelease` should refer to the charts automatically published to [hmcts-charts repository](https://github.com/hmcts/hmcts-charts) by [Jenkins](helm-chart.html#jenkins). e.g.
+
+```
+chart:
+    git: git@github.com:hmcts/hmcts-charts
+    ref: master
+    path: stable/plum-recipe-backend
+```
+
 3. Flux configuration should be light, values should be templated within application's chart wherever possible to avoid duplication in each environment. Use `{{ .Values.global.environment }}` to refer to the environment in your chart.
 4. Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.
-5. Chart versions need to be managed manually by developers in flux config once [chart is published](helm-chart.html#jenkins). 
-6. <b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.
-7. Make sure you follow [codeowners guidelines](https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines) on the repo.
+5. <b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.
+6. Make sure you follow [codeowners guidelines](https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines) on the repo.
 
 ## Troubleshooting issues
 
