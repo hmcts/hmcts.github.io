@@ -232,10 +232,16 @@
 <h2 id="application-config-in-flux">Application config in flux</h2>
 <ol>
 <li>Adding a new application to an environment is by simply adding a <code>HelmRelease</code> resource to <a href="https://github.com/hmcts/cnp-flux-config/blob/master/k8s/prod/common/rpe/rpe-service-auth-provider.yaml">Flux Config</a> in the corresponding environment.</li>
-<li><code>HelmRelease</code> should refer to latest Helm Chart version <a href="/ways-of-working/new-component/helm-chart.html#jenkins">published to Azure container Registry</a></li>
+<li><code>HelmRelease</code> should refer to the charts automatically published to <a href="https://github.com/hmcts/hmcts-charts">hmcts-charts repository</a> by <a href="/ways-of-working/new-component/helm-chart.html#jenkins">Jenkins</a>. e.g.</li>
+</ol>
+<div class="highlight"><pre class="highlight plaintext"><code>chart:
+    git: git@github.com:hmcts/hmcts-charts
+    ref: master
+    path: stable/plum-recipe-backend
+</code></pre></div>
+<ol>
 <li>Flux configuration should be light, values should be templated within application&rsquo;s chart wherever possible to avoid duplication in each environment. Use <code>{{ .Values.global.environment }}</code> to refer to the environment in your chart.</li>
 <li>Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.</li>
-<li>Chart versions need to be managed manually by developers in flux config once <a href="/ways-of-working/new-component/helm-chart.html#jenkins">chart is published</a>. </li>
 <li><b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.</li>
 <li>Make sure you follow <a href="https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines">codeowners guidelines</a> on the repo.</li>
 </ol>
