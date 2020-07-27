@@ -1,6 +1,6 @@
 ---
 title: GitOps
-last_reviewed_on: 2020-03-11
+last_reviewed_on: 2020-07-27
 review_in: 6 months
 weight: 6
 ---
@@ -30,7 +30,7 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
 
 ## Application config in flux
 
-1. Adding a new application to an environment is by simply adding a `HelmRelease` resource to [Flux Config](https://github.com/hmcts/cnp-flux-config/blob/master/k8s/prod/common/rpe/rpe-service-auth-provider.yaml) in the corresponding environment.
+1. See [Application Configuration](https://github.com/hmcts/cnp-flux-config/blob/master/docs/app-deployment.md#application-configuration) on how to configure and manage your application deployment in various environments.
 2. `HelmRelease` should refer to the charts automatically published to [hmcts-charts repository](https://github.com/hmcts/hmcts-charts) by [Jenkins](helm-chart.html#jenkins). e.g.
 
 ```
