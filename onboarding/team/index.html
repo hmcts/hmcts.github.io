@@ -113,49 +113,23 @@
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
-  </li>
-</ul>
 <ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
-  </li>
-</ul>
 <ul>
   <li>
     <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
-<ul>
+</li></ul><ul>
   <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
   </li>
 </ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
+<ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
@@ -190,6 +164,32 @@
 <ul>
   <li>
     <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+  </li>
+</ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -252,7 +252,8 @@ in the cnp-jenkins-config repository.</p>
 which can easily be hit if names are too long.</p>
 <h2 id="jenkins-org-setup">Jenkins org setup</h2>
 <ol>
-<li>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">#rpe</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.<br></li>
+<li>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">#rpe</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.</li>
+<li>Please give permissions based on an <a href="https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe">existing Github App</a> as we give additional permissions to what is listed in the plugin&rsquo;s documentation.</li>
 <li><p>RPE team will store the private key of app secrets to keyvault and <a href="https://github.com/hmcts/cnp-flux-config/pull/2148/files">add credentials to Jenkins</a> .</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">TEAM_NAME</span><span class="o">=</span><span class="nv">$1</span>
 az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftptl-intsvc
@@ -292,16 +293,16 @@ az ad group list <span class="nt">--query</span> <span class="s2">"[?contains(di
 </code></pre></div><p>You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.</p>
 <p>To join the groups see &lsquo;TODO section in person onboarding&rsquo;.</p>
 <h2 id="create-office-365-team-group">Create Office 365 team group</h2>
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-31">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 January 2020.
+      This page was last reviewed on 31 July 2020.
 
-        It needs to be reviewed again on 15 July 2020
+        It needs to be reviewed again on 31 January 2021
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 July 2020.
+      This page was set to be reviewed before 31 January 2021.
       This might mean the content is out of date.
     </div>
   </div>
