@@ -96,11 +96,6 @@
     <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
   </li>
 </ul>
-<ul>
-  <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
-  </li>
-</ul>
 <ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
@@ -112,7 +107,12 @@
     <a href="/onboarding/person/#person"><span>Person</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
+</li></ul><ul>
+  <li>
+    <a href="/glossary/#glossary"><span>Glossary</span></a>
+  </li>
+</ul>
+<ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
@@ -127,6 +127,32 @@
 <ul>
   <li>
     <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+  </li>
+</ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
@@ -164,32 +190,6 @@
 <ul>
   <li>
     <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -253,7 +253,7 @@ which can easily be hit if names are too long.</p>
 <h2 id="jenkins-org-setup">Jenkins org setup</h2>
 <ol>
 <li>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=rpe">#rpe</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.</li>
-<li>Please give permissions based on an <a href="https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe">existing Github App</a> as we give additional permissions to what is listed in the plugin&rsquo;s documentation.</li>
+<li>Please give permissions based on an <a href="https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe">existing Github App</a> as we give additional permissions to what is listed in the plugin&rsquo;s documentation (only GitHub app maintainers can see this).</li>
 <li><p>RPE team will store the private key of app secrets to keyvault and <a href="https://github.com/hmcts/cnp-flux-config/pull/2148/files">add credentials to Jenkins</a> .</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">TEAM_NAME</span><span class="o">=</span><span class="nv">$1</span>
 az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftptl-intsvc
