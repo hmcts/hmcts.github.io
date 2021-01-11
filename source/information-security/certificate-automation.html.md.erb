@@ -1,0 +1,29 @@
+---
+title: TLS certificates
+last_reviewed_on: 2021-01-04
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+<!-- Inspired by the MoJ policy: https://ministryofjustice.github.io/security-guidance/automated-certificate-renewal/#automated-certificate-renewal -->
+
+Where technically suitable, all new HMCTS domains must use automated certificate techniques and services, 
+such as [Microsoft managed certificates](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain-https#option-1-default-use-a-certificate-managed-by-front-door)
+(most preferred) or LetsEncrypt (uses ACME)
+
+Over time, existing HMCTS domains must also be considered for migration to automated certificate provisioning and 
+management techniques (preferably on their next certificate renewal cycle in advance of expiry) in order to reduce 
+the consequences and management overheads of manual certificate renewal.
+
+HMCTS acknowledges that not all systems support automated certificate management,
+but leveraging such technology where possible reduces management overheads, the costs of such overheads and the consequences of 
+unexpected certificate expiry.
+
+## Manual certificate requests
+
+Where automated certificate renewal is not possible, new certificates must be acquired through the DTS Operations Management team.
+
+To request a manually issued certificate, complete the [certificate request form](https://tools.hmcts.net/confluence/display/RD/Requesting+SSL+Certificates) and send it, 
+with a Certificate Signing Request (CSR), to Opsconfman@hmcts.net.
