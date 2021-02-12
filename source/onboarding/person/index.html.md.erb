@@ -1,6 +1,6 @@
 ---
 title: Person
-last_reviewed_on: 2020-07-31
+last_reviewed_on: 2021-02-12
 review_in: 6 months
 weight: 2
 ---
@@ -10,12 +10,22 @@ weight: 2
 Join the following 
 
 - AAD groups - submit pull request to the [group management repository](https://github.com/hmcts/ansible-management/blob/master/azure-aad-vars/main.yml)
+
+```yaml
+- name: username
+  groups:
+  - dcd_group_allusers_v2
+  - dcd_reform_dev_logs
+  - dcd_reform_sandbox_azure
+  - dcd_reform_monitoring_reader
+```
+
+Where `username` is the part of your email before @ (usually firstname.lastname like john.smith)
+These groups will give you access to the VPN, the [Azure Portal](https://portal.azure.com/) and logs.
+
 - Github - join the appropriate team group
 - Office 365 team
-
-Add [Github Slack user mapping](https://github.com/hmcts/github-slack-user-mappings)
-
-Sign "ways of working" agreement
+- Add [Github Slack user mapping](https://github.com/hmcts/github-slack-user-mappings)
 
 Recommended reading
 
