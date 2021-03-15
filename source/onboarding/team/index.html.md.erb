@@ -36,21 +36,12 @@ Make sure you pick the Jenkins \[app] user:
 ## Github config
 
 ### Access
-Once you've received your `hmcts.net` email account and `Confluence` access, you can request GitHub access through your PMO (probably who you showed your documents to on your first day, if in doubt ask your delivery manager) after reading mandatory [Acceptable Use Policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance).
+Once you've received your `hmcts.net` email account and `Confluence` access, you can request GitHub access in one of the two ways.
 
-Steps to add a user in GitHub
+1. If you're the first person in your team you should raise a help request in #platops-help, asking for github access, you need to provide your GitHub username and say that you agree to [Acceptable Use Policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance).
+2. If someone in your team already has access then ask them to follow the instructions at [github-management](https://github.com/hmcts/github-management) repository to add you.
 
-1. Create a branch in [github-management](https://github.com/hmcts/github-management)
-2. Add your team member to [github-users.yaml](https://github.com/hmcts/github-management/blob/main/users/github-users.yaml) with their GitHub username, HMCTS email account and agree_to_acceptable_use_policy set to true. 
-```yaml
-- github_username: 3xample
-  email_account: "example.user@HMCTS.NET"
-  agree_to_acceptable_use_policy: true
-```
-3. Create a PR that will then get approved by someone else
-
-You should receive an email inviting you to the GitHub organisation, visit [https://github.com/hmcts](https://github.com/hmcts)
-to accept the invite.
+You should receive an email inviting you to the GitHub organisation, visit [https://github.com/hmcts](https://github.com/hmcts) to accept the invite.
 
 ### GitHub Teams
 
