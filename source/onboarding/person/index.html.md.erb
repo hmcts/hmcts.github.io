@@ -12,12 +12,8 @@ Join the following
 - AAD groups - submit pull request to the [group management repository](https://github.com/hmcts/ansible-management/blob/master/azure-aad-vars/main.yml)
 
 ```yaml
-- name: username
+- name: username # firstname.lastname justice.gov.uk users need to include their full email, e.g. mary.jayne@justice.gov.uk
   groups:
-  - dcd_group_allusers_v2
-  - dcd_reform_dev_logs
-  - dcd_reform_sandbox_azure
-  - dcd_reform_monitoring_reader
   - DTS CFT Developers
 ```
 
