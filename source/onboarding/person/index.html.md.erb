@@ -12,12 +12,15 @@ Join the following
 - AAD groups - submit pull request to the [group management repository](https://github.com/hmcts/ansible-management/blob/master/azure-aad-vars/main.yml)
 
 ```yaml
-- name: username # firstname.lastname justice.gov.uk users need to include their full email, e.g. mary.jayne@justice.gov.uk
+- name: username
   groups:
   - DTS CFT Developers
+  - <your-team-group> # check other team members to find the group
 ```
 
-Where `username` is the part of your email before @ (usually firstname.lastname like john.smith)
+Where `username` is the part of your email before @ (usually firstname.lastname like john.smith),
+`justice.gov.uk` users need to include their full email, e.g. `mary.jayne@justice.gov.uk`.
+
 These groups will give you access to the VPN, the [Azure Portal](https://portal.azure.com/) and logs.
 
 - GitHub Access - Read the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance), if you agree to follow it then ask someone in your team who has access to add you in the [GitHub management](https://github.com/hmcts/github-management) repository by submitting a pull request.
