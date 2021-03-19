@@ -1,6 +1,6 @@
 ---
 title: Helm chart
-last_reviewed_on: 2020-02-10
+last_reviewed_on: 2021-03-19
 review_in: 6 months
 weight: 4
 ---
@@ -41,6 +41,7 @@ To see the full helm chart take a look at
 
 The main base charts are:
 
+- [chart-base](https://github.com/hmcts/chart-base)
 - [chart-java](https://github.com/hmcts/chart-java)
 - [chart-nodejs](https://github.com/hmcts/chart-nodejs)
 - [chart-job](https://github.com/hmcts/chart-job)
@@ -81,14 +82,14 @@ Some common examples:
 If you are using another sub-chart just for preview such as an embedded redis container,
 then you should make this conditional with:
 
-requirements.yaml:
+Chart.yaml:
 
 ```yaml 
 dependencies:
-   - name: redis
-     version: 5.1.2
-     repository: '@stable'
-     condition: redis.enabled
+  - name: redis
+    version: 10.6.18
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled
 ```
 
 values.yaml:
@@ -132,7 +133,7 @@ To publish a new version:
 - After approval and a passing build merge it to master
 
 You should always publish a new version if you change values.yaml or requirements.yaml,
-Jenkins will fail the build if you don't do this, so you don't need to worry too much.
+Jenkins will automatically increase the version if you don't do this, so you don't need to worry too much.
 
 ### Azure DevOps
 
