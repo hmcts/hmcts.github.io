@@ -1,6 +1,6 @@
 ---
 title: Team
-last_reviewed_on: 2021-03-16
+last_reviewed_on: 2021-03-19
 review_in: 6 months
 weight: 1
 ---
@@ -94,39 +94,19 @@ which can easily be hit if names are too long.
 
 ## Azure Active Directory (AAD) groups
 
-Create a ticket in [the RDO project on Jira](https://tools.hmcts.net/jira/secure/CreateIssue!default.jspa).
-
-Details:
-
-- Project: Reform: DevOps (RDO)
-- Issue Type: Task
-- Summary: New team (team-name) AAD groups
-- Component: Azure Active Directory
+Create a help request in the [#platops-help](https://hmcts-reform.slack.com/messages/platops-help) channel on Slack.
 
 Description:
 
 > Hi
 > I have just started on the "team name" team,
 
-> Can you please create the following AAD groups for my team:
+> Can you please create the a team AAD group: "DTS Team name"
 
-> * dcd_group_\<team-short-name>_v2
-> * dcd_group_ld_\<team-short-name>_v2
-
-> assign the ld group to LaunchDarkly in AAD
-> and give the team group access to Jenkins
-
-> Thanks
-
-Once the group is created you can get the object IDs with:
-
-```shell
-TEAM_NAME=fpla # adjust as needed
-az ad group list --query "[?contains(displayName, '${TEAM_NAME}_v2')].{DisplayName: displayName, ObjectID: objectId}" -o table
-```
-
-You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.
-
-To join the groups see 'TODO section in person onboarding'.
+To join the groups send a pull request to the [devops-azure-aad](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml) git repository.
 
 ## Create Office 365 team group
+
+It is recommended that you create an office 365 group for your team and depending on size possibly one for your dev team as well.
+
+See the Microsoft documentation for [how to create a group](https://support.microsoft.com/en-us/office/create-a-group-in-outlook-04d0c9cf-6864-423c-a380-4fa858f27102#ID0EACAAA=Web).
