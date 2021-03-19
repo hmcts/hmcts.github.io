@@ -96,10 +96,15 @@
     <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
   </li>
 </ul>
+<ul>
+  <li>
+    <a href="/glossary/#glossary"><span>Glossary</span></a>
+  </li>
+</ul>
 <ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
-    <a href="/onboarding/team/#team"><span>Team</span></a>
+    <a href="/onboarding/team/#team-2"><span>Team</span></a>
   </li>
 </ul>
 <ul>
@@ -107,43 +112,58 @@
     <a href="/onboarding/person/#person"><span>Person</span></a>
   </li>
 </ul>
-</li></ul><ul>
-  <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
-  </li>
-</ul>
-<ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
   </li>
 </ul>
+<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
-</li></ul><ul>
-  <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
-  </li>
-</ul>
-<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+  </li>
+</ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
+    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
   </li>
 </ul>
 <ul>
@@ -166,30 +186,10 @@
     <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+</li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -255,10 +255,12 @@ if two developers were involved in the design there’s more buy in</li>
 <li>mention in your PR description that there is going to be more PRs and what is still to come</li>
 </ul>
 <h2 id="when-should-review-happen">When should review happen</h2><p>Reviews need to happen often, otherwise you will build up a backlog of changes.
-Before you start your task for the day check all the open PRs to see if there’s any code that needs a review or if someone needs a bit of help.
-The daily reminder can be automated by slack bot</p>
-<div class="highlight"><pre class="highlight plaintext"><code>/remind #my-pr-channel every weekday at 8:30am Why not start the day with coffee and reviewing code? :wink: Link in channel topic
-</code></pre></div><p>But importantly reviews should not happen just first thing in the morning, 
+Before you start your task for the day check all the open PRs to see if there’s any code that needs a review or if someone needs a bit of help.</p>
+<p>The daily reminder can be automated with the GitHub Slack integration.</p>
+<p>A GitHub team maintainer can go to their <a href="https://github.com/orgs/hmcts/teams?type=source">GitHub teams settings</a>, click &lsquo;Scheduled reminders&rsquo;
+and configure daily reminders for all of your teams pull requests.
+See also GitHub&rsquo;s documentation on <a href="https://docs.github.com/en/github/setting-up-and-managing-organizations-and-teams/managing-scheduled-reminders-for-your-team#creating-a-scheduled-reminder-for-a-team">scheduled reminders</a>.</p>
+<p>But importantly reviews should not happen just first thing in the morning, 
 they should be done after every break, before you start a new ticket or after you’ve opened a PR yourself.</p>
 <p>Once you make your review comments especially if you block the merge you need to be ready to respond quickly to follow up comments so as not to hold up the person who has created the PR.</p>
 <h2 id="who-should-review">Who should review</h2><p>All developers in the team should be reviewing, junior developers to tech lead.
@@ -339,16 +341,16 @@ Please remove this line and everything above and fill the following sections:<sp
 <li><a href="https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104">https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104</a></li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-05-26">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 26 November 2019.
+      This page was last reviewed on 19 March 2021.
 
-        It needs to be reviewed again on 26 May 2020
+        It needs to be reviewed again on 19 September 2021
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 26 May 2020.
+      This page was set to be reviewed before 19 September 2021.
       This might mean the content is out of date.
     </div>
   </div>

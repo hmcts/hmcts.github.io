@@ -96,6 +96,11 @@
     <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
   </li>
 </ul>
+<ul>
+  <li>
+    <a href="/glossary/#glossary"><span>Glossary</span></a>
+  </li>
+</ul>
 <ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
@@ -107,43 +112,58 @@
     <a href="/onboarding/person/#person"><span>Person</span></a>
   </li>
 </ul>
-</li></ul><ul>
-  <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
-  </li>
-</ul>
-<ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
   </li>
 </ul>
+<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
-</li></ul><ul>
-  <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
-  </li>
-</ul>
-<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+  </li>
+</ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
+    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
   </li>
 </ul>
 <ul>
@@ -166,30 +186,10 @@
     <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+</li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -272,46 +272,28 @@ az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts
 <li><p>Add a Jenkins build dashboard in <a href="https://github.com/hmcts/cnp-flux-config/pull/7221">cnp-flux-config</a></p></li>
 <li><p>Scan the organisation manually on Jenkins if it doesn&rsquo;t scan automatically.</p></li>
 </ol>
-<h2 id="azure-active-directory-aad-groups">Azure Active Directory (AAD) groups</h2><p>Create a ticket in <a href="https://tools.hmcts.net/jira/secure/CreateIssue!default.jspa">the RDO project on Jira</a>.</p>
-<p>Details:</p>
-
-<ul>
-<li>Project: Reform: DevOps (RDO)</li>
-<li>Issue Type: Task</li>
-<li>Summary: New team (team-name) AAD groups</li>
-<li>Component: Azure Active Directory</li>
-</ul>
+<h2 id="azure-active-directory-aad-groups">Azure Active Directory (AAD) groups</h2><p>Create a help request in the <a href="https://hmcts-reform.slack.com/messages/platops-help">#platops-help</a> channel on Slack.</p>
 <p>Description:</p>
 
 <blockquote>
 <p>Hi
 I have just started on the &ldquo;team name&rdquo; team,</p>
-<p>Can you please create the following AAD groups for my team:</p>
-
-<ul>
-<li>dcd_group_&lt;team-short-name&gt;_v2</li>
-<li>dcd_group_ld_&lt;team-short-name&gt;_v2</li>
-</ul>
-<p>assign the ld group to LaunchDarkly in AAD
-and give the team group access to Jenkins</p>
-<p>Thanks</p>
+<p>Can you please create the a team AAD group: &ldquo;DTS Team name&rdquo;</p>
 </blockquote>
-<p>Once the group is created you can get the object IDs with:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">TEAM_NAME</span><span class="o">=</span>fpla <span class="c"># adjust as needed</span>
-az ad group list <span class="nt">--query</span> <span class="s2">"[?contains(displayName, '</span><span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="s2">_v2')].{DisplayName: displayName, ObjectID: objectId}"</span> <span class="nt">-o</span> table
-</code></pre></div><p>You will need the object IDs when you create your own key vault and setup your LaunchDarkly access.</p>
-<p>To join the groups see &lsquo;TODO section in person onboarding&rsquo;.</p>
-<h2 id="create-office-365-team-group">Create Office 365 team group</h2>
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-16">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 March 2021.
+<p>To join the groups send a pull request to the <a href="https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml">devops-azure-aad</a> git repository.</p>
+<h2 id="create-office-365-team-group">Create Office 365 team group</h2><p>It is recommended that you create an office 365 group for your team and depending on size possibly one for your dev team as well.</p>
+<p>See the Microsoft documentation for <a href="https://support.microsoft.com/en-us/office/create-a-group-in-outlook-04d0c9cf-6864-423c-a380-4fa858f27102#ID0EACAAA=Web">how to create a group</a>.</p>
 
-        It needs to be reviewed again on 16 September 2021
+              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 19 March 2021.
+
+        It needs to be reviewed again on 19 September 2021
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 September 2021.
+      This page was set to be reviewed before 19 September 2021.
       This might mean the content is out of date.
     </div>
   </div>

@@ -96,10 +96,15 @@
     <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
   </li>
 </ul>
+<ul>
+  <li>
+    <a href="/glossary/#glossary"><span>Glossary</span></a>
+  </li>
+</ul>
 <ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
-    <a href="/onboarding/team/#team"><span>Team</span></a>
+    <a href="/onboarding/team/#team-2"><span>Team</span></a>
   </li>
 </ul>
 <ul>
@@ -107,43 +112,58 @@
     <a href="/onboarding/person/#person"><span>Person</span></a>
   </li>
 </ul>
-</li></ul><ul>
-  <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
-  </li>
-</ul>
-<ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
   </li>
 </ul>
+<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
     <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
-</li></ul><ul>
-  <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
-  </li>
-</ul>
-<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+  </li>
+</ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
+    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
   </li>
 </ul>
 <ul>
@@ -166,30 +186,10 @@
     <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+</li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -240,6 +240,7 @@ for a simple app this is all the configuration you need:</p>
 <p>The main base charts are:</p>
 
 <ul>
+<li><a href="https://github.com/hmcts/chart-base">chart-base</a></li>
 <li><a href="https://github.com/hmcts/chart-java">chart-java</a></li>
 <li><a href="https://github.com/hmcts/chart-nodejs">chart-nodejs</a></li>
 <li><a href="https://github.com/hmcts/chart-job">chart-job</a></li>
@@ -271,12 +272,12 @@ spun up on pull requests,</p>
 </ul>
 <p>If you are using another sub-chart just for preview such as an embedded redis container,
 then you should make this conditional with:</p>
-<p>requirements.yaml:</p>
+<p>Chart.yaml:</p>
 <div class="highlight"><pre class="highlight yaml"><code><span class="na">dependencies</span><span class="pi">:</span>
-   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
-     <span class="na">version</span><span class="pi">:</span> <span class="s">5.1.2</span>
-     <span class="na">repository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">@stable'</span>
-     <span class="na">condition</span><span class="pi">:</span> <span class="s">redis.enabled</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">version</span><span class="pi">:</span> <span class="s">10.6.18</span>
+    <span class="na">repository</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://charts.bitnami.com/bitnami"</span>
+    <span class="na">condition</span><span class="pi">:</span> <span class="s">redis.enabled</span>
 </code></pre></div><p>values.yaml:</p>
 <div class="highlight"><pre class="highlight yaml"><code><span class="na">redis</span><span class="pi">:</span>
   <span class="na">enabled</span><span class="pi">:</span> <span class="no">false</span>
@@ -301,7 +302,7 @@ if it has not already been published.</p>
 <li>After approval and a passing build merge it to master</li>
 </ul>
 <p>You should always publish a new version if you change values.yaml or requirements.yaml,
-Jenkins will fail the build if you don&rsquo;t do this, so you don&rsquo;t need to worry too much.</p>
+Jenkins will automatically increase the version if you don&rsquo;t do this, so you don&rsquo;t need to worry too much.</p>
 <h3 id="azure-devops">Azure DevOps</h3><p>Chart builds are run against the &lsquo;preview&rsquo; AKS cluster, 
 and chart are published to &lsquo;hmctspublic&rsquo; Azure Container Registry.</p>
 <p>See the <a href="https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml">chart-java pipeline</a> for an example.</p>
@@ -334,16 +335,16 @@ publish to &lsquo;hmctspublic&rsquo; ACR</li>
 <h2 id="all-charts">All charts</h2><p>We follow a standard naming convention of <code>chart-&lt;name&gt;</code> for all Helm charts, you can find a list of all
 charts using <a href="https://github.com/hmcts/?utf8=%25E2%259C%2593&amp;q=chart-&amp;type=&amp;language=">GitHub search</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 February 2020.
+      This page was last reviewed on 19 March 2021.
 
-        It needs to be reviewed again on 10 August 2020
+        It needs to be reviewed again on 19 September 2021
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 August 2020.
+      This page was set to be reviewed before 19 September 2021.
       This might mean the content is out of date.
     </div>
   </div>
