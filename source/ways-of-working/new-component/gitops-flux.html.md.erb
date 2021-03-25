@@ -66,7 +66,7 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
      kubectl logs -n admin -l app=flux --tail=100 | grep <Release Name>
      ```
        
-   - If you see an error which says `failed to resolve reference` or `not found` on a particular image, it means the current image deployed in deleted from flux config and you need to manually update to latest image in cnp-flux-config to fix your helm release.
+   - If you see an error which says `failed to resolve reference` or `not found` on a particular image, it means the current image deployed is deleted from the container registry and you need to manually update to latest image in cnp-flux-config to fix your helm release.
    - If you don't see any error logs for your specific release, check if there are any errors that could be blocking flux.
        
      ```
@@ -94,7 +94,7 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
       ```
    - In most cases, helm release gets timedout with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.
   
-     <b>Below are some command to help you debug the issue :</b>
+     <b>Below are some commands to help you debug the issue :</b>
      
      Check the latest status on helm release and if it has already been rolled back to previous release.
      
@@ -104,7 +104,7 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
      
      To check latest events on your namespace
      
-     ```
+     ```shell
      kubectl get events -n <your-namespace>
      ```
      
