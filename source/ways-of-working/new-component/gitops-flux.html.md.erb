@@ -92,11 +92,15 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
       ```
       kubectl delete hr <helm-release-name> -n <namespace>
       ```
-   - In most cases, helm release gets timedout with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.there
-     Check the latest statuson helm release and if it has already been rolled back to previous release.
+   - In most cases, helm release gets timedout with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.
+  
+     <b>Below are some command to help you debug the issue :</b>
+     
+
+     Check the latest status on helm release and if it has already been rolled back to previous release.
      
      ```
-        kubectl describe hr <helm-release-name> -n <your-namespace>
+     kubectl describe hr <helm-release-name> -n <your-namespace>
      ```
      
      To check latest events on your namespace
@@ -122,9 +126,9 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
 
    - Check if the `HelmRelease` has been updated with your change. Run below command and check that the image tag has been updated in the output.
    
-   ```
-          kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
-   ```
+     ```
+     kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
+     ```
 
    - If Changed is not updated in above, [check flux logs](#flux-did-not-commit-new-image-to-github).
    
