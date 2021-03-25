@@ -112,6 +112,12 @@
     <a href="/onboarding/person/#person"><span>Person</span></a>
   </li>
 </ul>
+</li></ul><ul><li><a href="/information-security/"><span>Information security</span></a>
+<ul>
+  <li>
+    <a href="/information-security/certificate-automation.html#tls-certificates"><span>TLS certificates</span></a>
+  </li>
+</ul>
 </li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
   <li>
@@ -121,38 +127,12 @@
 <ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
@@ -186,6 +166,32 @@
     <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
   </li>
 </ul>
+</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates-2"><span>TLS certificates</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+  </li>
+</ul>
 </li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
@@ -197,10 +203,9 @@
     <a href="/ways-of-working/asking-for-help/#asking-for-help"><span>Asking for help</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/information-security/"><span>Information security</span></a>
 <ul>
   <li>
-    <a href="/information-security/certificate-automation.html#tls-certificates-2"><span>TLS certificates</span></a>
+    <a href="/ways-of-working/troubleshooting/#troubleshooting-issues-2"><span>Troubleshooting issues</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -238,41 +243,29 @@
 <h2 id="application-config-in-flux">Application config in flux</h2>
 <ol>
 <li>See <a href="https://github.com/hmcts/cnp-flux-config/blob/master/docs/app-deployment.md#application-configuration">Application Configuration</a> on how to configure and manage your application deployment in various environments.</li>
-<li><code>HelmRelease</code> should refer to the charts automatically published to <a href="https://github.com/hmcts/hmcts-charts">hmcts-charts repository</a> by <a href="/ways-of-working/new-component/helm-chart.html#jenkins">Jenkins</a>. e.g.</li>
-</ol>
+<li><p><code>HelmRelease</code> should refer to the charts automatically published to <a href="https://github.com/hmcts/hmcts-charts">hmcts-charts repository</a> by <a href="/ways-of-working/new-component/helm-chart.html#jenkins">Jenkins</a>. e.g.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>chart:
     git: git@github.com:hmcts/hmcts-charts
     ref: master
     path: stable/plum-recipe-backend
-</code></pre></div>
-<ol>
-<li>Flux configuration should be light, values should be templated within application&rsquo;s chart wherever possible to avoid duplication in each environment. Use <code>{{ .Values.global.environment }}</code> to refer to the environment in your chart.</li>
-<li>Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.</li>
-<li><b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.</li>
-<li>Make sure you follow <a href="https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines">codeowners guidelines</a> on the repo.</li>
+</code></pre></div></li>
+<li><p>Flux configuration should be light, values should be templated within application&rsquo;s chart wherever possible to avoid duplication in each environment. Use <code>{{ .Values.global.environment }}</code> to refer to the environment in your chart.</p></li>
+<li><p>Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.</p></li>
+<li><p><b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.</p></li>
+<li><p>Make sure you follow <a href="https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines">codeowners guidelines</a> on the repo.</p></li>
 </ol>
-<h2 id="troubleshooting-issues">Troubleshooting issues</h2>
-<ul>
-<li><p>For issue like latest image not updated to git or a HelmRelease  CRD not updated/created in cluster , you need to look at flux pod logs.</p>
-<p><code>kubectl logs -n admin -l app=flux --tail=100</code></p>
-<p>To search for your application specific logs :</p>
-<p><code>kubectl logs -n admin -l app=flux --tail=100 | grep &lt;Release Name&gt;</code></p></li>
-<li><p>When HelmRelease is updated but application pods are not created/ updated , you need to look at helm-operator pod logs.</p>
-<p><code>kubectl logs -n admin -l app=helm-operator --tail=100</code></p>
-<p>To search for your application specific logs :</p>
-<p><code>kubectl logs -n admin -l app=helm-operator --tail=100 | grep &lt;Release Name&gt;</code></p></li>
-</ul>
+<h2 id="troubleshooting-issues">Troubleshooting issues</h2><p>See <a href="../troubleshooting/">troubleshooting section</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-09-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 March 2021.
+      This page was last reviewed on 25 March 2021.
 
-        It needs to be reviewed again on 19 September 2021
+        It needs to be reviewed again on 25 September 2021
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 September 2021.
+      This page was set to be reviewed before 25 September 2021.
       This might mean the content is out of date.
     </div>
   </div>

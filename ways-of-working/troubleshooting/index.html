@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>API design - HMCTS</title>
+    <title>Troubleshooting issues - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="hmcts.github.io/ways-of-working/standards/apis.html">
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/troubleshooting/">
 
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="API design" />
+      <meta property="og:title" content="Troubleshooting issues" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/ways-of-working/standards/apis.html" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/troubleshooting/" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="API design - HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/standards/apis.html" />
+      <meta property="twitter:title" content="Troubleshooting issues - HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/troubleshooting/" />
 
     
   </head>
@@ -205,7 +205,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/troubleshooting/#troubleshooting-issues-2"><span>Troubleshooting issues</span></a>
+    <a href="/ways-of-working/troubleshooting/#troubleshooting-issues"><span>Troubleshooting issues</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -221,20 +221,70 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="api-design">API design</h1><p>Rather than reinvent the wheel, we&rsquo;ve decided to reuse and amend the good work done by zalando. 
-Our fork of their standards can be found <a href="https://github.com/hmcts/restful-api-standards">here</a> 
-and is published <a href="https://hmcts.github.io/restful-api-standards/">here</a>.</p>
+            <h1 id="troubleshooting-issues">Troubleshooting issues</h1><h2 id="flux-gitops">Flux / Gitops</h2><h3 id="new-image-is-not-updated-in-cluster">New image is not updated in cluster.</h3>
+<ul>
+<li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. If it hasn&rsquo;t committed to Github, see <a href="#flux-did-not-commit-new-image-to-github"> Flux did not commit new image to Github</a>.</li>
+<li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
+<div class="highlight"><pre class="highlight shell"><code>  kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+</code></pre></div></li>
+<li><p>If Image is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
+<li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</a></p></li>
+</ul>
+<h3 id="flux-did-not-commit-new-image-to-github">Flux did not commit new image to Github.</h3>
+<ul>
+<li>Flux keeps polling ACR for new images, but it should generally update the new image in 10 minutes.</li>
+<li><p>Look at flux logs to see if there are any errors specific to your release</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100 | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If you see an error which says <code>failed to resolve reference</code> or <code>not found</code> on a particular image, it means the current image deployed is deleted from the container registry and you need to manually update to latest image in cnp-flux-config to fix your helm release.</p></li>
+<li><p>If you don&rsquo;t see any error logs for your specific release, check if there are any errors that could be blocking flux.</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
+</code></pre></div></li>
+<li><p>If there are no errors, it is likely that flux pod is stuck and a symptom for it is not seeing a log containing <code>cmd=&quot;kubectl apply -f -</code> in flux logs. You should <a href="../asking-for-help">ask for help from platops</a>) to get it sorted.</p>
+<div class="highlight"><pre class="highlight shell"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
+</code></pre></div></li>
+</ul>
+<h3 id="updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</h3>
+<ul>
+<li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
+<li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
+<div class="highlight"><pre class="highlight shell"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-operator <span class="nt">--tail</span><span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
+<div class="highlight"><pre class="highlight shell"><code>  kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
+</code></pre></div></li>
+<li><p>In most cases, helm release gets timedout with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
+<p><b>Below are some commands to help you debug the issue :</b></p>
+<p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div><p>To check latest events on your namespace</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl get events <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div><p>To check status of pods</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl get pods <span class="nt">-n</span> &lt;your-namespace&gt; | <span class="nb">grep</span> &lt;helm-release-name&gt;
+</code></pre></div><p>To check status of a specific pod which is not running</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl describe pod &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div></li>
+<li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
+</ul>
+<h3 id="change-in-flux-config-is-not-applied-to-cluster">Change in flux config is not applied to cluster.</h3>
+<ul>
+<li><p>Check if the <code>HelmRelease</code> has been updated with your change. Run below command and check that the image tag has been updated in the output.</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+</code></pre></div></li>
+<li><p>If Changed is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
+<li><p>If the change is updated, but still not reflecting on your pods/ application. see <a href="#updated-helmrelease-is-not-deployed">Helm operator logs</a></p></li>
+</ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-09-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 March 2021.
+      This page was last reviewed on 25 March 2021.
 
-        It needs to be reviewed again on 19 September 2021
+        It needs to be reviewed again on 25 September 2021
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 September 2021.
+      This page was set to be reviewed before 25 September 2021.
       This might mean the content is out of date.
     </div>
   </div>
@@ -243,8 +293,8 @@ and is published <a href="https://hmcts.github.io/restful-api-standards/">here</
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/standards/apis.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'API%20design'&amp;body=Problem%20with%20'API%20design'%20(hmcts.github.io/ways-of-working/standards/apis.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/troubleshooting/index.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Troubleshooting%20issues'&amp;body=Problem%20with%20'Troubleshooting%20issues'%20(hmcts.github.io/ways-of-working/troubleshooting/)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
