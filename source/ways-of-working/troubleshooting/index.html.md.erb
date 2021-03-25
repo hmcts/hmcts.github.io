@@ -1,0 +1,97 @@
+---
+title: Troubleshooting issues
+last_reviewed_on: 2021-03-25
+review_in: 6 months
+weight: 99
+---
+
+# <%= current_page.data.title %>
+
+## Flux/ Gitops
+
+### New image is not updated in cluster.
+   
+   - Start with checking [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) to make sure flux has updated/ committed the image. If it hasn't committed to Github, see [ Flux did not commit new image to Github](#flux-did-not-commit-new-image-to-github).
+   - If flux has committed the new image to Github, check if the `HelmRelease` has been updated by Flux. Run below command and check that the image tag has been updated in the output
+    
+    ```shell
+      kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
+    ```
+   - If Image is not updated in above, [check flux logs](#flux-did-not-commit-new-image-to-github).
+   - If the image tag is updated and still application pods are not deployed, see [Updated HelmRelease is not deployed](#updated-helmrelease-is-not-deployed) 
+
+### Flux did not commit new image to Github.
+
+   - Flux keeps polling ACR for new images, but it should generally update the new image in 10 minutes.
+   - Look at flux logs to see if there are any errors specific to your release  
+      
+     ```shell
+     kubectl logs -n admin -l app=flux --tail=100 | grep <Release Name>
+     ```
+       
+   - If you see an error which says `failed to resolve reference` or `not found` on a particular image, it means the current image deployed is deleted from the container registry and you need to manually update to latest image in cnp-flux-config to fix your helm release.
+   - If you don't see any error logs for your specific release, check if there are any errors that could be blocking flux.
+       
+     ```shell
+     kubectl logs -n admin -l app=flux --tail=100
+     ```
+        
+   - If there are no errors, it is likely that flux pod is stuck and a symptom for it is not seeing a log containing `cmd="kubectl apply -f -` in flux logs. You should [ask for help from platops](../asking-for-help)) to get it sorted.
+      
+      ```shell
+      kubectl logs -n admin -l app=flux --tail=100
+      ```
+  
+### Updated HelmRelease is not deployed
+    
+   - Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.
+   - Look at helm operator logs to see if there are any errors specific to your helm release
+   
+      ```shell
+      kubectl logs -n admin -l app=helm-operator --tail=1000 | grep <Release Name>
+      ```
+   - If you see any errors like, `status 'pending-install' of release does not allow a safe upgrade"`. You need to delete `HelmRelease` for fixing this, request platops for help if you do not have permissions.
+     
+      ```shell
+      kubectl delete hr <helm-release-name> -n <namespace>
+      ```
+   - In most cases, helm release gets timedout with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.
+  
+     <b>Below are some commands to help you debug the issue :</b>
+     
+     Check the latest status on helm release and if it has already been rolled back to previous release.
+     
+     ```shell
+     kubectl describe hr <helm-release-name> -n <your-namespace>
+     ```
+     
+     To check latest events on your namespace
+     
+     ```shell
+     kubectl get events -n <your-namespace>
+     ```
+     
+     To check status of pods
+     
+     ```shell
+     kubectl get pods -n <your-namespace> | grep <helm-release-name>
+     ```
+     
+     To check status of a specific pod which is not running 
+     
+     ```shell
+     kubectl describe pod <pod-name> -n <your-namespace>
+     ```
+   - If you are looking at pods after a long time, `HelmRelease` might have been rolled back and you won't have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.
+   
+###  Change in flux config is not applied to cluster.
+
+   - Check if the `HelmRelease` has been updated with your change. Run below command and check that the image tag has been updated in the output.
+   
+     ```shell
+     kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
+     ```
+
+   - If Changed is not updated in above, [check flux logs](#flux-did-not-commit-new-image-to-github).
+   
+   - If the change is updated, but still not reflecting on your pods/ application. see [Helm operator logs](#updated-helmrelease-is-not-deployed)
