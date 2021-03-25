@@ -1,6 +1,6 @@
 ---
 title: GitOps
-last_reviewed_on: 2021-03-19
+last_reviewed_on: 2021-03-25
 review_in: 6 months
 weight: 6
 ---
@@ -33,13 +33,12 @@ One of our principles being <b>Everything as Code</b>, we practise [Gitops](http
 1. See [Application Configuration](https://github.com/hmcts/cnp-flux-config/blob/master/docs/app-deployment.md#application-configuration) on how to configure and manage your application deployment in various environments.
 2. `HelmRelease` should refer to the charts automatically published to [hmcts-charts repository](https://github.com/hmcts/hmcts-charts) by [Jenkins](helm-chart.html#jenkins). e.g.
 
-```
-chart:
-    git: git@github.com:hmcts/hmcts-charts
-    ref: master
-    path: stable/plum-recipe-backend
-```
-
+    ```
+    chart:
+        git: git@github.com:hmcts/hmcts-charts
+        ref: master
+        path: stable/plum-recipe-backend
+    ```
 3. Flux configuration should be light, values should be templated within application's chart wherever possible to avoid duplication in each environment. Use `{{ .Values.global.environment }}` to refer to the environment in your chart.
 4. Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.
 5. <b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.
@@ -47,21 +46,5 @@ chart:
 
 ## Troubleshooting issues
 
-- For issue like latest image not updated to git or a HelmRelease  CRD not updated/created in cluster , you need to look at flux pod logs. 
-
-    `kubectl logs -n admin -l app=flux --tail=100 `
-    
-    To search for your application specific logs :
-        
-    `kubectl logs -n admin -l app=flux --tail=100 | grep <Release Name>`
-    
-  
-- When HelmRelease is updated but application pods are not created/ updated , you need to look at helm-operator pod logs. 
-
-    `kubectl logs -n admin -l app=helm-operator --tail=100`
-    
-    To search for your application specific logs :
-            
-    `kubectl logs -n admin -l app=helm-operator --tail=100 | grep <Release Name>`
- 
+See [troubleshooting section](../troubleshooting/)
  
