@@ -9,6 +9,9 @@ weight: 99
 
 ## Flux / Gitops
 
+   > :warning: Always check __why__ your release or pod has failed in the first instance.
+   > Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be _hiding a potential bug_ which could also _occur in production_. 
+
 ### New image is not updated in cluster.
    
    - Start with checking [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) to make sure flux has updated/ committed the image. If it hasn't committed to Github, see [ Flux did not commit new image to Github](#flux-did-not-commit-new-image-to-github).
