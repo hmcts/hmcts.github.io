@@ -221,7 +221,85 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="troubleshooting-issues">Troubleshooting issues</h1><h2 id="flux-gitops">Flux / Gitops</h2>
+            <h1 id="troubleshooting-issues">Troubleshooting issues</h1><h2 id="connecting-to-aks-clusters">Connecting to AKS Clusters</h2>
+<ul>
+<li>By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.</li>
+<li><p>You can connect to AKS clusters using <code>az aks get-credentials</code>. Below are some handy commands,</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="c">#Preview (only one cluster is active at a given time)</span>
+az aks get-credentials <span class="nt">--resource-group</span> preview-00-rg <span class="nt">--name</span> preview-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-DEV
+az aks get-credentials <span class="nt">--resource-group</span> preview-01-rg <span class="nt">--name</span> preview-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-DEV
+
+<span class="c">#AAT</span>
+az aks get-credentials <span class="nt">--resource-group</span> aat-00-rg <span class="nt">--name</span> aat-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-STG
+az aks get-credentials <span class="nt">--resource-group</span> aat-01-rg <span class="nt">--name</span> aat-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-STG
+
+<span class="c">#Perftest</span>
+az aks get-credentials <span class="nt">--resource-group</span> perftest-00-rg <span class="nt">--name</span> perftest-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-TEST 
+az aks get-credentials <span class="nt">--resource-group</span> perftest-01-rg <span class="nt">--name</span> perftest-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-TEST 
+
+<span class="c">#ITHC</span>
+az aks get-credentials <span class="nt">--resource-group</span> ithc-00-rg <span class="nt">--name</span> ithc-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-ITHC 
+az aks get-credentials <span class="nt">--resource-group</span> ithc-01-rg <span class="nt">--name</span> ithc-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-ITHC 
+
+<span class="c">#DEMO (only one cluster is active at a given time)</span>
+az aks get-credentials <span class="nt">--resource-group</span> demo-00-rg <span class="nt">--name</span> demo-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-DEMO
+az aks get-credentials <span class="nt">--resource-group</span> demo-01-rg <span class="nt">--name</span> demo-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-DEMO
+
+<span class="c">#Prod (Requires additional permissions)</span>
+
+az aks get-credentials <span class="nt">--resource-group</span> prod-00-rg <span class="nt">--name</span> prod-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-PROD
+az aks get-credentials <span class="nt">--resource-group</span> prod-01-rg <span class="nt">--name</span> prod-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-PROD
+
+</code></pre></div><p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl config use-context perftest-00-aks
+kubectl config use-context aat-00-aks
+</code></pre></div></li>
+</ul>
+<h2 id="jenkins">Jenkins</h2><h3 id="cannot-see-my-branch-pr-in-jenkins">Cannot see my branch/PR in Jenkins</h3>
+<ul>
+<li>Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.</li>
+<li>Branch/ PR is not listed if its last commit creation date is older than 30 days.</li>
+</ul>
+<h3 id="helm-upgrade-failed-helm-release-timed-out-waiting-for-condition-helm-release-failure">Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure</h3>
+<ul>
+<li>See <a href="#connecting-to-aks-clusters">Connecting to AKS Clusters</a> and connect to the relevant cluster.</li>
+<li>These errors usually mean your pods didn&rsquo;t start as expected in time. </li>
+<li>It could be that they are stuck in <code>Pending</code>, <code>ContainerCreating</code> status or might be failing to startup leading to <code>CrashLoopBackOff</code> status.</li>
+<li>Follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further</li>
+</ul>
+<h2 id="debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</h2>
+<ul>
+<li>There could be many reasons why applications could fail to startup like :
+
+<ul>
+<li>A secret referred in helm chart is missing in keyvaults</li>
+<li>Pod identity is not able to pull keyvault secrets due to missing permissions</li>
+<li>There is not enough space in the cluster to fit in a new pod.</li>
+<li>Pod is scheduled, but fails to pass readiness (<code>/health/readiness</code>) or  liveness (<code>/health/liveness</code>) checks.</li>
+</ul></li>
+<li><p>Below are some handy kubectl commands to debug the issues</p>
+<p>To check latest events on your namespace:</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl get events <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div><p>To check status of pods:</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl get pods <span class="nt">-n</span> &lt;your-namespace&gt; | <span class="nb">grep</span> &lt;helm-release-name&gt;
+
+ <span class="c">#Examples</span>
+ <span class="c"># kubectl get pods -n ccd | grep ccd-data-store-api</span>
+ <span class="c"># kubectl get pods -n ccd | grep pr-123</span>
+</code></pre></div><p>To check status of a specific pod which is not running</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl describe pod &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div><p>To check logs of pods which is not starting</p>
+<div class="highlight"><pre class="highlight shell"><code> kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; 
+
+ <span class="c">#To follow logs</span>
+ kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; <span class="nt">-f</span>
+
+ <span class="c"># To check previous pod logs if its restarting</span>
+ kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; <span class="nt">-p</span>
+
+</code></pre></div></li>
+</ul>
+<h2 id="flux-gitops">Flux / Gitops</h2>
 <blockquote>
 <p>Always check <strong>why</strong> your release or pod has failed in the first instance.
 Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be <em>hiding a potential bug</em> which could also <em>occur in production</em>.</p>
@@ -258,18 +336,12 @@ Although you may have permissions to delete a helm release or pod in a non-produ
 <li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
 <div class="highlight"><pre class="highlight shell"><code>  kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
 </code></pre></div></li>
-<li><p>In most cases, helm release gets timedout with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
-<p><b>Below are some commands to help you debug the issue :</b></p>
+<li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
 <p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
 <div class="highlight"><pre class="highlight shell"><code> kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
-</code></pre></div><p>To check latest events on your namespace</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl get events <span class="nt">-n</span> &lt;your-namespace&gt;
-</code></pre></div><p>To check status of pods</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl get pods <span class="nt">-n</span> &lt;your-namespace&gt; | <span class="nb">grep</span> &lt;helm-release-name&gt;
-</code></pre></div><p>To check status of a specific pod which is not running</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl describe pod &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
 </code></pre></div></li>
 <li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
+<li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
 </ul>
 <h3 id="change-in-flux-config-is-not-applied-to-cluster">Change in flux config is not applied to cluster.</h3>
 <ul>
