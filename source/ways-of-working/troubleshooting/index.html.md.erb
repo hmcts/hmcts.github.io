@@ -7,6 +7,105 @@ weight: 99
 
 # <%= current_page.data.title %>
 
+## Connecting to AKS Clusters
+
+  - By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.
+  - You can connect to AKS clusters using `az aks get-credentials`. Below are some handy commands,
+    
+    ```shell
+    #Preview (only one cluster is active at a given time)
+    az aks get-credentials --resource-group preview-00-rg --name preview-00-aks --subscription DCD-CFTAPPS-DEV
+    az aks get-credentials --resource-group preview-01-rg --name preview-01-aks --subscription DCD-CFTAPPS-DEV
+    
+    #AAT
+    az aks get-credentials --resource-group aat-00-rg --name aat-00-aks --subscription DCD-CFTAPPS-STG
+    az aks get-credentials --resource-group aat-01-rg --name aat-01-aks --subscription DCD-CFTAPPS-STG
+    
+
+    #Perftest
+    az aks get-credentials --resource-group perftest-00-rg --name perftest-00-aks --subscription DCD-CFTAPPS-TEST 
+    az aks get-credentials --resource-group perftest-01-rg --name perftest-01-aks --subscription DCD-CFTAPPS-TEST 
+    
+    #ITHC
+    az aks get-credentials --resource-group ithc-00-rg --name ithc-00-aks --subscription DCD-CFTAPPS-ITHC 
+    az aks get-credentials --resource-group ithc-01-rg --name ithc-01-aks --subscription DCD-CFTAPPS-ITHC 
+    
+    #DEMO (only one cluster is active at a given time)
+    az aks get-credentials --resource-group demo-00-rg --name demo-00-aks --subscription DCD-CFTAPPS-DEMO
+    az aks get-credentials --resource-group demo-01-rg --name demo-01-aks --subscription DCD-CFTAPPS-DEMO
+    
+    #Prod (Requires additional permissions)
+    
+    az aks get-credentials --resource-group prod-00-rg --name prod-00-aks --subscription DCD-CFTAPPS-PROD
+    az aks get-credentials --resource-group prod-01-rg --name prod-01-aks --subscription DCD-CFTAPPS-PROD
+    
+    ```
+    Once you have logged in, you can switch between clusters using [kubectx](https://github.com/ahmetb/kubectx) or below kubectl commands:
+    
+    ```shell
+    kubectl config use-context perftest-00-aks
+    kubectl config use-context aat-00-aks
+    ```
+
+## Jenkins
+
+### Cannot see my branch/PR in Jenkins
+
+  - Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.
+  - Branch/ PR is not listed if its last commit creation date is older than 30 days.
+
+### Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure
+  
+  - See [Connecting to AKS Clusters](#connecting-to-aks-clusters) and connect to the relevant cluster.
+  - These errors usually mean your pods didn't start as expected in time. 
+  - It could be that they are stuck in `Pending`, `ContainerCreating` status or might be failing to startup leading to `CrashLoopBackOff` status.
+  - Follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further
+  
+
+## Debug Application Startup issues in AKS
+ 
+- There could be many reasons why applications could fail to startup like :
+    - A secret referred in helm chart is missing in keyvaults
+    - Pod identity is not able to pull keyvault secrets due to missing permissions
+    - There is not enough space in the cluster to fit in a new pod.
+    - Pod is scheduled, but fails to pass readiness (`/health/readiness`) or  liveness (`/health/liveness`) checks.
+- Below are some handy kubectl commands to debug the issues
+    
+    To check latest events on your namespace:
+     
+     ```shell
+     kubectl get events -n <your-namespace>
+     ```
+     
+     To check status of pods:
+     
+     ```shell
+     kubectl get pods -n <your-namespace> | grep <helm-release-name>
+     
+     #Examples
+     # kubectl get pods -n ccd | grep ccd-data-store-api
+     # kubectl get pods -n ccd | grep pr-123
+     ```
+     
+     To check status of a specific pod which is not running 
+     
+     ```shell
+     kubectl describe pod <pod-name> -n <your-namespace>
+     ```
+     
+     To check logs of pods which is not starting
+     
+     ```shell
+     kubectl logs <pod-name> -n <your-namespace> 
+     
+     #To follow logs
+     kubectl logs <pod-name> -n <your-namespace> -f
+     
+     # To check previous pod logs if its restarting
+     kubectl logs <pod-name> -n <your-namespace> -p
+     
+     ```
+
 ## Flux / Gitops
 
    > Always check __why__ your release or pod has failed in the first instance.
@@ -58,35 +157,17 @@ weight: 99
       ```shell
       kubectl delete hr <helm-release-name> -n <namespace>
       ```
-   - In most cases, helm release gets timedout with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.
-  
-     <b>Below are some commands to help you debug the issue :</b>
-     
+   - In most cases, helm release gets timed out with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.
+       
      Check the latest status on helm release and if it has already been rolled back to previous release.
      
      ```shell
      kubectl describe hr <helm-release-name> -n <your-namespace>
      ```
-     
-     To check latest events on your namespace
-     
-     ```shell
-     kubectl get events -n <your-namespace>
-     ```
-     
-     To check status of pods
-     
-     ```shell
-     kubectl get pods -n <your-namespace> | grep <helm-release-name>
-     ```
-     
-     To check status of a specific pod which is not running 
-     
-     ```shell
-     kubectl describe pod <pod-name> -n <your-namespace>
-     ```
    - If you are looking at pods after a long time, `HelmRelease` might have been rolled back and you won't have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.
-   
+ 
+   - If your old pods are still running when you check, follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further.
+    
 ###  Change in flux config is not applied to cluster.
 
    - Check if the `HelmRelease` has been updated with your change. Run below command and check that the image tag has been updated in the output.
