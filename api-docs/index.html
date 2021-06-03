@@ -127,23 +127,29 @@
 <ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+  </li>
+</ul>
+</li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
   </li>
 </ul>
 </li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
+    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
   </li>
 </ul>
 <ul>
@@ -169,12 +175,12 @@
 </li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates-2"><span>TLS certificates</span></a>
+    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
   </li>
 </ul>
 <ul>
@@ -184,18 +190,12 @@
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates-2"><span>TLS certificates</span></a>
   </li>
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
   </li>
 </ul>
 </li></ul><ul>
@@ -222,12 +222,10 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="api-documentation">API Documentation</h1><p>All teams building APIs should be automatically publishing their documentation using the 
-<a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md">OpenAPI Specification 3.0</a>. The
-<a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md">OpenAPI Specification 2.0</a> may be used
-where version 3.0 cannot be used. For example, automated API gateway configuration may not support version 3.0 in which case
-version 2.0 may be used.
+<a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md">OpenAPI Specification 3.0</a>.
 Teams should use <a href="https://github.com/hmcts/reform-api-docs#publish-swagger-docs">these instructions</a> 
 for publishing the swagger spec file to the <a href="https://github.com/hmcts/reform-api-docs">central api docs repository</a>.</p>
+<p>It&rsquo;s expected that all APIs follow our <a href="/ways-of-working/standards/apis.html#api-design">API standards</a></p>
 <p>A network map of microservice dependencies can be generated using this central repository by manually 
 commiting some additional information about the new service. 
 See the <a href="https://github.com/hmcts/reform-api-docs/blob/master/README.md">README</a> 
