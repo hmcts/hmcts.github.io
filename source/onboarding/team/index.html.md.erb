@@ -79,9 +79,9 @@ which can easily be hit if names are too long.
 
 ## Jenkins org setup
 
- 1. Jenkins uses GitHub App Authentication, Request on [#rpe] (https://hmcts-reform.slack.com/app_redirect?channel=rpe) to add a [Github app for your Jenkins Org](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide).
+ 1. Jenkins uses GitHub App Authentication, Request on [#platops-help] (https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to add a [Github app for your Jenkins Org](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide).
  2. Please give permissions based on an [existing Github App](https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe) as we give additional permissions to what is listed in the plugin's documentation (only GitHub app maintainers can see this).
- 3. RPE team will store the private key of app secrets to keyvault and [add credentials to Jenkins](https://github.com/hmcts/cnp-flux-config/pull/2148/files) .
+ 3. Platform Operations will store the private key of app secrets to keyvault and [add credentials to Jenkins](https://github.com/hmcts/cnp-flux-config/pull/2148/files) .
     
     ```bash
     TEAM_NAME=$1
