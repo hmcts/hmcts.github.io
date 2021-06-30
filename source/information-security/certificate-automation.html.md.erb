@@ -11,7 +11,7 @@ weight: 3
 
 Where technically suitable, all new HMCTS domains must use automated certificate techniques and services, 
 such as [Microsoft managed certificates](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain-https#option-1-default-use-a-certificate-managed-by-front-door)
- or LetsEncrypt (uses ACME).
+(most preferred) or LetsEncrypt (uses ACME).
 
 Over time, existing HMCTS domains must also be considered for migration to automated certificate provisioning and 
 management techniques (preferably on their next certificate renewal cycle in advance of expiry) in order to reduce 
@@ -23,16 +23,17 @@ unexpected certificate expiry.
 
 ## Manual certificate requests
 
-Where the use of LetsEncrypt is suitable, New requests for certificates should be submitted to the Platform Operations team by raising a DTSPO Jira ticket containing the following information:
+If your site is being hosted on:
+
+- [Azure FrontDoor](https://docs.microsoft.com/en-us/azure/frontdoor/)
+- [Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/)
+- [Azure CDN](https://docs.microsoft.com/en-us/azure/cdn/)
+
+Then you must use the [Microsoft managed certificates](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain-https#option-1-default-use-a-certificate-managed-by-front-door)
+Otherwise please raise a request in [#platops-help](https://app.slack.com/client/T1L0WSW9F/C8SR5CAMU),
+the ticket should contain the following information:
 
 - Where the certificate is to be hosted
 - DNS Name and SANS
 
-Once complete, raise a request in #platops-help.
-Renewals using this method are automated so there is no need to submit future requests for these certificates.
-Apps which need to be passed to a another supplier or require Frontdoor, CDN, or App Service should use managed certs. 
-
 Where automated certificate renewal is not possible, new certificates must be acquired through the DTS Operations Management team.
-
-To request a manually issued certificate, complete the [certificate request form](https://tools.hmcts.net/confluence/display/RD/Requesting+SSL+Certificates) and send it, 
-with a Certificate Signing Request (CSR), to Opsconfman@hmcts.net.
