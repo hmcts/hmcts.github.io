@@ -116,7 +116,7 @@ We now have the ability to add additional value configurations for use within th
 * Your PR needs to have a label in the format of ```pr-values: application``` (example: ```pr-values: ccd```
 * You need to create a template using the name of ```values.application.preview.template.yaml``` (example: ```values.ccd.preview.template.yaml``` and add any specific values you need on the PR.
 
-Providing you do follow the above steps, the Jenkins library will parse the labels and form a list of templates to use, apply envsubst to override templated config and append the files to Helm.
+Providing you follow the above steps, the Jenkins library will parse the labels and form a list of templates to use, apply `envsubst` to override templated config and append the files to Helm.
 
 ## Publishing helm charts
 
