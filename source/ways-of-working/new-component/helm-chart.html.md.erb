@@ -111,7 +111,7 @@ redis:
 
 ## Advanced values for the preview environment
 
-We now have the ability to add additional value configurations for use within the preview environment which will be useful where teams need to test ccd/xui per PR. Historically this would have meant that there could be around 10-15 pods running per PR. To make use of this feature you need the following:
+We have the ability to add additional value configurations for use within the preview environment which will be useful where teams need to test ccd/xui per PR. Historically this would have meant that there could be around 10-15 pods running per PR. To make use of this feature you need the following:
 
 * Your PR needs to have a label in the format of ```pr-values: application``` (example: ```pr-values: ccd```
 * You need to create a template using the name of ```values.application.preview.template.yaml``` (example: ```values.ccd.preview.template.yaml``` and add any specific values you need on the PR.
