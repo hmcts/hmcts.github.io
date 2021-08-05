@@ -18,13 +18,13 @@ weight: 99
     az aks get-credentials --resource-group preview-01-rg --name preview-01-aks --subscription DCD-CFTAPPS-DEV
     
     #AAT
-    az aks get-credentials --resource-group aat-00-rg --name aat-00-aks --subscription DCD-CFTAPPS-STG
-    az aks get-credentials --resource-group aat-01-rg --name aat-01-aks --subscription DCD-CFTAPPS-STG
+    az aks get-credentials --resource-group cft-aat-00-rg --name cft-aat-00-aks --subscription DCD-CFTAPPS-STG
+    az aks get-credentials --resource-group cft-aat-01-rg --name cft-aat-01-aks --subscription DCD-CFTAPPS-STG
     
 
     #Perftest
-    az aks get-credentials --resource-group perftest-00-rg --name perftest-00-aks --subscription DCD-CFTAPPS-TEST 
-    az aks get-credentials --resource-group perftest-01-rg --name perftest-01-aks --subscription DCD-CFTAPPS-TEST 
+    az aks get-credentials --resource-group cft-perftest-00-rg --name cft-perftest-00-aks --subscription DCD-CFTAPPS-TEST 
+    az aks get-credentials --resource-group cft-perftest-01-rg --name cft-perftest-01-aks --subscription DCD-CFTAPPS-TEST 
     
     #ITHC
     az aks get-credentials --resource-group ithc-00-rg --name ithc-00-aks --subscription DCD-CFTAPPS-ITHC 
@@ -43,8 +43,8 @@ weight: 99
     Once you have logged in, you can switch between clusters using [kubectx](https://github.com/ahmetb/kubectx) or below kubectl commands:
     
     ```shell
-    kubectl config use-context perftest-00-aks
-    kubectl config use-context aat-00-aks
+    kubectl config use-context cft-perftest-00-aks
+    kubectl config use-context cft-aat-00-aks
     ```
 
 ## Jenkins
