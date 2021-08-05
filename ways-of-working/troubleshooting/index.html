@@ -230,12 +230,12 @@ az aks get-credentials <span class="nt">--resource-group</span> preview-00-rg <s
 az aks get-credentials <span class="nt">--resource-group</span> preview-01-rg <span class="nt">--name</span> preview-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-DEV
 
 <span class="c">#AAT</span>
-az aks get-credentials <span class="nt">--resource-group</span> aat-00-rg <span class="nt">--name</span> aat-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-STG
-az aks get-credentials <span class="nt">--resource-group</span> aat-01-rg <span class="nt">--name</span> aat-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-STG
+az aks get-credentials <span class="nt">--resource-group</span> cft-aat-00-rg <span class="nt">--name</span> cft-aat-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-STG
+az aks get-credentials <span class="nt">--resource-group</span> cft-aat-01-rg <span class="nt">--name</span> cft-aat-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-STG
 
 <span class="c">#Perftest</span>
-az aks get-credentials <span class="nt">--resource-group</span> perftest-00-rg <span class="nt">--name</span> perftest-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-TEST 
-az aks get-credentials <span class="nt">--resource-group</span> perftest-01-rg <span class="nt">--name</span> perftest-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-TEST 
+az aks get-credentials <span class="nt">--resource-group</span> cft-perftest-00-rg <span class="nt">--name</span> cft-perftest-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-TEST 
+az aks get-credentials <span class="nt">--resource-group</span> cft-perftest-01-rg <span class="nt">--name</span> cft-perftest-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-TEST 
 
 <span class="c">#ITHC</span>
 az aks get-credentials <span class="nt">--resource-group</span> ithc-00-rg <span class="nt">--name</span> ithc-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-ITHC 
@@ -251,8 +251,8 @@ az aks get-credentials <span class="nt">--resource-group</span> prod-00-rg <span
 az aks get-credentials <span class="nt">--resource-group</span> prod-01-rg <span class="nt">--name</span> prod-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-PROD
 
 </code></pre></div><p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl config use-context perftest-00-aks
-kubectl config use-context aat-00-aks
+<div class="highlight"><pre class="highlight shell"><code>kubectl config use-context cft-perftest-00-aks
+kubectl config use-context cft-aat-00-aks
 </code></pre></div></li>
 </ul>
 <h2 id="jenkins">Jenkins</h2><h3 id="cannot-see-my-branch-pr-or-this-project-is-currently-disabled-in-jenkins">Cannot see my branch/PR or This project is currently disabled in Jenkins</h3>
