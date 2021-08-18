@@ -82,6 +82,7 @@ which can easily be hit if names are too long.
 There are Jenkins servers setup for each business area within Platform Operations: CFT and SDS
 
 CFT stands for Civil, Family & Tribunal
+
 SDS stands for Shared Services
 
 To set up a Jenkins pipeline integration with your GitHub repo, you will need to create an organisation within Jenkins.
@@ -91,6 +92,7 @@ The steps to be followed below depend on what business area your application is 
 If your application is in CFT, see Step 1. If your application is in SDS, skip to Step 4.
 
  1. Jenkins uses GitHub App Authentication, Request on [#platops-help] (https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to add a [Github app for your Jenkins Org](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide).
+
  2. Please give permissions based on an [existing Github App](https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe) as we give additional permissions to what is listed in the plugin's documentation (only GitHub app maintainers can see this).
  3. Platform Operations will store the private key of app secrets to keyvault and [add credentials to Jenkins](https://github.com/hmcts/cnp-flux-config/pull/2148/files) .
     
