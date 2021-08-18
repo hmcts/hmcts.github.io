@@ -79,6 +79,17 @@ which can easily be hit if names are too long.
 
 ## Jenkins org setup
 
+There are Jenkins servers setup for each business area within Platform Operations: CFT and SDS
+
+CFT stands for Civil, Family & Tribunal
+SDS stands for Shared Services
+
+To set up a Jenkins pipeline integration with your GitHub repo, you will need to create an organisation within Jenkins.
+
+The steps to be followed below depend on what business area your application is in.
+
+If your application is in CFT, see Step 1. If your application is in SDS, skip to Step 4.
+
  1. Jenkins uses GitHub App Authentication, Request on [#platops-help] (https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to add a [Github app for your Jenkins Org](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide).
  2. Please give permissions based on an [existing Github App](https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe) as we give additional permissions to what is listed in the plugin's documentation (only GitHub app maintainers can see this).
  3. Platform Operations will store the private key of app secrets to keyvault and [add credentials to Jenkins](https://github.com/hmcts/cnp-flux-config/pull/2148/files) .
@@ -87,9 +98,17 @@ which can easily be hit if names are too long.
     TEAM_NAME=$1
     az keyvault secret set -n  hmcts-jenkins-${TEAM_NAME}-ghapp -f converted-github-app.pem --vault-name cftptl-intsvc
     az keyvault secret set -n  hmcts-jenkins-${TEAM_NAME}-ghapp -f converted-github-app.pem --vault-name cftsbox-intsvc
-    ``` 
- 4. Add your organisation config in [cnp-jenkins-config](https://github.com/hmcts/cnp-jenkins-config/pull/402)
- 5. Add a Jenkins build dashboard in [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/pull/7221)
+    ```
+ 4. Add your organisation config.
+
+        CFT: [cnp-jenkins-config](https://github.com/hmcts/cnp-jenkins-config/pull/402)
+
+        SDS: [sds-jenkins-config](https://github.com/hmcts/sds-jenkins-config/pull/1)
+ 5. Add a Jenkins build dashboard.
+
+        CFT: [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/pull/7221)
+
+        SDS: [shared-services-flux](https://github.com/hmcts/shared-services-flux/blob/a615723ac7b8e814be9f0eae78c580fddd84539c/k8s/namespaces/jenkins/patches/ptl/cluster-00/jenkins.yaml#L114)
  6. Scan the organisation manually on Jenkins if it doesn't scan automatically.
 
 ## Azure Active Directory (AAD) groups
