@@ -264,17 +264,25 @@ in the cnp-jenkins-config repository.</p>
     <span class="na">build_notices_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># all build notices will be sent here</span>
 </code></pre></div><p>Make sure your product name is not too long as some Azure resources have constraints on their length 
 which can easily be hit if names are too long.</p>
-<h2 id="jenkins-org-setup">Jenkins org setup</h2>
+<h2 id="jenkins-org-setup">Jenkins org setup</h2><p>There are Jenkins servers for: CFT (Civil, Family &amp; Tribunal) and SDS (Shared Digital Services)</p>
+<p>To set up a Jenkins pipeline integration with your GitHub repo, you will need to create an organisation within Jenkins.</p>
+<p>The steps to be followed below depend on what business area your application is in.</p>
+<p>If your application is in CFT, see Step 1. If your application is in SDS, skip to Step 4.</p>
+
 <ol>
-<li>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.</li>
-<li>Please give permissions based on an <a href="https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe">existing Github App</a> as we give additional permissions to what is listed in the plugin&rsquo;s documentation (only GitHub app maintainers can see this).</li>
+<li><p>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.</p></li>
+<li><p>Please give permissions based on an <a href="https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe">existing Github App</a> as we give additional permissions to what is listed in the plugin&rsquo;s documentation (only GitHub app maintainers can see this).</p></li>
 <li><p>Platform Operations will store the private key of app secrets to keyvault and <a href="https://github.com/hmcts/cnp-flux-config/pull/2148/files">add credentials to Jenkins</a> .</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">TEAM_NAME</span><span class="o">=</span><span class="nv">$1</span>
 az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftptl-intsvc
 az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftsbox-intsvc
 </code></pre></div></li>
-<li><p>Add your organisation config in <a href="https://github.com/hmcts/cnp-jenkins-config/pull/402">cnp-jenkins-config</a></p></li>
-<li><p>Add a Jenkins build dashboard in <a href="https://github.com/hmcts/cnp-flux-config/pull/7221">cnp-flux-config</a></p></li>
+<li><p>Add your organisation config.</p>
+<p>CFT: <a href="https://github.com/hmcts/cnp-jenkins-config/pull/402">cnp-jenkins-config</a></p>
+<p>SDS: <a href="https://github.com/hmcts/sds-jenkins-config/pull/1">sds-jenkins-config</a></p></li>
+<li><p>Add a Jenkins build dashboard.</p>
+<p>CFT: <a href="https://github.com/hmcts/cnp-flux-config/pull/7221">cnp-flux-config</a></p>
+<p>SDS: <a href="https://github.com/hmcts/shared-services-flux/blob/a615723ac7b8e814be9f0eae78c580fddd84539c/k8s/namespaces/jenkins/patches/ptl/cluster-00/jenkins.yaml#L114">shared-services-flux</a></p></li>
 <li><p>Scan the organisation manually on Jenkins if it doesn&rsquo;t scan automatically.</p></li>
 </ol>
 <h2 id="azure-active-directory-aad-groups">Azure Active Directory (AAD) groups</h2><p>Create a help request in the <a href="https://hmcts-reform.slack.com/messages/platops-help">#platops-help</a> channel on Slack.</p>
