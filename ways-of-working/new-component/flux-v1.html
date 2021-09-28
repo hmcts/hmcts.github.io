@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>GitOps - HMCTS</title>
+    <title>Flux-V1 - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/gitops-flux.html">
+    <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/flux-v1.html">
 
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="GitOps" />
+      <meta property="og:title" content="Flux-V1" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/gitops-flux.html" />
+      <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/flux-v1.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="GitOps - HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/gitops-flux.html" />
+      <meta property="twitter:title" content="Flux-V1 - HMCTS" />
+      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/flux-v1.html" />
 
     
   </head>
@@ -226,80 +226,51 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="gitops">GitOps</h1><p>One of our principles being <b>Everything as Code</b>, we practise <a href="https://www.weave.works/technologies/gitops/">Gitops</a> for application deployment to Kubernetes.</p>
+            <h1 id="flux-v1">Flux-V1</h1><p>One of our principles being <b>Everything as Code</b>, we practise <a href="https://www.weave.works/technologies/gitops/">Gitops</a> for application deployment to Kubernetes.</p>
 
 <ul>
 <li>Git as single source of truth.</li>
 <li>Declarative Infrastructure and Application deployment through pull requests.</li>
 </ul>
-
-<blockquote>
-<p>Please note SDS and <a href="https://github.com/hmcts/cnp-flux-config#migration-status">few clusters of CFT</a> are still on v1, refer <a href="/ways-of-working/new-component/flux-v1.html">V1 docs</a>.</p>
-</blockquote>
 <h2 id="flux">Flux</h2><p><a href="https://docs.fluxcd.io/">Flux</a> is a tool that automatically ensures that the state of a cluster matches the config in <a href="https://github.com/hmcts/cnp-flux-config">Git</a>.</p>
 
 <ul>
-<li>Flux uses Gitops Toolkit, a set of APIs and controllers that make up the runtime for Flux.</li>
-<li>GOTK (Gitops Toolkit) has 6 main controllers with a specific function to each.</li>
+<li>It is an operator in the cluster to trigger deployments inside Kubernetes, which means you don&rsquo;t need a separate CD tool.</li>
+<li>It monitors all relevant image repositories, detects new images, triggers deployments and updates the desired running configuration. </li>
 </ul>
-<h3 id="source-controller">Source Controller</h3>
+<h2 id="helm-operator">Helm Operator</h2><p><a href="https://docs.fluxcd.io/projects/helm-operator/">Helm operator</a> is a Kubernetes operator, allowing one to declaratively manage Helm chart releases.</p>
+
 <ul>
-<li>A common interface for all other components to download from  sources like Git, Helm repository.</li>
-<li>Makes source code available as artifacts for other controllers.</li>
-</ul>
-<h3 id="kustomize-controller">Kustomize Controller</h3>
-<ul>
-<li>Reconciles the cluster state from multiple sources (provided by source-controller).</li>
-<li>It is the main operator which applies all manifests to cluster.</li>
-<li>Generates manifests with Kustomize (from plain Kubernetes yamls or Kustomize overlays).</li>
-</ul>
-<h3 id="helm-controller">Helm Controller</h3>
-<ul>
+<li>Combined with Flux this can be utilized to automate releases in a GitOps manner.</li>
 <li>The desired state of a Helm release is described through a Kubernetes Custom Resource named <code>HelmRelease</code>. </li>
 <li>Based on the creation, mutation or removal of a HelmRelease resource in the cluster, Helm actions are performed by the operator.</li>
 </ul>
-<h3 id="notification-controller">Notification Controller</h3>
-<ul>
-<li>Handles events emitted by the GitOps toolkit controllers (source, kustomize, helm) and dispatches them to external systems (Slack, Microsoft Teams, Discord, Rocker) based on event severity and involved objects.</li>
-<li>Can handle events coming from external systems (GitHub, GitLab, Bitbucket, Harbor, Jenkins, etc) and notifies the GitOps toolkit controllers about source changes.</li>
-</ul>
-<h3 id="image-reflector-controller">Image reflector controller</h3>
-<ul>
-<li>Scans image repositories and reflects the image metadata in Kubernetes resources.</li>
-</ul>
-<h3 id="image-automation-controller">Image automation controller</h3>
-<ul>
-<li>Updates YAML files based on the latest images scanned, and commits the changes to a given Git repository.</li>
-</ul>
 <h2 id="application-config-in-flux">Application config in flux</h2>
 <ol>
-<li>See <a href="https://github.com/hmcts/cnp-flux-config#adding-an-app-to-flux">Application Configuration</a> on how to configure and manage your application deployment in various environments.</li>
+<li>See <a href="https://github.com/hmcts/cnp-flux-config/blob/master/docs/app-deployment.md#application-configuration">Application Configuration</a> on how to configure and manage your application deployment in various environments.</li>
 <li><p><code>HelmRelease</code> should refer to the charts automatically published to <a href="https://github.com/hmcts/hmcts-charts">hmcts-charts repository</a> by <a href="/ways-of-working/new-component/helm-chart.html#jenkins">Jenkins</a>. e.g.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>chart:
-spec:
-  chart: ./stable/plum-recipe-backend
-  sourceRef:
-    kind: GitRepository
-    name: hmcts-charts
-    namespace: flux-system
+    git: git@github.com:hmcts/hmcts-charts
+    ref: master
+    path: stable/plum-recipe-backend
 </code></pre></div></li>
 <li><p>Flux configuration should be light, values should be templated within application&rsquo;s chart wherever possible to avoid duplication in each environment. Use <code>{{ .Values.global.environment }}</code> to refer to the environment in your chart.</p></li>
-<li><p>Image automation controller would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.</p></li>
+<li><p>Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.</p></li>
 <li><p><b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.</p></li>
 <li><p>Make sure you follow <a href="https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines">codeowners guidelines</a> on the repo.</p></li>
 </ol>
 <h2 id="troubleshooting-issues">Troubleshooting issues</h2><p>See <a href="../troubleshooting/">troubleshooting section</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-03-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-09-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 September 2021.
+      This page was last reviewed on 25 March 2021.
 
-        It needs to be reviewed again on 27 March 2022
+        It needs to be reviewed again on 25 September 2021
 .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 March 2022.
+      This page was set to be reviewed before 25 September 2021.
       This might mean the content is out of date.
     </div>
   </div>
@@ -308,8 +279,8 @@ spec:
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/gitops-flux.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'GitOps'&amp;body=Problem%20with%20'GitOps'%20(hmcts.github.io/ways-of-working/new-component/gitops-flux.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/flux-v1.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Flux-V1'&amp;body=Problem%20with%20'Flux-V1'%20(hmcts.github.io/ways-of-working/new-component/flux-v1.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
