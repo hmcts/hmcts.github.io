@@ -39,6 +39,8 @@ weight: 99
     az aks get-credentials --resource-group prod-00-rg --name prod-00-aks --subscription DCD-CFTAPPS-PROD
     az aks get-credentials --resource-group prod-01-rg --name prod-01-aks --subscription DCD-CFTAPPS-PROD
     
+    #CFTPTL (Prod management)
+    az aks get-credentials --resource-group cftptl-intsvc-00-rg --name cftptl-intsvc-00-aks --subscription DTS-CFTPTL-INTSVC  
     ```
     Once you have logged in, you can switch between clusters using [kubectx](https://github.com/ahmetb/kubectx) or below kubectl commands:
     
@@ -111,6 +113,106 @@ weight: 99
    > Always check __why__ your release or pod has failed in the first instance.
    > Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be _hiding a potential bug_ which could also _occur in production_. 
 
+###
+> Please see [V1 docs](#flux-v1) for troubleshooting an issue with resources managed through Flux V1.
+
+### Latest image is not updated in cluster
+
+- Start with checking [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) to make sure flux has updated/ committed the image. 
+- If image hasn't been committed to Github, see [ Flux did not commit latest image to Github](#flux-did-not-commit-latest-image-to-github).
+- If flux has committed the new image to Github, check if the `HelmRelease` has been updated by Flux. Run below command and check that the image tag has been updated in the output
+
+    ```shell
+    kubectl get helmreleases.helm.toolkit.fluxcd.io -n <your-namespace> <your-helm-release-name> -o yaml
+    ```
+- If Image is not updated in above, [Change in git is not applied to cluster](#change-in-git-is-not-applied-to-cluster).
+- If the image tag is updated and still application pods are not deployed, see [Updated HelmRelease is not deployed to cluster](#updated-helmrelease-is-not-deployed-to-cluster)
+
+### Flux did not commit latest image to Github
+
+   - Image automation is run from management cluster (CFTPTL). Please login to cftptl cluster before further troubleshooting.
+   - Image reflector controller keeps polling ACR for new images, but it should generally update the new image in 10 minutes.
+   - Check status of `imagerepositories` and verify the last scan.
+
+    ```shell
+    kubectl get imagerepositories -n flux-system  <repository name(usually helm release name)> 
+    ```
+   - If the last scan doesn't update, check image reflector controller logs to see if there any logs related to the helm repo.
+
+    ```shell
+    kubectl logs -n flux-system -l app=image-reflector-controller
+    # search for specific image
+    kubectl logs -n flux-system -l app=image-reflector-controller | grep <Release Name>
+    ```
+   - If the last scan is latest, check `imagepolicy` status to verify that the image returned matches the expectation.
+
+    ```shell
+    kubectl get imagepolicies -n flux-system <policy name(usually helm release name)>
+    ```
+   - If it doesn't match the expected tag, verify image reflector controller logs as described above.
+   - If the `imagepolicy` object returned shows the expected image, but it didn't commit to Github, check image automation controller logs.
+
+    ```shell
+    kubectl logs -n flux-system -l app=image-automation-controller
+    # search for specific image
+    kubectl logs -n flux-system -l app=image-automation-controller | grep <Release Name>
+    ```
+
+### Updated HelmRelease is not deployed to cluster
+
+   - Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.
+   - Check HelmRelease status to see the status.
+
+    ```shell
+    kubectl get helmreleases.helm.toolkit.fluxcd.io -n <namespace> <Release Name>
+    ```
+   - Look at helm operator logs to see if there are any errors specific to your helm release
+
+    ```shell
+    kubectl logs -n admin -l app=helm-controller--tail=1000 | grep <Release Name>
+    ```
+   - If you see any errors like, `status 'pending-install' of release does not allow a safe upgrade"`. You need to delete `HelmRelease` for fixing this, request platops for help if you do not have permissions.
+
+    ```shell
+    kubectl delete helmreleases.helm.toolkit.fluxcd.io <helm-release-name> -n <namespace>
+    ```
+   - In most cases, helm release gets timed out with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.
+
+     Check the latest status on helm release and if it has already been rolled back to previous release.
+
+    ```shell
+    kubectl describe helmreleases.helm.toolkit.fluxcd.io <helm-release-name> -n <your-namespace>
+    ```
+   - If you are looking at pods after a long time, `HelmRelease` might have been rolled back and you won't have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.
+
+   - If your old pods are still running when you check, follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further.
+
+###  Change in git is not applied to cluster
+
+   - To check if latest github commit has been downloaded by checking status
+
+    ```shell
+    kubectl get gitrepositories flux-config -n flux-system
+    ```
+   - If the commit doesn't match latest id, verify source controller logs to see any related errors
+
+    ```shell
+    kubectl logs -n flux-system -l app=source-controller
+    ```
+   - If commit id is recent, verify status of flux kustomization for your namespace to get the version of git applied.
+
+    ```shell
+    kubectl get kustomizations.kustomize.toolkit.fluxcd.io -n flux-system <namespace>
+    ```
+   - If the above status doesn't show latest commit/ show any error , see kustomize controller logs to find relevant errors.
+
+   ```shell
+   kubectl logs -n flux-system -l app=kustomize-controller
+   # search for specific image
+   kubectl logs -n flux-system -l app=kustomize-controller | grep <namespace>
+   ```
+
+## Flux-V1
 ### New image is not updated in cluster.
    
    - Start with checking [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) to make sure flux has updated/ committed the image. If it hasn't committed to Github, see [ Flux did not commit new image to Github](#flux-did-not-commit-new-image-to-github).
