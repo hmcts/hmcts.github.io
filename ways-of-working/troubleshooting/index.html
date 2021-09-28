@@ -189,7 +189,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/flux-v1.html#flux-v1"><span>Flux-V1</span></a>
+    <a href="/ways-of-working/new-component/flux-v1.html#flux-v1-2"><span>Flux-V1</span></a>
   </li>
 </ul>
 <ul>
@@ -255,6 +255,8 @@ az aks get-credentials <span class="nt">--resource-group</span> demo-01-rg <span
 az aks get-credentials <span class="nt">--resource-group</span> prod-00-rg <span class="nt">--name</span> prod-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-PROD
 az aks get-credentials <span class="nt">--resource-group</span> prod-01-rg <span class="nt">--name</span> prod-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-PROD
 
+<span class="c">#CFTPTL (Prod management)</span>
+az aks get-credentials <span class="nt">--resource-group</span> cftptl-intsvc-00-rg <span class="nt">--name</span> cftptl-intsvc-00-aks <span class="nt">--subscription</span> DTS-CFTPTL-INTSVC  
 </code></pre></div><p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
 <div class="highlight"><pre class="highlight shell"><code>kubectl config use-context cft-perftest-00-aks
 kubectl config use-context cft-aat-00-aks
@@ -309,7 +311,78 @@ kubectl config use-context cft-aat-00-aks
 <p>Always check <strong>why</strong> your release or pod has failed in the first instance.
 Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be <em>hiding a potential bug</em> which could also <em>occur in production</em>.</p>
 </blockquote>
-<h3 id="new-image-is-not-updated-in-cluster">New image is not updated in cluster.</h3>
+
+<blockquote>
+<p>Please see <a href="#flux-v1">V1 docs</a> for troubleshooting an issue with resources managed through Flux V1.</p>
+</blockquote>
+<h3 id="latest-image-is-not-updated-in-cluster">Latest image is not updated in cluster</h3>
+<ul>
+<li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. </li>
+<li>If image hasn&rsquo;t been committed to Github, see <a href="#flux-did-not-commit-latest-image-to-github"> Flux did not commit latest image to Github</a>.</li>
+<li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+</code></pre></div></li>
+<li><p>If Image is not updated in above, <a href="#change-in-git-is-not-applied-to-cluster">Change in git is not applied to cluster</a>.</p></li>
+<li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed-to-cluster">Updated HelmRelease is not deployed to cluster</a></p></li>
+</ul>
+<h3 id="flux-did-not-commit-latest-image-to-github">Flux did not commit latest image to Github</h3>
+<ul>
+<li>Image automation is run from management cluster (CFTPTL). Please login to cftptl cluster before further troubleshooting.</li>
+<li>Image reflector controller keeps polling ACR for new images, but it should generally update the new image in 10 minutes.</li>
+<li><p>Check status of <code>imagerepositories</code> and verify the last scan.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get imagerepositories <span class="nt">-n</span> flux-system  &lt;repository name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span> 
+</code></pre></div></li>
+<li><p>If the last scan doesn&rsquo;t update, check image reflector controller logs to see if there any logs related to the helm repo.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller
+<span class="c"># search for specific image</span>
+kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If the last scan is latest, check <code>imagepolicy</code> status to verify that the image returned matches the expectation.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get imagepolicies <span class="nt">-n</span> flux-system &lt;policy name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span>
+</code></pre></div></li>
+<li><p>If it doesn&rsquo;t match the expected tag, verify image reflector controller logs as described above.</p></li>
+<li><p>If the <code>imagepolicy</code> object returned shows the expected image, but it didn&rsquo;t commit to Github, check image automation controller logs.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-automation-controller
+<span class="c"># search for specific image</span>
+kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-automation-controller | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+</ul>
+<h3 id="updated-helmrelease-is-not-deployed-to-cluster">Updated HelmRelease is not deployed to cluster</h3>
+<ul>
+<li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
+<li><p>Check HelmRelease status to see the status.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;namespace&gt; &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-controller--tail<span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl delete helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
+</code></pre></div></li>
+<li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
+<p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl describe helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div></li>
+<li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
+<li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
+</ul>
+<h3 id="change-in-git-is-not-applied-to-cluster">Change in git is not applied to cluster</h3>
+<ul>
+<li><p>To check if latest github commit has been downloaded by checking status</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get gitrepositories flux-config <span class="nt">-n</span> flux-system
+</code></pre></div></li>
+<li><p>If the commit doesn&rsquo;t match latest id, verify source controller logs to see any related errors</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>source-controller
+</code></pre></div></li>
+<li><p>If commit id is recent, verify status of flux kustomization for your namespace to get the version of git applied.</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get kustomizations.kustomize.toolkit.fluxcd.io <span class="nt">-n</span> flux-system &lt;namespace&gt;
+</code></pre></div></li>
+<li><p>If the above status doesn&rsquo;t show latest commit/ show any error , see kustomize controller logs to find relevant errors.</p></li>
+</ul>
+<div class="highlight"><pre class="highlight shell"><code>   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller
+   <span class="c"># search for specific image</span>
+   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller | <span class="nb">grep</span> &lt;namespace&gt;
+</code></pre></div><h2 id="flux-v1">Flux-V1</h2><h3 id="new-image-is-not-updated-in-cluster">New image is not updated in cluster.</h3>
 <ul>
 <li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. If it hasn&rsquo;t committed to Github, see <a href="#flux-did-not-commit-new-image-to-github"> Flux did not commit new image to Github</a>.</li>
 <li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
