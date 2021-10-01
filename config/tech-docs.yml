@@ -5,7 +5,7 @@ host: hmcts.github.io
 show_govuk_logo: false
 service_name: HMCTS
 service_link: https://github.com/hmcts
-phase: Beta
+phase: Live
 
 # Links to show on right-hand-side of header
 header_links:
@@ -36,3 +36,6 @@ prevent_indexing: false
 show_contribution_banner: true
 github_repo: hmcts/hmcts.github.io
 github_branch: source
+
+owner_slack_workspace: hmcts-reform
+default_owner_slack: platops-build-notices
