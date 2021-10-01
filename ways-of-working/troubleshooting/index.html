@@ -11,16 +11,16 @@
 
     <link rel="canonical" href="hmcts.github.io/ways-of-working/troubleshooting/">
 
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta name="twitter:title" content="Troubleshooting issues - HMCTS" />
+      <meta name="twitter:url" content="hmcts.github.io/ways-of-working/troubleshooting/" />
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
       <meta property="og:title" content="Troubleshooting issues" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="hmcts.github.io/ways-of-working/troubleshooting/" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Troubleshooting issues - HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/troubleshooting/" />
 
     
   </head>
@@ -64,158 +64,139 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="hmcts.github.io"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
-    <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
+    <a href="/"><span>The HMCTS way</span></a>
   </li>
-</ul>
+<li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
+    <a href="/onboarding/team/"><span>Team</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/person/"><span>Person</span></a>
   </li>
 </ul>
-<ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
+</li>
+  <li>
+    <a href="/glossary/"><span>Glossary</span></a>
+  </li>
+<li><a href="/information-security/"><span>Information security</span></a>
 <ul>
   <li>
-    <a href="/onboarding/team/#team-2"><span>Team</span></a>
+    <a href="/information-security/certificate-automation.html"><span>TLS certificates</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/"><span>Ways of working</span></a>
+<ul>
+<li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/onboarding/person/#person"><span>Person</span></a>
+    <a href="/ways-of-working/standards/apis.html"><span>API design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/standards/pull-requests.html"><span>Pull requests</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+</li>
+  <li>
+    <a href="/ways-of-working/principles/"><span>Principles</span></a>
+  </li>
+<li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/helm-chart.html"><span>Helm chart</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/secrets-management.html"><span>Secrets Management</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/gitops-flux.html"><span>GitOps</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/flux-v1.html"><span>Flux-V1</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/path-to-live/public-dns.html"><span>Public DNS</span></a>
   </li>
-</ul>
-</li></ul><ul>
   <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
   </li>
 </ul>
-<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
+</li>
+<li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+    <a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
   </li>
 </ul>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/helm-chart.html#helm-chart"><span>Helm chart</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/secrets-management.html#secrets-management"><span>Secrets Management</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/gitops-flux.html#gitops"><span>GitOps</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/flux-v1.html#flux-v1-2"><span>Flux-V1</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/ways-of-working/asking-for-help/#asking-for-help"><span>Asking for help</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/troubleshooting/#troubleshooting-issues"><span>Troubleshooting issues</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/information-security/"><span>Information security</span></a>
-<ul>
-  <li>
-    <a href="/information-security/certificate-automation.html#tls-certificates-2"><span>TLS certificates</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/api-docs/#api-documentation"><span>API Documentation</span></a>
+    <a href="/api-docs/"><span>API Documentation</span></a>
   </li>
 </ul>
 
@@ -226,11 +207,13 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="troubleshooting-issues">Troubleshooting issues</h1><h2 id="connecting-to-aks-clusters">Connecting to AKS Clusters</h2>
+            <h1 id="troubleshooting-issues">Troubleshooting issues</h1>
+<h2 id="connecting-to-aks-clusters">Connecting to AKS Clusters</h2>
+
 <ul>
 <li>By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.</li>
 <li><p>You can connect to AKS clusters using <code>az aks get-credentials</code>. Below are some handy commands,</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="c">#Preview (only one cluster is active at a given time)</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c">#Preview (only one cluster is active at a given time)</span>
 az aks get-credentials <span class="nt">--resource-group</span> preview-00-rg <span class="nt">--name</span> preview-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-DEV
 az aks get-credentials <span class="nt">--resource-group</span> preview-01-rg <span class="nt">--name</span> preview-01-aks <span class="nt">--subscription</span> DCD-CFTAPPS-DEV
 
@@ -258,16 +241,19 @@ az aks get-credentials <span class="nt">--resource-group</span> prod-01-rg <span
 <span class="c">#CFTPTL (Prod management)</span>
 az aks get-credentials <span class="nt">--resource-group</span> cftptl-intsvc-00-rg <span class="nt">--name</span> cftptl-intsvc-00-aks <span class="nt">--subscription</span> DTS-CFTPTL-INTSVC  
 </code></pre></div><p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl config use-context cft-perftest-00-aks
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl config use-context cft-perftest-00-aks
 kubectl config use-context cft-aat-00-aks
 </code></pre></div></li>
 </ul>
-<h2 id="jenkins">Jenkins</h2><h3 id="cannot-see-my-branch-pr-or-this-project-is-currently-disabled-in-jenkins">Cannot see my branch/PR or This project is currently disabled in Jenkins</h3>
+<h2 id="jenkins">Jenkins</h2>
+<h3 id="cannot-see-my-branch-pr-or-this-project-is-currently-disabled-in-jenkins">Cannot see my branch/PR or This project is currently disabled in Jenkins</h3>
+
 <ul>
 <li>Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.</li>
 <li>Branch/ PR is not listed if its last commit creation date is older than 30 days.</li>
 </ul>
 <h3 id="helm-upgrade-failed-helm-release-timed-out-waiting-for-condition-helm-release-failure">Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure</h3>
+
 <ul>
 <li>See <a href="#connecting-to-aks-clusters">Connecting to AKS Clusters</a> and connect to the relevant cluster.</li>
 <li>These errors usually mean your pods didn&rsquo;t start as expected in time. </li>
@@ -275,6 +261,7 @@ kubectl config use-context cft-aat-00-aks
 <li>Follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further</li>
 </ul>
 <h2 id="debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</h2>
+
 <ul>
 <li>There could be many reasons why applications could fail to startup like :
 
@@ -286,17 +273,17 @@ kubectl config use-context cft-aat-00-aks
 </ul></li>
 <li><p>Below are some handy kubectl commands to debug the issues</p>
 <p>To check latest events on your namespace:</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl get events <span class="nt">-n</span> &lt;your-namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl get events <span class="nt">-n</span> &lt;your-namespace&gt;
 </code></pre></div><p>To check status of pods:</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl get pods <span class="nt">-n</span> &lt;your-namespace&gt; | <span class="nb">grep</span> &lt;helm-release-name&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl get pods <span class="nt">-n</span> &lt;your-namespace&gt; | <span class="nb">grep</span> &lt;helm-release-name&gt;
 
  <span class="c">#Examples</span>
  <span class="c"># kubectl get pods -n ccd | grep ccd-data-store-api</span>
  <span class="c"># kubectl get pods -n ccd | grep pr-123</span>
 </code></pre></div><p>To check status of a specific pod which is not running</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl describe pod &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl describe pod &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
 </code></pre></div><p>To check logs of pods which is not starting</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; 
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; 
 
  <span class="c">#To follow logs</span>
  kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; <span class="nt">-f</span>
@@ -307,6 +294,7 @@ kubectl config use-context cft-aat-00-aks
 </code></pre></div></li>
 </ul>
 <h2 id="flux-gitops">Flux / Gitops</h2>
+
 <blockquote>
 <p>Always check <strong>why</strong> your release or pod has failed in the first instance.
 Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be <em>hiding a potential bug</em> which could also <em>occur in production</em>.</p>
@@ -316,115 +304,124 @@ Although you may have permissions to delete a helm release or pod in a non-produ
 <p>Please see <a href="#flux-v1">V1 docs</a> for troubleshooting an issue with resources managed through Flux V1.</p>
 </blockquote>
 <h3 id="latest-image-is-not-updated-in-cluster">Latest image is not updated in cluster</h3>
+
 <ul>
 <li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. </li>
 <li>If image hasn&rsquo;t been committed to Github, see <a href="#flux-did-not-commit-latest-image-to-github"> Flux did not commit latest image to Github</a>.</li>
 <li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
 </code></pre></div></li>
 <li><p>If Image is not updated in above, <a href="#change-in-git-is-not-applied-to-cluster">Change in git is not applied to cluster</a>.</p></li>
 <li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed-to-cluster">Updated HelmRelease is not deployed to cluster</a></p></li>
 </ul>
 <h3 id="flux-did-not-commit-latest-image-to-github">Flux did not commit latest image to Github</h3>
+
 <ul>
 <li>Image automation is run from management cluster (CFTPTL). Please login to cftptl cluster before further troubleshooting.</li>
 <li>Image reflector controller keeps polling ACR for new images, but it should generally update the new image in 10 minutes.</li>
 <li><p>Check status of <code>imagerepositories</code> and verify the last scan.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get imagerepositories <span class="nt">-n</span> flux-system  &lt;repository name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span> 
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get imagerepositories <span class="nt">-n</span> flux-system  &lt;repository name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span> 
 </code></pre></div></li>
 <li><p>If the last scan doesn&rsquo;t update, check image reflector controller logs to see if there any logs related to the helm repo.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller
 <span class="c"># search for specific image</span>
 kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller | <span class="nb">grep</span> &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>If the last scan is latest, check <code>imagepolicy</code> status to verify that the image returned matches the expectation.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get imagepolicies <span class="nt">-n</span> flux-system &lt;policy name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get imagepolicies <span class="nt">-n</span> flux-system &lt;policy name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span>
 </code></pre></div></li>
 <li><p>If it doesn&rsquo;t match the expected tag, verify image reflector controller logs as described above.</p></li>
 <li><p>If the <code>imagepolicy</code> object returned shows the expected image, but it didn&rsquo;t commit to Github, check image automation controller logs.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-automation-controller
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-automation-controller
 <span class="c"># search for specific image</span>
 kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-automation-controller | <span class="nb">grep</span> &lt;Release Name&gt;
 </code></pre></div></li>
 </ul>
 <h3 id="updated-helmrelease-is-not-deployed-to-cluster">Updated HelmRelease is not deployed to cluster</h3>
+
 <ul>
 <li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
 <li><p>Check HelmRelease status to see the status.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;namespace&gt; &lt;Release Name&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;namespace&gt; &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-controller--tail<span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-controller--tail<span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
 </code></pre></div></li>
 <li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
 <p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl describe helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl describe helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
 </code></pre></div></li>
 <li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
 <li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
 </ul>
 <h3 id="change-in-git-is-not-applied-to-cluster">Change in git is not applied to cluster</h3>
+
 <ul>
 <li><p>To check if latest github commit has been downloaded by checking status</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get gitrepositories flux-config <span class="nt">-n</span> flux-system
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get gitrepositories flux-config <span class="nt">-n</span> flux-system
 </code></pre></div></li>
 <li><p>If the commit doesn&rsquo;t match latest id, verify source controller logs to see any related errors</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>source-controller
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>source-controller
 </code></pre></div></li>
 <li><p>If commit id is recent, verify status of flux kustomization for your namespace to get the version of git applied.</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get kustomizations.kustomize.toolkit.fluxcd.io <span class="nt">-n</span> flux-system &lt;namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get kustomizations.kustomize.toolkit.fluxcd.io <span class="nt">-n</span> flux-system &lt;namespace&gt;
 </code></pre></div></li>
 <li><p>If the above status doesn&rsquo;t show latest commit/ show any error , see kustomize controller logs to find relevant errors.</p></li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code>   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller
    <span class="c"># search for specific image</span>
    kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller | <span class="nb">grep</span> &lt;namespace&gt;
-</code></pre></div><h2 id="flux-v1">Flux-V1</h2><h3 id="new-image-is-not-updated-in-cluster">New image is not updated in cluster.</h3>
+</code></pre></div><h2 id="flux-v1">Flux-V1</h2>
+<h3 id="new-image-is-not-updated-in-cluster">New image is not updated in cluster.</h3>
+
 <ul>
 <li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. If it hasn&rsquo;t committed to Github, see <a href="#flux-did-not-commit-new-image-to-github"> Flux did not commit new image to Github</a>.</li>
 <li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
-<div class="highlight"><pre class="highlight shell"><code>  kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
 </code></pre></div></li>
 <li><p>If Image is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
 <li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</a></p></li>
 </ul>
 <h3 id="flux-did-not-commit-new-image-to-github">Flux did not commit new image to Github.</h3>
+
 <ul>
 <li>Flux keeps polling ACR for new images, but it should generally update the new image in 10 minutes.</li>
 <li><p>Look at flux logs to see if there are any errors specific to your release</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100 | <span class="nb">grep</span> &lt;Release Name&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100 | <span class="nb">grep</span> &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>If you see an error which says <code>failed to resolve reference</code> or <code>not found</code> on a particular image, it means the current image deployed is deleted from the container registry and you need to manually update to latest image in cnp-flux-config to fix your helm release.</p></li>
 <li><p>If you don&rsquo;t see any error logs for your specific release, check if there are any errors that could be blocking flux.</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
 </code></pre></div></li>
 <li><p>If there are no errors, it is likely that flux pod is stuck and a symptom for it is not seeing a log containing <code>cmd=&quot;kubectl apply -f -</code> in flux logs. You should <a href="../asking-for-help">ask for help from platops</a>) to get it sorted.</p>
-<div class="highlight"><pre class="highlight shell"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
 </code></pre></div></li>
 </ul>
 <h3 id="updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</h3>
+
 <ul>
 <li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
 <li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
-<div class="highlight"><pre class="highlight shell"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-operator <span class="nt">--tail</span><span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-operator <span class="nt">--tail</span><span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
-<div class="highlight"><pre class="highlight shell"><code>  kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
 </code></pre></div></li>
 <li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
 <p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
 </code></pre></div></li>
 <li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
 <li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
 </ul>
 <h3 id="change-in-flux-config-is-not-applied-to-cluster">Change in flux config is not applied to cluster.</h3>
+
 <ul>
 <li><p>Check if the <code>HelmRelease</code> has been updated with your change. Run below command and check that the image tag has been updated in the output.</p>
-<div class="highlight"><pre class="highlight shell"><code> kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
 </code></pre></div></li>
 <li><p>If Changed is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
 <li><p>If the change is updated, but still not reflecting on your pods/ application. see <a href="#updated-helmrelease-is-not-deployed">Helm operator logs</a></p></li>

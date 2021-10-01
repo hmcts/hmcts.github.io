@@ -11,16 +11,16 @@
 
     <link rel="canonical" href="hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html">
 
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta name="twitter:title" content="Infrastructure as Code - HMCTS" />
+      <meta name="twitter:url" content="hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html" />
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
       <meta property="og:title" content="Infrastructure as Code" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Infrastructure as Code - HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/new-component/infrastructure-as-code.html" />
 
     
   </head>
@@ -64,158 +64,139 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="hmcts.github.io"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
-    <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
+    <a href="/"><span>The HMCTS way</span></a>
   </li>
-</ul>
+<li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
+    <a href="/onboarding/team/"><span>Team</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/person/"><span>Person</span></a>
   </li>
 </ul>
-<ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
+</li>
+  <li>
+    <a href="/glossary/"><span>Glossary</span></a>
+  </li>
+<li><a href="/information-security/"><span>Information security</span></a>
 <ul>
   <li>
-    <a href="/onboarding/team/#team-2"><span>Team</span></a>
+    <a href="/information-security/certificate-automation.html"><span>TLS certificates</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/"><span>Ways of working</span></a>
+<ul>
+<li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/onboarding/person/#person"><span>Person</span></a>
+    <a href="/ways-of-working/standards/apis.html"><span>API design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/standards/pull-requests.html"><span>Pull requests</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+</li>
+  <li>
+    <a href="/ways-of-working/principles/"><span>Principles</span></a>
+  </li>
+<li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/helm-chart.html"><span>Helm chart</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/secrets-management.html"><span>Secrets Management</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/gitops-flux.html"><span>GitOps</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/flux-v1.html"><span>Flux-V1</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/path-to-live/public-dns.html"><span>Public DNS</span></a>
   </li>
-</ul>
-</li></ul><ul>
   <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
   </li>
 </ul>
-<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
+</li>
+<li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+    <a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
   </li>
 </ul>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/helm-chart.html#helm-chart"><span>Helm chart</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/secrets-management.html#secrets-management"><span>Secrets Management</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/gitops-flux.html#gitops"><span>GitOps</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/flux-v1.html#flux-v1"><span>Flux-V1</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/ways-of-working/asking-for-help/#asking-for-help"><span>Asking for help</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/troubleshooting/#troubleshooting-issues-2"><span>Troubleshooting issues</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/information-security/"><span>Information security</span></a>
-<ul>
-  <li>
-    <a href="/information-security/certificate-automation.html#tls-certificates-2"><span>TLS certificates</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/api-docs/#api-documentation"><span>API Documentation</span></a>
+    <a href="/api-docs/"><span>API Documentation</span></a>
   </li>
 </ul>
 
@@ -226,7 +207,8 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="infrastructure-as-code">Infrastructure as Code</h1><p>We prefer <a href="https://en.wikipedia.org/wiki/Software_as_a_service">Software as a Service</a> (SaaS) over <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform as a Service</a> (PaaS) over <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service">Infrastructure as a Service</a> (IaaS).</p>
+            <h1 id="infrastructure-as-code">Infrastructure as Code</h1>
+<p>We prefer <a href="https://en.wikipedia.org/wiki/Software_as_a_service">Software as a Service</a> (SaaS) over <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform as a Service</a> (PaaS) over <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service">Infrastructure as a Service</a> (IaaS).</p>
 <p>With this in mind, infrastructure as code refers to</p>
 
 <ul>
@@ -239,7 +221,8 @@
 and components.</p>
 <p>All configuration code is managed under source control in GitHub and should be public as described in the <a href="https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable">GDS Service Manual</a>.</p>
 <p>The infrastructure code will be used to provision and configure <strong>one set of infrastructure in each environment</strong>.</p>
-<h2 id="infrastructure-levels">Infrastructure levels</h2><p>Infrastructure is layered into the following levels</p>
+<h2 id="infrastructure-levels">Infrastructure levels</h2>
+<p>Infrastructure is layered into the following levels</p>
 
 <ul>
 <li>Platform</li>
@@ -252,25 +235,30 @@ have been provisioned before component-level infrastructure.</p>
 <p>In each environment, there will be <strong>one set</strong> of all platform-level infrastructure and <strong>one set</strong> of each of the product- and component-level infrastructure configurations.</p>
 <p>The following diagram shows the layers and the types of infrastructure that might be found in each.</p>
 <p><img src="/images/infrastructure-levels.png"/></p>
-<h3 id="platform-level-infrastructure">Platform-level infrastructure</h3><p>This is the base-level infrastructure you can expect to find in each environment. It&rsquo;s managed by the Platform Operations team.
+<h3 id="platform-level-infrastructure">Platform-level infrastructure</h3>
+<p>This is the base-level infrastructure you can expect to find in each environment. It&rsquo;s managed by the Platform Operations team.
 Service and common component teams can assume that this infrastructure exists in every environment.</p>
 <p>The code is managed in various repositories in GitHub. For some configuration, service and common component teams may need to update
 these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then be reviewed and approved appropriately. Examples of this can be found in the <a href="/ways-of-working/path-to-live">path-to-live documentation</a>.</p>
-<h3 id="product-and-component-level-infrastructure">Product- and component-level infrastructure</h3><p>These levels of infrastructure are provisioned by service and common component teams. It is often called &ldquo;shared infrastructure&rdquo; and that
+<h3 id="product-and-component-level-infrastructure">Product- and component-level infrastructure</h3>
+<p>These levels of infrastructure are provisioned by service and common component teams. It is often called &ldquo;shared infrastructure&rdquo; and that
 is the naming convention that has been adopted for repositories.</p>
 <p>There are no hard rules around what infrastructure belongs in product-level or component-level but, in general,
 if something can be shared between components within a product then it should belong in the product-level infrastructure.
 The diagram above shows the types of things that might exist in each level.</p>
-<h4 id="product-level-shared-infrastructure">Product-level (shared) infrastructure</h4><p>This is infrastructure provisioned by the product team and is shared between all components within the product.</p>
+<h4 id="product-level-shared-infrastructure">Product-level (shared) infrastructure</h4>
+<p>This is infrastructure provisioned by the product team and is shared between all components within the product.</p>
 <p>The infrastructure code must be managed in a GitHub repository. The repository should be named <code>{product}-shared-infrastructure</code>.</p>
 <p>Terraform <code>.tf</code> files must be placed in the root of the repository.</p>
 <p>The <a href="../common-pipeline">common build pipeline</a> must be used to build the infrastructure.</p>
-<h4 id="component-level-infrastructure">Component-level infrastructure</h4><p>This is infrastructure provisioned by the product team and is specific to a single component within the product.</p>
+<h4 id="component-level-infrastructure">Component-level infrastructure</h4>
+<p>This is infrastructure provisioned by the product team and is specific to a single component within the product.</p>
 <p>The infrastructure code must be managed in the component GitHub repository.</p>
 <p>Terraform <code>.tf</code> files must be placed in the <code>/infrastructure</code> directory in the repository.</p>
 <p>The <a href="https://github.com/hmcts/draft-store/tree/master/infrastructure">draft-store</a> component is a good example.</p>
 <p>The <a href="../common-pipeline">common build pipeline</a> must be used to build the infrastructure.</p>
-<h2 id="infrastructure-modules">Infrastructure modules</h2><p>For infrastructure resources commonly used by teams a set of pre-packaged Terraform modules is provided to make it easier to provision them.
+<h2 id="infrastructure-modules">Infrastructure modules</h2>
+<p>For infrastructure resources commonly used by teams a set of pre-packaged Terraform modules is provided to make it easier to provision them.
 These modules provide sensible defaults for many configuration options and also include mandated security settings enabling faster
 development.</p>
 <p>Some frequently used modules are</p>
@@ -281,11 +269,13 @@ development.</p>
 <li><a href="https://github.com/hmcts/cnp-module-redis">Azure Cache for Redis</a></li>
 </ul>
 <p>A full list of modules can be <a href="https://github.com/hmcts?q=cnp-module">found in GitHub</a>.</p>
-<h2 id="whitelisted-infrastructure">Whitelisted infrastructure</h2><p>To maintain integrity and security of our environments, service and common component teams may only use
+<h2 id="whitelisted-infrastructure">Whitelisted infrastructure</h2>
+<p>To maintain integrity and security of our environments, service and common component teams may only use
 a pre-defined set of Azure resources and Terraform infrastructure modules. The whitelist is managed in <a href="https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder">a GitHub repository</a>.
 It is possible to add addtional whitelisted resources for specific products and components with appropriate approval.</p>
 <p>The <a href="../common-pipeline">common build pipeline</a> will enforce the whitelist and will halt with an error if non-approved resources or modules are used.</p>
-<h2 id="environment-specific-variables">Environment-specific variables</h2><p>The <a href="../common-pipeline">common build pipeline</a> supports environment-specific values for Terraform variables. The values can be defined in files named <code>{environment}.tfvars</code> (e.g. <code>prod.tfvars</code>, <code>sandbox.tfvars</code>) placed alongside your <code>.tf</code> files. The appropropriate <code>.tfvars</code> file will
+<h2 id="environment-specific-variables">Environment-specific variables</h2>
+<p>The <a href="../common-pipeline">common build pipeline</a> supports environment-specific values for Terraform variables. The values can be defined in files named <code>{environment}.tfvars</code> (e.g. <code>prod.tfvars</code>, <code>sandbox.tfvars</code>) placed alongside your <code>.tf</code> files. The appropropriate <code>.tfvars</code> file will
 be passed into Terraform when the pipeline builds infrastrucuture.</p>
 
               <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">

@@ -11,16 +11,16 @@
 
     <link rel="canonical" href="hmcts.github.io/ways-of-working/path-to-live/shutter.html">
 
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta name="twitter:title" content="Shutter Implementation and Design - HMCTS" />
+      <meta name="twitter:url" content="hmcts.github.io/ways-of-working/path-to-live/shutter.html" />
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
       <meta property="og:title" content="Shutter Implementation and Design" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="hmcts.github.io/ways-of-working/path-to-live/shutter.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Shutter Implementation and Design - HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/path-to-live/shutter.html" />
 
     
   </head>
@@ -64,158 +64,139 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="hmcts.github.io"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
-    <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
+    <a href="/"><span>The HMCTS way</span></a>
   </li>
-</ul>
+<li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
+    <a href="/onboarding/team/"><span>Team</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/person/"><span>Person</span></a>
   </li>
 </ul>
-<ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
+</li>
+  <li>
+    <a href="/glossary/"><span>Glossary</span></a>
+  </li>
+<li><a href="/information-security/"><span>Information security</span></a>
 <ul>
   <li>
-    <a href="/onboarding/team/#team-2"><span>Team</span></a>
+    <a href="/information-security/certificate-automation.html"><span>TLS certificates</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/"><span>Ways of working</span></a>
+<ul>
+<li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/onboarding/person/#person"><span>Person</span></a>
+    <a href="/ways-of-working/standards/apis.html"><span>API design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/standards/pull-requests.html"><span>Pull requests</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+</li>
+  <li>
+    <a href="/ways-of-working/principles/"><span>Principles</span></a>
+  </li>
+<li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/helm-chart.html"><span>Helm chart</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/secrets-management.html"><span>Secrets Management</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/gitops-flux.html"><span>GitOps</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/flux-v1.html"><span>Flux-V1</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/path-to-live/public-dns.html"><span>Public DNS</span></a>
   </li>
-</ul>
-</li></ul><ul>
   <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
   </li>
 </ul>
-<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
+</li>
+<li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+    <a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
   </li>
 </ul>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/helm-chart.html#helm-chart"><span>Helm chart</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/secrets-management.html#secrets-management"><span>Secrets Management</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/gitops-flux.html#gitops"><span>GitOps</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/flux-v1.html#flux-v1"><span>Flux-V1</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/ways-of-working/asking-for-help/#asking-for-help"><span>Asking for help</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/troubleshooting/#troubleshooting-issues-2"><span>Troubleshooting issues</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/information-security/"><span>Information security</span></a>
-<ul>
-  <li>
-    <a href="/information-security/certificate-automation.html#tls-certificates-2"><span>TLS certificates</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/api-docs/#api-documentation"><span>API Documentation</span></a>
+    <a href="/api-docs/"><span>API Documentation</span></a>
   </li>
 </ul>
 
@@ -226,21 +207,28 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="shutter-implementation-and-design">Shutter Implementation and Design</h1><h2 id="purpose">Purpose</h2><p>The purpose of this document is to describe the shutter solution design and its end to end implementation.</p>
-<h2 id="solution">Solution</h2><p><a href="/images/Shuttersolution_v2.png" target="_blank" rel="noopener noreferrer"><img src="/images/Shuttersolution_v2.png" alt="Shutter Solution Design Docs" /></a></p>
-<h2 id="default-shutter-page">Default shutter page</h2><p>By default the following shutter page is used as per the GOV.UK patterns <a href="https://design-system.service.gov.uk/patterns/service-unavailable-pages/">service-unavailable-pages</a></p>
-<h2 id="implementation-and-customization">Implementation and Customization</h2><p>Creating and Enabling the shutter solution for an application is a 3 step process as outlined below:</p>
+            <h1 id="shutter-implementation-and-design">Shutter Implementation and Design</h1>
+<h2 id="purpose">Purpose</h2>
+<p>The purpose of this document is to describe the shutter solution design and its end to end implementation.</p>
+<h2 id="solution">Solution</h2>
+<p><a href="/images/Shuttersolution_v2.png" rel="noopener noreferrer"><img src="/images/Shuttersolution_v2.png" alt="Shutter Solution Design Docs" /></a></p>
+<h2 id="default-shutter-page">Default shutter page</h2>
+<p>By default the following shutter page is used as per the GOV.UK patterns <a href="https://design-system.service.gov.uk/patterns/service-unavailable-pages/">service-unavailable-pages</a></p>
+<h2 id="implementation-and-customization">Implementation and Customization</h2>
+<p>Creating and Enabling the shutter solution for an application is a 3 step process as outlined below:</p>
 
 <ul>
 <li>Create CDN infrastructure</li>
 <li>Upload static content to Azure storage account</li>
 <li>Enable shutter with a DNS swap</li>
 </ul>
-<h2 id="pre-requisite">Pre-requisite</h2><p>Before creating the the CDN profiles, custom domains needs to registered with Azure public DNS. 
+<h2 id="pre-requisite">Pre-requisite</h2>
+<p>Before creating the the CDN profiles, custom domains needs to registered with Azure public DNS. 
 For more details about custom domains see <a href="https://docs.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain#map-the-temporary-cdnverify-subdomain">Azure CDN custom Domain</a></p>
 <p>Follow <a href="/ways-of-working/path-to-live/public-dns.html#setup-required-for-an-application">Setup required for an application</a> to get your
 DNS records created.</p>
-<h3 id="cdn-infrastructure">CDN infrastructure</h3><p>CDN infrastructure comprise of the following Azure resources:</p>
+<h3 id="cdn-infrastructure">CDN infrastructure</h3>
+<p>CDN infrastructure comprise of the following Azure resources:</p>
 
 <ul>
 <li>Azure storage account</li>
@@ -258,7 +246,8 @@ DNS records created.</p>
 <li>Enable custom domain for the static website</li>
 <li>Enable https on the custom domain using certificates in the Azure Keyvault</li>
 </ul>
-<h3 id="uploading-static-shutter-pages-to-azure-storage-account">Uploading static shutter pages to Azure storage account</h3><p>Once the shutter infrastructure is created, static content needs to be uploaded to the storage account.
+<h3 id="uploading-static-shutter-pages-to-azure-storage-account">Uploading static shutter pages to Azure storage account</h3>
+<p>Once the shutter infrastructure is created, static content needs to be uploaded to the storage account.
 Following repository is used <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a></p>
 <p>There is a default shutter page available to be used.</p>
 <p>In order to use the <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/default">default</a> 
@@ -267,7 +256,7 @@ shutter page follow the below steps:</p>
 <ul>
 <li>Create a PR with the following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>${shuttername}:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>${shuttername}:
   name: '${shuttername}'
   shutter: 'default'
 </code></pre></div><p>where:</p>
@@ -289,14 +278,15 @@ shutter page follow the below steps:</p>
 <li>Update the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/CODEOWNERS">CODEOWNERS</a> file with your teams folders and GitHub team</li>
 <li>Make following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>sscscor:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>sscscor:
   name: 'sscscor'
   shutter: 'sscscor' 
 </code></pre></div><p>Where:</p>
 <p><code>shutter: &#39;sscscor&#39;</code> shou ld be the name of the directory created in this repository with the static contents.</p></li>
 </ul>
 <p>Once the PR is reviewed and merged all the static contents will be uploaded to the respective storage accounts.</p>
-<h3 id="enable-shutter-with-a-dns-swap">Enable shutter with a DNS swap</h3><p>Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps</p>
+<h3 id="enable-shutter-with-a-dns-swap">Enable shutter with a DNS swap</h3>
+<p>Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps</p>
 
 <ul>
 <li>Clone the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a> repository</li>
@@ -304,7 +294,7 @@ shutter page follow the below steps:</p>
 <li>Create a PR with the appropriate <a href="https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41">prod zone</a></li>
 <li>The above contents will be updated as follows:</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>- name: "www.decree-absolute"
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- name: "www.decree-absolute"
   ttl: 300
   record: "hmcts-prod.azurefd.net"
   shutter: true

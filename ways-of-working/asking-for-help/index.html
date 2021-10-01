@@ -11,16 +11,16 @@
 
     <link rel="canonical" href="hmcts.github.io/ways-of-working/asking-for-help/">
 
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
+      <meta name="twitter:title" content="Asking for help - HMCTS" />
+      <meta name="twitter:url" content="hmcts.github.io/ways-of-working/asking-for-help/" />
 
       <meta property="og:image" content="hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
       <meta property="og:title" content="Asking for help" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="hmcts.github.io/ways-of-working/asking-for-help/" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:image" content="hmcts.github.io/images/govuk-large.png" />
-      <meta property="twitter:title" content="Asking for help - HMCTS" />
-      <meta property="twitter:url" content="hmcts.github.io/ways-of-working/asking-for-help/" />
 
     
   </head>
@@ -64,158 +64,139 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="hmcts.github.io"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
-    <a href="/#the-hmcts-way"><span>The HMCTS way</span></a>
+    <a href="/"><span>The HMCTS way</span></a>
   </li>
-</ul>
+<li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
   <li>
-    <a href="/glossary/#glossary"><span>Glossary</span></a>
+    <a href="/onboarding/team/"><span>Team</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/person/"><span>Person</span></a>
   </li>
 </ul>
-<ul><li><a href="/onboarding/"><span>Platform onboarding</span></a>
+</li>
+  <li>
+    <a href="/glossary/"><span>Glossary</span></a>
+  </li>
+<li><a href="/information-security/"><span>Information security</span></a>
 <ul>
   <li>
-    <a href="/onboarding/team/#team-2"><span>Team</span></a>
+    <a href="/information-security/certificate-automation.html"><span>TLS certificates</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/"><span>Ways of working</span></a>
+<ul>
+<li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
-    <a href="/onboarding/person/#person"><span>Person</span></a>
+    <a href="/ways-of-working/standards/apis.html"><span>API design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/standards/pull-requests.html"><span>Pull requests</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/"><span>Ways of working</span></a>
-<ul><li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
+</li>
+  <li>
+    <a href="/ways-of-working/principles/"><span>Principles</span></a>
+  </li>
+<li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/apis.html#api-design"><span>API design</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/helm-chart.html"><span>Helm chart</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/secrets-management.html"><span>Secrets Management</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/gitops-flux.html"><span>GitOps</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/flux-v1.html"><span>Flux-V1</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
   </li>
 </ul>
+</li>
+<li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/standards/pull-requests.html#pull-requests"><span>Pull requests</span></a>
+    <a href="/ways-of-working/path-to-live/public-dns.html"><span>Public DNS</span></a>
   </li>
-</ul>
-</li></ul><ul>
   <li>
-    <a href="/ways-of-working/principles/#principles"><span>Principles</span></a>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
   </li>
 </ul>
-<ul><li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
+</li>
+<li><a href="/ways-of-working/common-pipeline/"><span>The common pipeline</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
   </li>
 </ul>
-</li></ul><ul><li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html#tls-certificates"><span>TLS certificates</span></a>
+    <a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
   </li>
 </ul>
-<ul>
+</li>
   <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html#load-balancer-configuration"><span>Load balancer configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html#shutter-implementation-and-design"><span>Shutter Implementation and Design</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html#front-door-configuration"><span>Front Door configuration</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html#public-dns"><span>Public DNS</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-as-code"><span>Infrastructure as Code</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository"><span>Create a Github Repository</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/helm-chart.html#helm-chart"><span>Helm chart</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/secrets-management.html#secrets-management"><span>Secrets Management</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/gitops-flux.html#gitops"><span>GitOps</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/flux-v1.html#flux-v1"><span>Flux-V1</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/new-component/elasticsearch.html#elasticsearch"><span>ElasticSearch</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/ways-of-working/asking-for-help/#asking-for-help"><span>Asking for help</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/ways-of-working/troubleshooting/#troubleshooting-issues-2"><span>Troubleshooting issues</span></a>
-  </li>
-</ul>
-</li></ul><ul><li><a href="/information-security/"><span>Information security</span></a>
-<ul>
-  <li>
-    <a href="/information-security/certificate-automation.html#tls-certificates-2"><span>TLS certificates</span></a>
-  </li>
-</ul>
-</li></ul><ul>
-  <li>
-    <a href="/api-docs/#api-documentation"><span>API Documentation</span></a>
+    <a href="/api-docs/"><span>API Documentation</span></a>
   </li>
 </ul>
 
@@ -226,23 +207,28 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="asking-for-help">Asking for help</h1><p>The platform is designed to be self-service from end-to-end; it should be possible to onboard people and teams, create
+            <h1 id="asking-for-help">Asking for help</h1>
+<p>The platform is designed to be self-service from end-to-end; it should be possible to onboard people and teams, create
 new products and components, and deliver them to live service without requiring another team to do anything other than approve requests.</p>
 <p>There may be times, however, where things aren&rsquo;t working as expected and you need to ask for help.</p>
 <p>Follow this guide to get help quickly and efficiently.</p>
-<h2 id="first-read-the-manual">First, read the manual</h2><p>Please check that your question is not answered on one of the pages on this site before asking - it might save you a
+<h2 id="first-read-the-manual">First, read the manual</h2>
+<p>Please check that your question is not answered on one of the pages on this site before asking - it might save you a
 lot of time.</p>
-<h2 id="where-to-ask">Where to ask?</h2><p>These Slack channels are good places to ask for help:</p>
+<h2 id="where-to-ask">Where to ask?</h2>
+<p>These Slack channels are good places to ask for help:</p>
 
 <ul>
 <li><a href="https://hmcts-reform.slack.com/messages/cloud-native">#cloud-native</a> is a community channel where people can discuss best practices and ask general questions</li>
 <li><a href="https://hmcts-reform.slack.com/messages/platops-help">#platops-help</a> is for support requests to the Platform Operations team</li>
 <li><a href="https://hmcts-reform.slack.com/messages/idam-support">#idam-support</a> for support and questions related to IDAM</li>
 </ul>
-<h2 id="how-to-ask">How to ask?</h2><p>Some channels have specific Slack workflows for raising help requests, an example workflow is shown below. These will guide you with questions and help the helpers
+<h2 id="how-to-ask">How to ask?</h2>
+<p>Some channels have specific Slack workflows for raising help requests, an example workflow is shown below. These will guide you with questions and help the helpers
 resolve your problem more quickly. Use them where they are available.</p>
-<p><a href="/images/platform-help-request.png" target="_blank" rel="noopener noreferrer"><img src="/images/platform-help-request.png" alt="Slack Platform help request" /></a></p>
-<h3 id="give-the-helpers-some-details">Give the helpers some details</h3><p>Most helpers are not psychic. They&rsquo;ll need context and information about your problem in order to help you resolve it.</p>
+<p><a href="/images/platform-help-request.png" rel="noopener noreferrer"><img src="/images/platform-help-request.png" alt="Slack Platform help request" /></a></p>
+<h3 id="give-the-helpers-some-details">Give the helpers some details</h3>
+<p>Most helpers are not psychic. They&rsquo;ll need context and information about your problem in order to help you resolve it.</p>
 <p>It may be helpful to include some or all of the following information in your request:</p>
 
 <ul>
@@ -251,15 +237,20 @@ resolve your problem more quickly. Use them where they are available.</p>
 <li>what you&rsquo;ve already done to try to resolve the problem</li>
 <li>anything else you think may be useful and relevant</li>
 </ul>
-<h3 id="ask-suitable-questions">Ask suitable questions</h3><p>Consider the audience in the channel. Use community channels for longer questions about best practice or design.</p>
+<h3 id="ask-suitable-questions">Ask suitable questions</h3>
+<p>Consider the audience in the channel. Use community channels for longer questions about best practice or design.</p>
 <p>Concise, specific requests will likely get help quickly. Long, wide-ranging requests will take longer or may not get an answer.</p>
-<h3 id="be-polite-and-patient">Be polite and patient</h3><p>Everyone is trying to do their best. Helpers will likely be dealing with lots of things at once and will prioritise appropriately.</p>
-<h3 id="use-here-sparingly">Use <code>@here</code> sparingly</h3><p>Only use <code>@here</code> if you&rsquo;ve got something to announce to <em>everyone</em> in the channel. Some channels have many hundreds
+<h3 id="be-polite-and-patient">Be polite and patient</h3>
+<p>Everyone is trying to do their best. Helpers will likely be dealing with lots of things at once and will prioritise appropriately.</p>
+<h3 id="use-here-sparingly">Use <code>@here</code> sparingly</h3>
+<p>Only use <code>@here</code> if you&rsquo;ve got something to announce to <em>everyone</em> in the channel. Some channels have many hundreds
 of members. Using <code>@here</code> won&rsquo;t get you help more quickly on the monitored channels listed above, it will just disturb
 the majority of people in the channel who may not be able to help.</p>
-<h3 id="use-threads">Use threads</h3><p>At times, there may be many people asking many questions on the same channel. Slack has support for <a href="https://slack.com/intl/en-gb/help/articles/115000769927-Use-threads-to-organise-discussions-">threads</a>
+<h3 id="use-threads">Use threads</h3>
+<p>At times, there may be many people asking many questions on the same channel. Slack has support for <a href="https://slack.com/intl/en-gb/help/articles/115000769927-Use-threads-to-organise-discussions-">threads</a>
 to help organise discussions and keep related conversations tied to the same context. Use them.</p>
 <h2 id="further-reading">Further reading</h2>
+
 <ul>
 <li><a href="http://jeff.jones.be/blog/2009/03/17/how-to-ask-for-help-on-irc/">How to Ask for Help on IRC</a></li>
 <li><a href="https://betterfm.org/smart-questions.html">How To Ask And Answer Questions The Smart Way</a></li>
