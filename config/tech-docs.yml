@@ -9,7 +9,7 @@ phase: Live
 
 # Links to show on right-hand-side of header
 header_links:
-  Support: https://hmcts-reform.slack.com/app_redirect?channel=rpe
+  Support: https://hmcts-reform.slack.com/app_redirect?channel=platops
   Documentation: /
   GitHub: https://github.com/hmcts
 
