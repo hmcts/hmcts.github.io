@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Starting a new component - HMCTS</title>
+    <title>Slack - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/new-component/">
+    <link rel="canonical" href="https://hmcts.github.io/onboarding/team/slack.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Starting a new component - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/" />
+      <meta name="twitter:title" content="Slack - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/onboarding/team/slack.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Starting a new component" />
+      <meta property="og:title" content="Slack" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/" />
+      <meta property="og:url" content="https://hmcts.github.io/onboarding/team/slack.html" />
 
     
   </head>
@@ -224,34 +224,34 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="starting-a-new-component">Starting a new component</h1>
+            <h1 id="slack">Slack</h1>
+<p>Once you&rsquo;ve received your <code>hmcts.net</code> or <code>justice.gov.uk</code> email account you can self service sign-up to our slack workspace.</p>
+<p>Visit <a href="https://hmcts-reform.slack.com/">hmcts-reform.slack.com</a> and click <code>create an account</code></p>
+<p>After you&rsquo;ve created your account please make sure to fill out your profile,
+set at least your full name, and in the what I do section put your team name and role.</p>
+<p>Now that you&rsquo;ve got a slack account you&rsquo;ll need to create a couple of channels:</p>
 
 <ul>
-<li><a href="/ways-of-working/new-component/github-repo.html">create new Github repo</a></li>
-<li><a href="../common-pipeline/">use common pipeline</a></li>
-<li><a href="/ways-of-working/new-component/secrets-management.html">secrets management</a></li>
-<li><a href="/ways-of-working/new-component/infrastructure-as-code.html">infrastructure as code</a></li>
-<li>configuration management</li>
-<li>logging and monitoring</li>
-<li>database schema management</li>
-<li><a href="/ways-of-working/new-component/helm-chart.html">Helm chart</a></li>
-<li>Environment-specific concepts</li>
-<li><a href="/ways-of-working/new-component/gitops-flux.html#application-config-in-flux">Flux config</a></li>
-<li><a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml">Production approvals</a></li>
-<li><a href="../path-to-live/">Path-to-live</a></li>
+<li>a team contact channel, this must be public as this is where people on other teams will come to contact you,
+this is often your regular developer chat channel, i.e. <code>team-dev</code> or <code>team-tech</code>.</li>
+<li>a build notices channel, this should be public as there&rsquo;s no reason to hide your build failures.</li>
 </ul>
+<p>Once you&rsquo;ve created a build notices channel you will need to invite our &lsquo;Jenkins&rsquo; bot user into the channel.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>/invite @Jenkins
+</code></pre></div><p>Make sure you pick the Jenkins [app] user:</p>
+<p><img src="/images/slack-jenkins-user-invite.png"/></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 March 2021.
+      This page was last reviewed on 4 October 2021.
 
-        It needs to be reviewed again on 19 September 2021
+        It needs to be reviewed again on 4 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 September 2021
+      This page was set to be reviewed before 4 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -261,8 +261,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Starting%20a%20new%20component'&amp;body=Problem%20with%20'Starting%20a%20new%20component'%20(https://hmcts.github.io/ways-of-working/new-component/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/team/slack.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Slack'&amp;body=Problem%20with%20'Slack'%20(https://hmcts.github.io/onboarding/team/slack.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

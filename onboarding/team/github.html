@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Starting a new component - HMCTS</title>
+    <title>GitHub - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/new-component/">
+    <link rel="canonical" href="https://hmcts.github.io/onboarding/team/github.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Starting a new component - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/" />
+      <meta name="twitter:title" content="GitHub - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/onboarding/team/github.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Starting a new component" />
+      <meta property="og:title" content="GitHub" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/" />
+      <meta property="og:url" content="https://hmcts.github.io/onboarding/team/github.html" />
 
     
   </head>
@@ -224,34 +224,50 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="starting-a-new-component">Starting a new component</h1>
+            <h1 id="github">GitHub</h1>
+<h2 id="access">Access</h2>
+<p>Once you&rsquo;ve received your <code>hmcts.net</code> or <code>justice.gov.uk</code> email account and <code>Confluence</code> access, you can request GitHub access in one of two ways:</p>
 
-<ul>
-<li><a href="/ways-of-working/new-component/github-repo.html">create new Github repo</a></li>
-<li><a href="../common-pipeline/">use common pipeline</a></li>
-<li><a href="/ways-of-working/new-component/secrets-management.html">secrets management</a></li>
-<li><a href="/ways-of-working/new-component/infrastructure-as-code.html">infrastructure as code</a></li>
-<li>configuration management</li>
-<li>logging and monitoring</li>
-<li>database schema management</li>
-<li><a href="/ways-of-working/new-component/helm-chart.html">Helm chart</a></li>
-<li>Environment-specific concepts</li>
-<li><a href="/ways-of-working/new-component/gitops-flux.html#application-config-in-flux">Flux config</a></li>
-<li><a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml">Production approvals</a></li>
-<li><a href="../path-to-live/">Path-to-live</a></li>
-</ul>
+<ol>
+<li>If someone in your team already has access then ask them to follow the instructions in the <a href="https://github.com/hmcts/github-management">GitHub management</a> repository to add you.</li>
+<li>If you&rsquo;re the first person in your team you should raise a help request in <a href="https://hmcts-reform.slack.com/archives/C8SR5CAMU">#platops-help</a>, asking for GitHub access, you need to provide your GitHub username and say that you agree to the <a href="https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance">Acceptable Use Policy</a>.</li>
+</ol>
+<p>You should receive an email inviting you to the GitHub organisation, visit <a href="https://github.com/hmcts">https://github.com/hmcts</a> to accept the invite.</p>
+<h2 id="github-teams">GitHub Teams</h2>
+<p>Now you need to create two &lsquo;GitHub teams&rsquo; for your team.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+<ol>
+<li>Click on the &lsquo;teams&rsquo; tab</li>
+<li>Create a team called &lt;team-name&gt;</li>
+<li>Create a team called &lt;team-name&gt;-admins</li>
+</ol>
+<p>see also <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository">creating a GitHub repository</a>.</p>
+<h3 id="team-metadata-required-for-pipelines">Team metadata required for pipelines</h3>
+<p>Each team needs to add configuration for their team to the <a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml">team-config</a> file</a>
+in the cnp-jenkins-config repository.</p>
+<p>Please send a <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests">pull request</a> with your configuration.</p>
+<p>All fields are mandatory,</p>
+<p>Copy another teams config and adjust to meet your needs.</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">sscs</span><span class="pi">:</span> <span class="c1"># product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known by</span>
+  <span class="na">team</span><span class="pi">:</span> <span class="s2">"</span><span class="s">SSCS"</span> <span class="c1"># team 'display name', useful for longer more recognisable names for tagging</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">sscs"</span> <span class="c1"># Kubernetes namespace, usually the same as your 'product name'</span>
+  <span class="na">slack</span><span class="pi">:</span>
+    <span class="na">contact_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># public channel that you can be contacted at</span>
+    <span class="na">build_notices_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># all build notices will be sent here</span>
+</code></pre></div><p>Make sure your product name is not too long as some Azure resources have constraints on their length
+which can easily be hit if names are too long.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 March 2021.
+      This page was last reviewed on 4 October 2021.
 
-        It needs to be reviewed again on 19 September 2021
+        It needs to be reviewed again on 4 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 September 2021
+      This page was set to be reviewed before 4 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -261,8 +277,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Starting%20a%20new%20component'&amp;body=Problem%20with%20'Starting%20a%20new%20component'%20(https://hmcts.github.io/ways-of-working/new-component/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/team/github.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'GitHub'&amp;body=Problem%20with%20'GitHub'%20(https://hmcts.github.io/onboarding/team/github.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Starting a new component - HMCTS</title>
+    <title>Jenkins - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/new-component/">
+    <link rel="canonical" href="https://hmcts.github.io/onboarding/team/jenkins.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Starting a new component - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/" />
+      <meta name="twitter:title" content="Jenkins - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/onboarding/team/jenkins.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Starting a new component" />
+      <meta property="og:title" content="Jenkins" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/" />
+      <meta property="og:url" content="https://hmcts.github.io/onboarding/team/jenkins.html" />
 
     
   </head>
@@ -224,34 +224,40 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="starting-a-new-component">Starting a new component</h1>
+            <h1 id="jenkins">Jenkins</h1>
+<p>There are Jenkins servers for: CFT (Civil, Family &amp; Tribunal) and SDS (Shared Digital Services)</p>
+<p>To set up a Jenkins pipeline integration with your GitHub repo, you will need to create an organisation within Jenkins.</p>
+<p>The steps to be followed below depend on what business area your application is in.</p>
+<p>If your application is in CFT, see Step 1. If your application is in SDS, skip to Step 4.</p>
 
-<ul>
-<li><a href="/ways-of-working/new-component/github-repo.html">create new Github repo</a></li>
-<li><a href="../common-pipeline/">use common pipeline</a></li>
-<li><a href="/ways-of-working/new-component/secrets-management.html">secrets management</a></li>
-<li><a href="/ways-of-working/new-component/infrastructure-as-code.html">infrastructure as code</a></li>
-<li>configuration management</li>
-<li>logging and monitoring</li>
-<li>database schema management</li>
-<li><a href="/ways-of-working/new-component/helm-chart.html">Helm chart</a></li>
-<li>Environment-specific concepts</li>
-<li><a href="/ways-of-working/new-component/gitops-flux.html#application-config-in-flux">Flux config</a></li>
-<li><a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml">Production approvals</a></li>
-<li><a href="../path-to-live/">Path-to-live</a></li>
-</ul>
+<ol>
+<li><p>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.</p></li>
+<li><p>Please give permissions based on an <a href="https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe">existing Github App</a> as we give additional permissions to what is listed in the plugin&rsquo;s documentation (only GitHub app maintainers can see this).</p></li>
+<li><p>Platform Operations will store the private key of app secrets to Key Vault and <a href="https://github.com/hmcts/cnp-flux-config/pull/2148/files">add credentials to Jenkins</a> .</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">TEAM_NAME</span><span class="o">=</span><span class="nv">$1</span>
+az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftptl-intsvc
+az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftsbox-intsvc
+</code></pre></div></li>
+<li><p>Add your organisation config.</p>
+<p>CFT: <a href="https://github.com/hmcts/cnp-jenkins-config/pull/402">cnp-jenkins-config</a></p>
+<p>SDS: <a href="https://github.com/hmcts/sds-jenkins-config/pull/1">sds-jenkins-config</a></p></li>
+<li><p>Add a Jenkins build dashboard.</p>
+<p>CFT: <a href="https://github.com/hmcts/cnp-flux-config/pull/7221">cnp-flux-config</a></p>
+<p>SDS: <a href="https://github.com/hmcts/shared-services-flux/blob/a615723ac7b8e814be9f0eae78c580fddd84539c/k8s/namespaces/jenkins/patches/ptl/cluster-00/jenkins.yaml#L114">shared-services-flux</a></p></li>
+<li><p>Scan the organisation manually on Jenkins if it doesn&rsquo;t scan automatically.</p></li>
+</ol>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 March 2021.
+      This page was last reviewed on 4 October 2021.
 
-        It needs to be reviewed again on 19 September 2021
+        It needs to be reviewed again on 4 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 September 2021
+      This page was set to be reviewed before 4 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -261,8 +267,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Starting%20a%20new%20component'&amp;body=Problem%20with%20'Starting%20a%20new%20component'%20(https://hmcts.github.io/ways-of-working/new-component/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/team/jenkins.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Jenkins'&amp;body=Problem%20with%20'Jenkins'%20(https://hmcts.github.io/onboarding/team/jenkins.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

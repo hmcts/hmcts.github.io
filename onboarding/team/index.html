@@ -104,9 +104,25 @@
   </li>
 <li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
+<li><a href="/onboarding/team/"><span>Team</span></a>
+<ul>
   <li>
-    <a href="/onboarding/team/"><span>Team</span></a>
+    <a href="/onboarding/team/jenkins.html"><span>Jenkins</span></a>
   </li>
+  <li>
+    <a href="/onboarding/team/azuread.html"><span>Azure AD</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/team/office365.html"><span>Office 365</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/team/slack.html"><span>Slack</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/team/github.html"><span>GitHub</span></a>
+  </li>
+</ul>
+</li>
   <li>
     <a href="/onboarding/person/"><span>Person</span></a>
   </li>
@@ -209,101 +225,18 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="team">Team</h1>
-<h2 id="slack">Slack</h2>
-<p>Once you&rsquo;ve received your <code>hmcts.net</code> or <code>justice.gov.uk</code> email account you can self service sign-up to our slack workspace.</p>
-<p>Visit <a href="https://hmcts-reform.slack.com/">hmcts-reform.slack.com</a> and click <code>create an account</code></p>
-<p>After you&rsquo;ve created your account please make sure to fill out your profile,
-set at least your full name, and in the what I do section put your team name and role.</p>
-<p>Now that you&rsquo;ve got a slack account you&rsquo;ll need to create a couple of channels:</p>
 
-<ul>
-<li>a team contact channel, this must be public as this is where people on other teams will come to contact you,
-this is often your regular developer chat channel, i.e. <code>team-dev</code> or <code>team-tech</code>.</li>
-<li>a build notices channel, this should be public as there&rsquo;s no reason to hide your build failures.</li>
-</ul>
-<p>Once you&rsquo;ve created a build notices channel you will need to invite our &lsquo;Jenkins&rsquo; bot user into the channel.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>/invite @Jenkins
-</code></pre></div><p>Make sure you pick the Jenkins [app] user:</p>
-<p><img src="/images/slack-jenkins-user-invite.png"/></p>
-<h2 id="github-config">Github config</h2>
-<h3 id="access">Access</h3>
-<p>Once you&rsquo;ve received your <code>hmcts.net</code> or <code>justice.gov.uk</code> email account and <code>Confluence</code> access, you can request GitHub access in one of two ways:</p>
-
-<ol>
-<li>If someone in your team already has access then ask them to follow the instructions in the <a href="https://github.com/hmcts/github-management">GitHub management</a> repository to add you.</li>
-<li>If you&rsquo;re the first person in your team you should raise a help request in <a href="https://hmcts-reform.slack.com/archives/C8SR5CAMU">#platops-help</a>, asking for GitHub access, you need to provide your GitHub username and say that you agree to the <a href="https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance">Acceptable Use Policy</a>.</li>
-</ol>
-<p>You should receive an email inviting you to the GitHub organisation, visit <a href="https://github.com/hmcts">https://github.com/hmcts</a> to accept the invite.</p>
-<h3 id="github-teams">GitHub Teams</h3>
-<p>Now you need to create two &lsquo;GitHub teams&rsquo; for your team.</p>
-
-<ol>
-<li>Click on the &lsquo;teams&rsquo; tab</li>
-<li>Create a team called &lt;team-name&gt;</li>
-<li>Create a team called &lt;team-name&gt;-admins</li>
-</ol>
-<p>see also <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository">creating a GitHub repository</a>.</p>
-<h3 id="team-metadata-required-for-pipelines">Team metadata required for pipelines</h3>
-<p>Each team needs to add configuration for their team to the <a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml">team-config</a> file</a>
-in the cnp-jenkins-config repository.</p>
-<p>Please send a <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests">pull request</a> with your configuration.</p>
-<p>All fields are mandatory,</p>
-<p>Copy another teams config and adjust to meet your needs.</p>
-<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">sscs</span><span class="pi">:</span> <span class="c1"># product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known by</span>
-  <span class="na">team</span><span class="pi">:</span> <span class="s2">"</span><span class="s">SSCS"</span> <span class="c1"># team 'display name', useful for longer more recognisable names for tagging</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">sscs"</span> <span class="c1"># Kubernetes namespace, usually the same as your 'product name'</span>
-  <span class="na">slack</span><span class="pi">:</span>
-    <span class="na">contact_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># public channel that you can be contacted at</span>
-    <span class="na">build_notices_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># all build notices will be sent here</span>
-</code></pre></div><p>Make sure your product name is not too long as some Azure resources have constraints on their length 
-which can easily be hit if names are too long.</p>
-<h2 id="jenkins-org-setup">Jenkins org setup</h2>
-<p>There are Jenkins servers for: CFT (Civil, Family &amp; Tribunal) and SDS (Shared Digital Services)</p>
-<p>To set up a Jenkins pipeline integration with your GitHub repo, you will need to create an organisation within Jenkins.</p>
-<p>The steps to be followed below depend on what business area your application is in.</p>
-<p>If your application is in CFT, see Step 1. If your application is in SDS, skip to Step 4.</p>
-
-<ol>
-<li><p>Jenkins uses GitHub App Authentication, Request on <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> to add a <a href="https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc#github-app-authentication-guide">Github app for your Jenkins Org</a>.</p></li>
-<li><p>Please give permissions based on an <a href="https://github.com/organizations/hmcts/settings/apps/hmcts-jenkins-rpe">existing Github App</a> as we give additional permissions to what is listed in the plugin&rsquo;s documentation (only GitHub app maintainers can see this).</p></li>
-<li><p>Platform Operations will store the private key of app secrets to keyvault and <a href="https://github.com/hmcts/cnp-flux-config/pull/2148/files">add credentials to Jenkins</a> .</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">TEAM_NAME</span><span class="o">=</span><span class="nv">$1</span>
-az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftptl-intsvc
-az keyvault secret <span class="nb">set</span> <span class="nt">-n</span>  hmcts-jenkins-<span class="k">${</span><span class="nv">TEAM_NAME</span><span class="k">}</span><span class="nt">-ghapp</span> <span class="nt">-f</span> converted-github-app.pem <span class="nt">--vault-name</span> cftsbox-intsvc
-</code></pre></div></li>
-<li><p>Add your organisation config.</p>
-<p>CFT: <a href="https://github.com/hmcts/cnp-jenkins-config/pull/402">cnp-jenkins-config</a></p>
-<p>SDS: <a href="https://github.com/hmcts/sds-jenkins-config/pull/1">sds-jenkins-config</a></p></li>
-<li><p>Add a Jenkins build dashboard.</p>
-<p>CFT: <a href="https://github.com/hmcts/cnp-flux-config/pull/7221">cnp-flux-config</a></p>
-<p>SDS: <a href="https://github.com/hmcts/shared-services-flux/blob/a615723ac7b8e814be9f0eae78c580fddd84539c/k8s/namespaces/jenkins/patches/ptl/cluster-00/jenkins.yaml#L114">shared-services-flux</a></p></li>
-<li><p>Scan the organisation manually on Jenkins if it doesn&rsquo;t scan automatically.</p></li>
-</ol>
-<h2 id="azure-active-directory-aad-groups">Azure Active Directory (AAD) groups</h2>
-<p>Create a help request in the <a href="https://hmcts-reform.slack.com/messages/platops-help">#platops-help</a> channel on Slack.</p>
-<p>Description:</p>
-
-<blockquote>
-<p>Hi
-I have just started on the &ldquo;team name&rdquo; team,</p>
-<p>Can you please create the a team AAD group: &ldquo;DTS Team name&rdquo;</p>
-</blockquote>
-<p>To join the groups send a pull request to the <a href="https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml">devops-azure-aad</a> git repository.</p>
-<h2 id="create-office-365-team-group">Create Office 365 team group</h2>
-<p>It is recommended that you create an office 365 group for your team and depending on size possibly one for your dev team as well.</p>
-<p>See the Microsoft documentation for <a href="https://support.microsoft.com/en-us/office/create-a-group-in-outlook-04d0c9cf-6864-423c-a380-4fa858f27102#ID0EACAAA=Web">how to create a group</a>.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 March 2021.
+      This page was last reviewed on 4 October 2021.
 
-        It needs to be reviewed again on 19 September 2021
+        It needs to be reviewed again on 4 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 September 2021
+      This page was set to be reviewed before 4 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
