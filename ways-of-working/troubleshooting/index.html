@@ -48,7 +48,7 @@
       <nav>
         <ul id="navigation" class="govuk-header__navigation govuk-header__navigation--end" aria-label="Top Level Navigation">
             <li class="govuk-header__navigation-item">
-              <a class="govuk-header__link" href="https://hmcts-reform.slack.com/app_redirect?channel=platops">Support</a>
+              <a class="govuk-header__link" href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">Support</a>
             </li>
             <li class="govuk-header__navigation-item">
               <a class="govuk-header__link" href="/">Documentation</a>
@@ -204,9 +204,13 @@
   </li>
 </ul>
 </li>
+<li><a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+<ul>
   <li>
-    <a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+    <a href="/ways-of-working/troubleshooting/fluxV1.html"><span>Flux V1</span></a>
   </li>
+</ul>
+</li>
   <li>
     <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
   </li>
@@ -318,7 +322,7 @@ Although you may have permissions to delete a helm release or pod in a non-produ
 </blockquote>
 
 <blockquote>
-<p>Please see <a href="#flux-v1">V1 docs</a> for troubleshooting an issue with resources managed through Flux V1.</p>
+<p>Please see <a href="/ways-of-working/troubleshooting/fluxV1.html">V1 docs</a> for troubleshooting an issue with resources managed through Flux V1.</p>
 </blockquote>
 <h3 id="latest-image-is-not-updated-in-cluster">Latest image is not updated in cluster</h3>
 
@@ -391,70 +395,18 @@ kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller
    <span class="c"># search for specific image</span>
    kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller | <span class="nb">grep</span> &lt;namespace&gt;
-</code></pre></div><h2 id="flux-v1">Flux-V1</h2>
-<h3 id="new-image-is-not-updated-in-cluster">New image is not updated in cluster.</h3>
-
-<ul>
-<li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. If it hasn&rsquo;t committed to Github, see <a href="#flux-did-not-commit-new-image-to-github"> Flux did not commit new image to Github</a>.</li>
-<li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
-</code></pre></div></li>
-<li><p>If Image is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
-<li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</a></p></li>
-</ul>
-<h3 id="flux-did-not-commit-new-image-to-github">Flux did not commit new image to Github.</h3>
-
-<ul>
-<li>Flux keeps polling ACR for new images, but it should generally update the new image in 10 minutes.</li>
-<li><p>Look at flux logs to see if there are any errors specific to your release</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100 | <span class="nb">grep</span> &lt;Release Name&gt;
-</code></pre></div></li>
-<li><p>If you see an error which says <code>failed to resolve reference</code> or <code>not found</code> on a particular image, it means the current image deployed is deleted from the container registry and you need to manually update to latest image in cnp-flux-config to fix your helm release.</p></li>
-<li><p>If you don&rsquo;t see any error logs for your specific release, check if there are any errors that could be blocking flux.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
-</code></pre></div></li>
-<li><p>If there are no errors, it is likely that flux pod is stuck and a symptom for it is not seeing a log containing <code>cmd=&quot;kubectl apply -f -</code> in flux logs. You should <a href="../asking-for-help">ask for help from platops</a>) to get it sorted.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
-</code></pre></div></li>
-</ul>
-<h3 id="updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</h3>
-
-<ul>
-<li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
-<li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-operator <span class="nt">--tail</span><span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
-</code></pre></div></li>
-<li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
-</code></pre></div></li>
-<li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
-<p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
-</code></pre></div></li>
-<li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
-<li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
-</ul>
-<h3 id="change-in-flux-config-is-not-applied-to-cluster">Change in flux config is not applied to cluster.</h3>
-
-<ul>
-<li><p>Check if the <code>HelmRelease</code> has been updated with your change. Run below command and check that the image tag has been updated in the output.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
-</code></pre></div></li>
-<li><p>If Changed is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
-<li><p>If the change is updated, but still not reflecting on your pods/ application. see <a href="#updated-helmrelease-is-not-deployed">Helm operator logs</a></p></li>
-</ul>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-25">
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 March 2021.
+      This page was last reviewed on 4 October 2021.
 
-        It needs to be reviewed again on 25 September 2021
+        It needs to be reviewed again on 4 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 September 2021
+      This page was set to be reviewed before 4 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>

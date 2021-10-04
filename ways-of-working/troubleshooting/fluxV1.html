@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>GitHub - HMCTS</title>
+    <title>Flux V1 - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/onboarding/team/github.html">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/troubleshooting/fluxV1.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="GitHub - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/onboarding/team/github.html" />
+      <meta name="twitter:title" content="Flux V1 - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/troubleshooting/fluxV1.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="GitHub" />
+      <meta property="og:title" content="Flux V1" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/onboarding/team/github.html" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/troubleshooting/fluxV1.html" />
 
     
   </head>
@@ -228,38 +228,60 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="github">GitHub</h1>
-<h2 id="access">Access</h2>
-<p>Once you&rsquo;ve received your <code>hmcts.net</code> or <code>justice.gov.uk</code> email account and <code>Confluence</code> access, you can request GitHub access in one of two ways:</p>
+            <h1 id="flux-v1">Flux V1</h1>
+<p>See the <a href="https://github.com/hmcts/cnp-flux-config#migration-status">migration status</a> if you are un-sure which environment is using Flux V1 or Flux V2.</p>
+<p>SDS has not started migrating yet.</p>
+<h3 id="new-image-is-not-updated-in-cluster">New image is not updated in cluster.</h3>
 
-<ol>
-<li>If someone in your team already has access then ask them to follow the instructions in the <a href="https://github.com/hmcts/github-management">GitHub management</a> repository to add you.</li>
-<li>If you&rsquo;re the first person in your team you should raise a help request in <a href="https://hmcts-reform.slack.com/archives/C8SR5CAMU">#platops-help</a>, asking for GitHub access, you need to provide your GitHub username and say that you agree to the <a href="https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance">Acceptable Use Policy</a>.</li>
-</ol>
-<p>You should receive an email inviting you to the GitHub organisation, visit <a href="https://github.com/hmcts">https://github.com/hmcts</a> to accept the invite.</p>
-<h2 id="github-teams">GitHub Teams</h2>
-<p>Now you need to create two &lsquo;GitHub teams&rsquo; for your team.</p>
+<ul>
+<li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. If it hasn&rsquo;t committed to Github, see <a href="#flux-did-not-commit-new-image-to-github"> Flux did not commit new image to Github</a>.</li>
+<li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+</code></pre></div></li>
+<li><p>If Image is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
+<li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</a></p></li>
+</ul>
+<h3 id="flux-did-not-commit-new-image-to-github">Flux did not commit new image to Github.</h3>
 
-<ol>
-<li>Click on the &lsquo;teams&rsquo; tab</li>
-<li>Create a team called &lt;team-name&gt;</li>
-<li>Create a team called &lt;team-name&gt;-admins</li>
-</ol>
-<p>see also <a href="/ways-of-working/new-component/github-repo.html#create-a-github-repository">creating a GitHub repository</a>.</p>
-<h3 id="team-metadata-required-for-pipelines">Team metadata required for pipelines</h3>
-<p>Each team needs to add configuration for their team to the <a href="https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml">team-config</a> file</a>
-in the cnp-jenkins-config repository.</p>
-<p>Please send a <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests">pull request</a> with your configuration.</p>
-<p>All fields are mandatory,</p>
-<p>Copy another teams config and adjust to meet your needs.</p>
-<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">sscs</span><span class="pi">:</span> <span class="c1"># product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known by</span>
-  <span class="na">team</span><span class="pi">:</span> <span class="s2">"</span><span class="s">SSCS"</span> <span class="c1"># team 'display name', useful for longer more recognisable names for tagging</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">sscs"</span> <span class="c1"># Kubernetes namespace, usually the same as your 'product name'</span>
-  <span class="na">slack</span><span class="pi">:</span>
-    <span class="na">contact_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># public channel that you can be contacted at</span>
-    <span class="na">build_notices_channel</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#sscs-tech"</span> <span class="c1"># all build notices will be sent here</span>
-</code></pre></div><p>Make sure your product name is not too long as some Azure resources have constraints on their length
-which can easily be hit if names are too long.</p>
+<ul>
+<li>Flux keeps polling ACR for new images, but it should generally update the new image in 10 minutes.</li>
+<li><p>Look at flux logs to see if there are any errors specific to your release</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100 | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If you see an error which says <code>failed to resolve reference</code> or <code>not found</code> on a particular image, it means the current image deployed is deleted from the container registry and you need to manually update to latest image in cnp-flux-config to fix your helm release.</p></li>
+<li><p>If you don&rsquo;t see any error logs for your specific release, check if there are any errors that could be blocking flux.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
+</code></pre></div></li>
+<li><p>If there are no errors, it is likely that flux pod is stuck and a symptom for it is not seeing a log containing <code>cmd=&quot;kubectl apply -f -</code> in flux logs. You should <a href="../asking-for-help">ask for help from platops</a>) to get it sorted.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>flux <span class="nt">--tail</span><span class="o">=</span>100
+</code></pre></div></li>
+</ul>
+<h3 id="updated-helmrelease-is-not-deployed">Updated HelmRelease is not deployed</h3>
+
+<ul>
+<li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
+<li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl logs <span class="nt">-n</span> admin <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-operator <span class="nt">--tail</span><span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
+</code></pre></div></li>
+<li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
+<p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div></li>
+<li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
+<li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
+</ul>
+<h3 id="change-in-flux-config-is-not-applied-to-cluster">Change in flux config is not applied to cluster.</h3>
+
+<ul>
+<li><p>Check if the <code>HelmRelease</code> has been updated with your change. Run below command and check that the image tag has been updated in the output.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+</code></pre></div></li>
+<li><p>If Changed is not updated in above, <a href="#flux-did-not-commit-new-image-to-github">check flux logs</a>.</p></li>
+<li><p>If the change is updated, but still not reflecting on your pods/ application. see <a href="#updated-helmrelease-is-not-deployed">Helm operator logs</a></p></li>
+</ul>
 
               <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
@@ -281,8 +303,8 @@ which can easily be hit if names are too long.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/team/github.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'GitHub'&amp;body=Problem%20with%20'GitHub'%20(https://hmcts.github.io/onboarding/team/github.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/troubleshooting/fluxV1.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Flux%20V1'&amp;body=Problem%20with%20'Flux%20V1'%20(https://hmcts.github.io/ways-of-working/troubleshooting/fluxV1.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

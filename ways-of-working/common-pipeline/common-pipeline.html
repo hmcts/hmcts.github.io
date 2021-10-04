@@ -48,7 +48,7 @@
       <nav>
         <ul id="navigation" class="govuk-header__navigation govuk-header__navigation--end" aria-label="Top Level Navigation">
             <li class="govuk-header__navigation-item">
-              <a class="govuk-header__link" href="https://hmcts-reform.slack.com/app_redirect?channel=platops">Support</a>
+              <a class="govuk-header__link" href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">Support</a>
             </li>
             <li class="govuk-header__navigation-item">
               <a class="govuk-header__link" href="/">Documentation</a>
@@ -204,9 +204,13 @@
   </li>
 </ul>
 </li>
+<li><a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+<ul>
   <li>
-    <a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
+    <a href="/ways-of-working/troubleshooting/fluxV1.html"><span>Flux V1</span></a>
   </li>
+</ul>
+</li>
   <li>
     <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
   </li>
@@ -261,24 +265,8 @@ For more information about Helm, please see the related new component
 <a href="/ways-of-working/new-component/helm-chart.html">docs</a></p>
 <p><a href="/images/common-pipeline.png" rel="noopener noreferrer"><img src="/images/common-pipeline.png" alt="The Common Pipeline" /></a></p>
 <h3 id="troubleshooting-build-issues">Troubleshooting build issues</h3>
-<p>Important steps to verify a deployment failure, or sanity check a successful deployment are as follows:</p>
+<p>See <a href="../troubleshooting/">troubleshooting issues</a>.</p>
 
-<ul>
-<li><p>Check and read carefully the Jenkins pipeline logs for your build. Most failure causes are available there.</p></li>
-<li><p>Describe (at least one of) the staging, aat or production pods just deployed:</p></li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  kubectl describe po &lt;pod&gt; -n &lt;namespace&gt;
-</code></pre></div>
-<ul>
-<li>Check the pod logs: </li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl logs &lt;pod&gt; -n &lt;namespace&gt;
-</code></pre></div>
-<ul>
-<li>Check the events for the namespace where the pods are deployed: </li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get events -n &lt;namespace&gt;
-</code></pre></div>
               <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 4 October 2021.
