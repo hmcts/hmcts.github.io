@@ -50,24 +50,4 @@ For more information about Helm, please see the related new component
 
 ### Troubleshooting build issues
 
-Important steps to verify a deployment failure, or sanity check a successful deployment are as follows:
-
-- Check and read carefully the Jenkins pipeline logs for your build. Most failure causes are available there.
-
-- Describe (at least one of) the staging, aat or production pods just deployed: 
-
-```
-  kubectl describe po <pod> -n <namespace>
-```
-
-- Check the pod logs: 
-
-```
-kubectl logs <pod> -n <namespace>
-```
-
-- Check the events for the namespace where the pods are deployed: 
-
-```
-kubectl get events -n <namespace>
-```
+See [troubleshooting issues](../troubleshooting/). 
