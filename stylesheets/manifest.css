@@ -3596,5 +3596,8 @@ html.has-search-results-open {
 .fixedsticky-on + .fixedsticky-dummy {
   display: block; }
 
+.technical-documentation blockquote {
+  margin-left: 0; }
+
 
 
