@@ -1,0 +1,32 @@
+---
+title: Slack
+last_reviewed_on: 2021-10-4
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+Once you've received your `hmcts.net` or `justice.gov.uk` email account you can self service sign-up to our slack workspace.
+
+Visit [hmcts-reform.slack.com](https://hmcts-reform.slack.com/) and click `create an account`
+
+After you've created your account please make sure to fill out your profile,
+set at least your full name, and in the what I do section put your team name and role.
+
+Now that you've got a slack account you'll need to create a couple of channels:
+
+- a team contact channel, this must be public as this is where people on other teams will come to contact you,
+  this is often your regular developer chat channel, i.e. `team-dev` or `team-tech`.
+- a build notices channel, this should be public as there's no reason to hide your build failures.
+
+Once you've created a build notices channel you will need to invite our 'Jenkins' bot user into the channel.
+
+```shell
+/invite @Jenkins
+```
+
+Make sure you pick the Jenkins \[app] user:
+
+
+<img src="/images/slack-jenkins-user-invite.png"/>
