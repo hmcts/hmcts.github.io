@@ -23,6 +23,3 @@
 
 Staticfile.auth
 vendor/
-
-# Ignore ruby
-.ruby-version
