@@ -169,7 +169,7 @@ weight: 99
    - Look at helm operator logs to see if there are any errors specific to your helm release
 
     ```shell
-    kubectl logs -n admin -l app=helm-controller--tail=1000 | grep <Release Name>
+    kubectl logs -n admin -l app=helm-controller --tail=1000 | grep <Release Name>
     ```
    - If you see any errors like, `status 'pending-install' of release does not allow a safe upgrade"`. You need to delete `HelmRelease` for fixing this, request platops for help if you do not have permissions.
 
