@@ -7,8 +7,9 @@ weight: 10
 
 # <%= current_page.data.title %>
 
-This page discribes how you can set up the ability to SSH into a Virtual Machine with no Public IP Address via the HMCTS VPN.
-Note: Your project will need to be managed by Terraform to set this up.
+This page discribes how to set up the ability to SSH into a Virtual Machine with no Public IP Address via the HMCTS VPN.
+
+> Note: Your project will need to be managed by Terraform to set this up.
 
 To do this you will need to setup network peering between the VPN and your application managed Vnet.
 
@@ -23,7 +24,7 @@ vnet resource group: rg-mgmt
 vnet subscription: Reform-CFT-Mgmt
 ```` 
 
-Once this is setup and deployed, you can then request PlatOps to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist.
+Once this is setup and deployed, you can then make a request to PlatOps in \#platops-help to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist, e.g.
 
 ```` 
 Environment:
