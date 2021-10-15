@@ -44,9 +44,60 @@ We deploy all of our applications using a helm chart to Kubernetes.
 For more information about Helm, please see the related new component 
 [docs](../new-component/helm-chart.html)
 
-
 ![The Common Pipeline](/images/common-pipeline.png)
 
+The diagram below shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of a non path to live environment that is _optionally_ deployed to.
+
+An application consists of the different infrastructure levels of platform, product and component as detailed in [Infrastructure levels](/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-levels).
+
+The product and component levels are combined to define the name of the application, denoted by app-name in the diagram below. The values for product and component should be defined in the Jenkinsfile within the github repo.
+
+Example: [cnp-plum-frontend](https://github.com/hmcts/cnp-plum-frontend/blob/master/Jenkinsfile_CNP)
+
+The environments shown in the diagram reflect CFT. Review the table below to see the corresponding SDS environment names.
+
+|CFT Environment|SDS Environment|
+|-|-|
+|AAT|Staging|
+|Perftest|Test|
+|Preview|Dev|
+|Prod|Prod|
+
+![AKS Release](/images/aks-release.png)
+
+End to end process:
+
+1. Commit changes to feature branch
+2. Create a pull request
+3. Jenkins will push an image with tag
+4. Jenkins will force a new Helm release to AKS
+5. Jenkins will run automated tests
+6. Merging and closing the PR will merge the feature with master
+7. The merge with master will trigger a webhook to start the Jenkins pipeline
+8. Jenkins will push an image with tag
+9. Jenkins will force a new Helm release to AKS
+10. Jenkins will run automated tests
+11. Jenkins will destroy the pod
+12. Jenkins will promote the image by:
+    - retagging the image in ACR
+    - updating the github flux repo with the new image name
+13. Flux will see new changes and deploy new pod
+
+### Finding your pipeline
+
+Within Jenkins, there exists the concept of organisation folders. This enables Jenkins to scan a GitHub Organization to discover repositories and automatically create managed pipelines for them.
+
+Your pipeline will exist within a specific organisation folder which should have been defined when the pipeline integration was first configured.
+
+See Step 4 of [Jenkins Onboarding](/onboarding/team/jenkins.html) for details.
+
+### Finding your application
+
+Within AKS, your application pods will exist within a namespace. The namespace will correspond to what has been configured in the Jenkins team-config.yml file.
+
+[CFT example](https://github.com/hmcts/cnp-jenkins-config/blob/4172d1409ec33072a867dee75fb8bb15192961e0/team-config.yml#L3)
+
+[SDS example](https://github.com/hmcts/sds-jenkins-config/blob/edda067f268fe4056c19963fc5c7419cbd559856/team-config.yml#L3)
 
 ### Troubleshooting build issues
 
