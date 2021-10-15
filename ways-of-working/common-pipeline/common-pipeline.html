@@ -264,6 +264,61 @@ We deploy all of our applications using a helm chart to Kubernetes.
 For more information about Helm, please see the related new component 
 <a href="/ways-of-working/new-component/helm-chart.html">docs</a></p>
 <p><a href="/images/common-pipeline.png" rel="noopener noreferrer"><img src="/images/common-pipeline.png" alt="The Common Pipeline" /></a></p>
+<p>The diagram below shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of a non path to live environment that is <em>optionally</em> deployed to.</p>
+<p>An application consists of the different infrastructure levels of platform, product and component as detailed in <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-levels">Infrastructure levels</a>.</p>
+<p>The product and component levels are combined to define the name of the application, denoted by app-name in the diagram below. The values for product and component should be defined in the Jenkinsfile within the github repo.</p>
+<p>Example: <a href="https://github.com/hmcts/cnp-plum-frontend/blob/master/Jenkinsfile_CNP">cnp-plum-frontend</a></p>
+<p>The environments shown in the diagram reflect CFT. Review the table below to see the corresponding SDS environment names.</p>
+<div class="table-container">
+        <table>
+          <tr>
+<th>CFT Environment</th>
+<th>SDS Environment</th>
+</tr><tr>
+<td>AAT</td>
+<td>Staging</td>
+</tr><tr>
+<td>Perftest</td>
+<td>Test</td>
+</tr><tr>
+<td>Preview</td>
+<td>Dev</td>
+</tr><tr>
+<td>Prod</td>
+<td>Prod</td>
+</tr>
+        </table>
+      </div><p><a href="/images/aks-release.png" rel="noopener noreferrer"><img src="/images/aks-release.png" alt="AKS Release" /></a></p>
+<p>End to end process:</p>
+
+<ol>
+<li>Commit changes to feature branch</li>
+<li>Create a pull request</li>
+<li>Jenkins will push an image with tag</li>
+<li>Jenkins will force a new Helm release to AKS</li>
+<li>Jenkins will run automated tests</li>
+<li>Merging and closing the PR will merge the feature with master</li>
+<li>The merge with master will trigger a webhook to start the Jenkins pipeline</li>
+<li>Jenkins will push an image with tag</li>
+<li>Jenkins will force a new Helm release to AKS</li>
+<li>Jenkins will run automated tests</li>
+<li>Jenkins will destroy the pod</li>
+<li>Jenkins will promote the image by:
+
+<ul>
+<li>retagging the image in ACR</li>
+<li>updating the github flux repo with the new image name</li>
+</ul></li>
+<li>Flux will see new changes and deploy new pod</li>
+</ol>
+<h3 id="finding-your-pipeline">Finding your pipeline</h3>
+<p>Within Jenkins, there exists the concept of organisation folders. This enables Jenkins to scan a GitHub Organization to discover repositories and automatically create managed pipelines for them.</p>
+<p>Your pipeline will exist within a specific organisation folder which should have been defined when the pipeline integration was first configured.</p>
+<p>See Step 4 of <a href="/onboarding/team/jenkins.html">Jenkins Onboarding</a> for details.</p>
+<h3 id="finding-your-application">Finding your application</h3>
+<p>Within AKS, your application pods will exist within a namespace. The namespace will correspond to what has been configured in the Jenkins team-config.yml file.</p>
+<p><a href="https://github.com/hmcts/cnp-jenkins-config/blob/4172d1409ec33072a867dee75fb8bb15192961e0/team-config.yml#L3">CFT example</a></p>
+<p><a href="https://github.com/hmcts/sds-jenkins-config/blob/edda067f268fe4056c19963fc5c7419cbd559856/team-config.yml#L3">SDS example</a></p>
 <h3 id="troubleshooting-build-issues">Troubleshooting build issues</h3>
 <p>See <a href="../troubleshooting/">troubleshooting issues</a>.</p>
 
