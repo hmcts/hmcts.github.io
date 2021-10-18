@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Information security - HMCTS</title>
+    <title>Set up SSH via the VPN - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/information-security/">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Information security - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/information-security/" />
+      <meta name="twitter:title" content="Set up SSH via the VPN - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Information security" />
+      <meta property="og:title" content="Set up SSH via the VPN" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/information-security/" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html" />
 
     
   </head>
@@ -231,20 +231,35 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="information-security">Information security</h1>
-<p>This section gives an overview of the Information security principals and processes used at HMCTS</p>
+            <h1 id="set-up-ssh-via-the-vpn">Set up SSH via the VPN</h1>
+<p>This page discribes how to set up the ability to SSH into a Virtual Machine with no Public IP Address via the HMCTS VPN.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-01-28">
+<blockquote>
+<p>Note: Your project will need to be managed by Terraform to set this up.</p>
+</blockquote>
+<p>To do this you will need to setup network peering between the VPN and your application managed Vnet.</p>
+<p>This is an example of the Terraform used to <a href="https://github.com/hmcts/sharedservices-aks-infrastructure/blob/master/terraform/modules/tfm-azure-network-peering/10-network-peering.tf">setup peering between two Vnets</a>.</p>
+<p>The destination Vnet details are:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>vnet name: core-infra-vnet-mgmt
+vnet id: /subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt
+vnet resource group: rg-mgmt
+vnet subscription: Reform-CFT-Mgmt
+</code></pre></div><p>Once this is setup and deployed, you can then make a request to PlatOps in #platops-help to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist, e.g.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Environment:
+IP Address/Range:
+Whitelist Ports: 22
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 July 2021.
+      This page was last reviewed on 15 October 2021.
 
-        It needs to be reviewed again on 28 January 2022
+        It needs to be reviewed again on 15 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 January 2022
+      This page was set to be reviewed before 15 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -254,8 +269,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/information-security/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Information%20security'&amp;body=Problem%20with%20'Information%20security'%20(https://hmcts.github.io/information-security/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/ssh-via-vpn.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Set%20up%20SSH%20via%20the%20VPN'&amp;body=Problem%20with%20'Set%20up%20SSH%20via%20the%20VPN'%20(https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
