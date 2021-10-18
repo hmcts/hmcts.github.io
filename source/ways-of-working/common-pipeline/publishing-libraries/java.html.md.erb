@@ -1,0 +1,69 @@
+---
+title: Java
+last_reviewed_on: 2021-10-18
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+For packaging and storing the Java Module, we use GitHub Actions to run the pipeline and Jitpack to store the modules.
+
+## Using the Github Action
+
+1. Go to your repository within GitHub
+2. Select the Actions tab at the top
+3. Select 'New workflow'
+4. Scroll down and select 'Trigger JitPack Build' pressing the 'Set up this workflow' button
+5. On the far right select 'Start commit'
+6. Update the PR name, then select 'Commit new file'
+7. Setup the PR as a draft so we can add the remaining file.
+8. Pull your feature branch
+9. (Optional) Follow "custom configuration" step if your project is not using Java version 8
+
+## Publishing with Jitpack
+
+JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: ```com.github.User:Repo:Version```.
+
+## Custom configuration:
+By default, Jitpack compiles projects using OpenJDK Java 8 and uses ``./gradlew install``, if you’re using the maven plugin and ``./gradlew build publishToMavenLocal`` if you’re using the maven-publish plugin. If you use both, JitPack will default to using using install and if that doesn’t work for your project then you will need to create a jitpack.yml file add custom configuration to it, like below.
+
+```
+jdk:
+  - openjdk11
+
+install:
+  - ./gradlew build publishToMavenLocal
+```
+
+## Forcing JitPack to build
+The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you. This can sometimes mean that without editing timeout configuration in your gradle settings users will experience a timeout the first time a tag has been requested. To resolve this issue, a github workflow has been created to build it as soon as a tag is pushed.
+
+An example of that workflow is here: [jitpack_build.yml](https://github.com/hmcts/.github/blob/master/workflow-templates/jitpack_build.yml)
+
+## Downloading packages from JitPack
+To download from JitPack you will need to add the JitPack repo to your list of repositories in your build.gradle files.
+
+```
+repositories {
+    ...
+    maven { 
+        url "https://jitpack.io" 
+    }
+}
+```
+The dependancy information follows the following format:
+
+- Group: com.github.hmcts
+- Artifact: Repository Name
+- Version: Release tag, commit hash or master-SNAPSHOT
+
+You will end up with something similar to the example below in your build.gradle files.
+
+```
+dependencies {
+    ...
+    implementation 'com.github.hmcts:sscs-common:4.2.39'
+}
+```
+Further information on JitPack can be found at [jitpack.io/docs](jitpack.io/docs).
