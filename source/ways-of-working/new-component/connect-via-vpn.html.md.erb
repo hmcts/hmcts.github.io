@@ -1,5 +1,5 @@
 ---
-title: Set up access to an application via the VPN
+title: Make a new Virtual Network accessible over the VPN
 last_reviewed_on: 2021-10-15
 review_in: 6 months
 weight: 10
@@ -7,12 +7,9 @@ weight: 10
 
 # <%= current_page.data.title %>
 
-This page discribes how to set up the ability to tunnel into a Virtual Machine with no Public IP Address via the HMCTS VPN.
+This page describes how to expose a new Virtual Network to the HMCTS VPN.
 To do this you will need to setup network peering between the VPN and your Virtual Network.
-
 Your project will need to be managed by Terraform to set this up.
-
-To do this you will need to setup network peering between the VPN and your application managed Vnet.
 
 This is an example of the Terraform used to [setup peering between two Vnets](https://github.com/hmcts/sharedservices-aks-infrastructure/blob/master/terraform/modules/tfm-azure-network-peering/10-network-peering.tf).
 
@@ -28,7 +25,7 @@ vnet subscription: Reform-CFT-Mgmt
 Once this is setup and deployed, you can then make a request to PlatOps in [\#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist, e.g.
 
 ```` 
-Environment:
-IP Address/Range:
-Whitelist Ports:
+Network name:
+IP Range:
+Ports to allow: 443 # sometimes 80, 22 as well
 ```` 
