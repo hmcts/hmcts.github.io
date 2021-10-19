@@ -9,21 +9,16 @@ weight: 2
 
 For publishing Java libraries, we use JitPack as our artifact repository and GitHub Actions to publish the libraries.
 
-## Using the Github Action
-
-1. Go to your repository within GitHub
-2. Select the Actions tab at the top
-3. Select 'New workflow'
-4. Scroll down and select 'Trigger JitPack Build' pressing the 'Set up this workflow' button
-5. On the far right select 'Start commit'
-6. Update the PR name, then select 'Commit new file'
-7. Setup the PR as a draft so we can add the remaining file.
-8. Pull your feature branch
-9. (Optional) If your project requires custom configuration, follow the "custom configuration" step. The most common reasons for adding custom configuration is if your project is not using Java version 8 or you need a custom install command.
-
 ## Publishing with Jitpack
 
 JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: ```com.github.hmcts:Repo:Version```.
+
+## Checking the Status of a Build
+
+A list of files created from the build and the build log can be found by entering a url with the following format:
+
+List of files from build: https://jitpack.io/com/github/hmcts/repo_name/tag/
+Example: [https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5](https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5)
 
 ## Custom configuration:
 By default, Jitpack compiles projects using OpenJDK Java 8 and uses ``./gradlew install``, if you’re using the maven plugin and ``./gradlew build publishToMavenLocal`` if you’re using the maven-publish plugin. If you use both, JitPack will default to using using install and if that doesn’t work for your project then you will need to create a jitpack.yml file add custom configuration to it, like below.
@@ -40,6 +35,18 @@ install:
 The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you. This can sometimes mean that without editing timeout configuration in your gradle settings users will experience a timeout the first time a tag has been requested. To resolve this issue, a github workflow has been created to build it as soon as a tag is pushed.
 
 An example of that workflow is here: [jitpack_build.yml](https://github.com/hmcts/.github/blob/master/workflow-templates/jitpack_build.yml)
+
+## Using the Github Action
+
+1. Go to your repository within GitHub
+2. Select the Actions tab at the top
+3. Select 'New workflow'
+4. Scroll down and select 'Trigger JitPack Build' pressing the 'Set up this workflow' button
+5. On the far right select 'Start commit'
+6. Update the PR name, then select 'Commit new file'
+7. Setup the PR as a draft so we can add the remaining file.
+8. Pull your feature branch
+9. (Optional) If your project requires custom configuration, follow the "custom configuration" step. The most common reasons for adding custom configuration is if your project is not using Java version 8 or you need a custom install command.
 
 ## Downloading packages from JitPack
 To download from JitPack you will need to add the JitPack repo to your list of repositories in your build.gradle files.
@@ -63,7 +70,8 @@ You will end up with something similar to the example below in your build.gradle
 ```
 dependencies {
     ...
-    implementation 'com.github.hmcts:sscs-common:4.2.39'
+    implementation 'com.github.hmcts.$repo-name:$artifact-id'
 }
 ```
+
 Further information on JitPack can be found at [jitpack.io/docs](jitpack.io/docs).
