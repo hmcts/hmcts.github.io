@@ -7,7 +7,7 @@ weight: 2
 
 # <%= current_page.data.title %>
 
-For packaging and storing the Java Module, we use GitHub Actions to run the pipeline and Jitpack to store the modules.
+For publishing Java libraries, we use JitPack as our artifact repository and GitHub Actions to publish the libraries.
 
 ## Using the Github Action
 
@@ -19,11 +19,11 @@ For packaging and storing the Java Module, we use GitHub Actions to run the pipe
 6. Update the PR name, then select 'Commit new file'
 7. Setup the PR as a draft so we can add the remaining file.
 8. Pull your feature branch
-9. (Optional) Follow "custom configuration" step if your project is not using Java version 8
+9. (Optional) If your project requires custom configuration, follow the "custom configuration" step. The most common reasons for adding custom configuration is if your project is not using Java version 8 or you need a custom install command.
 
 ## Publishing with Jitpack
 
-JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: ```com.github.User:Repo:Version```.
+JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: ```com.github.hmcts:Repo:Version```.
 
 ## Custom configuration:
 By default, Jitpack compiles projects using OpenJDK Java 8 and uses ``./gradlew install``, if you’re using the maven plugin and ``./gradlew build publishToMavenLocal`` if you’re using the maven-publish plugin. If you use both, JitPack will default to using using install and if that doesn’t work for your project then you will need to create a jitpack.yml file add custom configuration to it, like below.
