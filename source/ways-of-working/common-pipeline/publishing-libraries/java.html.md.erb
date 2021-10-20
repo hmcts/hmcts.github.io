@@ -11,13 +11,13 @@ For publishing Java libraries, we use JitPack as our artifact repository and Git
 
 ## Publishing with Jitpack
 
-JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: ```com.github.hmcts:Repo:Version```.
+JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: `com.github.hmcts:Repo:Version`.
 
 ## Checking the Status of a Build
 
 A list of files created from the build and the build log can be found by entering a url with the following format:
 
-List of files from build: ```https://jitpack.io/com/github/hmcts/repo_name/tag/```
+List of files from build: `https://jitpack.io/com/github/hmcts/repo_name/tag/`
 Example: [https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5](https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5)
 
 ## Custom configuration:
@@ -32,7 +32,9 @@ install:
 ```
 
 ## Setting up JitPack
-The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you. This can sometimes mean that without editing timeout configuration in your gradle settings users will experience a timeout the first time a tag has been requested. To resolve this issue, a github workflow has been created to build it as soon as a tag is pushed.
+The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you.
+This can sometimes mean that without editing timeout configuration in your gradle settings users will experience a timeout the first time a tag has been requested.
+To resolve this issue, a github workflow has been created to build it as soon as a tag is pushed.
 
 An example of that workflow is here: [jitpack_build.yml](https://github.com/hmcts/.github/blob/master/workflow-templates/jitpack_build.yml)
 
