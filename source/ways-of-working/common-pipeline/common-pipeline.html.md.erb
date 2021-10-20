@@ -113,3 +113,15 @@ See [troubleshooting issues](../troubleshooting/).
 e.g. [hmcts/pip-frontend#79:](https://github.com/hmcts/pip-frontend/pull/79)
 
 <img src="/images/test-url.png"/>
+
+
+### Cannot find default branch
+
+You may get the error below, when the pipeline has not ran on the master/main branch first.
+
+When you run it on the master/main branch it will setup the default branch and then the pull request build will start working.
+
+```
+[2021-09-16T10:59:54.154Z] Execution failed for task ':sonarqube'.
+[2021-09-16T10:59:54.154Z] > Could not find a default branch to fall back on.
+```
