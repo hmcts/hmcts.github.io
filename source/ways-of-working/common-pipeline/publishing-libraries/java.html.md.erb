@@ -13,24 +13,6 @@ For publishing Java libraries, we use JitPack as our artifact repository and Git
 
 JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: `com.github.hmcts:Repo:Version`.
 
-## Checking the Status of a Build
-
-A list of files created from the build and the build log can be found by entering a url with the following format:
-
-List of files from build: `https://jitpack.io/com/github/hmcts/repo_name/tag/`
-Example: [https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5](https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5)
-
-## Custom configuration:
-By default, Jitpack compiles projects using OpenJDK Java 8 and uses ``./gradlew install``, if you’re using the maven plugin and ``./gradlew build publishToMavenLocal`` if you’re using the maven-publish plugin. If you use both, JitPack will default to using using install and if that doesn’t work for your project then you will need to create a jitpack.yml file add custom configuration to it, like below.
-
-```
-jdk:
-  - openjdk11
-
-install:
-  - ./gradlew build publishToMavenLocal
-```
-
 ## Setting up JitPack
 The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you.
 This can sometimes mean that without editing timeout configuration in your gradle settings users will experience a timeout the first time a tag has been requested.
@@ -48,7 +30,18 @@ An example of that workflow is here: [jitpack_build.yml](https://github.com/hmct
 6. Update the PR name, then select 'Commit new file'
 7. Setup the PR as a draft so we can add the remaining file.
 8. Pull your feature branch
-9. (Optional) If your project requires custom configuration, follow the "custom configuration" step. The most common reasons for adding custom configuration is if your project is not using Java version 8 or you need a custom install command.
+9. If your project requires custom configuration, follow the "custom configuration" step. The most common reasons for adding custom configuration is if your project is not using Java version 8 or you need a custom install command.
+
+## Custom configuration:
+By default, Jitpack compiles projects using OpenJDK Java 8 and uses ``./gradlew install` for the maven plugin and ``./gradlew build publishToMavenLocal`` for the maven-publish plugin. If you use both, JitPack will default to using install. If that doesn’t work for your project, you will need to create a jitpack.yml file add custom configuration to it, like below.
+
+```
+jdk:
+  - openjdk11
+
+install:
+  - ./gradlew build publishToMavenLocal
+```
 
 ## Downloading packages from JitPack
 To download from JitPack you will need to add the JitPack repo to your list of repositories in your build.gradle files.
@@ -75,5 +68,13 @@ dependencies {
     implementation 'com.github.hmcts.$repo-name:$artifact-id'
 }
 ```
+
+## Checking the Status of a Build
+
+A list of files created from the build and the build log can be found by entering a url with the following format:
+
+List of files from build: `https://jitpack.io/com/github/hmcts/repo_name/tag/`
+Example: [https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5](https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5)
+
 
 Further information on JitPack can be found at [jitpack.io/docs](jitpack.io/docs).
