@@ -37,7 +37,9 @@ jdk:
   - openjdk11
 
 ## Custom configuration:
-By default, Jitpack compiles projects using OpenJDK Java 8 and uses ``./gradlew install` for the maven plugin and ``./gradlew build publishToMavenLocal`` for the maven-publish plugin. If you use both, JitPack will default to using install. If that doesn’t work for your project, you will need to create a jitpack.yml file add custom configuration to it, like below.
+By default, Jitpack compiles projects using OpenJDK Java 8 and uses `./gradlew install` for the maven plugin and `./gradlew build publishToMavenLocal` for the maven-publish plugin.
+If you use both, JitPack will default to using install.
+In your `jitpack.yml` you can override the install command like so:
 
 ```
 jdk:
