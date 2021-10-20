@@ -31,7 +31,7 @@ install:
   - ./gradlew build publishToMavenLocal
 ```
 
-## Forcing JitPack to build
+## Setting up JitPack
 The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you. This can sometimes mean that without editing timeout configuration in your gradle settings users will experience a timeout the first time a tag has been requested. To resolve this issue, a github workflow has been created to build it as soon as a tag is pushed.
 
 An example of that workflow is here: [jitpack_build.yml](https://github.com/hmcts/.github/blob/master/workflow-templates/jitpack_build.yml)
