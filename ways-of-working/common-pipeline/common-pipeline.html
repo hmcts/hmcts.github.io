@@ -333,7 +333,12 @@ For more information about Helm, please see the related new component
 </ol>
 <p>e.g. <a href="https://github.com/hmcts/pip-frontend/pull/79">hmcts/pip-frontend#79:</a></p>
 <p><img src="/images/test-url.png"/></p>
-
+<h3 id="cannot-find-default-branch">Cannot find default branch</h3>
+<p>You may get the error below, when the pipeline has not ran on the master/main branch first.</p>
+<p>When you run it on the master/main branch it will setup the default branch and then the pull request build will start working.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>[2021-09-16T10:59:54.154Z] Execution failed for task ':sonarqube'.
+[2021-09-16T10:59:54.154Z] &gt; Could not find a default branch to fall back on.
+</code></pre></div>
               <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 4 October 2021.
