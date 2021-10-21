@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Set up SSH via the VPN - HMCTS</title>
+    <title>Make a new Virtual Network accessible over the VPN - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/guides/connect-via-vpn.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Set up SSH via the VPN - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html" />
+      <meta name="twitter:title" content="Make a new Virtual Network accessible over the VPN - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/guides/connect-via-vpn.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Set up SSH via the VPN" />
+      <meta property="og:title" content="Make a new Virtual Network accessible over the VPN" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/guides/connect-via-vpn.html" />
 
     
   </head>
@@ -102,27 +102,24 @@
   <li>
     <a href="/"><span>The HMCTS way</span></a>
   </li>
-  <li>
-    <a href="/glossary/"><span>Glossary</span></a>
-  </li>
 <li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
 <li><a href="/onboarding/team/"><span>Team</span></a>
 <ul>
   <li>
+    <a href="/onboarding/team/jenkins.html"><span>Jenkins</span></a>
+  </li>
+  <li>
     <a href="/onboarding/team/slack.html"><span>Slack</span></a>
   </li>
   <li>
-    <a href="/onboarding/team/jenkins.html"><span>Jenkins</span></a>
+    <a href="/onboarding/team/azuread.html"><span>Azure AD</span></a>
   </li>
   <li>
     <a href="/onboarding/team/office365.html"><span>Office 365</span></a>
   </li>
   <li>
     <a href="/onboarding/team/github.html"><span>GitHub</span></a>
-  </li>
-  <li>
-    <a href="/onboarding/team/azuread.html"><span>Azure AD</span></a>
   </li>
 </ul>
 </li>
@@ -131,6 +128,9 @@
   </li>
 </ul>
 </li>
+  <li>
+    <a href="/glossary/"><span>Glossary</span></a>
+  </li>
 <li><a href="/information-security/"><span>Information security</span></a>
 <ul>
   <li>
@@ -140,6 +140,9 @@
 </li>
 <li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
+  <li>
+    <a href="/ways-of-working/principles/"><span>Principles</span></a>
+  </li>
 <li><a href="/ways-of-working/standards/"><span>Concepts and standards</span></a>
 <ul>
   <li>
@@ -150,35 +153,13 @@
   </li>
 </ul>
 </li>
-  <li>
-    <a href="/ways-of-working/principles/"><span>Principles</span></a>
-  </li>
-<li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
-<ul>
-  <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
-  </li>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
-  </li>
-  <li>
-    <a href="/ways-of-working/path-to-live/public-dns.html"><span>Public DNS</span></a>
-  </li>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
-  </li>
-  <li>
-    <a href="/ways-of-working/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
-  </li>
-</ul>
-</li>
 <li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+    <a href="/ways-of-working/new-component/github-repo.html"><span>Create a Github Repository</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+    <a href="/ways-of-working/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
   </li>
   <li>
     <a href="/ways-of-working/new-component/helm-chart.html"><span>Helm chart</span></a>
@@ -195,8 +176,24 @@
   <li>
     <a href="/ways-of-working/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
   </li>
+</ul>
+</li>
+<li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
+<ul>
   <li>
-    <a href="/ways-of-working/new-component/ssh-via-vpn.html"><span>Set up SSH via the VPN</span></a>
+    <a href="/ways-of-working/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/public-dns.html"><span>Public DNS</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
   </li>
 </ul>
 </li>
@@ -207,6 +204,16 @@
   </li>
 </ul>
 </li>
+  <li>
+    <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
+  </li>
+<li><a href="/ways-of-working/guides/"><span>Guides</span></a>
+<ul>
+  <li>
+    <a href="/ways-of-working/guides/connect-via-vpn.html"><span>Make a new Virtual Network accessible over the VPN</span></a>
+  </li>
+</ul>
+</li>
 <li><a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
 <ul>
   <li>
@@ -214,9 +221,6 @@
   </li>
 </ul>
 </li>
-  <li>
-    <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
-  </li>
 </ul>
 </li>
   <li>
@@ -231,35 +235,38 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="set-up-ssh-via-the-vpn">Set up SSH via the VPN</h1>
-<p>This page discribes how to set up the ability to SSH into a Virtual Machine with no Public IP Address via the HMCTS VPN.</p>
-
-<blockquote>
-<p>Note: Your project will need to be managed by Terraform to set this up.</p>
-</blockquote>
-<p>To do this you will need to setup network peering between the VPN and your application managed Vnet.</p>
-<p>This is an example of the Terraform used to <a href="https://github.com/hmcts/sharedservices-aks-infrastructure/blob/master/terraform/modules/tfm-azure-network-peering/10-network-peering.tf">setup peering between two Vnets</a>.</p>
+            <h1 id="make-a-new-virtual-network-accessible-over-the-vpn">Make a new Virtual Network accessible over the VPN</h1>
+<p>This page describes how to expose a new Virtual Network to the HMCTS VPN.
+To do this you will need to setup network peering between the VPN and your Virtual Network.
+Your project will need to be managed by Terraform to set this up.</p>
+<p>This is an example of the Terraform used to <a href="https://github.com/hmcts/aks-sds-deploy/blob/0061d448847a7a16154ae3a23772c4e9a57587f1/components/01-network/21-peering.tf#L82-L104">setup peering between two Vnets</a>.</p>
 <p>The destination Vnet details are:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>vnet name: core-infra-vnet-mgmt
-vnet id: /subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt
-vnet resource group: rg-mgmt
-vnet subscription: Reform-CFT-Mgmt
-</code></pre></div><p>Once this is setup and deployed, you can then make a request to PlatOps in #platops-help to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist, e.g.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Environment:
-IP Address/Range:
-Whitelist Ports: 22
-</code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-15">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 October 2021.
 
-        It needs to be reviewed again on 15 April 2022
+<ul>
+<li>vnet name: core-infra-vnet-mgmt</li>
+<li>subscription id: ed302caf-ec27-4c64-a05e-85731c3ce90e</li>
+<li>vnet resource group: rg-mgmt</li>
+<li>vnet subscription: Reform-CFT-Mgmt</li>
+</ul>
+<p>Once this is setup and deployed, you can then make a request to PlatOps in <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist, please include:</p>
+
+<ul>
+<li>Network name:</li>
+<li>IP Range:</li>
+<li>Ports to allow: 443 (sometimes 80, 22 as well)</li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-20">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 20 October 2021.
+
+        It needs to be reviewed again on 20 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 April 2022
+      This page was set to be reviewed before 20 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -269,8 +276,8 @@ Whitelist Ports: 22
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/ssh-via-vpn.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Set%20up%20SSH%20via%20the%20VPN'&amp;body=Problem%20with%20'Set%20up%20SSH%20via%20the%20VPN'%20(https://hmcts.github.io/ways-of-working/new-component/ssh-via-vpn.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/guides/connect-via-vpn.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Make%20a%20new%20Virtual%20Network%20accessible%20over%20the%20VPN'&amp;body=Problem%20with%20'Make%20a%20new%20Virtual%20Network%20accessible%20over%20the%20VPN'%20(https://hmcts.github.io/ways-of-working/guides/connect-via-vpn.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
