@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Platform onboarding - HMCTS</title>
+    <title>Java - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/onboarding/">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/java.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Platform onboarding - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/onboarding/" />
+      <meta name="twitter:title" content="Java - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/java.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Platform onboarding" />
+      <meta property="og:title" content="Java" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/onboarding/" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/java.html" />
 
     
   </head>
@@ -245,30 +245,78 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="platform-onboarding">Platform onboarding</h1>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>The following guide assumes that people have completed their programme onboarding and have the following accounts, memberships and tools.</p>
+            <h1 id="java">Java</h1>
+<p>For publishing Java libraries, we use JitPack as our artifact repository and GitHub Actions to publish the libraries.</p>
+<h2 id="publishing-with-jitpack">Publishing with Jitpack</h2>
+<p>JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: <code>com.github.hmcts:Repo:Version</code>.</p>
+<h2 id="setting-up-jitpack">Setting up JitPack</h2>
+<p>The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you.
+This can sometimes mean that without editing timeout configuration in your gradle settings users will experience a timeout the first time a tag has been requested.
+To resolve this issue, a github workflow has been created to build it as soon as a tag is pushed.</p>
+<p>An example of that workflow is here: <a href="https://github.com/hmcts/.github/blob/master/workflow-templates/jitpack_build.yml">jitpack_build.yml</a></p>
+<h2 id="using-the-github-action">Using the Github Action</h2>
+
+<ol>
+<li>Go to your repository within GitHub</li>
+<li>Select the Actions tab at the top</li>
+<li>Select &lsquo;New workflow&rsquo;</li>
+<li>Scroll down and select &lsquo;Trigger JitPack Build&rsquo; pressing the &lsquo;Set up this workflow&rsquo; button</li>
+<li>On the far right select &lsquo;Start commit&rsquo;</li>
+<li>Update the PR name, then select &lsquo;Commit new file&rsquo;</li>
+<li>Setup the PR as a draft so we can add the remaining file.</li>
+<li>Pull your feature branch</li>
+<li>Set your java version in a <code>jitpack.yml</code> file, see below:</li>
+</ol>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">jdk</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">openjdk11</span>
+
+<span class="c1">## Custom configuration:</span>
+<span class="s">By default, Jitpack compiles projects using OpenJDK Java 8 and uses `./gradlew install` for the maven plugin and `./gradlew build publishToMavenLocal` for the maven-publish plugin.</span>
+<span class="s">If you use both, JitPack will default to using install.</span>
+<span class="na">In your `jitpack.yml` you can override the install command like so</span><span class="pi">:</span>
+
+</code></pre></div><p>jdk:
+  - openjdk11</p>
+<p>install:
+  - ./gradlew build publishToMavenLocal
+&ldquo;`</p>
+<h2 id="downloading-packages-from-jitpack">Downloading packages from JitPack</h2>
+<p>To download from JitPack you will need to add the JitPack repo to your list of repositories in your build.gradle files.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>repositories {
+    ...
+    maven { 
+        url "https://jitpack.io" 
+    }
+}
+</code></pre></div><p>The dependancy information follows the following format:</p>
 
 <ul>
-<li><code>@hmcts.net</code> or <code>@justice.gov.uk</code> email</li>
-<li>Member of <a href="https://hmcts-reform.slack.com">HMCTS Reform Slack</a></li>
-<li>Jira and Confluence (Usually provided by PMO)</li>
-<li>Member of <a href="https://github.com/hmcts">HMCTS Github org</a></li>
+<li>Group: com.github.hmcts</li>
+<li>Artifact: Repository Name</li>
+<li>Version: Release tag, commit hash or master-SNAPSHOT</li>
 </ul>
-<h2 id="guides">Guides</h2>
-<p>There are different guides for the onboarding of a new <a href="/onboarding/team/">team</a> or <a href="/onboarding/person/">person</a>.</p>
+<p>You will end up with something similar to the example below in your build.gradle files.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>dependencies {
+    ...
+    implementation 'com.github.hmcts.$repo-name:$artifact-id'
+}
+</code></pre></div><h2 id="checking-the-status-of-a-build">Checking the Status of a Build</h2>
+<p>A list of files created from the build and the build log can be found by entering a url with the following format:</p>
+<p>List of files from build: <code>https://jitpack.io/com/github/hmcts/repo_name/tag/</code>
+Example: <a href="https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5">https://jitpack.io/com/github/hmcts/idam-health-checker/2.2.5</a></p>
+<p>Further information on JitPack can be found at <a href="jitpack.io/docs">jitpack.io/docs</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-08-12">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 February 2021.
+      This page was last reviewed on 20 October 2021.
 
-        It needs to be reviewed again on 12 August 2021
+        It needs to be reviewed again on 20 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 August 2021
+      This page was set to be reviewed before 20 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -278,8 +326,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Platform%20onboarding'&amp;body=Problem%20with%20'Platform%20onboarding'%20(https://hmcts.github.io/onboarding/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/common-pipeline/publishing-libraries/java.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Java'&amp;body=Problem%20with%20'Java'%20(https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/java.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
