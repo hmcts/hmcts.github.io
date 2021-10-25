@@ -3768,3 +3768,6 @@ html.has-search-results-open {
 .app-tabs__container pre {
   padding-right: 0;
   padding-bottom: 0; }
+
+.platform-selector {
+  margin-bottom: 1rem; }
