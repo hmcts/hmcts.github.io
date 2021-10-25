@@ -13,8 +13,7 @@ review_in: 6 months
 We use [Azure Front Door](https://azure.microsoft.com/en-gb/services/frontdoor/) as our entry point
 into the HMCTS estate.
 
-Configuration is managed in the frontends section of 
-[azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/prod.tfvars).
+<%= partial 'front-door-config' %>
 
 Before sending a pull request to this repo ensure that:
 
