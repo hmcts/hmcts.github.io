@@ -1,4 +1,4 @@
-<div class="app-troubleshooting-wrapper" id="troubleshooting-clusters" data-module="app-tabs">
+<div class="platform-selector" id="troubleshooting-clusters" data-module="app-tabs">
   <ul class="app-tabs" role="tablist">
     <li class="app-tabs__item js-tabs__item js-tabs__item--open" role="presentation">
       <a href="#troubleshooting-cft" role="tab" aria-controls="troubleshooting-cft" aria-expanded="false">
