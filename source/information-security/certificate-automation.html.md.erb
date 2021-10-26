@@ -42,7 +42,7 @@ the ticket should contain the following information:
 Let's Encrypt is a free, automated and open CA. ACME protocol is used to automate the certificate issuance.
 We are using [Key Vault Acmebot](https://github.com/shibayan/keyvault-acmebot) function app as an ACME client.
 
-Acme function app is deployed as part of [ops-bootstrap](https://github.com/hmcts/ops-bootstrap) process using [terraform module](https://github.com/hmcts/terraform-module-acme-function).
+Key Vault Acmebot is deployed as part of [ops-bootstrap](https://github.com/hmcts/ops-bootstrap) (private repo) using [terraform module](https://github.com/hmcts/terraform-module-acme-function), there is one instance per subscription.
 
 Naming convention for keyvaults and function App are acme<subscription name without hyphen > sharedservices is replaced with sds because of length limits. E.g. acmedtssdstest
 
