@@ -276,18 +276,24 @@ the ticket should contain the following information:</p>
 <li>Where the certificate is to be hosted</li>
 <li>DNS Name and SANS</li>
 </ul>
+<h2 id="acme-certificates">ACME Certificates</h2>
+<p>Let&rsquo;s Encrypt is a free, automated and open CA. ACME protocol is used to automate the certificate issuance.
+We are using <a href="https://github.com/shibayan/keyvault-acmebot">Key Vault Acmebot</a> function app as an ACME client.</p>
+<p>Key Vault Acmebot is deployed as part of <a href="https://github.com/hmcts/ops-bootstrap">ops-bootstrap</a> (private repo) using <a href="https://github.com/hmcts/terraform-module-acme-function">terraform module</a>, there is one instance per subscription.</p>
+<p>The naming convention for keyvaults and function App are acme&lt;subscription name without hyphen, <code>sharedservices</code> is replaced with <code>sds</code> because of length limits. E.g. <code>acmedtssdstest</code>.</p>
+<p>The naming convention for certificate name in Key Vault is <code>&lt;DNS Name/wildcard&gt;-&lt;DNSZone&gt;</code> seperated by hyphen.  E.g. <code>hmi-apim-test-platform-hmcts-net</code>, <code>wildcard-test-platform-hmcts-net</code>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-26">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 March 2021.
+      This page was last reviewed on 26 October 2021.
 
-        It needs to be reviewed again on 19 September 2021
+        It needs to be reviewed again on 26 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 September 2021
+      This page was set to be reviewed before 26 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
