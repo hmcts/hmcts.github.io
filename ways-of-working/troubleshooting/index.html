@@ -367,6 +367,16 @@ kubectl config use-context cft-aat-00-aks
 <li>It could be that they are stuck in <code>Pending</code>, <code>ContainerCreating</code> status or might be failing to startup leading to <code>CrashLoopBackOff</code> status.</li>
 <li>Follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further</li>
 </ul>
+<h3 id="using-branches-to-troubleshoot-issues">Using branches to troubleshoot issues</h3>
+<p>If your pipeline is throwing an error, you may be able to more easily troubleshoot the issue by using a branch in the cnp-jenkins-library repo.</p>
+<h4 id="example-1">Example 1</h4>
+<p>Gradle is failing because a plugin cannot be found in artifactory. You&rsquo;ve checked the plugin exists and there are no typos in your code.
+You can check if the issue lies with artifactory by temporarily bypassing it using a <a href="https://github.com/hmcts/cnp-jenkins-library/blob/073ad8587b7281d62bac705ed984e739a0911c83/resources/uk/gov/hmcts/gradle/init.gradle#L3">branch</a>.</p>
+<p>And then referencing that branch within your repo&rsquo;s <a href="https://github.com/hmcts/sds-toffee-recipes-service/pull/12/files">Jenkinsfile</a></p>
+<p>In this example, the issue is network related. This may be down to routing in Azure or traffic being blocked by a firewall.</p>
+<h4 id="example-2">Example 2</h4>
+<p>Gradle is failing a functional test. To help get more information on why, you could update the Gradle logging level in a branch of <a href="https://github.com/hmcts/cnp-jenkins-library/blob/cfb31f3a2699b2a1dafd66fed0b525ae145d627d/src/uk/gov/hmcts/contino/GradleBuilder.groovy#L62">cnp-jenkins-library</a></p>
+<p>And then reference this branch within your repo&rsquo;s <a href="https://github.com/hmcts/document-management-store-app/blob/646593336377fd59112b0b6c84fd223d0cb7832c/Jenkinsfile_CNP#L12">Jenkinsfile</a></p>
 <h2 id="debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</h2>
 
 <ul>
