@@ -212,6 +212,9 @@
   <li>
     <a href="/ways-of-working/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
   </li>
+  <li>
+    <a href="/ways-of-working/common-pipeline/tips_and_tricks.html"><span>Tips and Tricks</span></a>
+  </li>
 </ul>
 </li>
   <li>
@@ -345,7 +348,12 @@
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl config use-context cft-perftest-00-aks
 kubectl config use-context cft-aat-00-aks
 </code></pre></div><h2 id="jenkins">Jenkins</h2>
-<h3 id="cannot-see-my-branch-pr-or-this-project-is-currently-disabled-in-jenkins">Cannot see my branch/PR or This project is currently disabled in Jenkins</h3>
+<h3 id="cannot-find-default-branch">Cannot find default branch</h3>
+<p>You may get the error below, when the pipeline has not ran on the master/main branch first.</p>
+<p>When you run it on the master/main branch it will setup the default branch and then the pull request build will start working.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>[2021-09-16T10:59:54.154Z] Execution failed for task ':sonarqube'.
+[2021-09-16T10:59:54.154Z] &gt; Could not find a default branch to fall back on.
+</code></pre></div><h3 id="cannot-see-my-branch-pr-or-this-project-is-currently-disabled-in-jenkins">Cannot see my branch/PR or This project is currently disabled in Jenkins</h3>
 
 <ul>
 <li>Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.</li>
