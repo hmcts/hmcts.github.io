@@ -21,9 +21,9 @@
       <p>A minimal configuration for production would be:</p>
       <pre data-module="app-copy" tabindex="0">
   <code>{
-    product                     = "idam"
-    name                        = "idam-web-admin"
-    custom_domain               = "idam-web-admin.platform.hmcts.net"
+    product                     = "product"
+    name                        = "app-name"
+    custom_domain               = "your-app.service.gov.uk"
     backend_domain              = ["firewall-prod-int-palo-prod.uksouth.cloudapp.azure.com"]
   }
 </code></pre>
