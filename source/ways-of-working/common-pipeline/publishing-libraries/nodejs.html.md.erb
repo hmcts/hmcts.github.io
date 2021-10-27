@@ -1,9 +1,29 @@
 ---
 title: NodeJs
-last_reviewed_on: 2021-10-18
+last_reviewed_on: 2021-10-27
 review_in: 6 months
 weight: 2
 ---
 
 # <%= current_page.data.title %>
 
+# <%= current_page.data.title %>
+
+For publishing NodeJs libraries, we use NPM as our package manager and GitHub Actions to publish the libraries.
+
+## Publishing with NPM
+
+
+## Setting up NPM
+
+Further information on NPM can be found at [https://docs.npmjs.com/](https://docs.npmjs.com/).
+
+## Using the Github Action
+
+1. Go to your repository within GitHub
+2. Select the Actions tab at the top
+3. Select 'New workflow'
+4. Scroll down and select 'Publish Node.js Package' pressing the 'Set up this workflow' button
+5. On the far right select 'Start commit'
+6. Update the PR name, then select 'Commit new file'
+7. Pull your feature branch
