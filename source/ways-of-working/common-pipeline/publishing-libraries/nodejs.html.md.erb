@@ -17,6 +17,8 @@ For publishing NodeJs libraries, we use NPM as our package manager and GitHub Ac
 
 ## Using the Github Action
 
+> All libraries are published under the `hmcts` scope, make sure you library name starts with `@hmcts/my-lib`, see [nodejs-logging](https://github.com/hmcts/nodejs-logging/blob/28eedc42475b06dce207ecc4dc86c4ceaea39a89/package.json#L2)
+
 1. Go to your repository within GitHub
 2. Select the Actions tab at the top
 3. Select 'New workflow'
@@ -24,5 +26,8 @@ For publishing NodeJs libraries, we use NPM as our package manager and GitHub Ac
 5. On the far right select 'Start commit'
 6. Update the PR name, then select 'Commit new file'
 7. Pull your feature branch
+8. Create a release in GitHub
+9. Check the workflow build in the Actions tab
+10. Check the library was released to https://npmjs.com
 
 Further information on NPM can be found at [https://docs.npmjs.com/](https://docs.npmjs.com/).
