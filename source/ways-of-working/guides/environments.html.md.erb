@@ -1,0 +1,22 @@
+---
+title: Environments
+last_reviewed_on: 2021-10-29
+review_in: 6 months
+weight: 10
+---
+
+# <%= current_page.data.title %>
+
+
+
+| Shared Services Environment | CNP Environment | Use case &nbsp; | Path to live | Additional Information &nbsp; &nbsp; |
+| - | - | - | - | - | - |
+| Prod            | Prod       | Live services | Yes |  |
+| staging         | AAT        | Automated Acceptance Testing before moving to Prod | Yes |  |
+| Demo            | Demo       | External demonstrations (no VPN required) | No | Used for demonstrating to external stakeholders |
+| ITHC            | ITHC       | IT Health Check, used for penetration testing | No |  |
+| Test            | Perftest   | Performance testing | No | |
+| Dev             | Preview    | Development of software changes | Yes | <ul> <li>Destroyed nightly</li> <li>Pull requests are deployed</li>​ <br> <li>Automatically tested with functional tests​</li> <br> <li>Application points to AAT instance for dependant services</li> </ul> |
+| Sandbox         | Sandbox    | Testing infrastructure changes, POCs, experimentation | No | |
+
+[https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline](https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline)
