@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>NodeJs - HMCTS</title>
+    <title>Node.js - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
@@ -14,12 +14,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="NodeJs - HMCTS" />
+      <meta name="twitter:title" content="Node.js - HMCTS" />
       <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/nodejs.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="NodeJs" />
+      <meta property="og:title" content="Node.js" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/nodejs.html" />
 
@@ -202,7 +202,7 @@
 <li><a href="/ways-of-working/common-pipeline/publishing-libraries/"><span>Publishing Libraries</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/publishing-libraries/nodejs.html"><span>NodeJs</span></a>
+    <a href="/ways-of-working/common-pipeline/publishing-libraries/nodejs.html"><span>Node.js</span></a>
   </li>
   <li>
     <a href="/ways-of-working/common-pipeline/publishing-libraries/java.html"><span>Java</span></a>
@@ -248,19 +248,38 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="nodejs">NodeJs</h1>
+            <h1 id="node-js">Node.js</h1>
+<p>For publishing Node.js libraries, we use NPM as our package manager and GitHub Actions to publish the libraries.</p>
+<h2 id="publishing">Publishing</h2>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-18">
+<blockquote>
+<p>All libraries are published under the <code>hmcts</code> scope, make sure your library name starts with <code>@hmcts/my-lib</code>, see <a href="https://github.com/hmcts/nodejs-logging/blob/28eedc42475b06dce207ecc4dc86c4ceaea39a89/package.json#L2">nodejs-logging</a></p>
+</blockquote>
+
+<ol>
+<li>Go to your repository within GitHub</li>
+<li>Select the Actions tab at the top</li>
+<li>Scroll down to the &lsquo;Workflows created by HM Courts &amp; Tribunals Service&rsquo; section and select &lsquo;Publish Node.js Library&rsquo;, press the &lsquo;Set up this workflow&rsquo; button</li>
+<li>On the far right select &lsquo;Start commit&rsquo;</li>
+<li>Update the pull request name, then select &lsquo;Commit new file&rsquo;</li>
+<li>Pull your feature branch</li>
+<li>Create a release in GitHub</li>
+<li>Check the workflow build in the Actions tab</li>
+<li>Check the library was released to <a href="https://npmjs.com">https://npmjs.com</a></li>
+</ol>
+<p>Further information on NPM can be found at <a href="https://docs.npmjs.com/">https://docs.npmjs.com/</a>.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-05-01">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 October 2021.
+      This page was last reviewed on 1 November 2021.
 
-        It needs to be reviewed again on 18 April 2022
+        It needs to be reviewed again on 1 May 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 April 2022
+      This page was set to be reviewed before 1 May 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -271,7 +290,7 @@
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/common-pipeline/publishing-libraries/nodejs.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'NodeJs'&amp;body=Problem%20with%20'NodeJs'%20(https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/nodejs.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Node.js'&amp;body=Problem%20with%20'Node.js'%20(https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/nodejs.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
