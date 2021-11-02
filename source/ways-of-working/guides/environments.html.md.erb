@@ -1,6 +1,6 @@
 ---
 title: Environments
-last_reviewed_on: 2021-11-01
+last_reviewed_on: 2021-11-02
 review_in: 6 months
 weight: 10
 ---
@@ -9,11 +9,11 @@ weight: 10
 
 
 
-| Shared Services Environment | CNP Environment | Use case &nbsp; | Path to live | Additional Information &nbsp; &nbsp; |
+| Shared Services Environment | CFT Environment | Use case | Path to live | Additional Information |
 | - | - | - | - | - | - |
 | Prod            | Prod       | Live services | Yes |  |
 | staging         | AAT        | Automated Acceptance Testing before moving to Prod | Yes |  |
-| Demo            | Demo       | External demonstrations (no VPN required) | No | Used for demonstrating to external stakeholders |
+| Demo            | Demo       | External demonstrations | No | <ul><li>Used for demonstrating to external stakeholders</li> <li>No VPN required</li></ul> |
 | ITHC            | ITHC       | IT Health Check, used for penetration testing | No |  |
 | Test            | Perftest   | Performance testing | No | |
 | Dev             | Preview    | Development of software changes | Yes | <ul> <li>Destroyed nightly</li> <li>Pull requests are deployed</li>​ <br> <li>Automatically tested with functional tests​</li> <br> <li>Application points to AAT instance for dependant services</li> </ul> |
