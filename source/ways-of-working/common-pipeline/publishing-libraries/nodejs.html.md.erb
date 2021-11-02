@@ -1,9 +1,26 @@
 ---
-title: NodeJs
-last_reviewed_on: 2021-10-18
+title: Node.js
+last_reviewed_on: 2021-11-01
 review_in: 6 months
 weight: 2
 ---
 
 # <%= current_page.data.title %>
 
+For publishing Node.js libraries, we use NPM as our package manager and GitHub Actions to publish the libraries.
+
+## Publishing
+
+> All libraries are published under the `hmcts` scope, make sure your library name starts with `@hmcts/my-lib`, see [nodejs-logging](https://github.com/hmcts/nodejs-logging/blob/28eedc42475b06dce207ecc4dc86c4ceaea39a89/package.json#L2)
+
+1. Go to your repository within GitHub
+2. Select the Actions tab at the top
+3. Scroll down to the 'Workflows created by HM Courts & Tribunals Service' section and select 'Publish Node.js Library', press the 'Set up this workflow' button
+4. On the far right select 'Start commit'
+5. Update the pull request name, then select 'Commit new file'
+6. Pull your feature branch
+7. Create a release in GitHub
+8. Check the workflow build in the Actions tab
+9. Check the library was released to [https://npmjs.com](https://npmjs.com)
+
+Further information on NPM can be found at [https://docs.npmjs.com/](https://docs.npmjs.com/).
