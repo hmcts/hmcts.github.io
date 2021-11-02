@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Common pipeline - HMCTS</title>
+    <title>Environments - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/standards/environments.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Common pipeline - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html" />
+      <meta name="twitter:title" content="Environments - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/standards/environments.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Common pipeline" />
+      <meta property="og:title" content="Environments" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/standards/environments.html" />
 
     
   </head>
@@ -251,116 +251,74 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="common-pipeline">Common pipeline</h1>
-
-<blockquote>
-<p>To get onboarded to the common pipeline please see <a href="/onboarding/team/jenkins.html">Jenkins onboarding</a>.</p>
-</blockquote>
-<p>The common pipeline is a Jenkins pipeline defined by <a href="https://github.com/hmcts/cnp-jenkins-library">code</a>
-which implements Continuous Delivery to production while enforcing a standard set of 
-checks on the code processed.</p>
-<p>It enables HMCTS Reform to deploy changes to the platform in a well defined 
-manner providing the confidence that all the test and verification 
-stages have been executed in a structured and repeatable sequence. 
-This allows for fast feedback to developers to improve code development velocity.</p>
-<p>The delivery pipeline combines infrastructure and database schema changes with the 
-application deployment, therefore taking advantage of the microservices architecture 
-in use at HMCTS.</p>
-<p>Code changes are subjected to a round of static tests - consisting of unit tests, static 
-code analysis and security checks - before being deployed to a non-prod environment in a 
-non-publicly accessible AKS (Kubernetes) deployment. Here, a range of smoke tests and 
-non-destructive functional tests verifies the app is functioning. At this point a promotion 
-process is started which labels the Docker image produced by the previous stages of the 
-pipeline as production-ready. Production deployments are managed by flux which takes care 
-of keeping an application deployment up to date with the latest production-ready image generated 
-by the delivery pipeline.</p>
-<p>Smoke tests are available in production as part of a flux deployment and run from a separate container.</p>
-<p>The entire Delivery Pipeline is a hands-off, automated process, triggered at the point of change. Code merged 
-to master is deployed to production without any further human intervention. For this reason:</p>
-
-<ul>
-<li>PRs need to be carefully reviewed</li>
-<li>Feature Flagging, to separate the deployment of changes from their activation, is a practical necessity for all apps.</li>
-</ul>
-<h3 id="more-information">More information</h3>
-<p>For an in-depth guide on how the common pipeline works and how it should be used, please refer to the <a href="https://github.com/hmcts/cnp-jenkins-library/blob/master/README.md">cnp-jenkins-library README</a></p>
-<h3 id="deploying-applications-using-the-common-pipeline">Deploying applications using the common pipeline</h3>
-<p><a href="https://helm.sh">Helm</a> is the package manager for Kubernetes. 
-We deploy all of our applications using a helm chart to Kubernetes.
-For more information about Helm, please see the related new component 
-<a href="/ways-of-working/new-component/helm-chart.html">docs</a></p>
-<p><a href="/images/common-pipeline.png" rel="noopener noreferrer"><img src="/images/common-pipeline.png" alt="The Common Pipeline" /></a></p>
-<p>The diagram below shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of a non path to live environment that is <em>optionally</em> deployed to.</p>
-<p>An application consists of the different infrastructure levels of platform, product and component as detailed in <a href="/ways-of-working/new-component/infrastructure-as-code.html#infrastructure-levels">Infrastructure levels</a>.</p>
-<p>The product and component levels are combined to define the name of the application, denoted by app-name in the diagram below. The values for product and component should be defined in the Jenkinsfile within the github repo.</p>
-<p>Example: <a href="https://github.com/hmcts/cnp-plum-frontend/blob/master/Jenkinsfile_CNP">cnp-plum-frontend</a></p>
-<p>The environments shown in the diagram reflect CFT. Review the table below to see the corresponding SDS environment names.</p>
+            <h1 id="environments">Environments</h1>
 <div class="table-container">
         <table>
           <tr>
+<th>Shared Services Environment</th>
 <th>CFT Environment</th>
-<th>SDS Environment</th>
+<th>Use case</th>
+<th>Path to live</th>
+<th>Additional Information</th>
 </tr><tr>
+<td>Prod</td>
+<td>Prod</td>
+<td>Live services</td>
+<td>Yes</td>
+<td></td>
+</tr><tr>
+<td>staging</td>
 <td>AAT</td>
-<td>Staging</td>
+<td>Automated Acceptance Testing before moving to Prod</td>
+<td>Yes</td>
+<td></td>
 </tr><tr>
-<td>Perftest</td>
+<td>Demo</td>
+<td>Demo</td>
+<td>External demonstrations</td>
+<td>No</td>
+<td><ul>
+<li>Used for demonstrating to external stakeholders</li> <li>No VPN required</li>
+</ul></td>
+</tr><tr>
+<td>ITHC</td>
+<td>ITHC</td>
+<td>IT Health Check, used for penetration testing</td>
+<td>No</td>
+<td></td>
+</tr><tr>
 <td>Test</td>
+<td>Perftest</td>
+<td>Performance testing</td>
+<td>No</td>
+<td></td>
 </tr><tr>
-<td>Preview</td>
 <td>Dev</td>
+<td>Preview</td>
+<td>Pre-merge automated testing and Pull Request checks</td>
+<td>Yes</td>
+<td><ul> <li>Destroyed nightly</li> <li>Pull requests are deployed</li>​ <br> <li>Automatically tested with functional tests​</li> <br> <li>Application points to AAT instance for dependant services</li> </ul></td>
 </tr><tr>
-<td>Prod</td>
-<td>Prod</td>
+<td>Sandbox</td>
+<td>Sandbox</td>
+<td>Testing infrastructure changes, POCs, experimentation</td>
+<td>No</td>
+<td></td>
 </tr>
         </table>
-      </div><p><a href="/images/aks-release.png" rel="noopener noreferrer"><img src="/images/aks-release.png" alt="AKS Release" /></a></p>
-<p>End to end process:</p>
+      </div><p><a href="https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline">https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html#common-pipeline</a></p>
 
-<ol>
-<li>Commit changes to feature branch</li>
-<li>Create a pull request</li>
-<li>Jenkins will push an image with tag</li>
-<li>Jenkins will force a new Helm release to AKS</li>
-<li>Jenkins will run automated tests</li>
-<li>Merging and closing the PR will merge the feature with master</li>
-<li>The merge with master will trigger a webhook to start the Jenkins pipeline</li>
-<li>Jenkins will push an image with tag</li>
-<li>Jenkins will force a new Helm release to AKS</li>
-<li>Jenkins will run automated tests</li>
-<li>Jenkins will destroy the pod</li>
-<li>Jenkins will promote the image by:
-
-<ul>
-<li>retagging the image in ACR</li>
-<li>updating the github flux repo with the new image name</li>
-</ul></li>
-<li>Flux will see new changes and deploy new pod</li>
-</ol>
-<h3 id="finding-your-pipeline">Finding your pipeline</h3>
-<p>Within Jenkins, there exists the concept of organisation folders. This enables Jenkins to scan a GitHub Organization to discover repositories and automatically create managed pipelines for them.</p>
-<p>Your pipeline will exist within a specific organisation folder which should have been defined when the pipeline integration was first configured.</p>
-<p>See Step 4 of <a href="/onboarding/team/jenkins.html">Jenkins Onboarding</a> for details.</p>
-<h3 id="finding-your-application">Finding your application</h3>
-<p>Within AKS, your application pods will exist within a namespace. The namespace will correspond to what has been configured in the Jenkins team-config.yml file.</p>
-<p><a href="https://github.com/hmcts/cnp-jenkins-config/blob/4172d1409ec33072a867dee75fb8bb15192961e0/team-config.yml#L3">CFT example</a></p>
-<p><a href="https://github.com/hmcts/sds-jenkins-config/blob/edda067f268fe4056c19963fc5c7419cbd559856/team-config.yml#L3">SDS example</a></p>
-<h3 id="troubleshooting-build-issues">Troubleshooting build issues</h3>
-<p>See <a href="../troubleshooting/">troubleshooting issues</a>.</p>
-<h3 id="tips-and-tricks">Tips and Tricks</h3>
-<p>See <a href="/ways-of-working/common-pipeline/tips_and_tricks.html">tips and tricks</a>.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-05-02">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 October 2021.
+      This page was last reviewed on 2 November 2021.
 
-        It needs to be reviewed again on 4 April 2022
+        It needs to be reviewed again on 2 May 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 April 2022
+      This page was set to be reviewed before 2 May 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -370,8 +328,8 @@ For more information about Helm, please see the related new component
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/common-pipeline/common-pipeline.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Common%20pipeline'&amp;body=Problem%20with%20'Common%20pipeline'%20(https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/standards/environments.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Environments'&amp;body=Problem%20with%20'Environments'%20(https://hmcts.github.io/ways-of-working/standards/environments.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
