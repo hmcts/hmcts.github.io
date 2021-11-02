@@ -11,6 +11,22 @@ Feature flags are a software development and delivery technique that allows soft
 Feature flags enable software teams to adopt DevOps practices, in so much as they help increase deployment speeds, system stability, and cross-team collaboration.
 Feature flags also allow you to decouple code deployments from feature releases. You can make code changes in production while hiding those changes from users.
 
+### Trunk Based Development
+Trunk Based Development is a branching model in which developers create short-lived feature branches and merge back into the “trunk” branch, often called as the master/main branch.
+It reduces the complexity of merging events and keeps code current by having fewer development lines and by doing small and frequent merges.
+Trunk based Development and Feature Flags together can be used for continuous delivery, delivering the features faster to market.
+Trunk Based Development uses Feature Flags as a mechanism to manage new feature releases. Feature flags allow developers to deploy incomplete features to production without releasing them to end-users.
+
+![TBD with Feature Flag](/images/TBD_FeatureFlag.png)
+
+End to end Process:
+
+    - 1) Developers creates and commit short lived feature branch with Feature flag off.
+    - 2) Impelements features through may iterations of small feature lifecycle.
+    - 3) Code is continuously released.
+    - 4) Retire feature toggle.
+
+
 ### Accessing LaunchDarkly
 
     - Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non developers can get access with the 'DTS LaunchDarkly' group.
