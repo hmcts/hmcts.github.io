@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Publishing Libraries - HMCTS</title>
+    <title>Feature flags - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/new-component/feature-flags.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Publishing Libraries - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/" />
+      <meta name="twitter:title" content="Feature flags - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/feature-flags.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Publishing Libraries" />
+      <meta property="og:title" content="Feature flags" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/feature-flags.html" />
 
     
   </head>
@@ -254,24 +254,44 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="publishing-libraries">Publishing Libraries</h1>
-
-<ul>
-<li><a href="/ways-of-working/common-pipeline/publishing-libraries/java.html">Java</a></li>
-<li><a href="/ways-of-working/common-pipeline/publishing-libraries/nodejs.html">NodeJs</a></li>
-</ul>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-20">
+            <h1 id="feature-flags">Feature flags</h1>
+<p>Feature flags are a software development and delivery technique that allows software teams to enable and disable parts of a codebase at the flip of a switch.
+Feature flags enable a team to deliver new features to use rapidly but safely.
+Feature flags also allow you to decouple code deployments from feature releases. You can make code changes in production while hiding those changes from users.</p>
+<h3 id="trunk-based-development">Trunk Based Development</h3>
+<p>Trunk Based Development is a branching model in which developers create short-lived feature branches and merge back into the “trunk” branch, often called as the master/main branch.
+It reduces the complexity of merging events and keeps code current by having fewer development lines and by doing small and frequent merges.
+Trunk based Development and Feature Flags together can be used for continuous delivery, delivering the features faster to market.
+Trunk Based Development uses Feature Flags as a mechanism to manage new feature releases. Feature flags allow developers to deploy incomplete features to production without releasing them to end-users.</p>
+<p><a href="/images/TBD_FeatureFlag.png" rel="noopener noreferrer"><img src="/images/TBD_FeatureFlag.png" alt="Trunk based development with feature flags" /></a></p>
+<p>End to end Process:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- 1) Developers creates and commit short lived feature branch with Feature flag off.
+- 2) Impelements features through may iterations of small feature lifecycle.
+- 3) Code is continuously released.
+- 4) Retire feature toggle.
+</code></pre></div><h3 id="accessing-launchdarkly">Accessing LaunchDarkly</h3>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non developers can get access with the 'DTS LaunchDarkly' group.
+  see [onboarding](../../onboarding/person/index.html) process to request access.
+- [URL](https://app.launchdarkly.com/)
+</code></pre></div><h3 id="documentation">Documentation</h3>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- Documentation can be accessed directly from the [LaunchDarkly](https://docs.launchdarkly.com/home) website.
+- [Blog](https://launchdarkly.com/blog/) contains good information.
+</code></pre></div><h3 id="creating-a-new-project">Creating a new project</h3>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terraform) for instructions on how to setup your new project.
+</code></pre></div><h3 id="environments">Environments</h3>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, flag targeting is used to control rollout of flags to users across environments.
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 October 2021.
+      This page was last reviewed on 29 October 2021.
 
-        It needs to be reviewed again on 20 April 2022
+        It needs to be reviewed again on 29 April 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 April 2022
+      This page was set to be reviewed before 29 April 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -281,8 +301,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/common-pipeline/publishing-libraries/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Publishing%20Libraries'&amp;body=Problem%20with%20'Publishing%20Libraries'%20(https://hmcts.github.io/ways-of-working/common-pipeline/publishing-libraries/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/feature-flags.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Feature%20flags'&amp;body=Problem%20with%20'Feature%20flags'%20(https://hmcts.github.io/ways-of-working/new-component/feature-flags.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
