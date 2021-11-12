@@ -21,10 +21,10 @@ Trunk Based Development uses Feature Flags as a mechanism to manage new feature 
 
 End to end Process:
 
-    - 1) Developers creates and commit short lived feature branch with Feature flag off.
-    - 2) Impelements features through may iterations of small feature lifecycle.
-    - 3) Code is continuously released.
-    - 4) Retire feature toggle.
+1. Developers creates and commit short lived feature branch with Feature flag off.
+2. Impelements features through may iterations of small feature lifecycle.
+3. Code is continuously released.
+4. Retire feature toggle.
 
 
 ### Accessing LaunchDarkly
@@ -44,5 +44,5 @@ See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terrafo
 
 ### Environments
 
-    We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, flag targeting is used to control rollout of flags to users across environments.
+We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, flag targeting is used to control rollout of flags to users across environments.
 
