@@ -278,18 +278,16 @@ To resolve this issue, a github workflow has been created to build it as soon as
 </ol>
 <div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">jdk</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">openjdk11</span>
+</code></pre></div><h2 id="custom-configuration">Custom configuration:</h2>
+<p>By default, Jitpack compiles projects using OpenJDK Java 8 and uses <code>./gradlew install</code> for the maven plugin and <code>./gradlew build publishToMavenLocal</code> for the maven-publish plugin.
+If you use both, JitPack will default to using install.
+In your <code>jitpack.yml</code> you can override the install command like so:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>jdk:
+  - openjdk11
 
-<span class="c1">## Custom configuration:</span>
-<span class="s">By default, Jitpack compiles projects using OpenJDK Java 8 and uses `./gradlew install` for the maven plugin and `./gradlew build publishToMavenLocal` for the maven-publish plugin.</span>
-<span class="s">If you use both, JitPack will default to using install.</span>
-<span class="na">In your `jitpack.yml` you can override the install command like so</span><span class="pi">:</span>
-
-</code></pre></div><p>jdk:
-  - openjdk11</p>
-<p>install:
+install:
   - ./gradlew build publishToMavenLocal
-&ldquo;`</p>
-<h2 id="downloading-packages-from-jitpack">Downloading packages from JitPack</h2>
+</code></pre></div><h2 id="downloading-packages-from-jitpack">Downloading packages from JitPack</h2>
 <p>To download from JitPack you will need to add the JitPack repo to your list of repositories in your build.gradle files.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>repositories {
     ...
