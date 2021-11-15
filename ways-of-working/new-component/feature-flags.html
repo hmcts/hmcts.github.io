@@ -265,11 +265,14 @@ Trunk based Development and Feature Flags together can be used for continuous de
 Trunk Based Development uses Feature Flags as a mechanism to manage new feature releases. Feature flags allow developers to deploy incomplete features to production without releasing them to end-users.</p>
 <p><a href="/images/TBD_FeatureFlag.png" rel="noopener noreferrer"><img src="/images/TBD_FeatureFlag.png" alt="Trunk based development with feature flags" /></a></p>
 <p>End to end Process:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- 1) Developers creates and commit short lived feature branch with Feature flag off.
-- 2) Impelements features through may iterations of small feature lifecycle.
-- 3) Code is continuously released.
-- 4) Retire feature toggle.
-</code></pre></div><h3 id="accessing-launchdarkly">Accessing LaunchDarkly</h3>
+
+<ol>
+<li>Developers creates and commit short lived feature branch with Feature flag off.</li>
+<li>Impelements features through may iterations of small feature lifecycle.</li>
+<li>Code is continuously released.</li>
+<li>Retire feature toggle.</li>
+</ol>
+<h3 id="accessing-launchdarkly">Accessing LaunchDarkly</h3>
 <p>Developers automatically get access by being part of &lsquo;DTS CFT Developers&rsquo; or &lsquo;DTS SDS Developers&rsquo;, non developers can get access with the &lsquo;DTS LaunchDarkly&rsquo; group.
 see <a href="/onboarding/person/">onboarding</a> process to request access.
 <a href="https://app.launchdarkly.com/">URL</a></p>
@@ -279,8 +282,8 @@ see <a href="/onboarding/person/">onboarding</a> process to request access.
 <h3 id="creating-a-new-project">Creating a new project</h3>
 <p>See <a href="https://github.com/hmcts/launchdarkly-terraform">hmcts/launchdarkly-terraform</a> for instructions on how to setup your new project.</p>
 <h3 id="environments">Environments</h3>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, flag targeting is used to control rollout of flags to users across environments.
-</code></pre></div>
+<p>We currently provide &lsquo;Test&rsquo; and &lsquo;Production&rsquo; environments only within Launch Darkly. Flags are generally set to the same value in both &lsquo;Production&rsquo; and the &lsquo;Test&rsquo; environment, flag targeting is used to control rollout of flags to users across environments.</p>
+
               <div data-module='page-expiry' data-last-reviewed-on="2022-04-29">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 29 October 2021.
