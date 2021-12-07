@@ -7,9 +7,14 @@ weight: 2
 
 # <%= current_page.data.title %>
 
-Join the following 
+## Azure AD groups
 
-- Azure AD groups - submit pull request to the [Azure AD repository](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml)
+Access to most systems is granted by being added to Azure AD groups, you can join these by sending a pull request
+and getting it approved by Platform Operations.
+
+The file is [prod_users.yml](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml).
+
+To start with join these groups:
 
 ```yaml
 - name: username
@@ -23,28 +28,35 @@ Where `username` is the part of your email before @ (usually firstname.lastname 
 
 These groups will give you access to the VPN, LaunchDarkly, the [Azure Portal](https://portal.azure.com/) and logs.
 
-- GitHub Access - Read the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance), if you agree to follow it then ask someone in your team who has access to add you in the [GitHub management](https://github.com/hmcts/github-management) repository by submitting a pull request.
-- GitHub Teams - ask your Technical Lead or a senior member of the team to add you to your GitHub team group.
-- Office 365 team
-- Add [Github Slack user mapping](https://github.com/hmcts/github-slack-user-mappings)
 
-Recommended reading
+## GitHub
+
+Read the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance).
+If you agree to follow it then ask someone in your team who has access to add you in the [GitHub management](https://github.com/hmcts/github-management) repository by submitting a pull request.
+
+GitHub teams are managed by your Technical Lead or a senior member of the team, ask them to add you to any team groups.
+
+Once you've joined GitHub make sure you add your user to the [Slack -> GitHub mapping](https://github.com/hmcts/github-slack-user-mappings)
+
+## Office 365
+ 
+You should have your Office 365 team through the Jira onboarding process, but ask your team lead to add you to any email groups.
+Often there's a `$team-developers@hmcts.net` and a `$team@hmcts.net` group.
+
+## Recommended reading
 
 - [Continuous Delivery](https://continuousdelivery.com/)
+- [How, when and where to ask for help?](../../ways-of-working/asking-for-help)
 
-### How, when and where to ask for help?
-
-See our documentation about the best way to [ask for help](../../ways-of-working/asking-for-help).
-
-### Guides for specific roles
-
-#### Software engineer
-
-Recommended reading
+### Software Engineer specific reading
 
 - [Trunk Based Development](https://trunkbaseddevelopment.com/)
 - [Kubernetes Basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
 - [Using Helm](https://helm.sh/docs/intro/using_helm/)
+
+### Guides for specific roles
+
+#### Software engineer
 
 #### The following tools are commonly used
 
@@ -55,7 +67,5 @@ Recommended reading
 - [Helm CLI](https://helm.sh/docs/intro/install/)
 
 #### Tech lead
-
-This should be read in addition to the guide for all people and software engineers.
 
 Join the [reform-tech-leads Slack channel](https://hmcts-reform.slack.com/messages/reform-tech-leads)
