@@ -7,15 +7,19 @@ weight: 3
 
 # <%= current_page.data.title %>
 
-- [create new Github repo](github-repo.html)
-- [use common pipeline](../common-pipeline/)
-- [secrets management](secrets-management.html)
-- [infrastructure as code](infrastructure-as-code.html)
-- configuration management
-- logging and monitoring
-- database schema management
-- [Helm chart](helm-chart.html)
-- Environment-specific concepts
-- [Flux config](gitops-flux.html#application-config-in-flux)
-- [Production approvals](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
-- [Path-to-live](../path-to-live/)
+When you create a new component (such as a database, application or a combination of such resources), you will need to follow some or all of the following:
+
+- Undertand our [infrastructure as code](infrastructure-as-code.html) approach
+- Understand the [common pipeline](../common-pipeline/)
+- [Create new Github repo](github-repo.html)
+- Use our standard approach to [secrets management](secrets-management.html)
+- Configuration management
+- Logging and monitoring
+- Database schema management
+
+If you are creating an application you will need:
+
+- [Helm](helm-chart.html) for package management
+- [Flux](gitops-flux.html#application-config-in-flux) to automatically deploy pushed and merged code
+
+If you are creating a new frontend or backend service, you should read [Path-to-live](../path-to-live/)

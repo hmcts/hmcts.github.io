@@ -66,7 +66,7 @@ The environments shown in the diagram reflect CFT. Review the table below to see
 |-|-|
 |AAT|Staging|
 |Perftest|Test|
-|Preview|Dev|
+|Preview|Either Dev or Demo|
 |Prod|Prod|
 
 ![AKS Release](/images/aks-release.png)
@@ -89,6 +89,8 @@ End to end process:
     - updating the github flux repo with the new image name
 13. Flux will see new changes and deploy new pod
 
+In short, Jenkins runs "terraform plan" when you push, and "terraform apply" when you merge.
+
 ### Finding your pipeline
 
 Within Jenkins, there exists the concept of organisation folders. This enables Jenkins to scan a GitHub Organization to discover repositories and automatically create managed pipelines for them.
@@ -104,6 +106,30 @@ Within AKS, your application pods will exist within a namespace. The namespace w
 [CFT example](https://github.com/hmcts/cnp-jenkins-config/blob/4172d1409ec33072a867dee75fb8bb15192961e0/team-config.yml#L3)
 
 [SDS example](https://github.com/hmcts/sds-jenkins-config/blob/edda067f268fe4056c19963fc5c7419cbd559856/team-config.yml#L3)
+
+### Resource locks
+
+Resources in Azure are locked in Staging or Production to prevent their destruction.
+
+If you need to rename or destroy a resource, you will need to temporarily remove the lock. This can be done using the link in the readme of the [Azure Resource Locks](https://github.com/hmcts/azure-resource-locks/#pipeline-jobs) repository.
+
+### SSH access to resources
+
+To SSH into Azure resources, such as a Postgres Database, you will typically need to go via a Bastion.
+
+- Staging and production resources use the Production Bastion
+- Other resources use the Non-production Bastion
+
+To SSH into the bastion, you must first get a temporary access pass [here](https://myaccess.microsoft.com/@CJSCommonPlatform.onmicrosoft.com#/access-packages)
+
+### Using the demo environment
+
+To deploy to the demo, you will simply create a branch called "demo". All merges to this branch will be deployed in the Demo environment.
+
+### Key vaults build failures
+
+If your infrastructure pipeline requires the use of a Key Vault to build, and the Key Vault is also itself being built in the pipeline, then it is common for the first deployment to fail. Just rebuild the pipeline.
+
 
 ### Troubleshooting build issues
 

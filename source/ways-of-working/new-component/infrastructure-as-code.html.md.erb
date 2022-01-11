@@ -108,5 +108,28 @@ The [common build pipeline](../common-pipeline) will enforce the whitelist and w
 
 ## Environment-specific variables
 
-The [common build pipeline](../common-pipeline) supports environment-specific values for Terraform variables. The values can be defined in files named `{environment}.tfvars` (e.g. `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files. The appropropriate `.tfvars` file will
-be passed into Terraform when the pipeline builds infrastrucuture.
+The [common build pipeline](../common-pipeline) supports environment-specific values for Terraform variables. The values can be defined in files named `{environment}.tfvars` (e.g. `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files. The appropropriate `.tfvars` file will be passed into Terraform when the pipeline builds infrastrucuture.
+
+You do not need to specify the value of the environment variables provided by Jenkins such as `env` (below). However you do need to create an empty variable ready to accept the variables Jenkins injects.
+
+## Environment variables provided by Jenkins
+
+Jenkins will inject a number of variables into your deployments. You do not need to specify their values in the infrastructure code, but you do need to create an empty variable ready to accept them if you want to use them:
+
+- `env`
+- `product` (name of the product)
+- `subscription` (applicable Azure subscription)
+
+For [Azure Key Vault](https://github.com/hmcts/cnp-module-key-vault), you need to create empty variables for:
+
+- `tenant_id`
+- `jenkins_AAD_objectId`
+
+## Terraform version
+
+You must specify what version of terraform you want Jenkins to use with a .terraformversion file in the root directory. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version)
+
+## Jenkinsfile_CNP
+
+You must add a Jenkinsfile_CNP to the root directory. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP)
+
