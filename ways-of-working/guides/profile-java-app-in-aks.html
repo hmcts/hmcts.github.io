@@ -281,21 +281,21 @@
 <p>After completing the setup above you can run
 <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.start --name=&quot;1&quot;</code>
 The output will look something like this
-&ldquo;`shell
+<code>shell
 Connected to remote JVM
 Response code = 0
-Started recording 1. No limit specified, using maxsize=250MB as default.</p>
-<p>Use jcmd 1 JFR.dump name=1 filename=FILEPATH to copy recording data to file.
-&rdquo;`</p>
+Started recording 1. No limit specified, using maxsize=250MB as default.
+Use jcmd 1 JFR.dump name=1 filename=FILEPATH to copy recording data to file.
+</code></p>
 <p>At this point you can run any tests you want to capture any data in the profile report.</p>
 <p>Once complete, you can dump the data to a file on the container:
-&ldquo;`shell
-kubectl exec $podName -n $namespace &ndash; jattach 1 jcmd JFR.dump
+<code>shell
+kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.dump
 Connected to remote JVM
 Response code = 0
-Dumped recording, 4.5 MB written to:</p>
-<p>/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr
-&rdquo;`</p>
+Dumped recording, 4.5 MB written to:
+/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr
+</code></p>
 <p><strong>Note</strong>: You should be able to run <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.stop --name=&quot;1&quot;</code>
 but I&rsquo;ve yet to get this to work. Instead I&rsquo;ve just killed the pod (<code>kubectl delete pod -n $namespace $podName</code>)</p>
 <h2 id="downloading-the-file">Downloading the file</h2>
@@ -320,7 +320,6 @@ root@aks-linux-81166528-vmss00005T:/#
 <span class="nb">groups</span>: cannot find name <span class="k">for </span>group ID 11
 To run a <span class="nb">command </span>as administrator <span class="o">(</span>user <span class="s2">"root"</span><span class="o">)</span>, use <span class="s2">"sudo &lt;command&gt;"</span><span class="nb">.</span>
 See <span class="s2">"man sudo_root"</span> <span class="k">for </span>details.
-
 root@rpe-send-letter-service-java-6fb55dd776-87b6f:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs# <span class="nb">ls </span>opt/app/
 AI-Agent.xml                         hotspot-pid-1-2022_01_20_14_32_49.jfr
 applicationinsights-agent-2.5.1.jar  send-letter-service.jar
