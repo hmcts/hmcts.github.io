@@ -38,7 +38,6 @@ The output will look something like this
 Connected to remote JVM
 Response code = 0
 Started recording 1. No limit specified, using maxsize=250MB as default.
-
 Use jcmd 1 JFR.dump name=1 filename=FILEPATH to copy recording data to file.
 ```
 
@@ -50,7 +49,6 @@ kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.dump
 Connected to remote JVM
 Response code = 0
 Dumped recording, 4.5 MB written to:
-
 /opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr
 ```
 
@@ -94,7 +92,6 @@ nsenter --target $targetPid --uts --net --pid unshare --mount-proc sh -c "cd /ru
 groups: cannot find name for group ID 11
 To run a command as administrator (user "root"), use "sudo <command>".
 See "man sudo_root" for details.
-
 root@rpe-send-letter-service-java-6fb55dd776-87b6f:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs# ls opt/app/
 AI-Agent.xml                         hotspot-pid-1-2022_01_20_14_32_49.jfr
 applicationinsights-agent-2.5.1.jar  send-letter-service.jar
