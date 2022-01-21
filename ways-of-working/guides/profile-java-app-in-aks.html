@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Path to live - HMCTS</title>
+    <title>Profile a Java application running in an AKS cluster - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/path-to-live/">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/guides/profile-java-app-in-aks.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Path to live - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/path-to-live/" />
+      <meta name="twitter:title" content="Profile a Java application running in an AKS cluster - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/guides/profile-java-app-in-aks.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Path to live" />
+      <meta property="og:title" content="Profile a Java application running in an AKS cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/path-to-live/" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/guides/profile-java-app-in-aks.html" />
 
     
   </head>
@@ -257,29 +257,92 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="path-to-live">Path to live</h1>
-<p>This path to live section shows some of the steps you may need to create when you create a new service.</p>
+            <h1 id="profile-a-java-application-running-in-an-aks-cluster">Profile a Java application running in an AKS cluster</h1>
+<p>This page describes how to profile a java application which is deployed in one of our AKS clusters.</p>
+<h2 id="prerequisites">Prerequisites</h2>
 
-<ul>
-<li>If you&rsquo;re going live on a frontend application you need to read all pages in this section.</li>
-<li>If you&rsquo;re going live on a backend application you only need to read the 
-<a href="/ways-of-working/path-to-live/load-balancer-configuration.html">Load balancer configuration</a> page.</li>
-<li>If you are only creating a new infrastructure project, you do not need to follow this section. Instead follow the <a href="/ways-of-working/new-component/">Starting a new component</a> guide.</li>
-</ul>
-<p>There may be other business processes you need to go through but they are out of scope of this
-section.</p>
+<ol>
+<li>Your user will need to have permissions to run kubectl exec and to ssh to a node. (Subscription contributor role works)</li>
+<li>Install <a href="https://github.com/kvaps/kubectl-node-shell">kubectl node-shell</a> which in turn requires <a href="https://krew.sigs.k8s.io/">krew</a></li>
+<li>Something to open .jfr files with like <a href="https://adoptopenjdk.net/jmc.html">Java Mission Control</a></li>
+</ol>
+<h2 id="setup">Setup</h2>
+<p>You&rsquo;ll need the following bits of information during this exercise:
+1. namespace (hopefully you just know this or browse <code>kubectl get namespaces</code>)
+2. pod name (find it in <code>kubectl get pods -n $namespace</code>)
+3. container name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.metadata.name}&#39;</code>)
+4. node name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.spec.nodeName}&#39;</code>)</p>
+<p>Example</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
+<span class="nv">podName</span><span class="o">=</span>rpe-send-letter-service-java-7fc6fffdf9-qvfd6
+<span class="nv">containerName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.metadata.name}'</span><span class="si">)</span>
+<span class="nv">nodeName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.nodeName}'</span><span class="si">)</span>
+</code></pre></div><h2 id="running-java-flight-recorder-jfr">Running Java Flight Recorder (JFR)</h2>
+<p>After completing the setup above you can run
+<code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.start --name=&quot;1&quot;</code>
+The output will look something like this
+&ldquo;`shell
+Connected to remote JVM
+Response code = 0
+Started recording 1. No limit specified, using maxsize=250MB as default.</p>
+<p>Use jcmd 1 JFR.dump name=1 filename=FILEPATH to copy recording data to file.
+&rdquo;`</p>
+<p>At this point you can run any tests you want to capture any data in the profile report.</p>
+<p>Once complete, you can dump the data to a file on the container:
+&ldquo;`shell
+kubectl exec $podName -n $namespace &ndash; jattach 1 jcmd JFR.dump
+Connected to remote JVM
+Response code = 0
+Dumped recording, 4.5 MB written to:</p>
+<p>/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr
+&rdquo;`</p>
+<p><strong>Note</strong>: You should be able to run <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.stop --name=&quot;1&quot;</code>
+but I&rsquo;ve yet to get this to work. Instead I&rsquo;ve just killed the pod (<code>kubectl delete pod -n $namespace $podName</code>)</p>
+<h2 id="downloading-the-file">Downloading the file</h2>
+<p>As our images don&rsquo;t have a shell installed or tar (can&rsquo;t use <code>kubectl cp</code>) it&rsquo;s a little bit more involved to get the
+JFR report.</p>
+<p>To figure out where the file is, you need to use nsenter to get a shell onto the node and find the mount point for the
+specific container you need.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl node-shell <span class="nv">$nodeName</span> <span class="nt">-n</span> admin
+spawning <span class="s2">"nsenter-x8uq64"</span> on <span class="s2">"aks-linux-81166528-vmss00005t"</span>
+If you don<span class="s1">'t see a command prompt, try pressing enter.
+root@aks-linux-81166528-vmss00005T:/#
+</span></code></pre></div><p>At this point you&rsquo;ll need your variables from earlier</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
+<span class="nv">containerName</span><span class="o">=</span>rpe-send-letter-service-java
+<span class="nv">pod</span><span class="o">=</span>rpe-send-letter-service-java-6fb55dd776-87b6f
+</code></pre></div><p>You&rsquo;ll also need some additional information out of containerd using crictl.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">podId</span><span class="o">=</span><span class="si">$(</span>crictl pods <span class="nt">--namespace</span> <span class="nv">$namespace</span> <span class="nt">--name</span> <span class="nv">$pod</span> <span class="nt">--state</span> Ready <span class="nt">--quiet</span><span class="si">)</span>
+<span class="nv">containerId</span><span class="o">=</span><span class="si">$(</span>crictl ps <span class="nt">-p</span> <span class="nv">$podId</span> <span class="nt">--no-trunc</span> <span class="nt">--label</span> io.kubernetes.container.name<span class="o">=</span><span class="nv">$containerName</span> <span class="nt">-q</span><span class="si">)</span>
+<span class="nv">targetPid</span><span class="o">=</span><span class="si">$(</span>crictl inspect <span class="nv">$containerId</span> | jq .info.pid<span class="si">)</span>
+</code></pre></div><p>Now we can use nsenter to create us a shell at the mount point for the container</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>nsenter <span class="nt">--target</span> <span class="nv">$targetPid</span> <span class="nt">--uts</span> <span class="nt">--net</span> <span class="nt">--pid</span> unshare <span class="nt">--mount-proc</span> sh <span class="nt">-c</span> <span class="s2">"cd /run/containerd/io.containerd.runtime.v1.linux/k8s.io/</span><span class="nv">$containerId</span><span class="s2">/rootfs &amp;&amp; exec bash"</span>
+<span class="nb">groups</span>: cannot find name <span class="k">for </span>group ID 11
+To run a <span class="nb">command </span>as administrator <span class="o">(</span>user <span class="s2">"root"</span><span class="o">)</span>, use <span class="s2">"sudo &lt;command&gt;"</span><span class="nb">.</span>
+See <span class="s2">"man sudo_root"</span> <span class="k">for </span>details.
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-25">
+root@rpe-send-letter-service-java-6fb55dd776-87b6f:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs# <span class="nb">ls </span>opt/app/
+AI-Agent.xml                         hotspot-pid-1-2022_01_20_14_32_49.jfr
+applicationinsights-agent-2.5.1.jar  send-letter-service.jar
+</code></pre></div><p>When we list the files you can see the hotspot JFR file which was dumped by jattach earlier.</p>
+<p>To download this file we need to go back to a terminal on our local machine and run <code>kubectl cp</code> to copy from the path
+we just discovered above (<code>/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/</code>)
+appended by the file name <code>hotspot-pid-1-2022_01_20_14_32_49.jfr</code> like so:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nb">cp </span>admin/nsenter-x8uq64:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr ./hotspot-pid-1-2022_01_20_14_32_49.jfr
+<span class="nb">tar</span>: Removing leading <span class="sb">`</span>/<span class="s1">' from member names
+</span></code></pre></div><p>You can now open this file locally using Java Mission Control and terminate your connection to the nsenter pod.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-07-21">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 October 2021.
+      This page was last reviewed on 21 January 2022.
 
-        It needs to be reviewed again on 25 April 2022
+        It needs to be reviewed again on 21 July 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 April 2022
+      This page was set to be reviewed before 21 July 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -289,8 +352,8 @@ section.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/path-to-live/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Path%20to%20live'&amp;body=Problem%20with%20'Path%20to%20live'%20(https://hmcts.github.io/ways-of-working/path-to-live/)">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/guides/profile-java-app-in-aks.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?labels=bug&amp;title=Re:%20'Profile%20a%20Java%20application%20running%20in%20an%20AKS%20cluster'&amp;body=Problem%20with%20'Profile%20a%20Java%20application%20running%20in%20an%20AKS%20cluster'%20(https://hmcts.github.io/ways-of-working/guides/profile-java-app-in-aks.html)">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
