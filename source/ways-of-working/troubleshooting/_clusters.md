@@ -31,8 +31,8 @@
   az aks get-credentials --resource-group cft-perftest-01-rg --name cft-perftest-01-aks --subscription DCD-CFTAPPS-TEST
 
   # ITHC
-  az aks get-credentials --resource-group ithc-00-rg --name ithc-00-aks --subscription DCD-CFTAPPS-ITHC
-  az aks get-credentials --resource-group ithc-01-rg --name ithc-01-aks --subscription DCD-CFTAPPS-ITHC
+  az aks get-credentials --resource-group cft-ithc-00-rg --name cft-ithc-00-aks --subscription DCD-CFTAPPS-ITHC
+  az aks get-credentials --resource-group cft-ithc-01-rg --name cft-ithc-01-aks --subscription DCD-CFTAPPS-ITHC
   
   # Demo (only one cluster is active at a given time)
   az aks get-credentials --resource-group demo-00-rg --name demo-00-aks --subscription DCD-CFTAPPS-DEMO
@@ -43,7 +43,7 @@
   az aks get-credentials --resource-group prod-01-rg --name prod-01-aks --subscription DCD-CFTAPPS-PROD
   
   # CFTPTL (Prod management)
-  az aks get-credentials --resource-group cftptl-intsvc-00-rg --name cftptl-intsvc-00-aks --subscription DTS-CFTPTL-INTSVC
+  az aks get-credentials --resource-group cft-ptl-00-rg --name cft-ptl-00-aks --subscription DTS-CFTPTL-INTSVC
 </code></pre>
     </div>
   </div>
