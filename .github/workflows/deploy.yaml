@@ -11,24 +11,13 @@ jobs:
     runs-on: ubuntu-18.04
     name: Deploy
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.6.5
+          ruby-version: 3.1.1
           architecture: 'x64'
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          gem install bundler
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
+          bundler-cache: true
       - name: Build
         run: bundle exec middleman build
       - name: Publish
@@ -39,3 +28,4 @@ jobs:
           git remote set-url origin https://nobody:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           bundle exec rake publish
         if: github.ref == 'refs/heads/source'
+
