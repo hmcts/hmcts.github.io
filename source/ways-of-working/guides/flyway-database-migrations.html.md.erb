@@ -7,18 +7,29 @@ weight: 10
 
 # <%= current_page.data.title %>
 
+To prevent application startup failure for larger migrations due to Kubernetes probes it's essential that databases are migrated outside of Kubernetes via the Continuous Delivery pipeline.
+This page attempts to show the steps required to perform a safe database migration.
+
+For a more detailed explanation on why this is necessary see: [Making a database schema change](../standards/db-schema-change.html)
+
 ## How to apply Flyway migration as part of pipeline
+
+Example [pull request](https://github.com/hmcts/am-role-assignment-service/pull/1149)
+
+Alternatively see below for a step-by-step guide.
+
+### Config
 
 Enable database migration for Jenkins:
 
-- Add `enableDbMigration('<PROJECT_NAME>')` to Jenkinsfile_CNP file
+- Add `enableDbMigration('<PROJECT_NAME>')` to `Jenkinsfile_CNP` file
 
 Add correct config to `build.gradle`:
 
 - Ensure the [latest flyway version](https://plugins.gradle.org/plugin/org.flywaydb.flyway) is set e.g. `id 'org.flywaydb.flyway' version '<VERSION_NUMBER>'`
 - Add this block:
 
-```
+```groovy
 flyway {
   url = System.getenv('FLYWAY_URL')
   user = System.getenv('FLYWAY_USER')
@@ -35,26 +46,26 @@ task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
 }
 ```
 
-Ensure the RUN_DB_MIGRATION_ON_STARTUP is configured appropriately:
+Ensure the `RUN_DB_MIGRATION_ON_STARTUP` is configured appropriately:
 
 - Add `RUN_DB_MIGRATION_ON_STARTUP: true` to the `values.preview.template.yaml` file
-- Add `RUN_DB_MIGRATION_ON_STARTUP: false` to the `values.yaml` file
+- Add `RUN_DB_MIGRATION_ON_STARTUP: false` to the `values.yaml` file - This is so that preview will migrate on startup
 
 Set the migration to run on app startup
 
 - In `application.yaml` set:
 
-```
+```yaml
 dbMigration:
     # When true, the app will run DB migration on startup.
     # Otherwise, it will just check if all migrations have been applied (and fail to start if not).
     runOnStartup: ${RUN_DB_MIGRATION_ON_STARTUP:true}
 ```
-Flyway Java config:
+### Java files
 
 - Add a class to configure flyway:
 
-```
+```java
 package uk.gov.hmcts.reform.example;
 
 import org.flywaydb.core.Flyway;
@@ -89,7 +100,7 @@ public class FlywayConfiguration {
 
 - And then this class to do the flyway migration:
 
-```
+```java
 package uk.gov.hmcts.reform.example.data.migration;
 
 import org.flywaydb.core.Flyway;
@@ -114,7 +125,7 @@ public class FlywayNoOpStrategy implements FlywayMigrationStrategy {
 
  - Migration exception class:
 
- ```
+ ```java
 package uk.gov.hmcts.reform.example.data.exception;
 
 public class PendingMigrationScriptException extends RuntimeException {
