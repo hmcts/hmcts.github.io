@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Profile a Java application running in an AKS cluster - HMCTS</title>
+    <title>Making a database schema change - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/guides/profile-java-app-in-aks.html">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/standards/db-schema-change.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Profile a Java application running in an AKS cluster - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/guides/profile-java-app-in-aks.html" />
+      <meta name="twitter:title" content="Making a database schema change - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/standards/db-schema-change.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Profile a Java application running in an AKS cluster" />
+      <meta property="og:title" content="Making a database schema change" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/guides/profile-java-app-in-aks.html" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/standards/db-schema-change.html" />
 
     
   </head>
@@ -256,91 +256,88 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="profile-a-java-application-running-in-an-aks-cluster">Profile a Java application running in an AKS cluster</h1>
-<p>This page describes how to profile a java application which is deployed in one of our AKS clusters.</p>
-<h2 id="prerequisites">Prerequisites</h2>
+            <h1 id="making-a-database-schema-change">Making a database schema change</h1>
+<p>See <a href="/ways-of-working/guides/flyway-database-migrations.html">Flyway database migration</a> for automatically running schema changes via pipeline.</p>
+<p>Adopting a Continuous Delivery (CD) pipeline and zero-downtime deployments brings challenges, particularly regarding evolution of underlying database schemas.</p>
+<p>From Chapter 12 Managing Data, Continuous Delivery [David Farley; Jez Humble]:</p>
+
+<blockquote>
+<p>The lifecycle of application data differs from that of other parts of the system.
+Application data needs to be preserved—indeed, data usually outlasts the applications that were used to create and access it.
+Crucially, data needs to be preserved and migrated during new deployments or rollbacks of a system.
+In most cases, when we deploy new code, we can erase the previous version and wholly replace it with a new copy.
+In this way we can be certain of our starting position.
+While that option is possible for data in a few limited cases, for most real-world systems this approach is impossible.
+Once a system has been released into production, the data associated with it will grow, and it will have significant value in its own right.
+Indeed, arguably it is the most valuable part of your system. This presents problems when we need to modify either the structure or the content.
+The underlying problem here is that we can&rsquo;t just swap a new version of the database for an old version, like we would with blue/green deployments for code, if the data in question is constantly in motion.</p>
+</blockquote>
+<h2 id="what-is-zero-downtime-deployment">What is zero-downtime deployment?</h2>
+<p>First, we need to define what zero-downtime actually means.
+Does it just apply to frontend services? Is it just public-facing frontend services?
+To perform zero-downtime deployments of frontend applications there are two options:</p>
+
+<ul>
+<li>If possible, decouple frontend and backend so that frontend still provides a useful service if one of the backends is down</li>
+<li>Decouple database schema changes from backend deployment and perform changes in multiple, backward-compatible steps</li>
+</ul>
+<p><a href="/images/standard-application-stack.png" rel="noopener noreferrer"><img src="/images/standard-application-stack.png" alt="Standard application stack" /></a></p>
+<p>Can the frontend tolerate downtime of backend services?
+Can the frontend offer reduced functionality when backends are down but still provide a useful service to users?
+Is the backend &lsquo;private&rsquo; so that it is only accessible to frontend services? If so, then it is possible to perform zero-downtime deploys by taking the backend services down for a short time to perform DB upgrades.
+This enables &lsquo;traditional&rsquo; database migration deployments.
+Note, however, that if a backend doesn&rsquo;t support zero-downtime deployments then it must be clearly documented so that any new consuming service knows to be appropriately decoupled.</p>
+<p>If the frontend doesn&rsquo;t function without the backend or the &lsquo;backend&rsquo; is also a public-facing service (API) then the backend must also support zero-downtime deployments.
+If the backend is backed by a defined-schema datastore e.g. an RDBMS then extra steps need to be added to the release pipeline in order to facilitate this.</p>
+<h2 id="zero-downtime-database-deployments">Zero-downtime database deployments</h2>
+<p>To perform zero-downtime database deployments the schema migration MUST be separated from the code deployment.
+<a href="https://www.brunton-spall.co.uk/post/2014/05/06/database-migrations-done-right/">Database Migrations Done Right</a> explains further and gives an example of the steps required when adding a non-nullable column to an existing table.
+Essentially, database migrations must be performed in such a way that they are done independently of application deployments.</p>
+<p>The underlying principle to obey here is:</p>
+<p><b>Every change you make must be backward compatible with the rest of the system</b></p>
+<p>For the add non-nullable column scenario these are the backward compatible steps to perform the change:</p>
 
 <ol>
-<li>Your user will need to have permissions to run kubectl exec and to ssh to a node. (Subscription contributor role works)</li>
-<li>Install <a href="https://github.com/kvaps/kubectl-node-shell">kubectl node-shell</a> which in turn requires <a href="https://krew.sigs.k8s.io/">krew</a></li>
-<li>Something to open .jfr files with like <a href="https://adoptopenjdk.net/jmc.html">Java Mission Control</a></li>
+<li>Add nullable column to database – System keeps adding rows, nulls are fine, reads ignore the null</li>
+<li>Code change to write correct value to new rows, and handle reading unexpected nulls – Database doesn’t change, now we have some null rows and some rows with data</li>
+<li>Run data migration to fill the other columns – This might be a script, or a bit of code in the application, either way your app doesn’t care about any row, it handles data and nulls just fine</li>
+<li>Add the non-null constraint – The database now has no nulls and your new code is writing the correct data.</li>
+<li>Remove the code that handles the null case – it won’t happen anymore.</li>
 </ol>
-<h2 id="setup">Setup</h2>
-<p>You&rsquo;ll need the following bits of information during this exercise:
-1. namespace (hopefully you just know this or browse <code>kubectl get namespaces</code>)
-2. pod name (find it in <code>kubectl get pods -n $namespace</code>)
-3. container name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.metadata.name}&#39;</code>)
-4. node name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.spec.nodeName}&#39;</code>)</p>
-<p>Example</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
-<span class="nv">podName</span><span class="o">=</span>rpe-send-letter-service-java-7fc6fffdf9-qvfd6
-<span class="nv">containerName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.metadata.name}'</span><span class="si">)</span>
-<span class="nv">nodeName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.nodeName}'</span><span class="si">)</span>
-</code></pre></div><h2 id="running-java-flight-recorder-jfr">Running Java Flight Recorder (JFR)</h2>
-<p>After completing the setup above you can run
-<code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.start --name=&quot;1&quot;</code>
-The output will look something like this
-<code>shell
-Connected to remote JVM
-Response code = 0
-Started recording 1. No limit specified, using maxsize=250MB as default.
-Use jcmd 1 JFR.dump name=1 filename=FILEPATH to copy recording data to file.
-</code></p>
-<p>At this point you can run any tests you want to capture any data in the profile report.</p>
-<p>Once complete, you can dump the data to a file on the container:
-<code>shell
-kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.dump
-Connected to remote JVM
-Response code = 0
-Dumped recording, 4.5 MB written to:
-/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr
-</code></p>
-<p><strong>Note</strong>: You should be able to run <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.stop --name=&quot;1&quot;</code>
-but I&rsquo;ve yet to get this to work. Instead I&rsquo;ve just killed the pod (<code>kubectl delete pod -n $namespace $podName</code>)</p>
-<h2 id="downloading-the-file">Downloading the file</h2>
-<p>As our images don&rsquo;t have a shell installed or tar (can&rsquo;t use <code>kubectl cp</code>) it&rsquo;s a little bit more involved to get the
-JFR report.</p>
-<p>To figure out where the file is, you need to use nsenter to get a shell onto the node and find the mount point for the
-specific container you need.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl node-shell <span class="nv">$nodeName</span> <span class="nt">-n</span> admin
-spawning <span class="s2">"nsenter-x8uq64"</span> on <span class="s2">"aks-linux-81166528-vmss00005t"</span>
-If you don<span class="s1">'t see a command prompt, try pressing enter.
-root@aks-linux-81166528-vmss00005T:/#
-</span></code></pre></div><p>At this point you&rsquo;ll need your variables from earlier</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
-<span class="nv">containerName</span><span class="o">=</span>rpe-send-letter-service-java
-<span class="nv">pod</span><span class="o">=</span>rpe-send-letter-service-java-6fb55dd776-87b6f
-</code></pre></div><p>You&rsquo;ll also need some additional information out of containerd using crictl.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">podId</span><span class="o">=</span><span class="si">$(</span>crictl pods <span class="nt">--namespace</span> <span class="nv">$namespace</span> <span class="nt">--name</span> <span class="nv">$pod</span> <span class="nt">--state</span> Ready <span class="nt">--quiet</span><span class="si">)</span>
-<span class="nv">containerId</span><span class="o">=</span><span class="si">$(</span>crictl ps <span class="nt">-p</span> <span class="nv">$podId</span> <span class="nt">--no-trunc</span> <span class="nt">--label</span> io.kubernetes.container.name<span class="o">=</span><span class="nv">$containerName</span> <span class="nt">-q</span><span class="si">)</span>
-<span class="nv">targetPid</span><span class="o">=</span><span class="si">$(</span>crictl inspect <span class="nv">$containerId</span> | jq .info.pid<span class="si">)</span>
-</code></pre></div><p>Now we can use nsenter to create us a shell at the mount point for the container</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>nsenter <span class="nt">--target</span> <span class="nv">$targetPid</span> <span class="nt">--uts</span> <span class="nt">--net</span> <span class="nt">--pid</span> unshare <span class="nt">--mount-proc</span> sh <span class="nt">-c</span> <span class="s2">"cd /run/containerd/io.containerd.runtime.v1.linux/k8s.io/</span><span class="nv">$containerId</span><span class="s2">/rootfs &amp;&amp; exec bash"</span>
-<span class="nb">groups</span>: cannot find name <span class="k">for </span>group ID 11
-To run a <span class="nb">command </span>as administrator <span class="o">(</span>user <span class="s2">"root"</span><span class="o">)</span>, use <span class="s2">"sudo &lt;command&gt;"</span><span class="nb">.</span>
-See <span class="s2">"man sudo_root"</span> <span class="k">for </span>details.
-root@rpe-send-letter-service-java-6fb55dd776-87b6f:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs# <span class="nb">ls </span>opt/app/
-AI-Agent.xml                         hotspot-pid-1-2022_01_20_14_32_49.jfr
-applicationinsights-agent-2.5.1.jar  send-letter-service.jar
-</code></pre></div><p>When we list the files you can see the hotspot JFR file which was dumped by jattach earlier.</p>
-<p>To download this file we need to go back to a terminal on our local machine and run <code>kubectl cp</code> to copy from the path
-we just discovered above (<code>/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/</code>)
-appended by the file name <code>hotspot-pid-1-2022_01_20_14_32_49.jfr</code> like so:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nb">cp </span>admin/nsenter-x8uq64:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr ./hotspot-pid-1-2022_01_20_14_32_49.jfr
-<span class="nb">tar</span>: Removing leading <span class="sb">`</span>/<span class="s1">' from member names
-</span></code></pre></div><p>You can now open this file locally using Java Mission Control and terminate your connection to the nsenter pod.</p>
+<p><a href="/images/zero-downtime-db-migrations.png" rel="noopener noreferrer"><img src="/images/zero-downtime-db-migrations.png" alt="Zero downtime" /></a></p>
+<h2 id="strategies-for-refactoring-databases">Strategies for refactoring databases</h2>
+<p>These 2 articles give some ideas on what to do and what to avoid when refactoring your database on production systems:</p>
+<p><a href="https://medium.com/preply-engineering/postgresql-schema-change-gotchas-bf904e2d5bb7">PostgreSQL schema-change gotchas</a></p>
+<p><a href="https://medium.com/paypal-tech/postgresql-at-scale-database-schema-changes-without-downtime-20d3749ed680">Database schema changes without downtime</a></p>
+<p>Here are some strategies on how to break down large database changes into less risky steps:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-07-21">
+<ul>
+<li>Smaller changes are easier to apply</li>
+<li>Uniquely identify individual refactorings</li>
+<li>Implement a large change by many small ones</li>
+<li>Have a database configuration table</li>
+<li>Prefer triggers over views or batch synchronization</li>
+<li>Choose a sufficient deprecation period</li>
+<li>Simplify your database change control board (CCB) strategy</li>
+<li>Simplify negotiations with other teams</li>
+<li>Encapsulate database access</li>
+<li>Be able to easily set up a database environment</li>
+<li>Do not duplicate SQL</li>
+<li>Put database assets under change control</li>
+<li>Beware of politics</li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-09-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 January 2022.
+      This page was last reviewed on 17 March 2022.
 
-        It needs to be reviewed again on 21 July 2022
+        It needs to be reviewed again on 17 September 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 July 2022
+      This page was set to be reviewed before 17 September 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -350,8 +347,8 @@ appended by the file name <code>hotspot-pid-1-2022_01_20_14_32_49.jfr</code> lik
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/guides/profile-java-app-in-aks.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Profile+a+Java+application+running+in+an+AKS+cluster%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fguides%2Fprofile-java-app-in-aks.html%29&amp;labels=bug&amp;title=Re%3A+%27Profile+a+Java+application+running+in+an+AKS+cluster%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/standards/db-schema-change.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Making+a+database+schema+change%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fstandards%2Fdb-schema-change.html%29&amp;labels=bug&amp;title=Re%3A+%27Making+a+database+schema+change%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
