@@ -47,8 +47,8 @@ task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
 
 Ensure the `RUN_DB_MIGRATION_ON_STARTUP` is configured appropriately:
 
-- Add `RUN_DB_MIGRATION_ON_STARTUP: true` to the `values.preview.template.yaml` file
-- Add `RUN_DB_MIGRATION_ON_STARTUP: false` to the `values.yaml` file - This is so that preview will migrate on startup
+- Add `RUN_DB_MIGRATION_ON_STARTUP: true` to the `values.preview.template.yaml` file - This is so that preview will migrate on startup
+- Add `RUN_DB_MIGRATION_ON_STARTUP: false` to the `values.yaml` file
 
 Set the migration to run on app startup
 
