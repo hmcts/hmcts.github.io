@@ -77,9 +77,18 @@ You must be in one of the following groups:
 - DTS Docker Hub
 
 ## Kubernetes
-In order to connect to kubernetes clusters in AKS you need to install azure client and kubectl.
+In order to connect to kubernetes clusters in AKS you need to install azure client and kubectl:
 
-Follow this documentation to install them and test you connection to Kubernetes clusters: [How to get on AKS](https://tools.hmcts.net/confluence/display/RMDP/How+to+get+on+AKS)
+Install the Azure Client on your machine. https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+
+Setup the client using `az login`.
+Set your current working subscription with `az account set --subscription DTS-SHAREDSERVICES-DEV`
+
+Install the Kubernetes Client on your machine. https://kubernetes.io/docs/tasks/tools
+
+Get credentials for the AKS cluster you are working with `az aks get-credentials --resource-group ss-dev-00-rg --name ss-dev-00-aks`
+
+You can now view pods using kubectl in the mi namespace, for example `kubectl get pods -n mi -o wide`
 
 Contact #platops-help on slack for any support.
 
