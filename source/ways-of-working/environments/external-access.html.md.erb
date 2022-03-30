@@ -9,11 +9,11 @@ weight: 10
 
 The demo environment is used to demonstrate new features to external stakeholders. 
 
-For guidance on how to deploy an application to the demo environment, click [here](https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html#building-infrastructure-in-the-demo-environment).
+For guidance on how to deploy an application to the demo environment, see [Common Pipeline](https://hmcts.github.io/ways-of-working/common-pipeline/common-pipeline.html#building-infrastructure-in-the-demo-environment).
 
 There are three different ways in which an application in demo can be made available to external users. This is dependent on the ingress class used in your application.
 
-[Traefik](https://traefik.io/traefik/) is used as the ingress class in HMCTS applications.
+[Traefik](https://traefik.io/traefik/) is used as the ingress controller in HMCTS applications.
 
 The following traefik instances are available to use:
 
@@ -24,8 +24,6 @@ The following traefik instances are available to use:
 | traefik-no-proxy | No | Application will be reachable externally without VPN or authentication |
 
 ### Protecting applications with Azure AD authentication
-
-If you do not set an ingressClass flag in code, it will default to traefik. 
     
 To ensure end users must authenticate to Azure AD before they can view the application in their web browser, you must also set the `enableOAuth` flag to `true`
 
@@ -36,11 +34,17 @@ nodejs:
     enableOAuth: true
 ```
 
-The authentication with Azure AD is handled by an Azure AD App Registration in the HMCTS Demo Azure AD tenant. To allow end users to be authenticated to your application, you must add a redirect URI for your application to the Azure AD App Registration.
+*In SDS, if you do not set an ingressClass flag in code, it will default to traefik.*
 
-*If you are not currently a member of the HMCTS Demo Azure AD tenant, check with your team to see if anyone else is. Guests in this tenant have permission to invite other guests.*
+The authentication with Azure AD is handled by an Azure AD App Registration in the [HMCTS Demo Azure AD tenant](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com). To allow end users to be authenticated to your application, you must add a redirect URI for your application to the Azure AD App Registration.
 
-There are separate Azure AD App Registrations for [CFT](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/fbf4cb6e-f09d-4fc4-89fa-b94cb582cb18/isMSAApp/) and [SDS](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/2a3f8b5a-ec0e-470d-b979-fc79d3e74cba/isMSAApp/).
+*If you are not currently a member of the HMCTS Demo Azure AD tenant, check with your team to see if anyone else is. Everyone in this tenant has permission to invite others.*
+
+There are separate Azure AD App Registrations for CFT and SDS:
+
+[CFT](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/fbf4cb6e-f09d-4fc4-89fa-b94cb582cb18/isMSAApp/)
+
+[SDS](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/2a3f8b5a-ec0e-470d-b979-fc79d3e74cba/isMSAApp/)
 
 Navigate to the appropriate app registration, click on `Authentication` and click `Add URI` under `Redirect URIs`.
 
@@ -60,6 +64,8 @@ nodejs:
 
 ### Making applications externally reachable without VPN or authentication
 
+**Warning: This should only be done for applications that do not work with Azure AD authentication or VPN.**
+
 If you want your application to only be available without the need to connect to VPN and without the need to authenticate to Azure AD, you must specify the `traefik-no-proxy` ingressClass.
 
 You do not need to specify the `enableOAuth` flag in this case.
@@ -69,8 +75,6 @@ nodejs:
     ingressClass: traefik-no-proxy
     disableTraefikTls: false
 ```
-
-This should only be done for applications that do not work with Azure AD authentication or VPN.
 
 ### Examples
 
