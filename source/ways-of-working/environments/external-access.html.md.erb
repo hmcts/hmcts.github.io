@@ -47,9 +47,25 @@ There are separate Azure AD App Registrations for CFT and SDS:
 - [CFT](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/fbf4cb6e-f09d-4fc4-89fa-b94cb582cb18/isMSAApp/)
 - [SDS](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/2a3f8b5a-ec0e-470d-b979-fc79d3e74cba/isMSAApp/)
 
+##### Azure Portal
+
 Navigate to the appropriate app registration, click on `Authentication` and click `Add URI` under `Redirect URIs`.
 
 Your redirect URI should be the full URI of your application appended with `/oauth-proxy/callback` e.g. https://toffee.demo.platform.hmcts.net/oauth-proxy/callback
+
+##### Azure CLI
+
+Sign into the HMCTS Demo tenant with your HMCTS account:
+
+```az login --tenant hmctsexecdemo.onmicrosoft.com --allow-no-subscriptions```
+
+Get the application id of the appropriate app registration by clicking on the [links](https://hmcts.github.io/ways-of-working/environments/external-access.html#adding-a-redirect-uri) or run the following Azure CLI command:
+
+```az ad app list --display-name "<APP REGISTRATION NAME>" --query '[].appId'```
+
+Update the reply-urls of the app registration. You must specify the existing reply-urls and append your additions. Each reply-url should be separated by a space.
+
+```az ad app update --id 000000-abcd-1234-a123-ab123c45def --reply-urls https://oauth-proxy.demo.platform.hmcts.net/oauth-proxy/callback https://toffee.demo.platform.hmcts.net/oauth-proxy/callback https://my-new-app.demo.platform.hmcts.net```
 
 ### Protecting applications with HMCTS VPN
 
