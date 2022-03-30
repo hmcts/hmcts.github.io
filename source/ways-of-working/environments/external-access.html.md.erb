@@ -36,6 +36,8 @@ nodejs:
 
 *In SDS, if you do not set an ingressClass flag in code, it will default to traefik.*
 
+#### Adding a redirect URI
+
 The authentication with Azure AD is handled by an Azure AD App Registration in the [HMCTS Demo Azure AD tenant](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com). To allow end users to be authenticated to your application, you must add a redirect URI for your application to the Azure AD App Registration.
 
 *If you are not currently a member of the HMCTS Demo Azure AD tenant, check with your team to see if anyone else is. Everyone in this tenant has permission to invite others.*
@@ -63,7 +65,7 @@ nodejs:
 
 ### Making applications externally reachable without VPN or authentication
 
-**Warning: This should only be done for applications that do not work with Azure AD authentication or VPN.**
+<%= warning_text('This should only be done for applications that do not work with Azure AD authentication or VPN')%>
 
 If you want your application to only be available without the need to connect to VPN and without the need to authenticate to Azure AD, you must specify the `traefik-no-proxy` ingressClass.
 
