@@ -29,43 +29,32 @@ To ensure end users must authenticate to Azure AD before they can view the appli
 
 ```yaml
 nodejs:
-    ingressClass: traefik
-    disableTraefikTls: false
-    enableOAuth: true
+  ingressClass: traefik
+  disableTraefikTls: false
+  enableOAuth: true
 ```
 
-*In SDS, if you do not set an ingressClass flag in code, it will default to traefik.*
+#### Getting access to HMCTS Demo Azure AD tenant
+
+*If you are not currently a member of the HMCTS Demo Azure AD tenant, check with your team to see if anyone else is. Everyone in this tenant has permission to invite others.*
 
 #### Adding a redirect URI
 
-The authentication with Azure AD is handled by an Azure AD App Registration in the [HMCTS Demo Azure AD tenant](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com). To allow end users to be authenticated to your application, you must add a redirect URI for your application to the Azure AD App Registration.
+|![point_up](https://github.githubassets.com/images/icons/emoji/unicode/261d.png) | Review section above on [Getting access to HMCTS Demo Azure AD tenant](https://hmcts.github.io/ways-of-working/environments/external-access.html#getting-access-to-hmcts-demo-azure-ad-tenant) before continuing |
+|---------------|:------------------------|
 
-*If you are not currently a member of the HMCTS Demo Azure AD tenant, check with your team to see if anyone else is. Everyone in this tenant has permission to invite others.*
+The authentication with Azure AD is handled by an Azure AD App Registration in the [HMCTS Demo Azure AD tenant](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com). To allow end users to be authenticated to your application, you must add a redirect URI for your application to the Azure AD App Registration.
 
 There are separate Azure AD App Registrations for CFT and SDS:
 
 - [CFT](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/fbf4cb6e-f09d-4fc4-89fa-b94cb582cb18/isMSAApp/)
 - [SDS](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/2a3f8b5a-ec0e-470d-b979-fc79d3e74cba/isMSAApp/)
 
-##### Azure Portal
+To add a new redirect URI, navigate to the appropriate app registration in the Azure Portal by clicking on one of the links above.
 
-Navigate to the appropriate app registration, click on `Authentication` and click `Add URI` under `Redirect URIs`.
+Click on `Authentication` and click `Add URI` under `Redirect URIs`.
 
 Your redirect URI should be the full URI of your application appended with `/oauth-proxy/callback` e.g. https://toffee.demo.platform.hmcts.net/oauth-proxy/callback
-
-##### Azure CLI
-
-Sign into the HMCTS Demo tenant with your HMCTS account:
-
-```az login --tenant hmctsexecdemo.onmicrosoft.com --allow-no-subscriptions```
-
-Get the application id of the appropriate app registration by clicking on the [links](https://hmcts.github.io/ways-of-working/environments/external-access.html#adding-a-redirect-uri) or run the following Azure CLI command:
-
-```az ad app list --display-name "<APP REGISTRATION NAME>" --query '[].appId'```
-
-Update the reply-urls of the app registration. You must specify the existing reply-urls and append your additions. Each reply-url should be separated by a space.
-
-```az ad app update --id 000000-abcd-1234-a123-ab123c45def --reply-urls https://oauth-proxy.demo.platform.hmcts.net/oauth-proxy/callback https://toffee.demo.platform.hmcts.net/oauth-proxy/callback https://my-new-app.demo.platform.hmcts.net```
 
 ### Protecting applications with HMCTS VPN
 
@@ -83,7 +72,7 @@ nodejs:
 
 <%= warning_text('This should only be done for applications that do not work with Azure AD authentication or VPN')%>
 
-If you want your application to only be available without the need to connect to VPN and without the need to authenticate to Azure AD, you must specify the `traefik-no-proxy` ingressClass.
+If you want your application to only be available without VPN and Azure AD authentication, you must specify the `traefik-no-proxy` ingressClass.
 
 You do not need to specify the `enableOAuth` flag in this case.
 
