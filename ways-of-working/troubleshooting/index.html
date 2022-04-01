@@ -304,9 +304,8 @@
   az aks get-credentials --resource-group cft-ithc-00-rg --name cft-ithc-00-aks --subscription DCD-CFTAPPS-ITHC
   az aks get-credentials --resource-group cft-ithc-01-rg --name cft-ithc-01-aks --subscription DCD-CFTAPPS-ITHC
   
-  # Demo (only one cluster is active at a given time)
-  az aks get-credentials --resource-group demo-00-rg --name demo-00-aks --subscription DCD-CFTAPPS-DEMO
-  az aks get-credentials --resource-group demo-01-rg --name demo-01-aks --subscription DCD-CFTAPPS-DEMO
+  # Demo
+  az aks get-credentials --resource-group cft-demo-00-rg --name cft-demo-00-aks --subscription DCD-CFTAPPS-DEMO
   
   # Prod (Requires additional permissions)
   az aks get-credentials --resource-group prod-00-rg --name prod-00-aks --subscription DCD-CFTAPPS-PROD
