@@ -43,7 +43,7 @@ GEM
     fast_blank (1.0.1)
     fastimage (2.2.6)
     ffi (1.15.5)
-    govuk_tech_docs (3.2.0)
+    govuk_tech_docs (3.2.1)
       autoprefixer-rails (~> 10.2)
       chronic (~> 0.10.2)
       middleman (~> 4.0)
@@ -184,4 +184,4 @@ DEPENDENCIES
   wdm (~> 0.1.0)
 
 BUNDLED WITH
-   2.2.3
+   2.3.13
