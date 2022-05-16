@@ -265,13 +265,13 @@
 To do this you will need to setup network peering between the VPN and your Virtual Network.
 Your project will need to be managed by Terraform to set this up.</p>
 <p>This is an example of the Terraform used to <a href="https://github.com/hmcts/aks-sds-deploy/blob/0061d448847a7a16154ae3a23772c4e9a57587f1/components/01-network/21-peering.tf#L82-L104">setup peering between two Vnets</a>.</p>
-<p>The destination Vnet details are:</p>
+<p>The destination Virtual Network details are:</p>
 
 <ul>
-<li>vnet name: core-infra-vnet-mgmt</li>
-<li>subscription id: ed302caf-ec27-4c64-a05e-85731c3ce90e</li>
-<li>vnet resource group: rg-mgmt</li>
-<li>vnet subscription: Reform-CFT-Mgmt</li>
+<li>vnet name: <code>core-infra-vnet-mgmt</code></li>
+<li>subscription id: <code>ed302caf-ec27-4c64-a05e-85731c3ce90e</code></li>
+<li>vnet resource group: <code>rg-mgmt</code></li>
+<li>net subscription: <code>Reform-CFT-Mgmt</code></li>
 </ul>
 <p>Once this is setup and deployed, you can then make a request to PlatOps in <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist, please include:</p>
 
@@ -281,17 +281,17 @@ Your project will need to be managed by Terraform to set this up.</p>
 <li>Ports to allow: 443 (sometimes 80, 22 as well)</li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 October 2021.
+      This page was last reviewed on 16 May 2022.
 
-        It needs to be reviewed again on 20 April 2022
+        It needs to be reviewed again on 16 November 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 April 2022
+      This page was set to be reviewed before 16 November 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>

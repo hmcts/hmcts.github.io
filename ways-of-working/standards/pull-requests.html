@@ -308,8 +308,8 @@ Before you start your task for the day check all the open PRs to see if there’
 and configure daily reminders for all of your teams pull requests.
 See also GitHub&rsquo;s documentation on <a href="https://docs.github.com/en/github/setting-up-and-managing-organizations-and-teams/managing-scheduled-reminders-for-your-team#creating-a-scheduled-reminder-for-a-team">scheduled reminders</a>.</p>
 <p>But importantly reviews should not happen just first thing in the morning, 
-they should be done after every break, before you start a new ticket or after you’ve opened a PR yourself.</p>
-<p>Once you make your review comments especially if you block the merge you need to be ready to respond quickly to follow up comments so as not to hold up the person who has created the PR.</p>
+they should be done throughout the day, after a break is a good time to do them, also before you start a new ticket or after you’ve opened a PR yourself.</p>
+<p>Once you submit your review comments, and especially if you block the merge, you need to be ready to respond quickly to follow up comments so as not to hold up the person who has created the pull request.</p>
 <h2 id="who-should-review">Who should review</h2>
 <p>All developers in the team should be reviewing, junior developers to tech lead.
 Code review isn’t just about improving the code and the solution being correct, it is also about 
@@ -320,8 +320,8 @@ sharing knowledge of the code and different techniques that can be used in softw
 <ul>
 <li>think &ldquo;how could I make it easier for myself if I was reviewing it?&rdquo;</li>
 <li>pre-empt the reviewer by explaining (as comments) on your PR any compromises / or limitations that your implementation has</li>
-<li>if there’s conflict occurring on the PR on the next steps to proceed on it, take it offline, go sit next to the person, chat on slack or call them
-agree the next step, and involve someone else if needed, post the result on the PR so that other people can see why the direction has changed.</li>
+<li>if there’s conflict occurring on the PR on the next steps to proceed on it, take it offline, go sit next to the person, chat on Slack or call them to
+agree the next step, involve someone else if needed, post the result on the PR so that other people can see why the direction has changed.</li>
 </ul>
 <h2 id="how-long-should-a-pr-be-open">How long should a PR be open</h2>
 <p>Pull requests should be small and often, if it is open for more than 2-3 days there is probably something wrong.
@@ -329,65 +329,42 @@ It is much better to have work flowing quickly than a backlog of work building u
 You’re introducing a much riskier change and will have to do a lot more work to get it merged, satisfying reviewers
 and resolving conflicts due to other people’s merges.</p>
 <h2 id="tooling-to-help">Tooling to help</h2>
-<h3 id="stale-prs"> Stale PRs</h3>
+<h3 id="stale-prs">Stale PRs</h3>
 <p>In order to reduce the length of time PRs are open, 
 the cognitive load on having to see them all the time, 
 wonder whether they should be merged, and the cost of running any infrastructure related to the PRs.</p>
-<p>We use <a href="https://probot.github.io/apps/stale/">probot-stale</a> to automate reminders about PRs and close them if no response or further work happens on it.</p>
+<p>We use <a href="https://github.com/marketplace/actions/close-stale-issues">Close Stale Issues</a> to automate reminders about PRs and close them if no response or further work happens on it.</p>
 <p>We recommend config like:</p>
-<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="c1"># Number of days of inactivity before an issue becomes stale</span>
-<span class="na">daysUntilStale</span><span class="pi">:</span> <span class="m">7</span>
-<span class="c1"># Number of days of inactivity before a stale issue is closed</span>
-<span class="na">daysUntilClose</span><span class="pi">:</span> <span class="m">4</span>
-<span class="c1"># Issues with these labels will never be considered stale</span>
-<span class="na">exemptLabels</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">pinned</span>
-  <span class="pi">-</span> <span class="s">dependencies</span>
-<span class="c1"># Label to use when marking an issue as stale</span>
-<span class="na">staleLabel</span><span class="pi">:</span> <span class="s">stale</span>
-<span class="c1"># Comment to post when marking an issue as stale. Set to `false` to disable</span>
-<span class="na">markComment</span><span class="pi">:</span> <span class="pi">&gt;</span>
-  <span class="s">This issue has been automatically marked as stale because it has not had</span>
-  <span class="s">recent activity. It will be closed if no further activity occurs. Thank you</span>
-  <span class="s">for your contributions.</span>
-<span class="c1"># Comment to post when closing a stale issue. Set to `false` to disable</span>
-<span class="na">closeComment</span><span class="pi">:</span> <span class="pi">&gt;</span>
-  <span class="s">This issue is being closed automatically as it was stale</span>
-</code></pre></div><p>You can tune the numbers slightly but please make sure pull requests are closed within 2 weeks
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">steps</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/stale@v5</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">repo-token</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
+    <span class="na">stale-issue-message</span><span class="pi">:</span> <span class="pi">&gt;</span>
+      <span class="s">This issue has been automatically marked as stale because it has not had</span>
+      <span class="s">recent activity. It will be closed if no further activity occurs. Thank you</span>
+      <span class="s">for your contributions.</span>
+    <span class="na">stale-pr-message</span><span class="pi">:</span> <span class="pi">&gt;</span>
+      <span class="s">This pull request has been automatically marked as stale because it has not had</span>
+      <span class="s">recent activity. It will be closed if no further activity occurs. Thank you</span>
+      <span class="s">for your contributions.</span>
+    <span class="na">stale-issue-label</span><span class="pi">:</span> <span class="s1">'</span><span class="s">stale'</span>
+    <span class="na">stale-pr-label</span><span class="pi">:</span> <span class="s1">'</span><span class="s">stale'</span>
+    <span class="na">days-before-close</span><span class="pi">:</span> <span class="s1">'</span><span class="s">4'</span>
+    <span class="na">days-before-stale</span><span class="pi">:</span> <span class="s1">'</span><span class="s">7'</span>
+    <span class="na">exempt-pr-labels</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pinned,dependencies'</span>
+</code></pre></div><p>Source: <a href="https://github.com/hmcts/cnp-flux-config/blob/master/.github/workflows/stale.yml">hmcts/cnp-flux-config/.github/workflows/stale.yml</a></p>
+<p>You can tune the numbers slightly but please make sure pull requests are closed within 2 weeks
 If you have a PR that needs to stay around because you are demoing it or some other valid reason
-you can add to the configuration a permanent label such as <code>demoing</code> this will never become stale</p>
+you can add to the configuration a permanent label such as <code>pinned</code> this will never become stale</p>
 <p>These should be reviewed regularly and closed if no longer required.</p>
 <p>Note that you don’t have to finish the PR within the period you set, it is the time from the last commit or activity on the PR
 and you can add a comment or remove the label on the PR if it is not actually stale.</p>
 <h3 id="templates-for-prs">Templates for PRs</h3>
-<p>Our standard template for PRs is:</p>
-<div class="highlight"><pre class="highlight markdown" tabindex="0"><code><span class="gs">**Before creating a pull request make sure that:**</span>
-<span class="p">
--</span> [ ] commit messages are meaningful and follow good commit message guidelines
-<span class="p">-</span> [ ] README and other documentation has been updated / added (if needed)
-<span class="p">-</span> [ ] tests have been updated / new tests has been added (if needed)
-
-Please remove this line and everything above and fill the following sections:<span class="sb">
-
-
-</span><span class="gu">### JIRA link (if applicable) ###</span><span class="sb">
-
-
-
-</span><span class="gu">### Change description ###</span>
-<span class="c">&lt;!-- Include what your change is here, any testing you have done, etc --&gt;</span><span class="sb">
-
-
-</span><span class="gs">**Does this PR introduce a breaking change?**</span> (check one with "x")
-
-<span class="se">\`</span><span class="sb">`` (remove backslash and this comment when copy pasting)
-[ ] Yes
-[ ] No
-\```</span>
-
-</code></pre></div><p>You should start with this and adopt for your needs</p>
+<p>Our standard template for PRs is stored in the <a href="https://github.com/hmcts/.github/blob/master/PULL_REQUEST_TEMPLATE.md">hmcts/.github configuration repository</a></p>
+<p>All repositories in the organisation will automatically use this by default.</p>
+<p>You should start with this and adopt for your needs as needed by copying it into repository in the <code>.github</code> folder and editing it.</p>
 <h2 id="additional-reading">Additional reading</h2>
-<p>Highly recommend reading at least the hackernoon article, some very good points there:</p>
+<p>We highly recommend reading at least the hackernoon article, some very good points there:</p>
 
 <ul>
 <li><a href="https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9">https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9</a></li>
@@ -395,17 +372,17 @@ Please remove this line and everything above and fill the following sections:<sp
 <li><a href="https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104">https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104</a></li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-25">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 October 2021.
+      This page was last reviewed on 16 May 2022.
 
-        It needs to be reviewed again on 25 April 2022
+        It needs to be reviewed again on 16 November 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 April 2022
+      This page was set to be reviewed before 16 November 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>

@@ -266,23 +266,27 @@ and zero down-time upgrades. We load balance across these clusters using an
 <a href="https://docs.microsoft.com/en-us/azure/application-gateway/overview">Azure Application Gateway</a> which has a health probe for each application
 deployed to an environment.</p>
 <p>For backend applications a couple of lines of config need to be added:</p>
-<p><a href="https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/backend_lb_config.yaml">load balancer config</a>,</p>
+
+<ul>
+<li>CFT Platform: <a href="https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/backend_lb_config.yaml">load balancer config</a></li>
+<li>SDS Platform: <a href="https://github.com/hmcts/sds-azure-platform/blob/master/environments/prod/backend_lb_config.yaml">load balancer config</a></li>
+</ul>
 <p>Frontend applications are automatically handled as part of the 
 <a href="/ways-of-working/path-to-live/front-door.html">front door config</a>,
 that config provides all the information we need for setting up the load balancer,
-so frontend apps can skip the above step.</p>
+so frontend applications skip the above step.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-25">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 October 2021.
+      This page was last reviewed on 16 May 2022.
 
-        It needs to be reviewed again on 25 April 2022
+        It needs to be reviewed again on 16 November 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 April 2022
+      This page was set to be reviewed before 16 November 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
