@@ -1,6 +1,6 @@
 ---
 title: GitHub
-last_reviewed_on: 2021-10-04
+last_reviewed_on: 2022-05-16
 review_in: 6 months
 weight: 1
 ---
@@ -44,6 +44,8 @@ sscs: # product name in Jenkinsfile_CNP, this will be a 'short name' that your t
   slack:
     contact_channel: "#sscs-tech" # public channel that you can be contacted at
     build_notices_channel: "#sscs-tech" # all build notices will be sent here
+  tags:
+    application: "social-service-child-support" # name that your service is known to by FinOps, contact Bruce Rawstorne if unsure, you can put something in temporarily
 ```
 
 Make sure your product name is not too long as some Azure resources have constraints on their length
