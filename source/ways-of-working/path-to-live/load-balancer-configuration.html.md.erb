@@ -1,6 +1,6 @@
 ---
 title: Load balancer configuration
-last_reviewed_on: 2021-10-25
+last_reviewed_on: 2022-05-16
 review_in: 6 months
 ---
 
@@ -13,9 +13,10 @@ deployed to an environment.
 
 For backend applications a couple of lines of config need to be added:
 
-[load balancer config](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/backend_lb_config.yaml),
+- CFT Platform: [load balancer config](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/backend_lb_config.yaml)
+- SDS Platform: [load balancer config](https://github.com/hmcts/sds-azure-platform/blob/master/environments/prod/backend_lb_config.yaml)
 
 Frontend applications are automatically handled as part of the 
 [front door config](front-door.html),
 that config provides all the information we need for setting up the load balancer,
-so frontend apps can skip the above step.
+so frontend applications skip the above step.
