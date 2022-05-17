@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Flux v1 - HMCTS</title>
+    <title>Flux - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
@@ -14,12 +14,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Flux v1 - HMCTS" />
+      <meta name="twitter:title" content="Flux - HMCTS" />
       <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/flux-v1.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Flux v1" />
+      <meta property="og:title" content="Flux" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/flux-v1.html" />
 
@@ -160,7 +160,7 @@
     <a href="/ways-of-working/new-component/gitops-flux.html"><span>GitOps</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/new-component/flux-v1.html"><span>Flux v1</span></a>
+    <a href="/ways-of-working/new-component/flux-v1.html"><span>Flux</span></a>
   </li>
   <li>
     <a href="/ways-of-working/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
@@ -260,14 +260,17 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="flux-v1">Flux v1</h1>
+            <h1 id="flux">Flux</h1>
 <p>One of our principles being <b>Everything as Code</b>, we practise <a href="https://www.weave.works/technologies/gitops/">Gitops</a> for application deployment to Kubernetes.</p>
 
 <ul>
 <li>Git as single source of truth.</li>
 <li>Declarative Infrastructure and Application deployment through pull requests.</li>
 </ul>
-<h2 id="flux">Flux</h2>
+<h2 id="flux-v2">Flux v2</h2>
+<p>Check the migration status for <a href="https://github.com/hmcts/cnp-flux-config#migration-status">CNP</a> or <a href="https://github.com/hmcts/sds-flux-config#flux-v2-migration-status">SDS</a> if you are un-sure which environment is using Flux V1 or Flux V2.
+The <a href="/ways-of-working/new-component/gitops-flux.html">GitOps</a> page has more information on Flux v2.</p>
+<h2 id="flux-v1">Flux v1</h2>
 <p><a href="https://docs.fluxcd.io/">Flux</a> is a tool that automatically ensures that the state of a cluster matches the config in <a href="https://github.com/hmcts/cnp-flux-config">Git</a>.</p>
 
 <ul>
@@ -300,17 +303,17 @@
 <h2 id="troubleshooting-issues">Troubleshooting issues</h2>
 <p>See <a href="../troubleshooting/">troubleshooting section</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-25">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 October 2021.
+      This page was last reviewed on 17 May 2022.
 
-        It needs to be reviewed again on 25 April 2022
+        It needs to be reviewed again on 17 November 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 April 2022
+      This page was set to be reviewed before 17 November 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -321,7 +324,7 @@
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/flux-v1.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Flux+v1%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fnew-component%2Fflux-v1.html%29&amp;labels=bug&amp;title=Re%3A+%27Flux+v1%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Flux%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fnew-component%2Fflux-v1.html%29&amp;labels=bug&amp;title=Re%3A+%27Flux%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
