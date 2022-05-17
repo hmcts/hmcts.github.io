@@ -1,6 +1,6 @@
 ---
 title: Feature flags
-last_reviewed_on: 2021-10-29
+last_reviewed_on: 2022-05-17
 review_in: 6 months
 weight: 99
 ---
@@ -21,15 +21,15 @@ Trunk Based Development uses Feature Flags as a mechanism to manage new feature 
 
 End to end Process:
 
-1. Developers creates and commit short lived feature branch with Feature flag off.
-2. Impelements features through may iterations of small feature lifecycle.
+1. Developer creates and commits short lived feature branch with Feature flag off.
+2. Impelements feature through iterations of small feature lifecycle.
 3. Code is continuously released.
 4. Retire feature toggle.
 
 
 ### Accessing LaunchDarkly
 
-Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non developers can get access with the 'DTS LaunchDarkly' group.
+Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non-developers can get access with the 'DTS LaunchDarkly' group.
 see [onboarding](../../onboarding/person/index.html) process to request access. You will need to login from [myapps.microsoft.com](https://myapps.microsoft.com).
 If you don't see it and you are in the correct groups then make sure you are in the 'CJS Common Platform' tenant, click your profile picture in the top right and it should be at the top.
 If you aren't then click 'Switch organisation' and select the correct one.
@@ -41,7 +41,7 @@ If you created your own trial account with your HMCTS email you will need to [de
 ### Documentation
 
 Documentation can be accessed directly from the [LaunchDarkly](https://docs.launchdarkly.com/home) website.
-[Blog](https://launchdarkly.com/blog/) contains good information.
+Their [blog](https://launchdarkly.com/blog/) contains good information.
 
 ### Creating a new project
 
@@ -49,5 +49,5 @@ See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terrafo
 
 ### Environments
 
-We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, flag targeting is used to control rollout of flags to users across environments.
+We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
 
