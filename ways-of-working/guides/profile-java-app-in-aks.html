@@ -273,34 +273,34 @@
 <p>You&rsquo;ll need the following bits of information during this exercise:
 1. namespace (hopefully you just know this or browse <code>kubectl get namespaces</code>)
 2. pod name (find it in <code>kubectl get pods -n $namespace</code>)
-3. container name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.metadata.name}&#39;</code>)
+3. container name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.spec.containers[0].name}&#39;</code>)
 4. node name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.spec.nodeName}&#39;</code>)</p>
 <p>Example</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
 <span class="nv">podName</span><span class="o">=</span>rpe-send-letter-service-java-7fc6fffdf9-qvfd6
-<span class="nv">containerName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.metadata.name}'</span><span class="si">)</span>
+<span class="nv">containerName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.containers[0].name}'</span><span class="si">)</span>
 <span class="nv">nodeName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.nodeName}'</span><span class="si">)</span>
 </code></pre></div><h2 id="running-java-flight-recorder-jfr">Running Java Flight Recorder (JFR)</h2>
 <p>After completing the setup above you can run
-<code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.start --name=&quot;1&quot;</code>
-The output will look something like this
-<code>shell
-Connected to remote JVM
-Response code = 0
-Started recording 1. No limit specified, using maxsize=250MB as default.
-Use jcmd 1 JFR.dump name=1 filename=FILEPATH to copy recording data to file.
-</code></p>
-<p>At this point you can run any tests you want to capture any data in the profile report.</p>
+<code>kubectl exec $podName -n $namespace -- jattach 1 jcmd &quot;JFR.start name=profile1&quot;</code>
+The output will look something like this</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Connected to remote JVM
+Response code <span class="o">=</span> 0
+Started recording 1. No limit specified, using <span class="nv">maxsize</span><span class="o">=</span>250MB as default.
+Use jcmd 1 JFR.dump <span class="nv">name</span><span class="o">=</span>1 <span class="nv">filename</span><span class="o">=</span>FILEPATH to copy recording data to file.
+</code></pre></div><p>At this point you can run any tests you want to capture any data in the profile report.
+If you don&rsquo;t specify a name in the command, a time-stamped filename will be generated.</p>
 <p>Once complete, you can dump the data to a file on the container:
-<code>shell
-kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.dump
-Connected to remote JVM
-Response code = 0
+<code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.dump</code>
+The output will look something like this</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Connected to remote JVM
+Response code <span class="o">=</span> 0
 Dumped recording, 4.5 MB written to:
 /opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr
-</code></p>
-<p><strong>Note</strong>: You should be able to run <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.stop --name=&quot;1&quot;</code>
-but I&rsquo;ve yet to get this to work. Instead I&rsquo;ve just killed the pod (<code>kubectl delete pod -n $namespace $podName</code>)</p>
+</code></pre></div><p>Make a note of the filename for retrieving later</p>
+<p>Run <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd &quot;JFR.stop name=profile1&quot;</code>
+to stop the recording. You can use <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.check</code>
+to list all in-flight recordings</p>
 <h2 id="downloading-the-file">Downloading the file</h2>
 <p>As our images don&rsquo;t have a shell installed or tar (can&rsquo;t use <code>kubectl cp</code>) it&rsquo;s a little bit more involved to get the
 JFR report.</p>
@@ -310,7 +310,8 @@ specific container you need.</p>
 spawning <span class="s2">"nsenter-x8uq64"</span> on <span class="s2">"aks-linux-81166528-vmss00005t"</span>
 If you don<span class="s1">'t see a command prompt, try pressing enter.
 root@aks-linux-81166528-vmss00005T:/#
-</span></code></pre></div><p>At this point you&rsquo;ll need your variables from earlier</p>
+</span></code></pre></div><p>Make a note of the name of the spawned instance (in this case <code>nsenter-x8uq64</code>).</p>
+<p>At this point you&rsquo;ll need your variables from earlier</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
 <span class="nv">containerName</span><span class="o">=</span>rpe-send-letter-service-java
 <span class="nv">pod</span><span class="o">=</span>rpe-send-letter-service-java-6fb55dd776-87b6f
@@ -319,32 +320,36 @@ root@aks-linux-81166528-vmss00005T:/#
 <span class="nv">containerId</span><span class="o">=</span><span class="si">$(</span>crictl ps <span class="nt">-p</span> <span class="nv">$podId</span> <span class="nt">--no-trunc</span> <span class="nt">--label</span> io.kubernetes.container.name<span class="o">=</span><span class="nv">$containerName</span> <span class="nt">-q</span><span class="si">)</span>
 <span class="nv">targetPid</span><span class="o">=</span><span class="si">$(</span>crictl inspect <span class="nv">$containerId</span> | jq .info.pid<span class="si">)</span>
 </code></pre></div><p>Now we can use nsenter to create us a shell at the mount point for the container</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>nsenter <span class="nt">--target</span> <span class="nv">$targetPid</span> <span class="nt">--uts</span> <span class="nt">--net</span> <span class="nt">--pid</span> unshare <span class="nt">--mount-proc</span> sh <span class="nt">-c</span> <span class="s2">"cd /run/containerd/io.containerd.runtime.v1.linux/k8s.io/</span><span class="nv">$containerId</span><span class="s2">/rootfs &amp;&amp; exec bash"</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>nsenter <span class="nt">--target</span> <span class="nv">$targetPid</span> <span class="nt">--uts</span> <span class="nt">--net</span> <span class="nt">--pid</span> unshare <span class="nt">--mount-proc</span> sh <span class="nt">-c</span> <span class="s2">"cd /run/containerd/io.containerd.runtime.v2.task/k8s.io/</span><span class="nv">$containerId</span><span class="s2">/rootfs/opt/app &amp;&amp; exec bash"</span>
 <span class="nb">groups</span>: cannot find name <span class="k">for </span>group ID 11
 To run a <span class="nb">command </span>as administrator <span class="o">(</span>user <span class="s2">"root"</span><span class="o">)</span>, use <span class="s2">"sudo &lt;command&gt;"</span><span class="nb">.</span>
-See <span class="s2">"man sudo_root"</span> <span class="k">for </span>details.
-root@rpe-send-letter-service-java-6fb55dd776-87b6f:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs# <span class="nb">ls </span>opt/app/
-AI-Agent.xml                         hotspot-pid-1-2022_01_20_14_32_49.jfr
+See <span class="s2">"man sudo_root"</span> <span class="k">for </span>details.<span class="sb">```</span>
+
+When we list the files you can see the hotspot JFR file which was dumped by jattach earlier.
+
+<span class="sb">```</span>shell
+root@rpe-send-letter-service-java-6fb55dd776-87b6f:/run/containerd/io.containerd.runtime.v2.task/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app# <span class="nb">ls
+</span>AI-Agent.xml                         hotspot-pid-1-2022_01_20_14_32_49.jfr
 applicationinsights-agent-2.5.1.jar  send-letter-service.jar
-</code></pre></div><p>When we list the files you can see the hotspot JFR file which was dumped by jattach earlier.</p>
-<p>To download this file we need to go back to a terminal on our local machine and run <code>kubectl cp</code> to copy from the path
-we just discovered above (<code>/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/</code>)
+</code></pre></div><p>To download this file we need to go back to a terminal on our local machine and run <code>kubectl cp</code> to copy from the spawned instance
+ (<code>nsenter-x8uq64</code>) using the path we just discovered above
+ (<code>/run/containerd/io.containerd.runtime.v2.task/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app</code>)
 appended by the file name <code>hotspot-pid-1-2022_01_20_14_32_49.jfr</code> like so:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nb">cp </span>admin/nsenter-x8uq64:/run/containerd/io.containerd.runtime.v1.linux/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr ./hotspot-pid-1-2022_01_20_14_32_49.jfr
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nb">cp </span>admin/nsenter-x8uq64:/run/containerd/io.containerd.runtime.v2.task/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr ./hotspot-pid-1-2022_01_20_14_32_49.jfr
 <span class="nb">tar</span>: Removing leading <span class="sb">`</span>/<span class="s1">' from member names
 </span></code></pre></div><p>You can now open this file locally using Java Mission Control and terminate your connection to the nsenter pod.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-07-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-01-13">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 January 2022.
+      This page was last reviewed on 13 July 2022.
 
-        It needs to be reviewed again on 21 July 2022
+        It needs to be reviewed again on 13 January 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 July 2022
+      This page was set to be reviewed before 13 January 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
