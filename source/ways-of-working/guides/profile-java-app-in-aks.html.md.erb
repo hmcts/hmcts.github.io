@@ -43,10 +43,10 @@ Use jcmd 1 JFR.dump name=1 filename=FILEPATH to copy recording data to file.
 ```
 
 At this point you can run any tests you want to capture any data in the profile report.
-If you don't specify a name in the command, a time-stamped filename will be generated.
 
 Once complete, you can dump the data to a file on the container:
 `kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.dump`
+If you don't specify a name in the command, a time-stamped filename will be generated.
 The output will look something like this
 
 ```shell
@@ -99,7 +99,8 @@ Now we can use nsenter to create us a shell at the mount point for the container
 nsenter --target $targetPid --uts --net --pid unshare --mount-proc sh -c "cd /run/containerd/io.containerd.runtime.v2.task/k8s.io/$containerId/rootfs/opt/app && exec bash"
 groups: cannot find name for group ID 11
 To run a command as administrator (user "root"), use "sudo <command>".
-See "man sudo_root" for details.```
+See "man sudo_root" for details.
+```
 
 When we list the files you can see the hotspot JFR file which was dumped by jattach earlier.
 
