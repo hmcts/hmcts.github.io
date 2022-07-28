@@ -55,8 +55,7 @@
     <div>
       <pre data-module="app-copy" tabindex="0">
         <code>
-  # Dev (only one cluster is active at a given time)
-  az aks get-credentials --resource-group ss-dev-00-rg --name ss-dev-00-aks --subscription DTS-SHAREDSERVICES-DEV
+  # Dev
   az aks get-credentials --resource-group ss-dev-01-rg --name ss-dev-01-aks --subscription DTS-SHAREDSERVICES-DEV
   
   # Staging
