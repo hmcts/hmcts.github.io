@@ -6,21 +6,21 @@ weight: 99
 ---
 
 # <%= current_page.data.title %>
-## Github
+## GitHub
 
-### Adding a new user on Github
+### Adding a new user on GitHub
 
- - Please refer [Github Onboarding](./onboarding/team/github.html#access)
- - Make sure the user has accepted the invite received on the email setup in Github or by visiting [Github](https://github.com/hmcts).
+ - See [GitHub Onboarding](./onboarding/team/github.html#access) for how to get access
+ - Make sure the user has accepted the invite received on the email setup in Github or by visiting [github.com/hmcts](https://github.com/hmcts).
 
-### Creating a new Repo
+### Creating a new GitHub repository
 
-  - Please refer [create-a-github-repository](./ways-of-working/new-component/github-repo.html#)
+See [create a GitHub repository](./ways-of-working/new-component/github-repo.html#)
 
-### Access to Github Repo
+### Access to GitHub Repo
 
- - All repos should be administered by the team who owns it.
- - Please note access should be managed through Github teams and not individuals.
+ - All repositories should be administered by the team who owns it.
+ - Access should be managed through GitHub teams and not individuals.
  - If no one from your team have access, follow [asking for help](https://hmcts.github.io/ways-of-working/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
 
 ## Jenkins
@@ -28,7 +28,7 @@ weight: 99
 ### Jenkins is unavailable
 
   - Check if there is a planned outage in [#cloud-native-announce](https://hmcts-reform.slack.com/archives/CA4F2MAFR).
-  - Please note Jenkins controller(master) could be temporarily unavailable while rolling out a change, give it a few minutes before you raise an issue.
+  - Please note Jenkins could be temporarily unavailable while rolling out a change, give it a few minutes before you raise an issue.
 
 ### Cannot login to Jenkins
 
@@ -40,7 +40,7 @@ weight: 99
 
 ### Cannot see my new repo in Jenkins org / Dashboard
 
-  - Please follow the instructions discussed in [Jenkins Onboarding section](onboarding/team/jenkins.html#jenkins) to add your app to Jenkins Org / Dashboard
+  - See [Jenkins Onboarding section](onboarding/team/jenkins.html#jenkins) to add your app to Jenkins Org / Dashboard
 
 ### Cannot find default branch
 
@@ -59,13 +59,13 @@ When you run it on the master/main branch it will setup the default branch and t
 
 ### Build / Docker Build / Unit Test failure
 
-  - If your build is failing in these stages, it's most likely to fail in your local as well.
+  - If your build is failing in these stages, it's most likely to fail in your local as well. Look at the first line of the Jenkins step that fails and try run the same command Jenkins is running.
   - Try on a colleague's machine as you might have cached something locally.
 
 ### Sonar scan timeout
 
   - Please see [sonarcloud status](https://sonarcloud.statuspage.io/) for any known issues with sonar cloud.
-  - Remember that platops do not maintain any sonarcloud infra/ config, issues are usually discussed on community forums.
+  - Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.
 
 ### Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure
   
@@ -74,11 +74,11 @@ When you run it on the master/main branch it will setup the default branch and t
   - It could be that they are stuck in `Pending`, `ContainerCreating` status or might be failing to startup leading to `CrashLoopBackOff` status.
   - Follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further
 
-### Smoke/ Functional test failure
+### Smoke / Functional test failure
 
-  - Jenkins only sets secrets as environment variables and runs the `gradle`/ `yarn` task to run tests.
+  - Jenkins only sets secrets as environment variables and runs the `gradle` / `yarn` task to run tests.
   - Access the URL on VPN and try running tests manually using the `TEST_URL` printed in the logs.
-  - You can also run tests locally by setting the required secrets being on VPN.
+  - You can also run tests locally by setting the required secrets while on the VPN.
   - To add additional logging, see [troubleshooting](troubleshooting/#example-2).
 
 ### Terraform/ Build Infrastructure failure
@@ -86,7 +86,7 @@ When you run it on the master/main branch it will setup the default branch and t
   - It is important that you need to review your plan in a pull request before applying it to an environment.
   - Please check if its an intermittent failure with Azure as a retry could fix it.
   - Also, see if there are any open issues/discussions on community channels for the failure.
-  -There could be open Github issues on terraform/ azurerm, so googling it could help as well.
+  - There could be open GitHub issues on terraform/ azurerm, so googling it could help as well.
 
 ### Using branches to troubleshoot issues
 
