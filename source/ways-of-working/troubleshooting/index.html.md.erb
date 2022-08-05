@@ -1,27 +1,46 @@
 ---
 title: Troubleshooting issues
-last_reviewed_on: 2022-05-16
+last_reviewed_on: 2022-08-05
 review_in: 6 months
 weight: 99
 ---
 
 # <%= current_page.data.title %>
+## Github
 
-## Connecting to AKS Clusters
+### Adding a new user on Github
 
-- By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.
-- You can connect to AKS clusters using `az aks get-credentials`. Below are some handy commands:
+ - Please refer [Github Onboarding](./onboarding/team/github.html#access)
+ - Make sure the user has accepted the invite received on the email setup in Github or by visiting [Github](https://github.com/hmcts).
 
-<%= partial 'clusters' %>
+### Creating a new Repo
 
-Once you have logged in, you can switch between clusters using [kubectx](https://github.com/ahmetb/kubectx) or below kubectl commands:
+  - Please refer [create-a-github-repository](./ways-of-working/new-component/github-repo.html#)
 
-```shell
-kubectl config use-context cft-perftest-00-aks
-kubectl config use-context cft-aat-00-aks
-```
+### Access to Github Repo
+
+ - All repos should be administered by the team who owns it.
+ - Please note access should be managed through Github teams and not individuals.
+ - If no one from your team have access, follow [asking for help](https://hmcts.github.io/ways-of-working/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
 
 ## Jenkins
+
+### Jenkins is unavailable
+
+  - Check if there is a planned outage in [#cloud-native-announce](https://hmcts-reform.slack.com/archives/CA4F2MAFR).
+  - Please note Jenkins controller(master) could be temporarily unavailable while rolling out a change, give it a few minutes before you raise an issue.
+
+### Cannot login to Jenkins
+
+  - Login to Jenkins is managed by Azure AD, please make sure user is added to right [Azure AD groups](./onboarding/person/#azure-ad-groups)
+
+### You are now logged out of Jenkins/ Infinite loop when trying to login to Jenkins
+
+  - Please try clearing browser cookies on [login.microsoft.com](https://login.microsoftonline.com/)
+
+### Cannot see my new repo in Jenkins org / Dashboard
+
+  - Please follow the instructions discussed in [Jenkins Onboarding section](onboarding/team/jenkins.html#jenkins) to add your app to Jenkins Org / Dashboard
 
 ### Cannot find default branch
 
@@ -33,11 +52,20 @@ When you run it on the master/main branch it will setup the default branch and t
 [2021-09-16T10:59:54.154Z] Execution failed for task ':sonarqube'.
 [2021-09-16T10:59:54.154Z] > Could not find a default branch to fall back on.
 ```
-
 ### Cannot see my branch/PR or This project is currently disabled in Jenkins
 
   - Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.
   - Branch/ PR is not listed if its last commit creation date is older than 30 days.
+
+### Build / Docker Build / Unit Test failure
+
+  - If your build is failing in these stages, it's most likely to fail in your local as well.
+  - Try on a colleague's machine as you might have cached something locally.
+
+### Sonar scan timeout
+
+  - Please see [sonarcloud status](https://sonarcloud.statuspage.io/) for any known issues with sonar cloud.
+  - Remember that platops do not maintain any sonarcloud infra/ config, issues are usually discussed on community forums.
 
 ### Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure
   
@@ -45,7 +73,21 @@ When you run it on the master/main branch it will setup the default branch and t
   - These errors usually mean your pods didn't start as expected in time. 
   - It could be that they are stuck in `Pending`, `ContainerCreating` status or might be failing to startup leading to `CrashLoopBackOff` status.
   - Follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further
-  
+
+### Smoke/ Functional test failure
+
+  - Jenkins only sets secrets as environment variables and runs the `gradle`/ `yarn` task to run tests.
+  - Access the URL on VPN and try running tests manually using the `TEST_URL` printed in the logs.
+  - You can also run tests locally by setting the required secrets being on VPN.
+  - To add additional logging, see [troubleshooting](troubleshooting/#example-2).
+
+### Terraform/ Build Infrastructure failure
+
+  - It is important that you need to review your plan in a pull request before applying it to an environment.
+  - Please check if its an intermittent failure with Azure as a retry could fix it.
+  - Also, see if there are any open issues/discussions on community channels for the failure.
+  -There could be open Github issues on terraform/ azurerm, so googling it could help as well.
+
 ### Using branches to troubleshoot issues
 
 If your pipeline is throwing an error, you may be able to more easily troubleshoot the issue by using a branch in the cnp-jenkins-library repo.
@@ -70,6 +112,8 @@ And then reference this branch within your repo's [Jenkinsfile](https://github.c
     - Pod identity is not able to pull keyvault secrets due to missing permissions
     - There is not enough space in the cluster to fit in a new pod.
     - Pod is scheduled, but fails to pass readiness (`/health/readiness`) or  liveness (`/health/liveness`) checks.
+    - A misconfigured environment variable, example - incorrect URL of a dependent service.
+
 - Below are some handy kubectl commands to debug the issues
     
     To check latest events on your namespace:
@@ -210,3 +254,17 @@ And then reference this branch within your repo's [Jenkinsfile](https://github.c
    # search for specific image
    kubectl logs -n flux-system -l app=kustomize-controller | grep <namespace>
    ```
+
+## Connecting to AKS Clusters
+
+- By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.
+- You can connect to AKS clusters using `az aks get-credentials`. Below are some handy commands:
+
+<%= partial 'clusters' %>
+
+Once you have logged in, you can switch between clusters using [kubectx](https://github.com/ahmetb/kubectx) or below kubectl commands:
+
+```shell
+kubectl config use-context cft-perftest-00-aks
+kubectl config use-context cft-aat-00-aks
+```

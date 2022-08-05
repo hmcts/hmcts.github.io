@@ -11,15 +11,9 @@ weight: 1
 
 There are Jenkins servers for both CFT (Civil, Family & Tribunal) and SDS (Shared Digital Services)
 
-To set up a Jenkins pipeline integration with your GitHub repo, you will need to create an organisation within Jenkins.
-
 The steps to be followed below depend on what business area your application is in.
 
- 1. Add your organisation config.
-
-    CFT: [cnp-jenkins-config](https://github.com/hmcts/cnp-jenkins-config/pull/402)
-
-    SDS: [sds-jenkins-config](https://github.com/hmcts/sds-jenkins-config/blob/master/jobdsl/organisations.groovy#L17)
+ 1. Add the [required GitHub topic](#github-topics) to the repository to see your repository in Jenkins Org.
 
  2. Add a Jenkins build dashboard.
 
@@ -27,11 +21,9 @@ The steps to be followed below depend on what business area your application is 
 
     SDS: [sds-flux-config](https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/jenkins/patches/ptl/cluster-00/jenkins.yaml#L140)
 
- 3. Add the [required GitHub topic](#github-topics) to the repository.
+ 3. Scan the organisation manually on Jenkins if it doesn't scan automatically.
 
- 4. Scan the organisation manually on Jenkins if it doesn't scan automatically.
-
- 5. To allow Jenkins to deploy to production, you must add your GitHub repository to this list of approved repositories:
+ 4. To allow Jenkins to deploy to production, you must add your GitHub repository to this list of approved repositories:
 
     CFT: [hmcts/cnp-jenkins-config/environment-approvals.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
 
