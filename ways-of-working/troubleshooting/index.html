@@ -261,103 +261,44 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="troubleshooting-issues">Troubleshooting issues</h1>
-<h2 id="connecting-to-aks-clusters">Connecting to AKS Clusters</h2>
+<h2 id="github">GitHub</h2>
+<h3 id="adding-a-new-user-on-github">Adding a new user on GitHub</h3>
 
 <ul>
-<li>By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.</li>
-<li>You can connect to AKS clusters using <code>az aks get-credentials</code>. Below are some handy commands:</li>
+<li>See <a href="./onboarding/team/github.html#access">GitHub Onboarding</a> for how to get access</li>
+<li>Make sure the user has accepted the invite received on the email setup in Github or by visiting <a href="https://github.com/hmcts">github.com/hmcts</a>.</li>
 </ul>
+<h3 id="creating-a-new-github-repository">Creating a new GitHub repository</h3>
+<p>See <a href="./ways-of-working/new-component/github-repo.html#">create a GitHub repository</a></p>
+<h3 id="access-to-github-repo">Access to GitHub Repo</h3>
 
-<div class="platform-selector" id="troubleshooting-clusters" data-module="app-tabs">
-  <ul class="app-tabs" role="tablist">
-    <li class="app-tabs__item js-tabs__item js-tabs__item--open" role="presentation">
-      <a href="#troubleshooting-cft" role="tab" aria-controls="troubleshooting-cft" aria-expanded="false">
-        CFT
-      </a>
-    </li>
-    <li class="app-tabs__item js-tabs__item app-tabs__item--current" role="presentation">
-      <a href="#troubleshooting-sds" role="tab" aria-controls="troubleshooting-sds" aria-expanded="true">
-      SDS
-      </a>
-    </li>
-  </ul>
-  <div class="app-tabs__heading js-tabs__heading">
-    <button aria-controls="troubleshooting-cft" class="app-tabs__heading-button">CFT</button>
-  </div>
-  <div class="app-tabs__container js-tabs__container app-tabs__container--hidden" id="troubleshooting-cft" role="tabpanel" aria-hidden="true">
-    <div class="app-example__code">
-      <pre data-module="app-copy" tabindex="0">
-        <code>
-  # Preview (only one cluster is active at a given time)
-  az aks get-credentials --resource-group cft-preview-00-rg --name cft-preview-00-aks --subscription DCD-CFTAPPS-DEV
-  az aks get-credentials --resource-group cft-preview-01-rg --name cft-preview-01-aks --subscription DCD-CFTAPPS-DEV
+<ul>
+<li>All repositories should be administered by the team who owns it.</li>
+<li>Access should be managed through GitHub teams and not individuals.</li>
+<li>If no one from your team have access, follow <a href="https://hmcts.github.io/ways-of-working/asking-for-help/#asking-for-help">asking for help</a> to request org admins in one of the community/ support channels.</li>
+</ul>
+<h2 id="jenkins">Jenkins</h2>
+<h3 id="jenkins-is-unavailable">Jenkins is unavailable</h3>
 
-  # AAT
-  az aks get-credentials --resource-group cft-aat-00-rg --name cft-aat-00-aks --subscription DCD-CFTAPPS-STG
-  az aks get-credentials --resource-group cft-aat-01-rg --name cft-aat-01-aks --subscription DCD-CFTAPPS-STG
+<ul>
+<li>Check if there is a planned outage in <a href="https://hmcts-reform.slack.com/archives/CA4F2MAFR">#cloud-native-announce</a>.</li>
+<li>Please note Jenkins could be temporarily unavailable while rolling out a change, give it a few minutes before you raise an issue.</li>
+</ul>
+<h3 id="cannot-login-to-jenkins">Cannot login to Jenkins</h3>
 
-  # Perftest
-  az aks get-credentials --resource-group cft-perftest-00-rg --name cft-perftest-00-aks --subscription DCD-CFTAPPS-TEST
-  az aks get-credentials --resource-group cft-perftest-01-rg --name cft-perftest-01-aks --subscription DCD-CFTAPPS-TEST
+<ul>
+<li>Login to Jenkins is managed by Azure AD, please make sure user is added to right <a href="./onboarding/person/#azure-ad-groups">Azure AD groups</a></li>
+</ul>
+<h3 id="you-are-now-logged-out-of-jenkins-infinite-loop-when-trying-to-login-to-jenkins">You are now logged out of Jenkins/ Infinite loop when trying to login to Jenkins</h3>
 
-  # ITHC
-  az aks get-credentials --resource-group cft-ithc-00-rg --name cft-ithc-00-aks --subscription DCD-CFTAPPS-ITHC
-  az aks get-credentials --resource-group cft-ithc-01-rg --name cft-ithc-01-aks --subscription DCD-CFTAPPS-ITHC
-  
-  # Demo
-  az aks get-credentials --resource-group cft-demo-00-rg --name cft-demo-00-aks --subscription DCD-CFTAPPS-DEMO
-  
-  # Prod (Requires additional permissions)
-  az aks get-credentials --resource-group prod-00-rg --name prod-00-aks --subscription DCD-CFTAPPS-PROD
-  az aks get-credentials --resource-group prod-01-rg --name prod-01-aks --subscription DCD-CFTAPPS-PROD
-  
-  # CFTPTL (Prod management)
-  az aks get-credentials --resource-group cft-ptl-00-rg --name cft-ptl-00-aks --subscription DTS-CFTPTL-INTSVC
-</code></pre>
-    </div>
-  </div>
-  
-  <div class="app-tabs__heading js-tabs__heading app-tabs__heading--current">
-    <button aria-controls="troubleshooting-sds" class="app-tabs__heading-button" aria-expanded="true">SDS</button>
-  </div>
+<ul>
+<li>Please try clearing browser cookies on <a href="https://login.microsoftonline.com/">login.microsoft.com</a></li>
+</ul>
+<h3 id="cannot-see-my-new-repo-in-jenkins-org-dashboard">Cannot see my new repo in Jenkins org / Dashboard</h3>
 
-  <div class="app-tabs__container js-tabs__container" id="troubleshooting-sds" role="tabpanel" aria-hidden="false">
-    <div>
-      <pre data-module="app-copy" tabindex="0">
-        <code>
-  # Dev
-  az aks get-credentials --resource-group ss-dev-01-rg --name ss-dev-01-aks --subscription DTS-SHAREDSERVICES-DEV
-  
-  # Staging
-  az aks get-credentials --resource-group ss-stg-00-rg --name ss-stg-00-aks --subscription DTS-SHAREDSERVICES-STG
-  az aks get-credentials --resource-group ss-stg-01-rg --name ss-stg-01-aks --subscription DTS-SHAREDSERVICES-STG
-
-  # Test
-  az aks get-credentials --resource-group ss-test-00-rg --name ss-test-00-aks --subscription DTS-SHAREDSERVICES-TEST
-  az aks get-credentials --resource-group ss-test-01-rg --name ss-test-01-aks --subscription DTS-SHAREDSERVICES-TEST
-  
-  # ITHC
-  az aks get-credentials --resource-group ss-ithc-00-rg --name ss-ithc-00-aks --subscription DTS-SHAREDSERVICES-ITHC
-  az aks get-credentials --resource-group ss-ithc-01-rg --name ss-ithc-01-aks --subscription DTS-SHAREDSERVICES-ITHC
-  
-  # Demo (only one cluster is active at a given time)
-  az aks get-credentials --resource-group ss-demo-00-rg --name ss-demo-00-aks --subscription DTS-SHAREDSERVICES-DEMO
-  az aks get-credentials --resource-group ss-demo-01-rg --name ss-demo-01-aks --subscription DTS-SHAREDSERVICES-DEMO
-  
-  # Prod (Requires additional permissions)
-  az aks get-credentials --resource-group ss-prod-00-rg --name ss-prod-00-aks --subscription DTS-SHAREDSERVICES-PROD
-  az aks get-credentials --resource-group ss-prod-01-rg --name ss-prod-01-aks --subscription DTS-SHAREDSERVICES-PROD
-  
-  # SDSPTL (Prod management)
-  az aks get-credentials --resource-group ss-ptl-00-rg --name ss-ptl-00-aks --subscription DTS-SHAREDSERVICESPTL  
-</code></pre>
-    </div>
-  </div>
-</div>
-<p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl config use-context cft-perftest-00-aks
-kubectl config use-context cft-aat-00-aks
-</code></pre></div><h2 id="jenkins">Jenkins</h2>
+<ul>
+<li>See <a href="onboarding/team/jenkins.html#jenkins">Jenkins Onboarding section</a> to add your app to Jenkins Org / Dashboard</li>
+</ul>
 <h3 id="cannot-find-default-branch">Cannot find default branch</h3>
 <p>You may get the error below, when the pipeline has not ran on the master/main branch first.</p>
 <p>When you run it on the master/main branch it will setup the default branch and then the pull request build will start working.</p>
@@ -369,6 +310,18 @@ kubectl config use-context cft-aat-00-aks
 <li>Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.</li>
 <li>Branch/ PR is not listed if its last commit creation date is older than 30 days.</li>
 </ul>
+<h3 id="build-docker-build-unit-test-failure">Build / Docker Build / Unit Test failure</h3>
+
+<ul>
+<li>If your build is failing in these stages, it&rsquo;s most likely to fail in your local as well. Look at the first line of the Jenkins step that fails and try run the same command Jenkins is running.</li>
+<li>Try on a colleague&rsquo;s machine as you might have cached something locally.</li>
+</ul>
+<h3 id="sonar-scan-timeout">Sonar scan timeout</h3>
+
+<ul>
+<li>Please see <a href="https://sonarcloud.statuspage.io/">sonarcloud status</a> for any known issues with sonar cloud.</li>
+<li>Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.</li>
+</ul>
 <h3 id="helm-upgrade-failed-helm-release-timed-out-waiting-for-condition-helm-release-failure">Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure</h3>
 
 <ul>
@@ -376,6 +329,22 @@ kubectl config use-context cft-aat-00-aks
 <li>These errors usually mean your pods didn&rsquo;t start as expected in time. </li>
 <li>It could be that they are stuck in <code>Pending</code>, <code>ContainerCreating</code> status or might be failing to startup leading to <code>CrashLoopBackOff</code> status.</li>
 <li>Follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further</li>
+</ul>
+<h3 id="smoke-functional-test-failure">Smoke / Functional test failure</h3>
+
+<ul>
+<li>Jenkins only sets secrets as environment variables and runs the <code>gradle</code> / <code>yarn</code> task to run tests.</li>
+<li>Access the URL on VPN and try running tests manually using the <code>TEST_URL</code> printed in the logs.</li>
+<li>You can also run tests locally by setting the required secrets while on the VPN.</li>
+<li>To add additional logging, see <a href="troubleshooting/#example-2">troubleshooting</a>.</li>
+</ul>
+<h3 id="terraform-build-infrastructure-failure">Terraform/ Build Infrastructure failure</h3>
+
+<ul>
+<li>It is important that you need to review your plan in a pull request before applying it to an environment.</li>
+<li>Please check if its an intermittent failure with Azure as a retry could fix it.</li>
+<li>Also, see if there are any open issues/discussions on community channels for the failure.</li>
+<li>There could be open GitHub issues on terraform/ azurerm, so googling it could help as well.</li>
 </ul>
 <h3 id="using-branches-to-troubleshoot-issues">Using branches to troubleshoot issues</h3>
 <p>If your pipeline is throwing an error, you may be able to more easily troubleshoot the issue by using a branch in the cnp-jenkins-library repo.</p>
@@ -390,13 +359,14 @@ You can check if the issue lies with artifactory by temporarily bypassing it usi
 <h2 id="debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</h2>
 
 <ul>
-<li>There could be many reasons why applications could fail to startup like :
+<li><p>There could be many reasons why applications could fail to startup like :</p>
 
 <ul>
 <li>A secret referred in helm chart is missing in keyvaults</li>
 <li>Pod identity is not able to pull keyvault secrets due to missing permissions</li>
 <li>There is not enough space in the cluster to fit in a new pod.</li>
 <li>Pod is scheduled, but fails to pass readiness (<code>/health/readiness</code>) or  liveness (<code>/health/liveness</code>) checks.</li>
+<li>A misconfigured environment variable, example - incorrect URL of a dependent service.</li>
 </ul></li>
 <li><p>Below are some handy kubectl commands to debug the issues</p>
 <p>To check latest events on your namespace:</p>
@@ -501,18 +471,114 @@ kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller
    <span class="c"># search for specific image</span>
    kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller | <span class="nb">grep</span> &lt;namespace&gt;
-</code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2022-11-16">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 May 2022.
+</code></pre></div><h2 id="connecting-to-aks-clusters">Connecting to AKS Clusters</h2>
 
-        It needs to be reviewed again on 16 November 2022
+<ul>
+<li>By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.</li>
+<li>You can connect to AKS clusters using <code>az aks get-credentials</code>. Below are some handy commands:</li>
+</ul>
+
+<div class="platform-selector" id="troubleshooting-clusters" data-module="app-tabs">
+  <ul class="app-tabs" role="tablist">
+    <li class="app-tabs__item js-tabs__item js-tabs__item--open" role="presentation">
+      <a href="#troubleshooting-cft" role="tab" aria-controls="troubleshooting-cft" aria-expanded="false">
+        CFT
+      </a>
+    </li>
+    <li class="app-tabs__item js-tabs__item app-tabs__item--current" role="presentation">
+      <a href="#troubleshooting-sds" role="tab" aria-controls="troubleshooting-sds" aria-expanded="true">
+      SDS
+      </a>
+    </li>
+  </ul>
+  <div class="app-tabs__heading js-tabs__heading">
+    <button aria-controls="troubleshooting-cft" class="app-tabs__heading-button">CFT</button>
+  </div>
+  <div class="app-tabs__container js-tabs__container app-tabs__container--hidden" id="troubleshooting-cft" role="tabpanel" aria-hidden="true">
+    <div class="app-example__code">
+      <pre data-module="app-copy" tabindex="0">
+        <code>
+  # Preview (only one cluster is active at a given time)
+  az aks get-credentials --resource-group cft-preview-00-rg --name cft-preview-00-aks --subscription DCD-CFTAPPS-DEV
+  az aks get-credentials --resource-group cft-preview-01-rg --name cft-preview-01-aks --subscription DCD-CFTAPPS-DEV
+
+  # AAT
+  az aks get-credentials --resource-group cft-aat-00-rg --name cft-aat-00-aks --subscription DCD-CFTAPPS-STG
+  az aks get-credentials --resource-group cft-aat-01-rg --name cft-aat-01-aks --subscription DCD-CFTAPPS-STG
+
+  # Perftest
+  az aks get-credentials --resource-group cft-perftest-00-rg --name cft-perftest-00-aks --subscription DCD-CFTAPPS-TEST
+  az aks get-credentials --resource-group cft-perftest-01-rg --name cft-perftest-01-aks --subscription DCD-CFTAPPS-TEST
+
+  # ITHC
+  az aks get-credentials --resource-group cft-ithc-00-rg --name cft-ithc-00-aks --subscription DCD-CFTAPPS-ITHC
+  az aks get-credentials --resource-group cft-ithc-01-rg --name cft-ithc-01-aks --subscription DCD-CFTAPPS-ITHC
+  
+  # Demo
+  az aks get-credentials --resource-group cft-demo-00-rg --name cft-demo-00-aks --subscription DCD-CFTAPPS-DEMO
+  
+  # Prod (Requires additional permissions)
+  az aks get-credentials --resource-group prod-00-rg --name prod-00-aks --subscription DCD-CFTAPPS-PROD
+  az aks get-credentials --resource-group prod-01-rg --name prod-01-aks --subscription DCD-CFTAPPS-PROD
+  
+  # CFTPTL (Prod management)
+  az aks get-credentials --resource-group cft-ptl-00-rg --name cft-ptl-00-aks --subscription DTS-CFTPTL-INTSVC
+</code></pre>
+    </div>
+  </div>
+  
+  <div class="app-tabs__heading js-tabs__heading app-tabs__heading--current">
+    <button aria-controls="troubleshooting-sds" class="app-tabs__heading-button" aria-expanded="true">SDS</button>
+  </div>
+
+  <div class="app-tabs__container js-tabs__container" id="troubleshooting-sds" role="tabpanel" aria-hidden="false">
+    <div>
+      <pre data-module="app-copy" tabindex="0">
+        <code>
+  # Dev
+  az aks get-credentials --resource-group ss-dev-01-rg --name ss-dev-01-aks --subscription DTS-SHAREDSERVICES-DEV
+  
+  # Staging
+  az aks get-credentials --resource-group ss-stg-00-rg --name ss-stg-00-aks --subscription DTS-SHAREDSERVICES-STG
+  az aks get-credentials --resource-group ss-stg-01-rg --name ss-stg-01-aks --subscription DTS-SHAREDSERVICES-STG
+
+  # Test
+  az aks get-credentials --resource-group ss-test-00-rg --name ss-test-00-aks --subscription DTS-SHAREDSERVICES-TEST
+  az aks get-credentials --resource-group ss-test-01-rg --name ss-test-01-aks --subscription DTS-SHAREDSERVICES-TEST
+  
+  # ITHC
+  az aks get-credentials --resource-group ss-ithc-00-rg --name ss-ithc-00-aks --subscription DTS-SHAREDSERVICES-ITHC
+  az aks get-credentials --resource-group ss-ithc-01-rg --name ss-ithc-01-aks --subscription DTS-SHAREDSERVICES-ITHC
+  
+  # Demo (only one cluster is active at a given time)
+  az aks get-credentials --resource-group ss-demo-00-rg --name ss-demo-00-aks --subscription DTS-SHAREDSERVICES-DEMO
+  az aks get-credentials --resource-group ss-demo-01-rg --name ss-demo-01-aks --subscription DTS-SHAREDSERVICES-DEMO
+  
+  # Prod (Requires additional permissions)
+  az aks get-credentials --resource-group ss-prod-00-rg --name ss-prod-00-aks --subscription DTS-SHAREDSERVICES-PROD
+  az aks get-credentials --resource-group ss-prod-01-rg --name ss-prod-01-aks --subscription DTS-SHAREDSERVICES-PROD
+  
+  # SDSPTL (Prod management)
+  az aks get-credentials --resource-group ss-ptl-00-rg --name ss-ptl-00-aks --subscription DTS-SHAREDSERVICESPTL  
+</code></pre>
+    </div>
+  </div>
+</div>
+<p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl config use-context cft-perftest-00-aks
+kubectl config use-context cft-aat-00-aks
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2023-02-05">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 5 August 2022.
+
+        It needs to be reviewed again on 5 February 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 November 2022
+      This page was set to be reviewed before 5 February 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
