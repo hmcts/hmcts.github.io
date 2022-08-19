@@ -265,17 +265,17 @@
 <h3 id="adding-a-new-user-on-github">Adding a new user on GitHub</h3>
 
 <ul>
-<li>See <a href="./onboarding/team/github.html#access">GitHub Onboarding</a> for how to get access</li>
+<li>See <a href="/onboarding/team/github.html#access">GitHub Onboarding</a> for how to get access</li>
 <li>Make sure the user has accepted the invite received on the email setup in Github or by visiting <a href="https://github.com/hmcts">github.com/hmcts</a>.</li>
 </ul>
 <h3 id="creating-a-new-github-repository">Creating a new GitHub repository</h3>
-<p>See <a href="./ways-of-working/new-component/github-repo.html#">create a GitHub repository</a></p>
+<p>See <a href="/ways-of-working/new-component/github-repo.html#">create a GitHub repository</a></p>
 <h3 id="access-to-github-repo">Access to GitHub Repo</h3>
 
 <ul>
 <li>All repositories should be administered by the team who owns it.</li>
 <li>Access should be managed through GitHub teams and not individuals.</li>
-<li>If no one from your team have access, follow <a href="https://hmcts.github.io/ways-of-working/asking-for-help/#asking-for-help">asking for help</a> to request org admins in one of the community/ support channels.</li>
+<li>If no one from your team have access, follow <a href="/ways-of-working/asking-for-help/#asking-for-help">asking for help</a> to request org admins in one of the community/ support channels.</li>
 </ul>
 <h2 id="jenkins">Jenkins</h2>
 <h3 id="jenkins-is-unavailable">Jenkins is unavailable</h3>
@@ -287,7 +287,7 @@
 <h3 id="cannot-login-to-jenkins">Cannot login to Jenkins</h3>
 
 <ul>
-<li>Login to Jenkins is managed by Azure AD, please make sure user is added to right <a href="./onboarding/person/#azure-ad-groups">Azure AD groups</a></li>
+<li>Login to Jenkins is managed by Azure AD, please make sure user is added to right <a href="/onboarding/person/#azure-ad-groups">Azure AD groups</a></li>
 </ul>
 <h3 id="you-are-now-logged-out-of-jenkins-infinite-loop-when-trying-to-login-to-jenkins">You are now logged out of Jenkins/ Infinite loop when trying to login to Jenkins</h3>
 
@@ -297,7 +297,7 @@
 <h3 id="cannot-see-my-new-repo-in-jenkins-org-dashboard">Cannot see my new repo in Jenkins org / Dashboard</h3>
 
 <ul>
-<li>See <a href="onboarding/team/jenkins.html#jenkins">Jenkins Onboarding section</a> to add your app to Jenkins Org / Dashboard</li>
+<li>See <a href="/onboarding/team/jenkins.html#jenkins">Jenkins Onboarding section</a> to add your app to Jenkins Org / Dashboard</li>
 </ul>
 <h3 id="cannot-find-default-branch">Cannot find default branch</h3>
 <p>You may get the error below, when the pipeline has not ran on the master/main branch first.</p>
@@ -336,7 +336,7 @@
 <li>Jenkins only sets secrets as environment variables and runs the <code>gradle</code> / <code>yarn</code> task to run tests.</li>
 <li>Access the URL on VPN and try running tests manually using the <code>TEST_URL</code> printed in the logs.</li>
 <li>You can also run tests locally by setting the required secrets while on the VPN.</li>
-<li>To add additional logging, see <a href="troubleshooting/#example-2">troubleshooting</a>.</li>
+<li>To add additional logging, see <a href="#example-2">Example config</a>.</li>
 </ul>
 <h3 id="terraform-build-infrastructure-failure">Terraform/ Build Infrastructure failure</h3>
 
@@ -420,9 +420,9 @@ Although you may have permissions to delete a helm release or pod in a non-produ
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get imagerepositories <span class="nt">-n</span> flux-system  &lt;repository name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span> 
 </code></pre></div></li>
 <li><p>If the last scan doesn&rsquo;t update, check image reflector controller logs to see if there any logs related to the helm repo.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller <span class="nt">--tail</span><span class="o">=</span><span class="nt">-1</span>
 <span class="c"># search for specific image</span>
-kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller | <span class="nb">grep</span> &lt;Release Name&gt;
+kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller <span class="nt">--tail</span><span class="o">=</span><span class="nt">-1</span> | <span class="nb">grep</span> &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>If the last scan is latest, check <code>imagepolicy</code> status to verify that the image returned matches the expectation.</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get imagepolicies <span class="nt">-n</span> flux-system &lt;policy name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span>
