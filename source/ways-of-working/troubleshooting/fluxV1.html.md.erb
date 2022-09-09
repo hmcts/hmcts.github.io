@@ -17,8 +17,27 @@ Check the migration status for [CNP](https://github.com/hmcts/cnp-flux-config#mi
     ```shell
       kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
     ```
-   - If Image is not updated in above, [check flux logs](#flux-did-not-commit-new-image-to-github).
+   - If Image is not updated in above, [check flux logs](#check-flux-logs).
    - If the image tag is updated and still application pods are not deployed, see [Updated HelmRelease is not deployed](#updated-helmrelease-is-not-deployed)
+
+### Check Flux logs.
+
+   - Look at flux logs to see if there are any errors specific to your release
+
+     ```shell
+     kubectl logs -n admin -l app=flux --tail=100 | grep <Release Name>
+     ```
+   - If you don't see any error logs for your specific release, check if there are any errors that could be blocking flux.
+
+     ```shell
+     kubectl logs -n admin -l app=flux --tail=100
+     ```
+
+   - If there are no errors, it is likely that flux pod is stuck and a symptom for it is not seeing a log containing `cmd="kubectl apply -f -` in flux logs. You should [ask for help from platops](../asking-for-help)) to get it sorted.
+
+      ```shell
+      kubectl logs -n admin -l app=flux --tail=100
+      ```
 
 ### Updated HelmRelease is not deployed
     
@@ -52,6 +71,6 @@ Check the migration status for [CNP](https://github.com/hmcts/cnp-flux-config#mi
      kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
      ```
 
-   - If Changed is not updated in above, [check flux logs](#flux-did-not-commit-new-image-to-github).
+   - If Changed is not updated in above, [check flux logs](#check-flux-logs).
    
    - If the change is updated, but still not reflecting on your pods/ application. see [Helm operator logs](#updated-helmrelease-is-not-deployed)
