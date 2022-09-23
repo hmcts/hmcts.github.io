@@ -44,23 +44,6 @@ To invite a new guest user, navigate to [Azure AD](https://portal.azure.com/hmct
 
 Enter the users name and email address and click `Invite`.
 
-#### Adding a redirect URI
-
-<%= warning_text('Review section above on Getting access to HMCTS Demo Azure AD tenant before continuing')%>
-
-The authentication with Azure AD is handled by an Azure AD App Registration in the [HMCTS Demo Azure AD tenant](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com). To allow end users to be authenticated to your application, you must add a redirect URI for your application to the Azure AD App Registration.
-
-There are separate Azure AD App Registrations for CFT and SDS:
-
-- [CFT](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/fbf4cb6e-f09d-4fc4-89fa-b94cb582cb18/isMSAApp/)
-- [SDS](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/2a3f8b5a-ec0e-470d-b979-fc79d3e74cba/isMSAApp/)
-
-To add a new redirect URI, navigate to the appropriate app registration in the Azure Portal by clicking on one of the links above.
-
-Click on `Authentication` and click `Add URI` under `Redirect URIs`.
-
-Your redirect URI should be the full URI of your application appended with `/oauth-proxy/callback` e.g. https://toffee.demo.platform.hmcts.net/oauth-proxy/callback
-
 ### Protecting applications with HMCTS VPN
 
 If you want your application to only be available on VPN, you must specify the `traefik-private` ingressClass.
