@@ -297,25 +297,6 @@
 <p>If no-one in your team is currently a member of the tenant, please raise a request via the <a href="https://hmcts-reform.slack.com/archives/C8SR5CAMU"><code>#platops-help</code></a> channel in Slack.</p>
 <p>To invite a new guest user, navigate to <a href="https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/MsGraphUsers">Azure AD</a> and click <code>New guest user</code>.</p>
 <p>Enter the users name and email address and click <code>Invite</code>.</p>
-<h4 id="adding-a-redirect-uri">Adding a redirect URI</h4>
-
-<div class="govuk-warning-text">
-  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-  <strong class="govuk-warning-text__text">
-    <span class="govuk-warning-text__assistive">Warning</span>
-    Review section above on Getting access to HMCTS Demo Azure AD tenant before continuing
-  </strong>
-</div>
-<p>The authentication with Azure AD is handled by an Azure AD App Registration in the <a href="https://portal.azure.com/hmctsexecdemo.onmicrosoft.com">HMCTS Demo Azure AD tenant</a>. To allow end users to be authenticated to your application, you must add a redirect URI for your application to the Azure AD App Registration.</p>
-<p>There are separate Azure AD App Registrations for CFT and SDS:</p>
-
-<ul>
-<li><a href="https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/fbf4cb6e-f09d-4fc4-89fa-b94cb582cb18/isMSAApp/">CFT</a></li>
-<li><a href="https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Authentication/appId/2a3f8b5a-ec0e-470d-b979-fc79d3e74cba/isMSAApp/">SDS</a></li>
-</ul>
-<p>To add a new redirect URI, navigate to the appropriate app registration in the Azure Portal by clicking on one of the links above.</p>
-<p>Click on <code>Authentication</code> and click <code>Add URI</code> under <code>Redirect URIs</code>.</p>
-<p>Your redirect URI should be the full URI of your application appended with <code>/oauth-proxy/callback</code> e.g. https://toffee.demo.platform.hmcts.net/oauth-proxy/callback</p>
 <h3 id="protecting-applications-with-hmcts-vpn">Protecting applications with HMCTS VPN</h3>
 <p>If you want your application to only be available on VPN, you must specify the <code>traefik-private</code> ingressClass.</p>
 <p>You do not need to specify the <code>enableOAuth</code> flag in this case.</p>
