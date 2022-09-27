@@ -38,8 +38,8 @@
   az aks get-credentials --resource-group cft-demo-00-rg --name cft-demo-00-aks --subscription DCD-CFTAPPS-DEMO
   
   # Prod (Requires additional permissions)
-  az aks get-credentials --resource-group prod-00-rg --name prod-00-aks --subscription DCD-CFTAPPS-PROD
-  az aks get-credentials --resource-group prod-01-rg --name prod-01-aks --subscription DCD-CFTAPPS-PROD
+  az aks get-credentials --resource-group cft-prod-00-rg --name cft-prod-00-aks --subscription DCD-CFTAPPS-PROD
+  az aks get-credentials --resource-group cft-prod-01-rg --name cft-prod-01-aks --subscription DCD-CFTAPPS-PROD
   
   # CFTPTL (Prod management)
   az aks get-credentials --resource-group cft-ptl-00-rg --name cft-ptl-00-aks --subscription DTS-CFTPTL-INTSVC
