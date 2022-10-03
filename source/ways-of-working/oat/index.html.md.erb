@@ -1,0 +1,52 @@
+---
+title: OAT
+last_reviewed_on: 2022-09-27
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+This covers details on the Operational Acceptance Testing performed by Platform Operations for a change to go into production.
+
+## Objectives
+
+- Check that the service/update has been tested thoroughly so that when it goes live, it has got the best chance of success.
+- Facilitate the maintenance of the product by having comprehensive documentation of how it is built, used, and supported.
+- Dev teams/ Platform Operations to be confident that in an event of production incident on the service, they have everything needed to assess and mitigate the issue.
+
+## Do i need a OAT for my change ?
+
+- Though Platform Operations do not OAT every change, it is development team's responsibility to make sure even a small code change complies with OAT objectives and criteria.
+- Major releases that goes through Release Management should add details on Impact Analysis why the release should/ shouldn't need specific OAT from platops.
+- Some examples when platops would mandate a OAT:
+     1. New component [Component](/glossary/#component) being added. It could be a simple Job/ Function.
+     2. Changes which has performance or security impact. This is usually assessed early in release cycle to check the need for Perftest, ITHC.
+     3. New integration being added to existing [Component](/glossary/#component).
+     4. Infrastructure changes or additions to a [Product](/glossary/#product)/[Component](/glossary/#component)
+
+
+## How do i ask for a OAT ?
+
+- Requests comes through Release Management.
+- Release Management have a set of OAT tasks on the release JIRA.
+- Development team need to assess and comment on each of the OAT tickets on how the changes made are compliant with the criteria on OAT tasks. Refer [OAT Tasks and recommendations](#oat-tasks-and-recommendations) for more guidance .
+- Once all tickets and [Service Operations Guide](#service-operations-guide) have been updated, Release management will create a JIRA ticket for Platform Operations to validate the OAT tasks.
+
+
+## OAT Tasks and recommendations
+
+This section covers the tasks in OAT and some generic recommendations to ensure the service is compliant with OAT criteria.
+
+`Please note these are generic recommendations and may vary from service to service based on application design`
+
+
+### Service Operations Guide
+
+Service Operations Guide (SOG) is a living document for each service that should be updated whenever there are relevant changes irrespective of the size of the change.
+
+Below are some example SOGs on Confluence:
+
+- [IA Tech Team: Service Operations Guide](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1274250278)
+- [PCQ Service Operations Guide](https://tools.hmcts.net/confluence/display/PCQ/PCQ+Service+Operations+Guide)
+
