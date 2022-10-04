@@ -1,0 +1,70 @@
+---
+title: Managing Manual Key Vault Secrets
+last_reviewed_on: 2022-10-03
+review_in: 6 months
+weight: 9
+---
+
+# <%= current_page.data.title %>
+
+Some secrets cannot be automated via Terraform and therefore we need to add them manually to the Key Vaults.
+
+Please note that we would advise to always go down the Terraform route where possible.
+
+## Manual Secrets
+
+The easiest option is to add the secrets manually directly to the project Key Vault.
+Using the [CNP-Module-Key-Vault](https://github.com/hmcts/cnp-module-key-vault) will grant the Developers group the correct permissions to enable you to add these.
+
+We would also advise to tag your secrets to easily identify between Terraform and manually created secrets.
+
+## Secret Store
+
+You can create a secret store much like how Azure DevOps has a Library for secure values.
+
+The concept here is a seperate Key Vault for your manully created secrets and then your project Key Vault which will only contain secrets created by Terraform.
+
+<img src="/images/key-vault-secret-store.png"/>
+
+### Setup
+
+Start by creating your Secret Store Key Vault Repositories following <a href="/ways-of-working/new-component/github-repo">Create a Github Repository</a>.
+You can then add your Key Vault using the [CNP-Module-Key-Vault](https://github.com/hmcts/cnp-module-key-vault) for example [PIP-Shared-Infrastructure-Bootstrap](https://github.com/hmcts/pip-shared-infrastructure-bootstap)
+
+### Terraform Importing
+
+Now in your project Key Vault you can use the below example to import named secrets.
+These can be generic secrets shared between environments, or you can add environment specific secrets.
+
+This can also be use for certficates as per this example https://github.com/hmcts/pip-shared-infrastructures/blob/master/tf-kv-certs-bootstrap.tf
+
+```terraform
+locals {
+  bootstrap_secrets = ["example-secret", "environment-specific-secret-${var.env}"]
+}
+
+data "azurerm_key_vault" "bootstrap" {
+  name                = "${var.product}-bootstrap-kv-${var.env}"
+  resource_group_name = "${var.product}-bootstrap-${var.env}-rg"
+}
+
+data "azurerm_key_vault_secret" "bootstrap" {
+  for_each     = { for secret in local.bootstrap_secrets : secret => secret }
+  name         = each.value
+  key_vault_id = data.azurerm_key_vault.bootstrap.id
+}
+
+resource "azurerm_key_vault_secret" "bootstrap" {
+  for_each        = data.azurerm_key_vault_secret.bootstrap_secrets
+  key_vault_id    = module.this.key_vault_id
+  name            = each.value.name
+  value           = each.value.value
+  tags            = merge(var.tags, {
+        "source" : "bootstrap ${data.azurerm_key_vault.bootstrap_kv.name} secrets"
+      })
+  content_type    = "Manual Secret"
+}
+```
+
+
+You can also access these via Jenkins for Smoke and Functional Tests
