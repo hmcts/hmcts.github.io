@@ -184,6 +184,6 @@ This OAT is to ensure that the service follows best practices on Logging.
 
 - SOG should be updated with links to application logs, usually Application Insights.
 - When using same application insights instance for multiple applications, there should be a distinct `cloud_roleName` set for each application.
-- Application should only log Error or Warn logs by default.
+- Application logging level in production should be set to `INFO` by default.
 - Application should be able to control logging level through an environment variable.
 - No customer information should be logged without a valid business justification and Security Operations approval.
