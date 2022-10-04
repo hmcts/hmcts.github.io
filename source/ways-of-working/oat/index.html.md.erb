@@ -52,7 +52,7 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Digital Operations Capability
 
-- This OAT is to confirm that there are sufficient resources available to ensure that the service is maintainable and to facilitate knowledge transfer.
+- This OAT is to ensure that there are sufficient resources available to make sure the service is maintainable and to facilitate knowledge transfer.
 - SOG should be updated with :
   * Links to application, Infrastructure code in Github and related build pipelines.
   * Links to High/Low Level Design Documents or a high level purpose of each application.
@@ -108,7 +108,7 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Service Continuity
 
-- This OAT is to confirm that the service has a robust approach for dealing with the event of a catastrophic failure.
+- This OAT is to ensure that the service has a robust approach for dealing with the event of a catastrophic failure.
 - Application team to make sure they have `/health/liveness` URLs configured so that Kubernetes can automatically restart the service for restoration.
 - Make sure any cron jobs that are not running on services that are serving end user traffic.
 - Elaborate in SOG on how Jobs would handle failures.
@@ -116,17 +116,57 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Shuttering
 
-- This OAT is applicable for front end services to make sure they have shuttering mechanism in place.
+- This OAT is applicable for front end services to ensure they have shuttering mechanism in place.
 - [Shuttering](https://hmcts.github.io/ways-of-working/path-to-live/shutter.html) should be configured and tested before documenting in SOG.
 
-### Resilience
+### Resilience / Recoverability
 
 - This OAT is to ensure that the system can recover or fail over to a secondary component in the event of failure.
 - All services should be configured with appropriate `readiness` and `liveness` checks.
-- Applications deployed through flux, automatically get deployed to multiple clusters with multiple isntances running.
+- Services deployed through flux, automatically get deployed to multiple clusters with multiple isntances running.
 - Development teams to confirm that all services (including jobs) are configured to run in both clusters.
 - Performance test results should be attached to the task.
 - Development team to make sure any performance tuning changes are applied to prod.
+- Any services running scheduled jobs should update SOG on how they handle failures and if running multiple jobs at same time can cause any issues.
 
+### Reliability
 
+- This OAT is to ensure that the service is reliable which is measured by Mean Time Between Failures (MTBF).
+- Unless specially called out, all apps deployed to AKS using Flux should be compliant with the standard platform reliability.
 
+### Data Backup & Recovery
+
+- This OAT is to ensure the data can be reliably and frequently backed up.
+- Development team should confirm that they adhere to [postresql standards](https://tools.hmcts.net/confluence/display/RD/DBaaS+PostgreSQL+Standards)
+
+### Monitoring & Alerting
+
+- This OAT is to ensure the service has checks for  all possible points of failure and that alerts/notifications are triggered in the event of a failure.
+- SOG to be updated with monitoring and alerting details either in Application Insights or Dynatrace.
+
+### Micro Service Separation
+
+- This OAT is to ensure that each service can be started and shut down independently of all other components.
+- A service should not depend upon the sequence with which other services are started, whether they are started at all, or whether they are shut down and rebooted.
+- Development teams should confirm that their application startup is not dependant on any other services.
+- `/health/readiness` should not be dependant on other services and only depend on vertical dependencies like databases.
+
+### Scalability
+
+- This OAT is to ensure that the service is scalable both vertically ( add more CPU/memory resources) and horizontally ( add more pods) easily.
+- Services can configure [Horizontal Pod Autoscaler](https://github.com/hmcts/chart-library/tree/master#hpa-horizontal-pod-auto-scaler) if needed instead of running multiple high replicas.
+- Development team to add a comment with a link to `replicas` set in flux-config.
+
+### Availability
+
+- This OAT is to ensure that the monitoring solution can demonstrate Service Levels for Availability and store this information for reporting purposes.
+- Development team to confirm on the task to confirm that availability can be reported.
+
+### Logging
+
+- This OAT is to ensure that the service follows best practices on Logging.
+- SOG should be updated with links to application logs, usually Application Insights.
+- When using same application insights instance for multiple applications, there should be a distinct `cloud_roleName` set for each application.
+- Application should only log Error or Warn logs by default.
+- Application should be able to control logging level through an environment variable.
+- No customer information should be logged without a valid business justification and Security Operations approval.
