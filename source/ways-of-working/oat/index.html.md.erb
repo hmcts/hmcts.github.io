@@ -18,8 +18,8 @@ This covers details on the Operational Acceptance Testing performed by Platform 
 ## Do i need a OAT for my change ?
 
 - Though Platform Operations do not OAT every change, it is development team's responsibility to make sure even a small code change complies with OAT objectives and criteria.
-- Major releases that goes through Release Management should add details on Impact Analysis why the release should/ shouldn't need specific OAT from platops.
-- Some examples when platops would mandate a OAT:
+- Major releases that goes through Release Management should add details on Impact Analysis why the release should/ shouldn't need specific OAT from Platform Operations.
+- Some examples when Platform Operations would mandate a OAT:
      1. New component [Component](/glossary/#component) being added. It could be a simple Job/ Function.
      2. Changes which has performance or security impact. This is usually assessed early in release cycle to check the need for Perftest, ITHC.
      3. New integration being added to existing [Component](/glossary/#component).
@@ -38,12 +38,13 @@ This covers details on the Operational Acceptance Testing performed by Platform 
 
 This section covers the tasks in OAT and some generic recommendations to ensure the service is compliant with OAT criteria.
 
-`Please note these are generic recommendations and may vary from service to service based on application design`
+> Please note these are generic recommendations and may vary from service to service based on application design
 
 
 ### Service Operations Guide
 
-- Service Operations Guide (SOG) is a living document for each service that should be updated whenever there are relevant changes irrespective of the size of the change.
+Service Operations Guide (SOG) is a living document for each service that should be updated whenever there are relevant changes irrespective of the size of the change.
+
 - SOG should document all the required information on all OAT tasks detailed in later sections.
 - Below are some example SOGs on Confluence:
    * [IA Tech Team: Service Operations Guide](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1274250278)
@@ -52,7 +53,8 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Digital Operations Capability
 
-- This OAT is to ensure that there are sufficient resources available to make sure the service is maintainable and to facilitate knowledge transfer.
+This OAT is to ensure that there are sufficient resources available to make sure the service is maintainable and to facilitate knowledge transfer.
+
 - SOG should be updated with :
   * Links to application, Infrastructure code in Github and related build pipelines.
   * Links to High/Low Level Design Documents or a high level purpose of each application.
@@ -61,7 +63,8 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Service Level Agreements
 
-- This OAT is to capture any specific NFRs unique to the service/product that needs to be captured and evidenced.
+This OAT is to capture any specific NFRs unique to the service/product that needs to be captured and evidenced.
+
 - Service team should identify and document SLAs of the applicable components in the OAT task.
 - Any external SLAs other than Azure should be explicitly listed in SOG.
 - Below are SLA details for some standard Azure services.
@@ -83,32 +86,37 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Licensing
 
-- This OAT is to ensure the software and licenses for infrastructure and hosting is appropriately licensed and supported for the proposed design of the environments required for the service.
+This OAT is to ensure the software and licenses for infrastructure and hosting is appropriately licensed and supported for the proposed design of the environments required for the service.
+
 - Development team to assess and document in SOG if there are any tools/ dependencies which are not covered under standard open source licensing.
 - Tools like Camunda, Launch Darkly can be marked as "Platform Managed"
 
 ### Support Capability - Incident Handling
 
-- This OAT is to ensure there is a robust support model for the product as part of the delivery.
+This OAT is to ensure there is a robust support model for the product as part of the delivery.
+
 - SOG should be updated with with support model along with details about `Assignment Group` in Service Now.
 - Standard support model is documented in [confluence](https://tools.hmcts.net/confluence/display/DIP/Public+Beta+Support)
 
 ### Error Handling Framework
 
-- This OAT is to ensure facilities are in place for errors/exceptions to recorded to be referred against in case of production issues.
+This OAT is to ensure facilities are in place for errors/exceptions to recorded to be referred against in case of production issues.
+
 - SOG to be updated with list of all exceptions being raised by the service with possible cause and resolution marked against.
 - SOG should also confirm adherence to [status code and error standards](https://hmcts.github.io/restful-api-standards/#http-status-codes-and-errors)
 
 ### Data Retention
 
-- This OAT is to ensure that this release complies with data retention policies set by HMCTS and GDPR.
+This OAT is to ensure that this release complies with data retention policies set by HMCTS and GDPR.
+
 - SOG should outline data retention policy on all the data being stored by the services.
 - This is applicable to all the direct data stores that services use like Redis, Postgresql and any data that is stored in dependent systems like CCD.
 - Application should also make sure that data should not be reintroduced on restoring from backup.
 
 ### Service Continuity
 
-- This OAT is to ensure that the service has a robust approach for dealing with the event of a catastrophic failure.
+This OAT is to ensure that the service has a robust approach for dealing with the event of a catastrophic failure.
+
 - Application team to make sure they have `/health/liveness` URLs configured so that Kubernetes can automatically restart the service for restoration.
 - Make sure any cron jobs that are not running on services that are serving end user traffic.
 - Elaborate in SOG on how Jobs would handle failures.
@@ -116,12 +124,14 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Shuttering
 
-- This OAT is applicable for front end services to ensure they have shuttering mechanism in place.
+This OAT is applicable for front end services to ensure they have shuttering mechanism in place.
+
 - [Shuttering](https://hmcts.github.io/ways-of-working/path-to-live/shutter.html) should be configured and tested before documenting in SOG.
 
 ### Resilience / Recoverability
 
-- This OAT is to ensure that the system can recover or fail over to a secondary component in the event of failure.
+This OAT is to ensure that the system can recover or fail over to a secondary component in the event of failure.
+
 - All services should be configured with appropriate `readiness` and `liveness` checks.
 - Services deployed through flux, automatically get deployed to multiple clusters with multiple isntances running.
 - Development teams to confirm that all services (including jobs) are configured to run in both clusters.
@@ -131,40 +141,47 @@ This section covers the tasks in OAT and some generic recommendations to ensure 
 
 ### Reliability
 
-- This OAT is to ensure that the service is reliable which is measured by Mean Time Between Failures (MTBF).
+This OAT is to ensure that the service is reliable which is measured by Mean Time Between Failures (MTBF).
+
 - Unless specially called out, all apps deployed to AKS using Flux should be compliant with the standard platform reliability.
 
 ### Data Backup & Recovery
 
-- This OAT is to ensure the data can be reliably and frequently backed up.
+This OAT is to ensure the data can be reliably and frequently backed up.
+
 - Development team should confirm that they adhere to [postresql standards](https://tools.hmcts.net/confluence/display/RD/DBaaS+PostgreSQL+Standards)
 
 ### Monitoring & Alerting
 
-- This OAT is to ensure the service has checks for  all possible points of failure and that alerts/notifications are triggered in the event of a failure.
+This OAT is to ensure the service has checks for  all possible points of failure and that alerts/notifications are triggered in the event of a failure.
+
 - SOG to be updated with monitoring and alerting details either in Application Insights or Dynatrace.
 
 ### Micro Service Separation
 
-- This OAT is to ensure that each service can be started and shut down independently of all other components.
+This OAT is to ensure that each service can be started and shut down independently of all other components.
+
 - A service should not depend upon the sequence with which other services are started, whether they are started at all, or whether they are shut down and rebooted.
 - Development teams should confirm that their application startup is not dependant on any other services.
 - `/health/readiness` should not be dependant on other services and only depend on vertical dependencies like databases.
 
 ### Scalability
 
-- This OAT is to ensure that the service is scalable both vertically ( add more CPU/memory resources) and horizontally ( add more pods) easily.
+This OAT is to ensure that the service can be scaled both vertically ( add more CPU/memory resources) and horizontally ( add more pods) easily.
+
 - Services can configure [Horizontal Pod Autoscaler](https://github.com/hmcts/chart-library/tree/master#hpa-horizontal-pod-auto-scaler) if needed instead of running multiple high replicas.
 - Development team to add a comment with a link to `replicas` set in flux-config.
 
 ### Availability
 
-- This OAT is to ensure that the monitoring solution can demonstrate Service Levels for Availability and store this information for reporting purposes.
+This OAT is to ensure that the monitoring solution can demonstrate Service Levels for Availability and store this information for reporting purposes.
+
 - Development team to confirm on the task to confirm that availability can be reported.
 
 ### Logging
 
-- This OAT is to ensure that the service follows best practices on Logging.
+This OAT is to ensure that the service follows best practices on Logging.
+
 - SOG should be updated with links to application logs, usually Application Insights.
 - When using same application insights instance for multiple applications, there should be a distinct `cloud_roleName` set for each application.
 - Application should only log Error or Warn logs by default.
