@@ -37,17 +37,6 @@ Any developer added to [hmcts org](https://github.com/hmcts) is able to create a
     </table>
     
 6. Add a branch protection rule for `master` branch with recommended settings. This is in https://github.com/[REPO]/settings/branches, then clicking "Add rule" beside Branch protection rules.
-   - Enable `Require a pull request before merging` and `Require approvals`
-   - Choose which status checks needs to be mandatory for merging PRs (this can be done only after checks like Jenkins are setup)
-   - We recommend enabling `Include administrators`.
-
-## Suggested Branch Protection Rules
-
-These are the recommended settings to configure for your main branch on your repository, however each project might run differently so these are not These are the recommended settings to configure for your main branch on your repository, however each project might run differently so these are not compulsory.
-Check and fill out the below options on the Branch Protection Rules of your main branch.
-
-- Require a pull request before merging
-    - Require Approvals (minimal 1)
-- Require status checks to pass before merging
-    - Select `continuous-integration/jenkins/pr-merge` if using Jenkins or select relevant CI builds
-- Do not allow bypassing the above settings 
+   - Enable `Require a pull request before merging` and `Require approvals` (minimal 1)
+   - Choose which status checks needs to be mandatory for merging PRs. The standard Jenkins check is `continuous-integration/jenkins/pr-merge` (this can be done only after checks like Jenkins are setup)
+   - We recommend enabling `Do not allow bypassing the above settings`.
