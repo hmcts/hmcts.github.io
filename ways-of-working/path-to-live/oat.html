@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>OAT - HMCTS</title>
+    <title>Operational Acceptance Testing - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/oat/">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/path-to-live/oat.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="OAT - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/oat/" />
+      <meta name="twitter:title" content="Operational Acceptance Testing - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/path-to-live/oat.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="OAT" />
+      <meta property="og:title" content="Operational Acceptance Testing" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/oat/" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/path-to-live/oat.html" />
 
     
   </head>
@@ -152,25 +152,25 @@
 <li><a href="/ways-of-working/path-to-live/"><span>Path to live</span></a>
 <ul>
   <li>
+    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
     <a href="/ways-of-working/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
-  </li>
-  <li>
-    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
-  </li>
-  <li>
-    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
   </li>
   <li>
     <a href="/ways-of-working/path-to-live/public-dns.html"><span>Public DNS</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+    <a href="/ways-of-working/path-to-live/front-door.html"><span>Front Door configuration</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="/ways-of-working/path-to-live/oat.html"><span>Operational Acceptance Testing</span></a>
   </li>
 </ul>
 </li>
-  <li>
-    <a href="/ways-of-working/oat/"><span>OAT</span></a>
-  </li>
 <li><a href="/ways-of-working/new-component/"><span>Starting a new component</span></a>
 <ul>
   <li>
@@ -263,8 +263,8 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="oat">OAT</h1>
-<p>This covers details on the Operational Acceptance Testing performed by Platform Operations for a change to go into production.</p>
+            <h1 id="operational-acceptance-testing">Operational Acceptance Testing</h1>
+<p>This covers details on the Operational Acceptance Testing (OAT) performed by Platform Operations for a change to go into production.</p>
 <h2 id="objectives">Objectives</h2>
 
 <ul>
@@ -441,7 +441,7 @@
 <p>This OAT is to ensure the data can be reliably and frequently backed up.</p>
 
 <ul>
-<li>Development team should confirm that they adhere to [PostgreSQL DB back up guidance](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=910688985#DBaaSPostgreSQLStandards-DatabaseBackup</li>
+<li>Development team should confirm that they adhere to <a href="https://tools.hmcts.net/confluence/display/RD/DBaaS+PostgreSQL+Standards">PostgreSQL standards</a></li>
 </ul>
 <h3 id="monitoring-amp-alerting">Monitoring &amp; Alerting</h3>
 <p>This OAT is to ensure the service has checks for  all possible points of failure and that alerts are triggered in the event of a failure.</p>
@@ -501,8 +501,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/oat/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27OAT%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Foat%2F%29&amp;labels=bug&amp;title=Re%3A+%27OAT%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/path-to-live/oat.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Operational+Acceptance+Testing%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fpath-to-live%2Foat.html%29&amp;labels=bug&amp;title=Re%3A+%27Operational+Acceptance+Testing%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
