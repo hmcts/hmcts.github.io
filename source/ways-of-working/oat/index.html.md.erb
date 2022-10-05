@@ -13,24 +13,24 @@ This covers details on the Operational Acceptance Testing performed by Platform 
 
 - Check that the service/update has been tested thoroughly so that when it goes live, it has got the best chance of success.
 - Facilitate the maintenance of the product by having comprehensive documentation of how it is built, used, and supported.
-- Dev teams/ Platform Operations to be confident that in an event of production incident on the service, they have everything needed to assess and mitigate the issue.
+- Development teams and Platform Operations are confident that in an event of production incident on the service, they have everything needed to assess and mitigate an issue.
 
-## Do i need a OAT for my change ?
+## Do I need an OAT for my change ?
 
-- Though Platform Operations do not OAT every change, it is development team's responsibility to make sure even a small code change complies with OAT objectives and criteria.
-- Major releases that goes through Release Management should add details on Impact Analysis why the release should/ shouldn't need specific OAT from Platform Operations.
-- Some examples when Platform Operations would mandate a OAT:
-     1. New [Component](/glossary/#component) being added. It could be a simple Job/ Function.
-     2. Changes which has performance or security impact. This is usually assessed early in release cycle to check the need for Perftest, ITHC.
+- Though Platform Operations do not OAT every change, it is the development team's responsibility to make sure even a small code change complies with OAT objectives and criteria.
+- Major releases that goes through Release Management should add details on Impact Analysis why the release should / shouldn't need an OAT.
+- Some examples when Platform Operations would require an OAT:
+     1. New [Component](/glossary/#component) being added. It could be a simple Job / Function.
+     2. Changes which have a performance or security impact. This is usually assessed early in release cycle to check the need for a performance test or an ITHC.
      3. New integration being added to existing [Component](/glossary/#component).
-     4. Infrastructure changes or additions to a [Product](/glossary/#product) / [Component](/glossary/#component)
+     4. Infrastructure changes or additions to a [Product](/glossary/#product) / [Component](/glossary/#component).
 
 
-## How do i ask for a OAT ?
+## How do I ask for an OAT?
 
 - Requests comes through Release Management.
 - Release Management have a set of OAT tasks on the release Jira.
-- Development team need to assess and comment on each of the OAT tickets on how the changes made are compliant with the criteria on OAT tasks. Refer [OAT Tasks and recommendations](#oat-tasks-and-recommendations) for more guidance .
+- Development team need to assess and comment on each of the OAT tickets on how the changes made are compliant with the criteria on OAT tasks. Refer [OAT Tasks and recommendations](#oat-tasks-and-recommendations) for more guidance.
 - Once all tickets and [Service Operations Guide](#service-operations-guide) have been updated, Release management will create a Jira ticket for Platform Operations to validate the OAT tasks.
 
 
@@ -55,15 +55,15 @@ Service Operations Guide (SOG) is a living document for each service that should
 
 This OAT is to ensure that there are sufficient resources available to make sure the service is maintainable and to facilitate knowledge transfer.
 
-- SOG should be updated with :
-  * Links to application, Infrastructure code in Github and related build pipelines.
-  * Links to High/Low Level Design Documents or a high level purpose of each application.
-  * Details of Azure Infrastructure being used like keyvaults, Databases.
-  * Dependency of any external services.
+- SOG should be updated with:
+  * Links to application, Infrastructure code in GitHub and related build pipelines.
+  * Links to High / Low Level Design Documents or a high level purpose of each application.
+  * Details of Azure Infrastructure being used like Key Vaults, Databases.
+  * Dependencies on any external services.
 
 ### Service Level Agreements
 
-This OAT is to capture any specific NFRs unique to the service/product that needs to be captured and evidenced.
+This OAT is to capture any specific Non-functional requirements (NFRs) unique to the service/product that needs to be captured and evidenced.
 
 - Service team should identify and document SLAs of the applicable components in the OAT task.
 - Any external SLAs other than Azure should be explicitly listed in SOG.
@@ -88,8 +88,8 @@ This OAT is to capture any specific NFRs unique to the service/product that need
 
 This OAT is to ensure the software and licenses for infrastructure and hosting is appropriately licensed and supported for the proposed design of the environments required for the service.
 
-- Development team to assess and document in SOG if there are any tools/ dependencies which are not covered under standard open source licensing.
-- Tools like Camunda, Launch Darkly can be marked as "Platform Managed"
+- Development team are to assess and document in SOG if there are any tools / dependencies which are not covered under standard open source licensing.
+- Tools like Camunda, Launch Darkly can be marked as "Platform Managed".
 
 ### Support Capability - Incident Handling
 
@@ -118,13 +118,13 @@ This OAT is to ensure that this release complies with data retention policies se
 This OAT is to ensure that the service has a robust approach for dealing with the event of a catastrophic failure.
 
 - Application team to make sure they have `/health/liveness` URLs configured so that Kubernetes can automatically restart the service for restoration.
-- Make sure any cron jobs that are not running on services that are serving end user traffic.
+- Make sure any scheduled jobs are not running on services that are serving end user traffic.
 - Elaborate in SOG on how Jobs would handle failures.
-- SOG should add reasoning if using higher CPU/Memory requests than defaults.
+- SOG should add reasoning if using higher CPU / memory requests than defaults.
 
 ### Shuttering
 
-This OAT is applicable for front end services to ensure they have shuttering mechanism in place.
+This OAT is applicable for front end services to ensure they have a shuttering mechanism in place.
 
 - [Shuttering](https://hmcts.github.io/ways-of-working/path-to-live/shutter.html) should be configured and tested before documenting in SOG.
 
@@ -137,7 +137,7 @@ This OAT is to ensure that the system can recover or fail over to a secondary co
 - Development teams to confirm that all services (including jobs) are configured to run in both clusters.
 - Performance test results should be attached to the task.
 - Development team to make sure any performance tuning changes are applied to prod.
-- Any services running scheduled jobs should update SOG on how they handle failures and if running multiple jobs at same time can cause any issues.
+- Any services running scheduled jobs should update SOG on how they handle failures and if running multiple jobs at the same time can cause any issues.
 
 ### Reliability
 
@@ -153,7 +153,7 @@ This OAT is to ensure the data can be reliably and frequently backed up.
 
 ### Monitoring & Alerting
 
-This OAT is to ensure the service has checks for  all possible points of failure and that alerts/notifications are triggered in the event of a failure.
+This OAT is to ensure the service has checks for  all possible points of failure and that alerts are triggered in the event of a failure.
 
 - SOG to be updated with monitoring and alerting details either in Application Insights or Dynatrace.
 
