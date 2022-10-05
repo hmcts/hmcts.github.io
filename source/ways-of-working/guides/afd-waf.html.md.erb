@@ -1,0 +1,31 @@
+---
+title: Azure Frontdoor Web Application Firewall Debug
+last_reviewed_on: 2022-10-10
+review_in: 6 months
+weight: 10
+---
+
+# <%= current_page.data.title %>
+
+When testing through the Azure Frontdoor you may be presented with an error page as per below, which normally results in being a Web Application Firewall(WAF) rule being blocked.
+
+![Azure Frontdoor WAF Error Page](/images/waf-error.png)
+
+## Investigate
+
+You can find out what the blocked rule is by following these steps:
+
+1. Go to the spective Azure Frontdoor `hmcts-{env}` for CFT and `sdshmcts-{env}` for SDS. [Azure Frontdoors](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/microsoft.cdn%2Fprofiles)
+2. Go down the side menu to `Monitoring > Logs`
+3. Go to the query and add the query below, updating `{Request URL}` with the URL you are requesting. example `toffee.aat.platform.hmcts.net` <br/><br/>
+```
+AzureDiagnostics 
+| where ResourceProvider == "MICROSOFT.NETWORK" and Category == "FrontdoorAccessLog" and requestUri_s contains "{Request URL}"
+```
+4. You can change the `Time range` to scope the search down.
+
+For more information you can look at the [Azure Documentation](https://learn.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-monitor?pivots=front-door-standard-premium#logs-and-diagnostics)
+
+## Exclude Rules
+
+If you need to allow this block through then you can update the exclusion rules for your frontdoor configuration following the [Azure Platform Terraform ReadMe](https://github.com/hmcts/azure-platform-terraform#WAF-Exclusions)
