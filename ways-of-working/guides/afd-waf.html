@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Office 365 - HMCTS</title>
+    <title>Azure Frontdoor Web Application Firewall Debug - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/onboarding/team/office365.html">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/guides/afd-waf.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Office 365 - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/onboarding/team/office365.html" />
+      <meta name="twitter:title" content="Azure Frontdoor Web Application Firewall Debug - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/guides/afd-waf.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Office 365" />
+      <meta property="og:title" content="Azure Frontdoor Web Application Firewall Debug" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/onboarding/team/office365.html" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/guides/afd-waf.html" />
 
     
   </head>
@@ -269,22 +269,37 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="office-365">Office 365</h1>
-<h2 id="create-office-365-team-group">Create Office 365 team group</h2>
-<p>It is recommended that you create an Office 365 group for your team and depending on size possibly one for your dev team as well.</p>
-<p>See the Microsoft documentation for <a href="https://support.microsoft.com/en-us/office/create-a-group-in-outlook-04d0c9cf-6864-423c-a380-4fa858f27102#ID0EACAAA=Web">how to create a group</a>.</p>
+            <h1 id="azure-frontdoor-web-application-firewall-debug">Azure Frontdoor Web Application Firewall Debug</h1>
+<p>When testing through the Azure Frontdoor you may be presented with an error page saying &lsquo;The request is blocked&rsquo;, which normally results in being a Web Application Firewall(WAF) rule being blocked.</p>
+<p><a href="/images/waf-error.png" rel="noopener noreferrer"><img src="/images/waf-error.png" alt="Azure Frontdoor WAF Error Page" /></a></p>
+<h2 id="investigate">Investigate</h2>
+<p>You can find out what the blocked rule is by following these steps:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-05-16">
+<ol>
+<li>Go to the spective Azure Frontdoor <code>hmcts-{env}</code> for CFT and <code>sdshmcts-{env}</code> for SDS. <a href="https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/microsoft.cdn%2Fprofiles">Azure Frontdoors</a></li>
+<li>Go down the side menu to <code>Monitoring &gt; Logs</code></li>
+<li>Go to the query and add the query below, updating <code>{Request URL}</code> with the URL you are requesting. example <code>toffee.aat.platform.hmcts.net</code> <br/><br/>
+<code>
+AzureDiagnostics 
+| where ResourceProvider == &quot;MICROSOFT.NETWORK&quot; and Category == &quot;FrontdoorAccessLog&quot; and requestUri_s contains &quot;{Request URL}&quot;
+</code></li>
+<li>You can change the <code>Time range</code> to scope the search down.</li>
+</ol>
+<p>For more information you can look at the <a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-monitor?pivots=front-door-standard-premium#logs-and-diagnostics">Azure Documentation</a></p>
+<h2 id="exclude-rules">Exclude Rules</h2>
+<p>If you need to allow this block through then you can update the exclusion rules for your frontdoor configuration following the <a href="https://github.com/hmcts/azure-platform-terraform#WAF-Exclusions">Azure Platform Terraform ReadMe</a></p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2023-04-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 May 2022.
+      This page was last reviewed on 10 October 2022.
 
-        It needs to be reviewed again on 16 May 2023
+        It needs to be reviewed again on 10 April 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 May 2023
+      This page was set to be reviewed before 10 April 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -294,8 +309,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/onboarding/team/office365.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Office+365%27+%28https%3A%2F%2Fhmcts.github.io%2Fonboarding%2Fteam%2Foffice365.html%29&amp;labels=bug&amp;title=Re%3A+%27Office+365%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/guides/afd-waf.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Azure+Frontdoor+Web+Application+Firewall+Debug%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fguides%2Fafd-waf.html%29&amp;labels=bug&amp;title=Re%3A+%27Azure+Frontdoor+Web+Application+Firewall+Debug%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
