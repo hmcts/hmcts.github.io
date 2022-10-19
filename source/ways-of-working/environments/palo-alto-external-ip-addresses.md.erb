@@ -1,0 +1,36 @@
+---
+title: Palo Alto External IP addresses
+last_reviewed_on: 2022-10-19
+review_in: 6 months
+weight: 10
+---
+
+# <%= current_page.data.title %>
+
+This page lists the external Public IP addresses used by the Palo Alto firewalls in the Azure platform.
+
+Within the Azure Platform, the networking of each virtual network will follow a hub/spoke model. Depending on the environment, it will be connected to one of three network hubs: sandbox, nonprod or Production. 
+
+The below table lists the IP addresses used by the Palo Alto firewalls in each hub.
+
+|  Hub Environment | IP Address |
+|-|-|
+| Sandbox |20.49.137.196,20.49.137.7|
+| Nonprod |20.49.168.141,20.49.168.17|
+| Production |20.50.108.242,20.50.109.148|
+
+CFT & SDS AKS environments, this table shows which Hub environment they are connected to: 
+
+|CFT Environment|SDS Environment| Hub Environment | 
+|-|-|-|
+|AAT|Staging|Production|
+|Prod|Prod|Production|
+|Perftest|Test|Nonprod|
+|Preview|Dev|Nonprod|
+|Demo|Demo|Nonprod|
+|ITHC|ITHC|Nonprod|
+|PTL|PTL|Nonprod|
+|Ptlsbox|Ptlsbox|Sandbox|
+|sbox|sbox|Sandbox|
+
+For other environments, you can check which hub the virtual network is connected to by reviewing the virtual network peering. If unsure or any additional queries, please raise a request via the [`#platops-help`](https://hmcts-reform.slack.com/archives/C8SR5CAMU) channel in Slack.
