@@ -17,7 +17,7 @@ Gitpod is the easiest way to develop on this repository, you will get a fresh au
 
 Click the below button to get started:
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#<your-repository-url>)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/hmcts/hmcts.github.io)
 
 ### Local installation
 
