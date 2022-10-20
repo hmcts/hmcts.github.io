@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Front Door configuration - HMCTS</title>
+    <title>External Access in Demo - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/path-to-live/front-door.html">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/environments/external-access-in-demo.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Front Door configuration - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/path-to-live/front-door.html" />
+      <meta name="twitter:title" content="External Access in Demo - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/environments/external-access-in-demo.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Front Door configuration" />
+      <meta property="og:title" content="External Access in Demo" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/path-to-live/front-door.html" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/environments/external-access-in-demo.html" />
 
     
   </head>
@@ -272,86 +272,100 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="front-door-configuration">Front Door configuration</h1>
-<h2 id="purpose">Purpose</h2>
-<h2 id="configuration">Configuration</h2>
-<p>We use <a href="https://azure.microsoft.com/en-gb/services/frontdoor/">Azure Front Door</a> as our entry point
-into the HMCTS estate.</p>
+            <h1 id="external-access-in-demo">External Access in Demo</h1>
+<p>The demo environment is used to demonstrate new features to external stakeholders.</p>
+<p>For guidance on how to deploy an application to the demo environment, see <a href="/ways-of-working/new-component/gitops-flux.html#application-config-in-flux">Application config in flux</a>.</p>
+<p>There are three different ways in which an application in demo can be made available to external users. This is dependent on the ingress class used in your application.</p>
+<p><a href="https://traefik.io/traefik/">Traefik</a> is used as the ingress controller in HMCTS applications.</p>
+<p>The following traefik instances are available to use:</p>
+<div class="table-container">
+        <table>
+          <tr>
+<th>IngressClass</th>
+<th>Default</th>
+<th>Application configuration</th>
+</tr><tr>
+<td>traefik</td>
+<td>Yes</td>
+<td>Application will be reachable externally without VPN. End user will be required to authenticate to Azure AD before being redirected to the application</td>
+</tr><tr>
+<td>traefik-private</td>
+<td>No</td>
+<td>Application will be available over VPN only</td>
+</tr><tr>
+<td>traefik-no-proxy</td>
+<td>No</td>
+<td>Application will be reachable externally without VPN or authentication</td>
+</tr>
+        </table>
+      </div><h3 id="protecting-applications-with-azure-ad-authentication">Protecting applications with Azure AD authentication</h3>
+<p>To ensure end users must authenticate to Azure AD before they can view the application in their web browser, you must also set the <code>enableOAuth</code> flag to <code>true</code></p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">nodejs</span><span class="pi">:</span>
+  <span class="na">ingressClass</span><span class="pi">:</span> <span class="s">traefik</span>
+  <span class="na">disableTraefikTls</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">enableOAuth</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div><h4 id="getting-access-to-hmcts-demo-azure-ad-tenant">Getting access to HMCTS Demo Azure AD tenant</h4>
+<p>If you are not currently a member of the HMCTS Demo Azure AD tenant, check with your team to see if anyone else is. Everyone in this tenant has permission to invite others.</p>
+<p>If no-one in your team is currently a member of the tenant, please raise a request via the <a href="https://hmcts-reform.slack.com/archives/C8SR5CAMU"><code>#platops-help</code></a> channel in Slack.</p>
+<p>To invite a new guest user, navigate to <a href="https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/MsGraphUsers">Azure AD</a> and click <code>New guest user</code>.</p>
+<p>Enter the users name and email address and click <code>Invite</code>.</p>
+<h3 id="protecting-applications-with-hmcts-vpn">Protecting applications with HMCTS VPN</h3>
+<p>If you want your application to only be available on VPN, you must specify the <code>traefik-private</code> ingressClass.</p>
+<p>You do not need to specify the <code>enableOAuth</code> flag in this case.</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">nodejs</span><span class="pi">:</span>
+    <span class="na">ingressClass</span><span class="pi">:</span> <span class="s">traefik-private</span>
+    <span class="na">disableTraefikTls</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre></div><h3 id="making-applications-externally-reachable-without-vpn-or-authentication">Making applications externally reachable without VPN or authentication</h3>
 
-<div class="platform-selector" id="front-door-config-clusters" data-module="app-tabs">
-  <ul class="app-tabs" role="tablist">
-    <li class="app-tabs__item js-tabs__item js-tabs__item--open" role="presentation">
-      <a href="#front-door-config-cft" role="tab" aria-controls="front-door-config-cft" aria-expanded="false">
-        CFT
-      </a>
-    </li>
-    <li class="app-tabs__item js-tabs__item app-tabs__item--current" role="presentation">
-      <a href="#front-door-config-sds" role="tab" aria-controls="front-door-config-sds" aria-expanded="true">
-      SDS
-      </a>
-    </li>
-  </ul>
-  <div class="app-tabs__heading js-tabs__heading">
-    <button aria-controls="front-door-config-cft" class="app-tabs__heading-button">CFT</button>
-  </div>
-  <div class="app-tabs__container js-tabs__container app-tabs__container--hidden" id="front-door-config-cft" role="tabpanel" aria-hidden="true">
-    <div class="app-example__code">
-      Configuration is located in
-      <a href="https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/prod.tfvars">azure-platform-terraform</a>.
-      <p>A minimal configuration for production would be:</p>
-      <pre data-module="app-copy" tabindex="0">
-  <code>{
-    product                     = "product"
-    name                        = "app-name"
-    custom_domain               = "your-app.service.gov.uk"
-    backend_domain              = ["firewall-prod-int-palo-prod.uksouth.cloudapp.azure.com"]
-  }
-</code></pre>
-    </div>
-  </div>
-  
-  <div class="app-tabs__heading js-tabs__heading app-tabs__heading--current">
-    <button aria-controls="front-door-config-sds" class="app-tabs__heading-button" aria-expanded="true">SDS</button>
-  </div>
-
-  <div class="app-tabs__container js-tabs__container" id="front-door-config-sds" role="tabpanel" aria-hidden="false">
-    <div>
-      Configuration is located in 
-      <a href="https://github.com/hmcts/sds-azure-platform/blob/master/environments/prod/prod.tfvars">sds-azure-platform</a>.
-      <p>A minimal configuration for production would be:</p>
-      <pre data-module="app-copy" tabindex="0">
-  <code>{
-    name             = "app-name"
-    custom_domain    = "your-app.service.gov.uk"
-    backend_domain   = ["firewall-prod-int-palo-sdsprod.uksouth.cloudapp.azure.com"]
-  }
-</code></pre>
-    </div>
-  </div>
+<div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-warning-text__assistive">Warning</span>
+    This should only be done for applications that do not work with Azure AD authentication or VPN. Ask Platform Operations first if you are unsure
+  </strong>
 </div>
-
-<p>For the other options available have a look at what other applications are using in the same file.</p>
-<p>Before sending a pull request to this repo ensure that:</p>
-
-<ul>
-<li>your DNS pull request has been merged,</li>
-<li>your TLS certificate has been stored in vault, if you aren&rsquo;t sure then just create the pull request,
-the build will fail if it isn&rsquo;t present.</li>
-</ul>
-<p>Once the above is complete, send a pull request with your configuration change,
-you can ask for review in <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-code-review">#platops-code-review</a>.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2022-11-16">
+<p>If you want your application to only be available without VPN and Azure AD authentication, you must specify the <code>traefik-no-proxy</code> ingressClass.</p>
+<p>You do not need to specify the <code>enableOAuth</code> flag in this case.</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">nodejs</span><span class="pi">:</span>
+  <span class="na">ingressClass</span><span class="pi">:</span> <span class="s">traefik-no-proxy</span>
+  <span class="na">disableTraefikTls</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre></div><h3 id="examples">Examples</h3>
+<div class="table-container">
+        <table>
+          <tr>
+<th>Application GitHub</th>
+<th>IngressClass</th>
+<th>Application URL</th>
+<th>Note</th>
+</tr><tr>
+<td><a href="https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/toffee/toffee-frontend/demo/demo.yaml">toffee-frontend</a></td>
+<td>traefik</td>
+<td><a href="https://toffee.demo.platform.hmcts.net">toffee-frontend</a></td>
+<td>Open link in private browsing mode</td>
+</tr><tr>
+<td><a href="https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/toffee/toffee-recipe-backend/demo/demo.yaml">toffee-recipes-service</a></td>
+<td>traefik-private</td>
+<td><a href="https://toffee-recipe-backend.demo.platform.hmcts.net">toffee-recipes-service</a></td>
+<td>Connect to VPN first</td>
+</tr><tr>
+<td><a href="https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/pip/pip-frontend/patches/demo/pip-frontend.yaml">pip-frontend</a></td>
+<td>traefik-no-proxy</td>
+<td><a href="https://pip-frontend.demo.platform.hmcts.net/">pip-frontend</a></td>
+<td></td>
+</tr>
+        </table>
+      </div>
+              <div data-module='page-expiry' data-last-reviewed-on="2022-09-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 May 2022.
+      This page was last reviewed on 31 March 2022.
 
-        It needs to be reviewed again on 16 November 2022
+        It needs to be reviewed again on 30 September 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 November 2022
+      This page was set to be reviewed before 30 September 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -361,8 +375,8 @@ you can ask for review in <a href="https://hmcts-reform.slack.com/app_redirect?c
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/path-to-live/front-door.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Front+Door+configuration%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fpath-to-live%2Ffront-door.html%29&amp;labels=bug&amp;title=Re%3A+%27Front+Door+configuration%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/environments/external-access-in-demo.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27External+Access+in+Demo%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fenvironments%2Fexternal-access-in-demo.html%29&amp;labels=bug&amp;title=Re%3A+%27External+Access+in+Demo%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
