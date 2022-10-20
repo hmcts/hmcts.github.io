@@ -1,8 +1,25 @@
-# Technical Documentation
+# The HMCTS Way
+
+<a href="https://gitpod.io/#https://github.com/hmcts/hmcts.github.io">
+  <img
+    src="https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod"
+    alt="Contribute with Gitpod"
+  />
+</a>
 
 ## Getting started
 
-To preview or build the website, we need to use the terminal.
+To preview or build the website, there is two options.
+
+### Gitpod
+
+Gitpod is the easiest way to develop on this repository, you will get a fresh automated dev environment without having to setup anything on your machine.
+
+Click the below button to get started:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#<your-repository-url>)
+
+### Local installation
 
 Install Ruby with Rubygems, perferably with a [Ruby version manager][rvm],
 and the [Bundler gem][bundler].
