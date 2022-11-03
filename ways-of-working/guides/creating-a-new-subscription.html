@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Flux V1 - HMCTS</title>
+    <title>Creating a new subscription - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/new-component/flux-v1.html">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/guides/creating-a-new-subscription.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Flux V1 - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/new-component/flux-v1.html" />
+      <meta name="twitter:title" content="Creating a new subscription - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/guides/creating-a-new-subscription.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Flux V1" />
+      <meta property="og:title" content="Creating a new subscription" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/new-component/flux-v1.html" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/guides/creating-a-new-subscription.html" />
 
     
   </head>
@@ -275,60 +275,29 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="flux-v1">Flux V1</h1>
-<p>One of our principles being <b>Everything as Code</b>, we practise <a href="https://www.weave.works/technologies/gitops/">Gitops</a> for application deployment to Kubernetes.</p>
+            <h1 id="creating-a-new-subscription">Creating a new subscription</h1>
+<p>Subscriptions are managed via a GitHub repository <a href="https://github.com/hmcts/azure-enterprise">hmcts/azure-enterprise</a>.</p>
+<p>The <a href="https://github.com/hmcts/azure-enterprise/blob/main/README.md">README</a> in the repository contains full details on the procedure that must be followed to add a new subscription to the Azure AD tenant.</p>
 
-<ul>
-<li>Git as single source of truth.</li>
-<li>Declarative Infrastructure and Application deployment through pull requests.</li>
-</ul>
-<h2 id="flux-v2">Flux v2</h2>
-<p>Check the migration status for <a href="https://github.com/hmcts/cnp-flux-config#migration-status">CNP</a> or <a href="https://github.com/hmcts/sds-flux-config#flux-v2-migration-status">SDS</a> if you are un-sure which environment is using Flux V1 or Flux V2.
-The <a href="/ways-of-working/new-component/gitops-flux.html">GitOps</a> page has more information on Flux v2.</p>
-<h2 id="flux-v1-flux-v1">Flux v1</h2>
-<p><a href="https://docs.fluxcd.io/">Flux</a> is a tool that automatically ensures that the state of a cluster matches the config in <a href="https://github.com/hmcts/cnp-flux-config">Git</a>.</p>
+<div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-warning-text__assistive">Warning</span>
+    Make sure to seek approval from the Head of Platform Operations via email and attach evidence of this approval to the pull request you submit.
+  </strong>
+</div>
 
-<ul>
-<li>It is an operator in the cluster to trigger deployments inside Kubernetes, which means you don&rsquo;t need a separate CD tool.</li>
-<li>It monitors all relevant image repositories, detects new images, triggers deployments and updates the desired running configuration. </li>
-</ul>
-<h2 id="helm-operator">Helm Operator</h2>
-<p><a href="https://docs.fluxcd.io/projects/helm-operator/">Helm operator</a> is a Kubernetes operator, allowing one to declaratively manage Helm chart releases.</p>
-
-<ul>
-<li>Combined with Flux this can be utilized to automate releases in a GitOps manner.</li>
-<li>The desired state of a Helm release is described through a Kubernetes Custom Resource named <code>HelmRelease</code>. </li>
-<li>Based on the creation, mutation or removal of a HelmRelease resource in the cluster, Helm actions are performed by the operator.</li>
-</ul>
-<h2 id="application-config-in-flux">Application config in flux</h2>
-
-<ol>
-<li>See <a href="https://github.com/hmcts/cnp-flux-config/blob/master/docs/app-deployment.md#application-configuration">Application Configuration</a> on how to configure and manage your application deployment in various environments.</li>
-<li><p><code>HelmRelease</code> should refer to the charts automatically published to <a href="https://github.com/hmcts/hmcts-charts">hmcts-charts repository</a> by <a href="/ways-of-working/new-component/helm-chart.html#jenkins">Jenkins</a>. e.g.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>chart:
-    git: git@github.com:hmcts/hmcts-charts
-    ref: master
-    path: stable/plum-recipe-backend
-</code></pre></div></li>
-<li><p>Flux configuration should be light, values should be templated within application&rsquo;s chart wherever possible to avoid duplication in each environment. Use <code>{{ .Values.global.environment }}</code> to refer to the environment in your chart.</p></li>
-<li><p>Flux would automatically detect latest images published to ACR and upgrade Helm Release on cluster while committing the change to Git.</p></li>
-<li><p><b>To avoid issues</b>, please note that any chart configuration (Environment variables) needed for application needs to be published and updated to Flux config before merging the application code that uses the new config. The change should always be non-breaking.</p></li>
-<li><p>Make sure you follow <a href="https://github.com/hmcts/cnp-flux-config/blob/master/CODEOWNERS.md#codeowners-guidelines">codeowners guidelines</a> on the repo.</p></li>
-</ol>
-<h2 id="troubleshooting-issues">Troubleshooting issues</h2>
-<p>See <a href="../troubleshooting/">troubleshooting section</a></p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2022-11-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-05-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 May 2022.
+      This page was last reviewed on 3 November 2022.
 
-        It needs to be reviewed again on 17 November 2022
+        It needs to be reviewed again on 3 May 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 November 2022
+      This page was set to be reviewed before 3 May 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -338,8 +307,8 @@ The <a href="/ways-of-working/new-component/gitops-flux.html">GitOps</a> page ha
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/new-component/flux-v1.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Flux+V1%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fnew-component%2Fflux-v1.html%29&amp;labels=bug&amp;title=Re%3A+%27Flux+V1%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/guides/creating-a-new-subscription.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Creating+a+new+subscription%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fguides%2Fcreating-a-new-subscription.html%29&amp;labels=bug&amp;title=Re%3A+%27Creating+a+new+subscription%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
