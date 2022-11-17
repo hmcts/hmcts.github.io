@@ -345,6 +345,16 @@
 <li>It could be that they are stuck in <code>Pending</code>, <code>ContainerCreating</code> status or might be failing to startup leading to <code>CrashLoopBackOff</code> status.</li>
 <li>Follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further</li>
 </ul>
+<h3 id="jenkins-managed-helm-releases-pods-are-automatically-deleted">Jenkins managed helm releases / pods are automatically deleted</h3>
+
+<ul>
+<li>To maintain the health of the cluster, it is important to cleanup unwanted pods regularly.</li>
+<li>Helm release is cleared for PRs which are merged or closed.</li>
+<li>Helm release of PRs raised by dependency bots (based on <code>dependencies</code> label) is cleared once the functional tests pass.</li>
+<li>Helm release on AAT Staging is also cleared once functional tests pass.</li>
+<li>For optimal usage, You can also configure your pipeline to <a href="https://github.com/hmcts/cnp-jenkins-library#clear-helm-release-on-successful-build">clear Helm releases on successful build</a>.</li>
+<li>A scheduled pipeline runs every hour to clear any helm releases which are not updated in last 3 days. Teams can do more frequent cleanup by overriding in the <a href="https://github.com/hmcts/cnp-aks-pipelines/blob/0fe733120f78b6dabcdd5895bb16134085631842/scripts/delete-inactive-helm-releases.sh#L5">cleanup script</a></li>
+</ul>
 <h3 id="smoke-functional-test-failure">Smoke / Functional test failure</h3>
 
 <ul>
