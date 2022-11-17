@@ -74,6 +74,15 @@ When you run it on the master/main branch it will setup the default branch and t
   - It could be that they are stuck in `Pending`, `ContainerCreating` status or might be failing to startup leading to `CrashLoopBackOff` status.
   - Follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further
 
+### Jenkins managed helm releases / pods are automatically deleted
+
+  - To maintain the health of the cluster, it is important to cleanup unwanted pods regularly.
+  - Helm release is cleared for PRs which are merged or closed.
+  - Helm release of PRs raised by dependency bots (based on `dependencies` label) is cleared once the functional tests pass.
+  - Helm release on AAT Staging is also cleared once functional tests pass.
+  - For optimal usage, You can also configure your pipeline to [clear Helm releases on successful build](https://github.com/hmcts/cnp-jenkins-library#clear-helm-release-on-successful-build).
+  - A scheduled pipeline runs every hour to clear any helm releases which are not updated in last 3 days. Teams can do more frequent cleanup by overriding in the [cleanup script](https://github.com/hmcts/cnp-aks-pipelines/blob/0fe733120f78b6dabcdd5895bb16134085631842/scripts/delete-inactive-helm-releases.sh#L5)
+
 ### Smoke / Functional test failure
 
   - Jenkins only sets secrets as environment variables and runs the `gradle` / `yarn` task to run tests.
