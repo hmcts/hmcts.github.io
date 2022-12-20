@@ -24,7 +24,7 @@
     product                     = "product"
     name                        = "app-name"
     custom_domain               = "your-app.service.gov.uk"
-    backend_domain              = ["firewall-prod-int-palo-prod.uksouth.cloudapp.azure.com"]
+    backend_domain              = ["firewall-prod-int-palo-cftprod.uksouth.cloudapp.azure.com"]
   }
 </code></pre>
     </div>
