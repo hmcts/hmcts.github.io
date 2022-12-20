@@ -95,6 +95,9 @@
   <li>
     <a href="/"><span>The HMCTS way</span></a>
   </li>
+  <li>
+    <a href="/glossary/"><span>Glossary</span></a>
+  </li>
 <li><a href="/onboarding/"><span>Platform onboarding</span></a>
 <ul>
 <li><a href="/onboarding/team/"><span>Team</span></a>
@@ -103,16 +106,16 @@
     <a href="/onboarding/team/jenkins.html"><span>Jenkins</span></a>
   </li>
   <li>
-    <a href="/onboarding/team/azuread.html"><span>Azure AD</span></a>
-  </li>
-  <li>
-    <a href="/onboarding/team/office365.html"><span>Office 365</span></a>
+    <a href="/onboarding/team/slack.html"><span>Slack</span></a>
   </li>
   <li>
     <a href="/onboarding/team/github.html"><span>GitHub</span></a>
   </li>
   <li>
-    <a href="/onboarding/team/slack.html"><span>Slack</span></a>
+    <a href="/onboarding/team/azuread.html"><span>Azure AD</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/team/office365.html"><span>Office 365</span></a>
   </li>
 </ul>
 </li>
@@ -121,9 +124,6 @@
   </li>
 </ul>
 </li>
-  <li>
-    <a href="/glossary/"><span>Glossary</span></a>
-  </li>
 <li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
   <li>
@@ -147,10 +147,10 @@
 <li><a href="/ways-of-working/common-pipeline/publishing-libraries/"><span>Publishing Libraries</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/publishing-libraries/nodejs.html"><span>Node.js</span></a>
+    <a href="/ways-of-working/common-pipeline/publishing-libraries/java.html"><span>Java</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/common-pipeline/publishing-libraries/java.html"><span>Java</span></a>
+    <a href="/ways-of-working/common-pipeline/publishing-libraries/nodejs.html"><span>Node.js</span></a>
   </li>
 </ul>
 </li>
@@ -221,16 +221,16 @@
     <a href="/ways-of-working/guides/afd-waf.html"><span>Azure Frontdoor Web Application Firewall Debug</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/guides/connect-via-vpn.html"><span>Make a new Virtual Network accessible over the VPN</span></a>
+    <a href="/ways-of-working/guides/creating-a-new-subscription.html"><span>Creating a new subscription</span></a>
   </li>
   <li>
     <a href="/ways-of-working/guides/profile-java-app-in-aks.html"><span>Profile a Java application running in an AKS cluster</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/guides/flyway-database-migrations.html"><span>Flyway database migration</span></a>
+    <a href="/ways-of-working/guides/connect-via-vpn.html"><span>Make a new Virtual Network accessible over the VPN</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/guides/creating-a-new-subscription.html"><span>Creating a new subscription</span></a>
+    <a href="/ways-of-working/guides/flyway-database-migrations.html"><span>Flyway database migration</span></a>
   </li>
 </ul>
 </li>
@@ -244,13 +244,9 @@
   </li>
 </ul>
 </li>
-<li><a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
-<ul>
   <li>
-    <a href="/ways-of-working/troubleshooting/fluxV1.html"><span>Flux V1</span></a>
+    <a href="/ways-of-working/troubleshooting/"><span>Troubleshooting issues</span></a>
   </li>
-</ul>
-</li>
   <li>
     <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
   </li>
@@ -420,10 +416,6 @@ You can check if the issue lies with artifactory by temporarily bypassing it usi
 <blockquote>
 <p>Always check <strong>why</strong> your release or pod has failed in the first instance.
 Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be <em>hiding a potential bug</em> which could also <em>occur in production</em>.</p>
-</blockquote>
-
-<blockquote>
-<p>Please see <a href="/ways-of-working/troubleshooting/fluxV1.html">V1 docs</a> for troubleshooting an issue with resources managed through Flux V1.</p>
 </blockquote>
 <h3 id="latest-image-is-not-updated-in-cluster">Latest image is not updated in cluster</h3>
 
