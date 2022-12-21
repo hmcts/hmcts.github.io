@@ -172,7 +172,7 @@ And then reference this branch within your repo's [Jenkinsfile](https://github.c
 - If flux has committed the new image to Github, check if the `HelmRelease` has been updated by Flux. Run below command and check that the image tag has been updated in the output
 
     ```shell
-    kubectl get helmreleases.helm.toolkit.fluxcd.io -n <your-namespace> <your-helm-release-name> -o yaml
+    kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
     ```
 - If Image is not updated in above, [Change in git is not applied to cluster](#change-in-git-is-not-applied-to-cluster).
 - If the image tag is updated and still application pods are not deployed, see [Updated HelmRelease is not deployed to cluster](#updated-helmrelease-is-not-deployed-to-cluster)
@@ -213,7 +213,7 @@ And then reference this branch within your repo's [Jenkinsfile](https://github.c
    - Check HelmRelease status to see the status.
 
     ```shell
-    kubectl get helmreleases.helm.toolkit.fluxcd.io -n <namespace> <Release Name>
+    kubectl get hr -n <namespace> <Release Name>
     ```
    - Look at helm operator logs to see if there are any errors specific to your helm release
 
@@ -223,14 +223,14 @@ And then reference this branch within your repo's [Jenkinsfile](https://github.c
    - If you see any errors like, `status 'pending-install' of release does not allow a safe upgrade"`. You need to delete `HelmRelease` for fixing this, request platops for help if you do not have permissions.
 
     ```shell
-    kubectl delete helmreleases.helm.toolkit.fluxcd.io <helm-release-name> -n <namespace>
+    kubectl delete hr <helm-release-name> -n <namespace>
     ```
    - In most cases, helm release gets timed out with an error in log similar to ` failed: timed out waiting for the condition`. This usually means application pods didn't startup in time and you need to look at your pods to know more.
 
      Check the latest status on helm release and if it has already been rolled back to previous release.
 
     ```shell
-    kubectl describe helmreleases.helm.toolkit.fluxcd.io <helm-release-name> -n <your-namespace>
+    kubectl describe hr <helm-release-name> -n <your-namespace>
     ```
    - If you are looking at pods after a long time, `HelmRelease` might have been rolled back and you won't have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.
 
