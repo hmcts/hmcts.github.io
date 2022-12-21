@@ -423,7 +423,7 @@ Although you may have permissions to delete a helm release or pod in a non-produ
 <li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image. </li>
 <li>If image hasn&rsquo;t been committed to Github, see <a href="#flux-did-not-commit-latest-image-to-github"> Flux did not commit latest image to Github</a>.</li>
 <li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
 </code></pre></div></li>
 <li><p>If Image is not updated in above, <a href="#change-in-git-is-not-applied-to-cluster">Change in git is not applied to cluster</a>.</p></li>
 <li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed-to-cluster">Updated HelmRelease is not deployed to cluster</a></p></li>
@@ -456,17 +456,17 @@ kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <
 <ul>
 <li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
 <li><p>Check HelmRelease status to see the status.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get helmreleases.helm.toolkit.fluxcd.io <span class="nt">-n</span> &lt;namespace&gt; &lt;Release Name&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get hr <span class="nt">-n</span> &lt;namespace&gt; &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-controller <span class="nt">--tail</span><span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
 </code></pre></div></li>
 <li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
 </code></pre></div></li>
 <li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
 <p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl describe helmreleases.helm.toolkit.fluxcd.io &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
 </code></pre></div></li>
 <li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
 <li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
