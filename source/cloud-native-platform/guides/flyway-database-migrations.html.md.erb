@@ -1,0 +1,140 @@
+---
+title: Flyway database migration
+last_reviewed_on: 2022-03-17
+review_in: 6 months
+weight: 10
+hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+To prevent application startup failure for larger migrations due to Kubernetes probes it's essential that databases are migrated outside of Kubernetes via the Continuous Delivery pipeline.
+This page attempts to show the steps required to perform a safe database migration.
+
+For a more detailed explanation on why this is necessary see: [Making a database schema change](../standards/db-schema-change.html)
+
+
+Example [pull request](https://github.com/hmcts/am-role-assignment-service/pull/1149)
+
+Alternatively see below for a step-by-step guide.
+
+### Config
+
+Enable database migration for Jenkins:
+
+- Add `enableDbMigration(product)` to `Jenkinsfile_CNP` file
+
+Add config to `build.gradle`:
+
+- Ensure the [latest flyway version](https://plugins.gradle.org/plugin/org.flywaydb.flyway) is set e.g. `id 'org.flywaydb.flyway' version '<VERSION_NUMBER>'`
+- Add this block:
+
+```groovy
+flyway {
+  url = System.getenv('FLYWAY_URL')
+  user = System.getenv('FLYWAY_USER')
+  password = System.getenv('FLYWAY_PASSWORD')
+  baselineOnMigrate = true
+  baselineVersion = '000'
+}
+
+task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
+  baselineOnMigrate = true
+  if (project.hasProperty("dburl")) {
+    url = "jdbc:postgresql://${dburl}"
+  }
+}
+```
+
+Ensure the `RUN_DB_MIGRATION_ON_STARTUP` is configured appropriately:
+
+- Add `RUN_DB_MIGRATION_ON_STARTUP: true` to the `values.preview.template.yaml` file - This is so that preview will migrate on startup
+- Add `RUN_DB_MIGRATION_ON_STARTUP: false` to the `values.yaml` file
+
+Set the migration to run on app startup
+
+- In `application.yaml` set:
+
+```yaml
+dbMigration:
+    # When true, the app will run DB migration on startup.
+    # Otherwise, it will just check if all migrations have been applied (and fail to start if not).
+    runOnStartup: ${RUN_DB_MIGRATION_ON_STARTUP:true}
+```
+### Java files
+
+
+Make sure you update the package name to match your application's in the below examples
+
+- Add a class to configure flyway:
+
+```java
+package uk.gov.hmcts.reform.example;
+
+import org.flywaydb.core.Flyway;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import uk.gov.hmcts.reform.example.data.migration.FlywayNoOpStrategy;
+
+@AutoConfigureAfter({
+    DataSourceAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class
+})
+@AutoConfigureBefore(FlywayAutoConfiguration.class)
+@Configuration
+@ConditionalOnClass(Flyway.class)
+@ConditionalOnProperty(prefix = "dbMigration", name = "runOnStartup", havingValue = "false")
+public class FlywayConfiguration {
+
+    @Bean
+    public FlywayMigrationStrategy flywayMigrationStrategy() {
+        return new FlywayNoOpStrategy();
+    }
+}
+```
+
+- And then this class to do the flyway migration:
+
+```java
+package uk.gov.hmcts.reform.example.data.migration;
+
+import org.flywaydb.core.Flyway;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
+import uk.gov.hmcts.reform.example.controller.exception.PendingMigrationScriptException;
+
+import java.util.stream.Stream;
+
+public class FlywayNoOpStrategy implements FlywayMigrationStrategy {
+
+    @Override
+    public void migrate(Flyway flyway) {
+     Stream.of(flyway.info().all())
+         .filter(info -> !info.getState().isApplied())
+         .findFirst()
+         .ifPresent(info -> {
+             throw new PendingMigrationScriptException(info.getScript());
+         });
+    }
+}
+ ```
+
+ - Migration exception class:
+
+ ```java
+package uk.gov.hmcts.reform.example.data.exception;
+
+public class PendingMigrationScriptException extends RuntimeException {
+
+    public PendingMigrationScriptException(String script) {
+        super("Found migration not yet applied: " + script);
+    }
+}
+ ```

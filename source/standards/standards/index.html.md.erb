@@ -1,0 +1,10 @@
+---
+title: Standards
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+<% current_page.children.each do |page| %>
+- [<%= page.data.title %>](<%= page.url %>)
+<% end %>
