@@ -2,7 +2,7 @@
 title: Infrastructure as Code
 last_reviewed_on: 2022-05-17
 review_in: 6 months
-weight: 1
+weight: 2
 ---
 
 # <%= current_page.data.title %>
@@ -22,7 +22,7 @@ and components.
 
 All configuration code is managed under source control in GitHub and should be public as described in the [GDS Service Manual](https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable).
 
-The infrastructure code will be used to provision and configure **one set of infrastructure in each environment**. 
+The infrastructure code will be used to provision and configure **one set of infrastructure in each environment**.
 
 ## Infrastructure levels
 
@@ -67,7 +67,7 @@ This is infrastructure provisioned by the product team and is shared between all
 
 The infrastructure code must be managed in a GitHub repository. The repository should be named `{product}-shared-infrastructure`.
 
-Terraform `.tf` files must be placed in the root of the repository. 
+Terraform `.tf` files must be placed in the root of the repository.
 
 The [common build pipeline](../common-pipeline) must be used to build the infrastructure.
 
