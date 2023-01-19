@@ -23,6 +23,34 @@ See [create a GitHub repository](/ways-of-working/new-component/github-repo.html
  - Access should be managed through GitHub teams and not individuals.
  - If no one from your team have access, follow [asking for help](/ways-of-working/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
 
+
+## Receiving an email regarding inactive account
+
+You may have received an email from one of our scheduled pipelines which deletes guest user accounts if they're inactive for longer than 31 days.
+
+
+### Account close to being deleted
+
+Users who are within a week of being deleted get notified via email on the lead up to the deletion date, starting 7 days before.
+
+If you have received an email about your account being close to being deleted, because of inactivity, that is because you haven't logged into the `CJS Common Platform` Azure Tenant for a while and need to do so now to keep your access.
+
+Please don't ignore this email if you use the `CJS Common Platform` Tenant or GitHub as you will lose access do both if you don't log in.
+
+To log into the `CJS Common Platform` Tenant by clicking the link below and signing in.
+
+Login link: [CJS Common Platform]( https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082)
+
+*Note:* We're looking into fixing this soon so that as long as you're active in either GitHub or the `CJS Common Platform` Tenant you will not lose access.
+
+### Account has been deleted
+
+If your account has been deleted and you need it re-enabled, you need to create a ticket via slack in the `#platops-help` channel and someone will send you another guest invite.
+
+Once that is done you will then be able to get your GitHub access back by asking one of your team members to create a PR in the [github-management](https://github.com/hmcts/github-management) repository, adding your user back in.
+
+[Example PR - adding a user](https://github.com/hmcts/github-management/pull/1079/files)
+
 ## Jenkins
 
 ### Jenkins is unavailable
