@@ -106,13 +106,13 @@
     <a href="/onboarding/team/office365.html"><span>Office 365</span></a>
   </li>
   <li>
-    <a href="/onboarding/team/slack.html"><span>Slack</span></a>
-  </li>
-  <li>
     <a href="/onboarding/team/azuread.html"><span>Azure AD</span></a>
   </li>
   <li>
     <a href="/onboarding/team/jenkins.html"><span>Jenkins</span></a>
+  </li>
+  <li>
+    <a href="/onboarding/team/slack.html"><span>Slack</span></a>
   </li>
 </ul>
 </li>
@@ -124,6 +124,13 @@
   <li>
     <a href="/glossary/"><span>Glossary</span></a>
   </li>
+<li><a href="/information-security/"><span>Information security</span></a>
+<ul>
+  <li>
+    <a href="/information-security/certificate-automation.html"><span>TLS certificates</span></a>
+  </li>
+</ul>
+</li>
 <li><a href="/ways-of-working/"><span>Ways of working</span></a>
 <ul>
   <li>
@@ -147,18 +154,18 @@
 <li><a href="/ways-of-working/common-pipeline/publishing-libraries/"><span>Publishing Libraries</span></a>
 <ul>
   <li>
-    <a href="/ways-of-working/common-pipeline/publishing-libraries/java.html"><span>Java</span></a>
+    <a href="/ways-of-working/common-pipeline/publishing-libraries/nodejs.html"><span>Node.js</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/common-pipeline/publishing-libraries/nodejs.html"><span>Node.js</span></a>
+    <a href="/ways-of-working/common-pipeline/publishing-libraries/java.html"><span>Java</span></a>
   </li>
 </ul>
 </li>
   <li>
-    <a href="/ways-of-working/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
+    <a href="/ways-of-working/common-pipeline/tips_and_tricks.html"><span>Tips and Tricks</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/common-pipeline/tips_and_tricks.html"><span>Tips and Tricks</span></a>
+    <a href="/ways-of-working/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
   </li>
 </ul>
 </li>
@@ -174,10 +181,10 @@
     <a href="/ways-of-working/new-component/helm-chart.html"><span>Helm chart</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/new-component/gitops-flux.html"><span>GitOps</span></a>
+    <a href="/ways-of-working/new-component/secrets-management.html"><span>Secrets Management</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/new-component/secrets-management.html"><span>Secrets Management</span></a>
+    <a href="/ways-of-working/new-component/gitops-flux.html"><span>GitOps</span></a>
   </li>
   <li>
     <a href="/ways-of-working/new-component/flux-v1.html"><span>Flux V1</span></a>
@@ -218,10 +225,10 @@
     <a href="/ways-of-working/guides/managing-manual-key-vault-secrets.html"><span>Managing Manual Key Vault Secrets</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/guides/afd-waf.html"><span>Azure Frontdoor Web Application Firewall Debug</span></a>
+    <a href="/ways-of-working/guides/flyway-database-migrations.html"><span>Flyway database migration</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/guides/flyway-database-migrations.html"><span>Flyway database migration</span></a>
+    <a href="/ways-of-working/guides/profile-java-app-in-aks.html"><span>Profile a Java application running in an AKS cluster</span></a>
   </li>
   <li>
     <a href="/ways-of-working/guides/connect-via-vpn.html"><span>Make a new Virtual Network accessible over the VPN</span></a>
@@ -230,7 +237,7 @@
     <a href="/ways-of-working/guides/creating-a-new-subscription.html"><span>Creating a new subscription</span></a>
   </li>
   <li>
-    <a href="/ways-of-working/guides/profile-java-app-in-aks.html"><span>Profile a Java application running in an AKS cluster</span></a>
+    <a href="/ways-of-working/guides/afd-waf.html"><span>Azure Frontdoor Web Application Firewall Debug</span></a>
   </li>
 </ul>
 </li>
@@ -249,13 +256,6 @@
   </li>
   <li>
     <a href="/ways-of-working/asking-for-help/"><span>Asking for help</span></a>
-  </li>
-</ul>
-</li>
-<li><a href="/information-security/"><span>Information security</span></a>
-<ul>
-  <li>
-    <a href="/information-security/certificate-automation.html"><span>TLS certificates</span></a>
   </li>
 </ul>
 </li>
@@ -288,6 +288,19 @@
 <li>Access should be managed through GitHub teams and not individuals.</li>
 <li>If no one from your team have access, follow <a href="/ways-of-working/asking-for-help/#asking-for-help">asking for help</a> to request org admins in one of the community/ support channels.</li>
 </ul>
+<h2 id="receiving-an-email-regarding-inactive-account">Receiving an email regarding inactive account</h2>
+<p>You may have received an email from our scheduled pipeline which deletes guest user accounts if they&rsquo;re inactive for longer than 31 days.</p>
+<h3 id="account-close-to-being-deleted">Account close to being deleted</h3>
+<p>Users who are within a week of being deleted get notified via email on the lead up to the deletion date, starting 7 days before.</p>
+<p>If you have received an email about your account being close to being deleted, because of inactivity, that is because you haven&rsquo;t logged into the <code>CJS Common Platform</code> Azure Tenant for a while and need to do so now to keep your access.</p>
+<p>Please don&rsquo;t ignore this email if you use the <code>CJS Common Platform</code> Tenant or GitHub as you will lose access to both if you don&rsquo;t log in.</p>
+<p>To extend your access, visit the <a href="https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082">CJS Common Platform Azure portal</a>.</p>
+<p>Login link: <a href="https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082">CJS Common Platform</a></p>
+<p><em>Note:</em> We&rsquo;re looking into fixing this soon so that as long as you&rsquo;re active in either GitHub or the <code>CJS Common Platform</code> Tenant you will not lose access.</p>
+<h3 id="account-has-been-deleted">Account has been deleted</h3>
+<p>If your account has been deleted and you need it re-enabled, you need to create a ticket via slack in the <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> channel and someone will send you another guest invite.</p>
+<p>Once that is done you will then be able to get your GitHub access back by asking one of your team members to create a PR in the <a href="https://github.com/hmcts/github-management">github-management</a> repository, adding your user back in.</p>
+<p><a href="https://github.com/hmcts/github-management/pull/1079/files">Example PR - adding a user</a> (requires access to the HMCTS GitHub organisation)</p>
 <h2 id="jenkins">Jenkins</h2>
 <h3 id="jenkins-is-unavailable">Jenkins is unavailable</h3>
 
