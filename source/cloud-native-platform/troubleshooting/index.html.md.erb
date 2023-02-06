@@ -10,18 +10,18 @@ weight: 98
 
 ### Adding a new user on GitHub
 
- - See [GitHub Onboarding](/onboarding/team/github.html#access) for how to get access
+ - See [GitHub Onboarding](/cloud-native-platform/onboarding/team/github.html#access) for how to get access
  - Make sure the user has accepted the invite received on the email setup in Github or by visiting [github.com/hmcts](https://github.com/hmcts).
 
 ### Creating a new GitHub repository
 
-See [create a GitHub repository](/ways-of-working/new-component/github-repo.html#)
+See [create a GitHub repository](../new-component/github-repo.html#)
 
 ### Access to GitHub Repo
 
  - All repositories should be administered by the team who owns it.
  - Access should be managed through GitHub teams and not individuals.
- - If no one from your team have access, follow [asking for help](/ways-of-working/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
+ - If no one from your team have access, follow [asking for help](/cloud-native-platform/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
 
 
 ## Receiving an email regarding inactive account
@@ -59,7 +59,7 @@ Once that is done you will then be able to get your GitHub access back by asking
 
 ### Cannot login to Jenkins
 
-  - Login to Jenkins is managed by Azure AD, please make sure user is added to right [Azure AD groups](/onboarding/person/#azure-ad-groups)
+  - Login to Jenkins is managed by Azure AD, please make sure user is added to right [Azure AD groups](/cloud-native-platform/onboarding/person/#azure-ad-groups)
 
 ### You are now logged out of Jenkins/ Infinite loop when trying to login to Jenkins
 
@@ -67,7 +67,7 @@ Once that is done you will then be able to get your GitHub access back by asking
 
 ### Cannot see my new repo in Jenkins org / Dashboard
 
-  - See [Jenkins Onboarding section](/onboarding/team/jenkins.html#jenkins) to add your app to Jenkins Org / Dashboard
+  - See [Jenkins Onboarding section](/cloud-native-platform/onboarding/team/jenkins.html#jenkins) to add your app to Jenkins Org / Dashboard
 
 ### Cannot find default branch
 
@@ -95,9 +95,9 @@ When you run it on the master/main branch it will setup the default branch and t
   - Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.
 
 ### Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure
-  
+
   - See [Connecting to AKS Clusters](#connecting-to-aks-clusters) and connect to the relevant cluster.
-  - These errors usually mean your pods didn't start as expected in time. 
+  - These errors usually mean your pods didn't start as expected in time.
   - It could be that they are stuck in `Pending`, `ContainerCreating` status or might be failing to startup leading to `CrashLoopBackOff` status.
   - Follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further
 
@@ -142,7 +142,7 @@ Gradle is failing a functional test. To help get more information on why, you co
 And then reference this branch within your repo's [Jenkinsfile](https://github.com/hmcts/document-management-store-app/blob/646593336377fd59112b0b6c84fd223d0cb7832c/Jenkinsfile_CNP#L12)
 
 ## Debug Application Startup issues in AKS
- 
+
 - There could be many reasons why applications could fail to startup like :
     - A secret referred in helm chart is missing in keyvaults
     - Pod identity is not able to pull keyvault secrets due to missing permissions
@@ -151,50 +151,50 @@ And then reference this branch within your repo's [Jenkinsfile](https://github.c
     - A misconfigured environment variable, example - incorrect URL of a dependent service.
 
 - Below are some handy kubectl commands to debug the issues
-    
+
     To check latest events on your namespace:
-     
+
      ```shell
      kubectl get events -n <your-namespace>
      ```
-     
+
      To check status of pods:
-     
+
      ```shell
      kubectl get pods -n <your-namespace> | grep <helm-release-name>
-     
+
      #Examples
      # kubectl get pods -n ccd | grep ccd-data-store-api
      # kubectl get pods -n ccd | grep pr-123
      ```
-     
-     To check status of a specific pod which is not running 
-     
+
+     To check status of a specific pod which is not running
+
      ```shell
      kubectl describe pod <pod-name> -n <your-namespace>
      ```
-     
+
      To check logs of pods which is not starting
-     
+
      ```shell
-     kubectl logs <pod-name> -n <your-namespace> 
-     
+     kubectl logs <pod-name> -n <your-namespace>
+
      #To follow logs
      kubectl logs <pod-name> -n <your-namespace> -f
-     
+
      # To check previous pod logs if its restarting
      kubectl logs <pod-name> -n <your-namespace> -p
-     
+
      ```
 
 ## Flux / Gitops
 
    > Always check __why__ your release or pod has failed in the first instance.
-   > Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be _hiding a potential bug_ which could also _occur in production_. 
+   > Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be _hiding a potential bug_ which could also _occur in production_.
 
 ### Latest image is not updated in cluster
 
-- Start with checking [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) to make sure flux has updated/ committed the image. 
+- Start with checking [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) to make sure flux has updated/ committed the image.
 - If image hasn't been committed to Github, see [ Flux did not commit latest image to Github](#flux-did-not-commit-latest-image-to-github).
 - If flux has committed the new image to Github, check if the `HelmRelease` has been updated by Flux. Run below command and check that the image tag has been updated in the output
 
@@ -211,7 +211,7 @@ And then reference this branch within your repo's [Jenkinsfile](https://github.c
    - Check status of `imagerepositories` and verify the last scan.
 
     ```shell
-    kubectl get imagerepositories -n flux-system  <repository name(usually helm release name)> 
+    kubectl get imagerepositories -n flux-system  <repository name(usually helm release name)>
     ```
    - If the last scan doesn't update, check image reflector controller logs to see if there any logs related to the helm repo.
 

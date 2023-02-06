@@ -13,8 +13,8 @@ We deploy all of our applications using a helm chart to Kubernetes.
 
 ## Installing helm
 
-Install helm along with the other tools using the links on the 
-[person onboarding doc](/onboarding/person/#the-following-tools-are-commonly-used).
+Install helm along with the other tools using the links on the
+[person onboarding doc](/cloud-native-platform/onboarding/person/#the-following-tools-are-commonly-used).
 
 ## Base charts
 
@@ -36,7 +36,7 @@ java:
     A_KEY: 'a value'
 ```
 
-To see the full helm chart take a look at 
+To see the full helm chart take a look at
 [spring-boot-template](https://github.com/hmcts/spring-boot-template/tree/master/charts/rpe-spring-boot-template).
 
 The main base charts are:
@@ -84,7 +84,7 @@ then you should make this conditional with:
 
 Chart.yaml:
 
-```yaml 
+```yaml
 dependencies:
   - name: redis
     version: 10.6.18
@@ -111,7 +111,7 @@ redis:
 
 ## Advanced values for the preview environment
 
-You can add additional value configurations for use within the preview environment which is useful when you want to test ccd/xui per pull request (PR). 
+You can add additional value configurations for use within the preview environment which is useful when you want to test ccd/xui per pull request (PR).
 To make use of this feature you need the following:
 
 * Your PR needs to have a label in the format of `pr-values: application` (example: `pr-values: ccd`
@@ -146,7 +146,7 @@ Jenkins will automatically increase the version if you don't do this, so you don
 
 ### Azure DevOps
 
-Chart builds are run against the 'preview' AKS cluster, 
+Chart builds are run against the 'preview' AKS cluster,
 and chart are published to 'hmctspublic' Azure Container Registry.
 
 See the [chart-java pipeline](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) for an example.
@@ -154,7 +154,7 @@ See the [chart-java pipeline](https://github.com/hmcts/chart-java/blob/master/az
 It does:
 
 - on pull request: trigger a build that performs helm lint, helm install and helm test
-- on tag: trigger a build that performs helm lint, helm install, helm test, helm package and 
+- on tag: trigger a build that performs helm lint, helm install, helm test, helm package and
 publish to 'hmctspublic' ACR
 
 There are [reusable jobs](https://github.com/hmcts/cnp-azuredevops-libraries/tree/master/jobs/charts) that you can use.
@@ -176,7 +176,7 @@ Join the `dcd_group_ado_user_v2` AzureAD group, this will give you:
 1. Access to AzureDevOps,
 2. Read access to the CNP project where the chart builds live.
 
-Add an azure-pipelines.yml file to your repo, using 
+Add an azure-pipelines.yml file to your repo, using
 [chart-java](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) as a base.
 
 Ask on [#rpe](https://hmcts-reform.slack.com/app_redirect?channel=rpe) on slack for someone to setup the pipeline for you in AzureDevOps.
