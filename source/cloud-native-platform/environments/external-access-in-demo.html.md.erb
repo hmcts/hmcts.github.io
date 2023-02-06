@@ -1,0 +1,80 @@
+---
+title: External Access in Demo
+last_reviewed_on: 2022-03-31
+review_in: 6 months
+weight: 10
+hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+The demo environment is used to demonstrate new features to external stakeholders.
+
+For guidance on how to deploy an application to the demo environment, see [Application config in flux](../new-component/gitops-flux.html#application-config-in-flux).
+
+There are three different ways in which an application in demo can be made available to external users. This is dependent on the ingress class used in your application.
+
+[Traefik](https://traefik.io/traefik/) is used as the ingress controller in HMCTS applications.
+
+The following traefik instances are available to use:
+
+| IngressClass | Default | Application configuration |
+|-|-|-|
+| traefik | Yes | Application will be reachable externally without VPN. End user will be required to authenticate to Azure AD before being redirected to the application |
+| traefik-private | No | Application will be available over VPN only |
+| traefik-no-proxy | No | Application will be reachable externally without VPN or authentication |
+
+### Protecting applications with Azure AD authentication
+
+To ensure end users must authenticate to Azure AD before they can view the application in their web browser, you must also set the `enableOAuth` flag to `true`
+
+```yaml
+nodejs:
+  ingressClass: traefik
+  disableTraefikTls: false
+  enableOAuth: true
+```
+
+#### Getting access to HMCTS Demo Azure AD tenant
+
+If you are not currently a member of the HMCTS Demo Azure AD tenant, check with your team to see if anyone else is. Everyone in this tenant has permission to invite others.
+
+If no-one in your team is currently a member of the tenant, please raise a request via the [`#platops-help`](https://hmcts-reform.slack.com/archives/C8SR5CAMU) channel in Slack.
+
+To invite a new guest user, navigate to [Azure AD](https://portal.azure.com/hmctsexecdemo.onmicrosoft.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/MsGraphUsers) and click `New guest user`.
+
+Enter the users name and email address and click `Invite`.
+
+### Protecting applications with HMCTS VPN
+
+If you want your application to only be available on VPN, you must specify the `traefik-private` ingressClass.
+
+You do not need to specify the `enableOAuth` flag in this case.
+
+```yaml
+nodejs:
+    ingressClass: traefik-private
+    disableTraefikTls: false
+```
+
+### Making applications externally reachable without VPN or authentication
+
+<%= warning_text('This should only be done for applications that do not work with Azure AD authentication or VPN. Ask Platform Operations first if you are unsure')%>
+
+If you want your application to only be available without VPN and Azure AD authentication, you must specify the `traefik-no-proxy` ingressClass.
+
+You do not need to specify the `enableOAuth` flag in this case.
+
+```yaml
+nodejs:
+  ingressClass: traefik-no-proxy
+  disableTraefikTls: false
+```
+
+### Examples
+
+|  Application GitHub | IngressClass | Application URL | Note |
+|-|-|-|-|
+| [toffee-frontend](https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/toffee/toffee-frontend/demo/demo.yaml) | traefik | [toffee-frontend](https://toffee.demo.platform.hmcts.net) | Open link in private browsing mode |
+| [toffee-recipes-service](https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/toffee/toffee-recipe-backend/demo/demo.yaml) | traefik-private | [toffee-recipes-service](https://toffee-recipe-backend.demo.platform.hmcts.net) | Connect to VPN first |
+| [pip-frontend](https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/pip/pip-frontend/patches/demo/pip-frontend.yaml) | traefik-no-proxy | [pip-frontend](https://pip-frontend.demo.platform.hmcts.net/) |  |

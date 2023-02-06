@@ -1,0 +1,23 @@
+---
+title: Environments
+last_reviewed_on: 2022-05-17
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+
+
+| Shared Services Environment | CFT Environment | Use case | Path to live | Additional Information |
+| - | - | - | - | - | - |
+| Prod            | Prod       | Live services | Yes |  |
+| Staging         | AAT        | Automated Acceptance Testing before moving to Prod | Yes |  |
+| Demo            | Demo       | External demonstrations | No | <ul><li>Used for demonstrating to external stakeholders</li> <li>No VPN required</li></ul> |
+| ITHC            | ITHC       | IT Health Check, used for penetration testing | No |  |
+| Test            | Perftest   | Performance testing | No | |
+| Dev             | Preview    | Pre-merge automated testing and Pull Request checks | Yes | <ul> <li>Destroyed nightly</li> <li>Pull requests are deployed</li>​ <br> <li>Automatically tested with functional tests​</li> <br> <li>Application points to AAT instance for dependant services</li> </ul> |
+| Sandbox         | Sandbox    | Testing infrastructure changes, POCs, experimentation | No | |
+
+- [External access in demo](./external-access-in-demo.html)
+- [External IP addresses](./external-ip-addresses.html)
