@@ -19,36 +19,39 @@ See below the list of AKS clusters that have auto-shutdown enabled alongside the
 | PTLSBOX | PTLSBOX | 6:30pm |
 | Sandbox | Sandbox | 6:30pm |
 
+
 ### How to start and stop the cluster from pipeline
 
 If required, an AKS cluster can be started or stopped using a github action on the aks-auto-shutdown repository.
 
 #### Start a cluster
-1. Navigate to [aks-auto-shutdown](https://github.com/hmcts/aks-auto-shutdown) repository
-2. Navigate to the actions tab
+1. Navigate to [aks-auto-shutdown](https://github.com/hmcts/aks-auto-shutdown) repository.
+2. Navigate to the actions tab.
 3. Select 'AKS Auto Start' from the left hand 'Actions'
 4. Select 'Run Workflow'
-5. Ensure the 'master' branch is selected and select 'Run workflow'
+5. Ensure the 'master' branch is selected and select 'Run Workflow'
 6. Select the new build which will appear at the top under Workflow Runs and will be identifable by an orange dot which means the build is currently running.
 7. Select 'build' under 'Jobs'
 8. Expand the 'AKS Auto Start' dropdown to view the job output.
 
 #### Stop a cluster
-1. Navigate to [aks-auto-shutdown](https://github.com/hmcts/aks-auto-shutdown) repository
-2. Navigate to the actions tab
+1. Navigate to [aks-auto-shutdown](https://github.com/hmcts/aks-auto-shutdown) repository.
+2. Navigate to the actions tab.
 3. Select 'AKS Auto Shutdown' from the left hand 'Actions'
 4. Select 'Run Workflow'
-5. Ensure the 'master' branch is selected and select 'Run workflow'
+5. Ensure the 'master' branch is selected and select 'Run Workflow'
 6. Select the new build which will appear at the top under Workflow Runs and will be identifable by an orange dot which means the build is currently running.
 7. Select 'build' under 'Jobs'
 8. Expand the 'AKS Auto Shutdown' dropdown to view the job output.
 
+
 ### How to update tags in portal
 
 1. Navigate to 'Kubernetes services' on the Azure Portal.
-2. Select the relevant cluster from the list
-3. Select the 'edit' button beside tags
+2. Select the relevant cluster from the list.
+3. Select the 'edit' button beside tags.
 4. If auto-shutdown of the specific AKS cluster is enabled, there will be a tag with the name 'autoShutdown' and its value will be 'true'. To disable auto-shutdown for this cluster change this value to false.
 
-### How to ask for help ( raise a ticket )
+
+### How to ask for help (raise a ticket)
 If you need help you can raise a support request to the `Platform Operations` team via the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) channel.
