@@ -1,0 +1,45 @@
+---
+title: APIs
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+APIs should be written using Java, preferably with an industry standard framework such.
+
+### Java
+
+Use the current LTS version. Ensure that there is a process in place to upgrade it as new versions released.
+
+### Dependency management
+
+Ensure dependabot or renovate has been configured so that dependencies are kept up to date.
+
+### Build tools
+
+Use gradle or maven to build the application. Ant is not recommended.
+
+### Code style
+
+Use the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) or a derivative.
+
+Set up tooling to enforce coding standards such as checkstyle or spotless.
+
+### Security
+
+Use [OWASP](https://owasp.org/) or [Snyk](https://snyk.io/) for dependency scanning.
+
+### Documentation
+
+Use [OpenAPI](https://swagger.io/specification/) for API documentation.
+
+Using JavaDoc is not necessary.
+
+Documentation should not explain what the code is doing, but can be used to clarify why it is doing it.
+
+### Versioning
+
+Use content type negotiation or endpoint naming to version the API.
+
+Do not make backward incompatible changes to existing endpoints.
+
