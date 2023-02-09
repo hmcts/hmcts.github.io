@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Glossary - HMCTS</title>
+    <title>Environment schedule - HMCTS</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/glossary/">
+    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/environments/aks-auto-shutdown.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Glossary - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/glossary/" />
+      <meta name="twitter:title" content="Environment schedule - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/environments/aks-auto-shutdown.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Glossary" />
+      <meta property="og:title" content="Environment schedule" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/glossary/" />
+      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/environments/aks-auto-shutdown.html" />
 
     
   </head>
@@ -271,32 +271,91 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="glossary">Glossary</h1>
-<h3 id="component">Component</h3>
-<p>An independently deployable piece of software. Synonymous with a microservice, the two terms
-are often used interchangeably.</p>
-<h3 id="platform">Platform</h3>
-<p>A collection of environments, build pipelines, code modules, libraries and tools used to deliver
-working software to users.</p>
-<h3 id="product">Product</h3>
-<p>A collection of software <a href="#component">components</a> which form a single line of business. A single product may be
-built by multiple <a href="#team">teams</a> or multiple products may be built by a single team.</p>
-<h3 id="team">Team</h3>
-<p>A group of people who build software. It may consist of software engineers,
-QAs, infrastructure engineers, testers, scrum master, UX designers, content designers and
-many others. A single team may build many <a href="#product">products</a> or many teams may build a single product.</p>
+            <h1 id="environment-schedule">Environment schedule</h1>
+<h3 id="schedule">Schedule</h3>
+<p>See below the list of environments that are shut down outside of working hours:</p>
+<div class="table-container">
+        <table>
+          <tr>
+<th>Shared Services</th>
+<th>CFT</th>
+<th>Shutdown</th>
+<th>Start</th>
+</tr><tr>
+<td>Demo</td>
+<td>Demo</td>
+<td>8pm</td>
+<td>7am</td>
+</tr><tr>
+<td>ITHC</td>
+<td>ITHC</td>
+<td>8pm</td>
+<td>7am</td>
+</tr><tr>
+<td>Test</td>
+<td>Perftest</td>
+<td>8pm</td>
+<td>7am</td>
+</tr><tr>
+<td>PTLSBOX</td>
+<td>PTLSBOX</td>
+<td>8pm</td>
+<td>7am</td>
+</tr><tr>
+<td>Sandbox</td>
+<td>Sandbox</td>
+<td>8pm</td>
+<td>7am</td>
+</tr>
+        </table>
+      </div><h3 id="how-to-start-and-stop-the-cluster-from-pipeline">How to start and stop the cluster from pipeline</h3>
+<p>If required, an AKS cluster can be started or stopped using a GitHub action on the <a href="https://github.com/hmcts/aks-auto-shutdown/">aks-auto-shutdown</a> repository.</p>
+<h4 id="start-a-cluster">Start a cluster</h4>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-11-17">
+<ol>
+<li>Navigate to <a href="https://github.com/hmcts/aks-auto-shutdown">aks-auto-shutdown</a> repository.</li>
+<li>Navigate to the actions tab.</li>
+<li>Select &lsquo;AKS Auto Start&rsquo; from the left hand &lsquo;Actions&rsquo;</li>
+<li>Select &lsquo;Run Workflow&rsquo;</li>
+<li>Ensure the &lsquo;master&rsquo; branch is selected and select &lsquo;Run Workflow&rsquo;</li>
+<li>Select the new build which will appear at the top under Workflow Runs and will be identifable by an orange dot which means the build is currently running.</li>
+<li>Select &lsquo;build&rsquo; under &lsquo;Jobs&rsquo;</li>
+<li>Expand the &lsquo;AKS Auto Start&rsquo; dropdown to view the job output.</li>
+</ol>
+<h4 id="stop-a-cluster">Stop a cluster</h4>
+
+<ol>
+<li>Navigate to <a href="https://github.com/hmcts/aks-auto-shutdown">aks-auto-shutdown</a> repository.</li>
+<li>Navigate to the actions tab.</li>
+<li>Select &lsquo;AKS Auto Shutdown&rsquo; from the left hand &lsquo;Actions&rsquo;</li>
+<li>Select &lsquo;Run Workflow&rsquo;</li>
+<li>Ensure the &lsquo;master&rsquo; branch is selected and select &lsquo;Run Workflow&rsquo;</li>
+<li>Select the new build which will appear at the top under Workflow Runs and will be identifable by an orange dot which means the build is currently running.</li>
+<li>Select &lsquo;build&rsquo; under &lsquo;Jobs&rsquo;</li>
+<li>Expand the &lsquo;AKS Auto Shutdown&rsquo; dropdown to view the job output.</li>
+</ol>
+<h3 id="how-to-update-tags-in-portal">How to update tags in portal</h3>
+
+<ol>
+<li>Navigate to &lsquo;Kubernetes services&rsquo; on the Azure Portal.</li>
+<li>Select the relevant cluster from the list.</li>
+<li>Select the &lsquo;edit&rsquo; button beside tags.</li>
+<li>If auto-shutdown of the specific AKS cluster is enabled, there will be a tag with the name &lsquo;autoShutdown&rsquo; and its value will be &lsquo;true&rsquo;. To disable auto-shutdown for this cluster change this value to false.</li>
+</ol>
+<h3 id="how-to-ask-for-help">How to ask for help</h3>
+<p>If you need help you can raise a help request to the Platform Operations team via the <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> channel.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-07">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 May 2022.
+      This page was last reviewed on 7 February 2023.
 
-        It needs to be reviewed again on 17 November 2022
+        It needs to be reviewed again on 7 August 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 November 2022
+      This page was set to be reviewed before 7 August 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -306,8 +365,8 @@ many others. A single team may build many <a href="#product">products</a> or man
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/glossary/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Glossary%27+%28https%3A%2F%2Fhmcts.github.io%2Fglossary%2F%29&amp;labels=bug&amp;title=Re%3A+%27Glossary%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/environments/aks-auto-shutdown.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Environment+schedule%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fenvironments%2Faks-auto-shutdown.html%29&amp;labels=bug&amp;title=Re%3A+%27Environment+schedule%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
