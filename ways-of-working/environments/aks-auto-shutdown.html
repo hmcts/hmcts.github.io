@@ -310,26 +310,22 @@
         </table>
       </div><h3 id="how-to-start-and-stop-the-cluster-from-pipeline">How to start and stop the cluster from pipeline</h3>
 <p>If required, an AKS cluster can be started or stopped using a GitHub action on the <a href="https://github.com/hmcts/aks-auto-shutdown/">aks-auto-shutdown</a> repository.</p>
-<h4 id="start-a-cluster">Start a cluster</h4>
+<h4 id="start-a-specific-cluster-environment">Start a specific cluster/environment</h4>
 
 <ol>
-<li>Navigate to <a href="https://github.com/hmcts/aks-auto-shutdown">aks-auto-shutdown</a> repository.</li>
-<li>Navigate to the actions tab.</li>
-<li>Select &lsquo;AKS Auto Start&rsquo; from the left hand &lsquo;Actions&rsquo;</li>
+<li>Navigate to <a href="https://github.com/hmcts/aks-auto-shutdown/actions/workflows/aks-manual-start.yaml">AKS Manual Start</a> action on the aks-auto-shutdown repository.</li>
 <li>Select &lsquo;Run Workflow&rsquo;</li>
-<li>Ensure the &lsquo;master&rsquo; branch is selected and select &lsquo;Run Workflow&rsquo;</li>
+<li>Ensure the &lsquo;master&rsquo; branch and the correct Business Area, Environment and Cluster option are selected. Then select &lsquo;Run Workflow&rsquo;</li>
 <li>Select the new build which will appear at the top under Workflow Runs and will be identifable by an orange dot which means the build is currently running.</li>
 <li>Select &lsquo;build&rsquo; under &lsquo;Jobs&rsquo;</li>
 <li>Expand the &lsquo;AKS Auto Start&rsquo; dropdown to view the job output.</li>
 </ol>
-<h4 id="stop-a-cluster">Stop a cluster</h4>
+<h4 id="shutdown-a-specific-cluster-environment">Shutdown a specific cluster/environment</h4>
 
 <ol>
-<li>Navigate to <a href="https://github.com/hmcts/aks-auto-shutdown">aks-auto-shutdown</a> repository.</li>
-<li>Navigate to the actions tab.</li>
-<li>Select &lsquo;AKS Auto Shutdown&rsquo; from the left hand &lsquo;Actions&rsquo;</li>
+<li>Navigate to <a href="https://github.com/hmcts/aks-auto-shutdown/actions/workflows/aks-manual-shutdown.yaml">AKS Manual Shutdown</a> action on the aks-auto-shutdown repository.</li>
 <li>Select &lsquo;Run Workflow&rsquo;</li>
-<li>Ensure the &lsquo;master&rsquo; branch is selected and select &lsquo;Run Workflow&rsquo;</li>
+<li>Ensure the &lsquo;master&rsquo; branch and the correct Business Area, Environment and Cluster option are selected. Then select &lsquo;Run Workflow&rsquo;</li>
 <li>Select the new build which will appear at the top under Workflow Runs and will be identifable by an orange dot which means the build is currently running.</li>
 <li>Select &lsquo;build&rsquo; under &lsquo;Jobs&rsquo;</li>
 <li>Expand the &lsquo;AKS Auto Shutdown&rsquo; dropdown to view the job output.</li>
