@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Sandbox Cleardown - HMCTS</title>
+    <title>Pull requests - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html">
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/standards/pull-requests.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Sandbox Cleardown - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta name="twitter:title" content="Pull requests - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/standards/pull-requests.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Sandbox Cleardown" />
+      <meta property="og:title" content="Pull requests" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/standards/pull-requests.html" />
 
     
   </head>
@@ -262,64 +262,129 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="sandbox-cleardown">Sandbox Cleardown</h1>
-<h3 id="what-is-this-for">What is this for?</h3>
-<p>The sandbox cleardown repo contains pipelines and scripts to remove resources from the sandbox environment based on resource tags in Azure.</p>
-<p>All resources in the sandbox environment will have an expiresAfter tag with a date value.</p>
-<p>Any resources that have an expiresAfter tag value dated in the past, based on the script runtime, will be deleted.</p>
-<p>This ensures resources that are not required long term are removed.</p>
-<h3 id="the-expiresafter-tag">The expiresAfter tag</h3>
-<p>In the Sandbox environment resources must be tagged with an end date after which they are no longer needed.
-They will then be automatically deleted after this date.</p>
-<p>By default a tag will be added as <code>now() + 30 days</code>.</p>
-<p>You can customise this by setting an explicit date:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"2023-01-01"</span> <span class="c1"># YYYY-MM-DD</span>
-<span class="p">}</span>
-</code></pre></div><p>Or by setting it to never expire with a date far into the future:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"3000-01-01"</span> <span class="c1"># never expire</span>
-<span class="p">}</span>
-</code></pre></div><h3 id="sandbox-cleardown-channel">Sandbox Cleardown Channel</h3>
-<p>The<a href="https://hmcts-reform.slack.com/archives/C04PBAYU35E">#sandbox-cleardown</a> slack channel has been created to post warning messages and on resources that are scheduled to be cleared down in the sandbox environment.</p>
-<p>Once a resource has been deleted, an alert will posted in the channel.</p>
-<p>See timelines below:</p>
-<div class="table-container">
-        <table>
-          <tr>
-<th>Alert Type</th>
-<th>Timeline</th>
-</tr><tr>
-<td>Resource will be Deleted</td>
-<td>5 days prior until day of deletion</td>
-</tr><tr>
-<td>Deleted Resource</td>
-<td>Day of deletion</td>
-</tr><tr>
-<td>Unable to Delete Resource</td>
-<td>Day of deletion</td>
-</tr>
-        </table>
-      </div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-07">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 7 February 2023.
+            <h1 id="pull-requests">Pull requests</h1>
+<p>As a PR writer I will:</p>
 
-        It needs to be reviewed again on 7 August 2023
+<ul>
+<li>keep PRs small</li>
+</ul>
+<p>As a PR reviewer I will:</p>
+
+<ul>
+<li>make an effort to review as soon as I get a second.</li>
+<li>approve, as long as it’s better than before</li>
+<li>favour suggestions over rejections, particularly when a multipart PR is indicated</li>
+</ul>
+<p>We practise code review on all changes at HMCTS to:</p>
+
+<ul>
+<li>improve code quality</li>
+<li>get team buy in on changes</li>
+<li>validate change correctness</li>
+<li>knowledge sharing</li>
+</ul>
+<p>Pull requests should not be opened when everything is finished.
+They should be opened as soon as you have something to show.</p>
+<p>Leaving it to the last minute leaves a lot of pressure to the reviewer,
+often someone is told the code is done but they aren’t
+told that the review hasn’t happened, pressure comes on to ship the code but there’s design problems
+ in it that need addressing, this could take hours, or days.</p>
+<h2 id="size">Size</h2>
+<p>The smaller your pull request the easier it is to review, to test and the safer it is to send to production.
+Separating your changes out is a great skill to practice, some tips:</p>
+
+<ul>
+<li>don’t make unrelated changes in a PR, you should still make the change if you think it improves the code
+Just take the 10 minutes to create a new branch and open a separate PR, it can be quickly merged and you can continue with your task</li>
+<li>refactor the code to make your change easier first</li>
+<li>avoid unrelated whitespace changes if possible, they distract the reviewer and can cause conflicts with other people working in similar areas</li>
+<li>look at the code before you start coding and see roughly what you need to do, perhaps do this with another developer, this can also make the review easier that on
+if two developers were involved in the design there’s more buy in</li>
+<li>mention in your PR description that there is going to be more PRs and what is still to come</li>
+</ul>
+<h2 id="when-should-review-happen">When should review happen</h2>
+<p>Reviews need to happen often, otherwise you will build up a backlog of changes.
+Before you start your task for the day check all the open PRs to see if there’s any code that needs a review or if someone needs a bit of help.</p>
+<p>The daily reminder can be automated with the GitHub Slack integration.</p>
+<p>A GitHub team maintainer can go to their <a href="https://github.com/orgs/hmcts/teams?type=source">GitHub teams settings</a>, click &lsquo;Scheduled reminders&rsquo;
+and configure daily reminders for all of your teams pull requests.
+See also GitHub&rsquo;s documentation on <a href="https://docs.github.com/en/github/setting-up-and-managing-organizations-and-teams/managing-scheduled-reminders-for-your-team#creating-a-scheduled-reminder-for-a-team">scheduled reminders</a>.</p>
+<p>But importantly reviews should not happen just first thing in the morning,
+they should be done throughout the day, after a break is a good time to do them, also before you start a new ticket or after you’ve opened a PR yourself.</p>
+<p>Once you submit your review comments, and especially if you block the merge, you need to be ready to respond quickly to follow up comments so as not to hold up the person who has created the pull request.</p>
+<h2 id="who-should-review">Who should review</h2>
+<p>All developers in the team should be reviewing, junior developers to tech lead.
+Code review isn’t just about improving the code and the solution being correct, it is also about
+sharing knowledge of the code and different techniques that can be used in software engineering.</p>
+<p>If you know that someone has particular experience in an area, send the PR to them and ask if they would be able to review it when they have time.</p>
+<h2 id="review-techniques">Review techniques</h2>
+
+<ul>
+<li>think &ldquo;how could I make it easier for myself if I was reviewing it?&rdquo;</li>
+<li>pre-empt the reviewer by explaining (as comments) on your PR any compromises / or limitations that your implementation has</li>
+<li>if there’s conflict occurring on the PR on the next steps to proceed on it, take it offline, go sit next to the person, chat on Slack or call them to
+agree the next step, involve someone else if needed, post the result on the PR so that other people can see why the direction has changed.</li>
+</ul>
+<h2 id="how-long-should-a-pr-be-open">How long should a PR be open</h2>
+<p>Pull requests should be small and often, if it is open for more than 2-3 days there is probably something wrong.
+It is much better to have work flowing quickly than a backlog of work building up.
+You’re introducing a much riskier change and will have to do a lot more work to get it merged, satisfying reviewers
+and resolving conflicts due to other people’s merges.</p>
+<h2 id="tooling-to-help">Tooling to help</h2>
+<h3 id="stale-prs">Stale PRs</h3>
+<p>In order to reduce the length of time PRs are open,
+the cognitive load on having to see them all the time,
+wonder whether they should be merged, and the cost of running any infrastructure related to the PRs.</p>
+<p>We use <a href="https://github.com/marketplace/actions/close-stale-issues">Close Stale Issues</a> to automate reminders about PRs and close them if no response or further work happens on it.</p>
+<p>We recommend config like:</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">steps</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/stale@v5</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">repo-token</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
+    <span class="na">stale-issue-message</span><span class="pi">:</span> <span class="pi">&gt;</span>
+      <span class="s">This issue has been automatically marked as stale because it has not had</span>
+      <span class="s">recent activity. It will be closed if no further activity occurs. Thank you</span>
+      <span class="s">for your contributions.</span>
+    <span class="na">stale-pr-message</span><span class="pi">:</span> <span class="pi">&gt;</span>
+      <span class="s">This pull request has been automatically marked as stale because it has not had</span>
+      <span class="s">recent activity. It will be closed if no further activity occurs. Thank you</span>
+      <span class="s">for your contributions.</span>
+    <span class="na">stale-issue-label</span><span class="pi">:</span> <span class="s1">'</span><span class="s">stale'</span>
+    <span class="na">stale-pr-label</span><span class="pi">:</span> <span class="s1">'</span><span class="s">stale'</span>
+    <span class="na">days-before-close</span><span class="pi">:</span> <span class="s1">'</span><span class="s">4'</span>
+    <span class="na">days-before-stale</span><span class="pi">:</span> <span class="s1">'</span><span class="s">7'</span>
+    <span class="na">exempt-pr-labels</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pinned,dependencies'</span>
+</code></pre></div><p>Source: <a href="https://github.com/hmcts/cnp-flux-config/blob/master/.github/workflows/stale.yml">hmcts/cnp-flux-config/.github/workflows/stale.yml</a></p>
+<p>You can tune the numbers slightly but please make sure pull requests are closed within 2 weeks
+If you have a PR that needs to stay around because you are demoing it or some other valid reason
+you can add to the configuration a permanent label such as <code>pinned</code> this will never become stale</p>
+<p>These should be reviewed regularly and closed if no longer required.</p>
+<p>Note that you don’t have to finish the PR within the period you set, it is the time from the last commit or activity on the PR
+and you can add a comment or remove the label on the PR if it is not actually stale.</p>
+<h3 id="templates-for-prs">Templates for PRs</h3>
+<p>Our standard template for PRs is stored in the <a href="https://github.com/hmcts/.github/blob/master/PULL_REQUEST_TEMPLATE.md">hmcts/.github configuration repository</a></p>
+<p>All repositories in the organisation will automatically use this by default.</p>
+<p>You should start with this and adopt for your needs as needed by copying it into repository in the <code>.github</code> folder and editing it.</p>
+<h2 id="additional-reading">Additional reading</h2>
+<p>We highly recommend reading at least the hackernoon article, some very good points there:</p>
+
+<ul>
+<li><a href="https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9">https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9</a></li>
+<li><a href="https://www.atlassian.com/blog/git/written-unwritten-guide-pull-requests">https://www.atlassian.com/blog/git/written-unwritten-guide-pull-requests</a></li>
+<li><a href="https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104">https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104</a></li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-16">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 16 May 2022.
+
+        It needs to be reviewed again on 16 November 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 7 August 2023
+      This page was set to be reviewed before 16 November 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -329,8 +394,8 @@ They will then be automatically deleted after this date.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/environments/sandbox-cleardown.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Sandbox+Cleardown%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fenvironments%2Fsandbox-cleardown.html%29&amp;labels=bug&amp;title=Re%3A+%27Sandbox+Cleardown%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/standards/pull-requests.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Pull+requests%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fstandards%2Fpull-requests.html%29&amp;labels=bug&amp;title=Re%3A+%27Pull+requests%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

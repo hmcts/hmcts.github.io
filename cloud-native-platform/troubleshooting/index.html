@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en" class="govuk-template no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Troubleshooting issues - HMCTS</title>
+
+    <link href="../../stylesheets/manifest.css" rel="stylesheet" />
+
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/troubleshooting/">
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="hmcts.github.io" />
+      <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
+      <meta name="twitter:title" content="Troubleshooting issues - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/troubleshooting/" />
+
+      <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
+      <meta property="og:site_name" content="HMCTS" />
+      <meta property="og:title" content="Troubleshooting issues" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/troubleshooting/" />
+
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+        <header class="govuk-header app-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-header__container--full-width">
+    <div class="govuk-header__logo">
+      <a href="https://github.com/hmcts" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__product-name">
+          HMCTS
+        </span>
+      </a>
+        <strong class="govuk-tag">Live</strong>
+    </div>
+    <div class="govuk-header__content">
+      <nav class="govuk-header__navigation govuk-header__navigation--end" aria-label="Menu">
+        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu">Menu</button>
+        <ul id="navigation" class="govuk-header__navigation-list">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://hmcts-dts.slack.com/app_redirect?channel=platops-help">Support</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/">Documentation</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://github.com/hmcts">GitHub</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </button>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
+              <div class="search" data-module="search" data-path-to-site-root="../../">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
+    <input type="hidden" name="as_sitesearch" value="https://hmcts.github.io"/>
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
+      Search (via Google)
+    </label>
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
+  </form>
+</div>
+
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="../../index.html"><span>The HMCTS way</span></a>
+  </li>
+  <li>
+    <a href="../../hmcts-overview/index.html"><span>HMCTS overview</span></a>
+  </li>
+<li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
+<ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
+<ul>
+<li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
+<ul>
+</ul>
+</li>
+  <li>
+    <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
+  </li>
+<li><a href="../../cloud-native-platform/common-pipeline/publishing-libraries/index.html"><span>Publishing libraries</span></a>
+<ul>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/new-component/index.html"><span>Starting a new component</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/feature-flags.html"><span>Feature flags</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/path-to-live/index.html"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/public-dns.html"><span>Public DNS</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/front-door.html"><span>Front Door configuration</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/oat.html"><span>Operational Acceptance Testing</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/guides/index.html"><span>Guides</span></a>
+<ul>
+</ul>
+</li>
+  <li>
+    <a href="../../cloud-native-platform/glossary/index.html"><span>Glossary</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/troubleshooting/index.html"><span>Troubleshooting issues</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/asking-for-help/index.html"><span>Asking for help</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/api-docs/index.html"><span>API Documentation</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../cjs-common-platform/index.html"><span>CJS Common Platform</span></a>
+  </li>
+  <li>
+    <a href="../../legacy/index.html"><span>Legacy applications</span></a>
+  </li>
+<li><a href="../../standards/index.html"><span>Standards</span></a>
+<ul>
+<li><a href="../../standards/principles/index.html"><span>Principles</span></a>
+<ul>
+  <li>
+    <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/test.html"><span>Testing</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../standards/practices/index.html"><span>Practices</span></a>
+<ul>
+  <li>
+    <a href="../../standards/practices/frontend.html"><span>Frontend applications</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/backends.html"><span>Backend applications</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/apis.html"><span>APIs</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/certificates.html"><span>Certificates</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../standards/standards/index.html"><span>Standards</span></a>
+<ul>
+  <li>
+    <a href="../../standards/standards/angular.html"><span>Angular</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../standards/technology-stack/index.html"><span>Technology stack</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../ways-of-working/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="troubleshooting-issues">Troubleshooting issues</h1>
+<h2 id="github">GitHub</h2>
+<h3 id="adding-a-new-user-on-github">Adding a new user on GitHub</h3>
+
+<ul>
+<li>See <a href="../onboarding/team/github.html#access">GitHub Onboarding</a> for how to get access</li>
+<li>Make sure the user has accepted the invite received on the email setup in Github or by visiting <a href="https://github.com/hmcts">github.com/hmcts</a>.</li>
+</ul>
+<h3 id="creating-a-new-github-repository">Creating a new GitHub repository</h3>
+<p>See <a href="../new-component/github-repo.html#">create a GitHub repository</a></p>
+<h3 id="access-to-github-repo">Access to GitHub Repo</h3>
+
+<ul>
+<li>All repositories should be administered by the team who owns it.</li>
+<li>Access should be managed through GitHub teams and not individuals.</li>
+<li>If no one from your team have access, follow <a href="/cloud-native-platform/asking-for-help/#asking-for-help">asking for help</a> to request org admins in one of the community/ support channels.</li>
+</ul>
+<h2 id="receiving-an-email-regarding-inactive-account">Receiving an email regarding inactive account</h2>
+<p>You may have received an email from our scheduled pipeline which deletes guest user accounts if they&rsquo;re inactive for longer than 31 days.</p>
+<h3 id="account-close-to-being-deleted">Account close to being deleted</h3>
+<p>Users who are within a week of being deleted get notified via email on the lead up to the deletion date, starting 7 days before.</p>
+<p>If you have received an email about your account being close to being deleted, because of inactivity, that is because you haven&rsquo;t logged into the <code>CJS Common Platform</code> Azure Tenant for a while and need to do so now to keep your access.</p>
+<p>Please don&rsquo;t ignore this email if you use the <code>CJS Common Platform</code> Tenant or GitHub as you will lose access to both if you don&rsquo;t log in.</p>
+<p>To extend your access, visit the <a href="https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082">CJS Common Platform Azure portal</a>.</p>
+<p>Login link: <a href="https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082">CJS Common Platform</a></p>
+<p><em>Note:</em> We&rsquo;re looking into fixing this soon so that as long as you&rsquo;re active in either GitHub or the <code>CJS Common Platform</code> Tenant you will not lose access.</p>
+<h3 id="account-has-been-deleted">Account has been deleted</h3>
+<p>If your account has been deleted and you need it re-enabled, you need to create a ticket via slack in the <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> channel and someone will send you another guest invite.</p>
+<p>Once that is done you will then be able to get your GitHub access back by asking one of your team members to create a PR in the <a href="https://github.com/hmcts/github-management">github-management</a> repository, adding your user back in.</p>
+<p><a href="https://github.com/hmcts/github-management/pull/1079/files">Example PR - adding a user</a> (requires access to the HMCTS GitHub organisation)</p>
+<h2 id="jenkins">Jenkins</h2>
+<h3 id="jenkins-is-unavailable">Jenkins is unavailable</h3>
+
+<ul>
+<li>Check if there is a planned outage in <a href="https://hmcts-reform.slack.com/archives/CA4F2MAFR">#cloud-native-announce</a>.</li>
+<li>Please note Jenkins could be temporarily unavailable while rolling out a change, give it a few minutes before you raise an issue.</li>
+</ul>
+<h3 id="cannot-login-to-jenkins">Cannot login to Jenkins</h3>
+
+<ul>
+<li>Login to Jenkins is managed by Azure AD, please make sure user is added to right <a href="/cloud-native-platform/onboarding/person/#azure-ad-groups">Azure AD groups</a></li>
+</ul>
+<h3 id="you-are-now-logged-out-of-jenkins-infinite-loop-when-trying-to-login-to-jenkins">You are now logged out of Jenkins/ Infinite loop when trying to login to Jenkins</h3>
+
+<ul>
+<li>Please try clearing browser cookies on <a href="https://login.microsoftonline.com/">login.microsoft.com</a></li>
+</ul>
+<h3 id="cannot-see-my-new-repo-in-jenkins-org-dashboard">Cannot see my new repo in Jenkins org / Dashboard</h3>
+
+<ul>
+<li>See <a href="../onboarding/team/jenkins.html#jenkins">Jenkins Onboarding section</a> to add your app to Jenkins Org / Dashboard</li>
+</ul>
+<h3 id="cannot-find-default-branch">Cannot find default branch</h3>
+<p>You may get the error below, when the pipeline has not ran on the master/main branch first.</p>
+<p>When you run it on the master/main branch it will setup the default branch and then the pull request build will start working.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>[2021-09-16T10:59:54.154Z] Execution failed for task ':sonarqube'.
+[2021-09-16T10:59:54.154Z] &gt; Could not find a default branch to fall back on.
+</code></pre></div><h3 id="cannot-see-my-branch-pr-or-this-project-is-currently-disabled-in-jenkins">Cannot see my branch/PR or This project is currently disabled in Jenkins</h3>
+
+<ul>
+<li>Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.</li>
+<li>Branch/ PR is not listed if its last commit creation date is older than 30 days.</li>
+</ul>
+<h3 id="build-docker-build-unit-test-failure">Build / Docker Build / Unit Test failure</h3>
+
+<ul>
+<li>If your build is failing in these stages, it&rsquo;s most likely to fail in your local as well. Look at the first line of the Jenkins step that fails and try run the same command Jenkins is running.</li>
+<li>Try on a colleague&rsquo;s machine as you might have cached something locally.</li>
+</ul>
+<h3 id="sonar-scan-timeout">Sonar scan timeout</h3>
+
+<ul>
+<li>Please see <a href="https://sonarcloud.statuspage.io/">sonarcloud status</a> for any known issues with sonar cloud.</li>
+<li>Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.</li>
+</ul>
+<h3 id="helm-upgrade-failed-helm-release-timed-out-waiting-for-condition-helm-release-failure">Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure</h3>
+
+<ul>
+<li>See <a href="#connecting-to-aks-clusters">Connecting to AKS Clusters</a> and connect to the relevant cluster.</li>
+<li>These errors usually mean your pods didn&rsquo;t start as expected in time.</li>
+<li>It could be that they are stuck in <code>Pending</code>, <code>ContainerCreating</code> status or might be failing to startup leading to <code>CrashLoopBackOff</code> status.</li>
+<li>Follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further</li>
+</ul>
+<h3 id="jenkins-managed-helm-releases-pods-are-automatically-deleted">Jenkins managed helm releases / pods are automatically deleted</h3>
+
+<ul>
+<li>To maintain the health of the cluster, it is important to cleanup unwanted pods regularly.</li>
+<li>Helm release is cleared for PRs which are merged or closed.</li>
+<li>Helm release of PRs raised by dependency bots (based on <code>dependencies</code> label) is cleared once the functional tests pass.</li>
+<li>Helm release on AAT Staging is also cleared once functional tests pass.</li>
+<li>For optimal usage, You can also configure your pipeline to <a href="https://github.com/hmcts/cnp-jenkins-library#clear-helm-release-on-successful-build">clear Helm releases on successful build</a>.</li>
+<li>A scheduled pipeline runs every hour to clear any helm releases which are not updated in last 3 days. Teams can do more frequent cleanup by overriding in the <a href="https://github.com/hmcts/cnp-aks-pipelines/blob/0fe733120f78b6dabcdd5895bb16134085631842/scripts/delete-inactive-helm-releases.sh#L5">cleanup script</a></li>
+</ul>
+<h3 id="smoke-functional-test-failure">Smoke / Functional test failure</h3>
+
+<ul>
+<li>Jenkins only sets secrets as environment variables and runs the <code>gradle</code> / <code>yarn</code> task to run tests.</li>
+<li>Access the URL on VPN and try running tests manually using the <code>TEST_URL</code> printed in the logs.</li>
+<li>You can also run tests locally by setting the required secrets while on the VPN.</li>
+<li>To add additional logging, see <a href="#example-2">Example config</a>.</li>
+</ul>
+<h3 id="terraform-build-infrastructure-failure">Terraform/ Build Infrastructure failure</h3>
+
+<ul>
+<li>It is important that you need to review your plan in a pull request before applying it to an environment.</li>
+<li>Please check if its an intermittent failure with Azure as a retry could fix it.</li>
+<li>Also, see if there are any open issues/discussions on community channels for the failure.</li>
+<li>There could be open GitHub issues on terraform/ azurerm, so googling it could help as well.</li>
+</ul>
+<h3 id="using-branches-to-troubleshoot-issues">Using branches to troubleshoot issues</h3>
+<p>If your pipeline is throwing an error, you may be able to more easily troubleshoot the issue by using a branch in the cnp-jenkins-library repo.</p>
+<h4 id="example-1">Example 1</h4>
+<p>Gradle is failing because a plugin cannot be found in artifactory. You&rsquo;ve checked the plugin exists and there are no typos in your code.
+You can check if the issue lies with artifactory by temporarily bypassing it using a <a href="https://github.com/hmcts/cnp-jenkins-library/blob/073ad8587b7281d62bac705ed984e739a0911c83/resources/uk/gov/hmcts/gradle/init.gradle#L3">branch</a>.</p>
+<p>And then referencing that branch within your repo&rsquo;s <a href="https://github.com/hmcts/sds-toffee-recipes-service/pull/12/files">Jenkinsfile</a></p>
+<p>In this example, the issue is network related. This may be down to routing in Azure or traffic being blocked by a firewall.</p>
+<h4 id="example-2">Example 2</h4>
+<p>Gradle is failing a functional test. To help get more information on why, you could update the Gradle logging level in a branch of <a href="https://github.com/hmcts/cnp-jenkins-library/blob/cfb31f3a2699b2a1dafd66fed0b525ae145d627d/src/uk/gov/hmcts/contino/GradleBuilder.groovy#L62">cnp-jenkins-library</a></p>
+<p>And then reference this branch within your repo&rsquo;s <a href="https://github.com/hmcts/document-management-store-app/blob/646593336377fd59112b0b6c84fd223d0cb7832c/Jenkinsfile_CNP#L12">Jenkinsfile</a></p>
+<h2 id="debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</h2>
+
+<ul>
+<li><p>There could be many reasons why applications could fail to startup like :</p>
+
+<ul>
+<li>A secret referred in helm chart is missing in keyvaults</li>
+<li>Pod identity is not able to pull keyvault secrets due to missing permissions</li>
+<li>There is not enough space in the cluster to fit in a new pod.</li>
+<li>Pod is scheduled, but fails to pass readiness (<code>/health/readiness</code>) or  liveness (<code>/health/liveness</code>) checks.</li>
+<li>A misconfigured environment variable, example - incorrect URL of a dependent service.</li>
+</ul></li>
+<li><p>Below are some handy kubectl commands to debug the issues</p>
+<p>To check latest events on your namespace:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl get events <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div><p>To check status of pods:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl get pods <span class="nt">-n</span> &lt;your-namespace&gt; | <span class="nb">grep</span> &lt;helm-release-name&gt;
+
+ <span class="c">#Examples</span>
+ <span class="c"># kubectl get pods -n ccd | grep ccd-data-store-api</span>
+ <span class="c"># kubectl get pods -n ccd | grep pr-123</span>
+</code></pre></div><p>To check status of a specific pod which is not running</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl describe pod &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div><p>To check logs of pods which is not starting</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+
+ <span class="c">#To follow logs</span>
+ kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; <span class="nt">-f</span>
+
+ <span class="c"># To check previous pod logs if its restarting</span>
+ kubectl logs &lt;pod-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt; <span class="nt">-p</span>
+
+</code></pre></div></li>
+</ul>
+<h2 id="flux-gitops">Flux / Gitops</h2>
+
+<blockquote>
+<p>Always check <strong>why</strong> your release or pod has failed in the first instance.
+Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be <em>hiding a potential bug</em> which could also <em>occur in production</em>.</p>
+</blockquote>
+<h3 id="latest-image-is-not-updated-in-cluster">Latest image is not updated in cluster</h3>
+
+<ul>
+<li>Start with checking <a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a> to make sure flux has updated/ committed the image.</li>
+<li>If image hasn&rsquo;t been committed to Github, see <a href="#flux-did-not-commit-latest-image-to-github"> Flux did not commit latest image to Github</a>.</li>
+<li><p>If flux has committed the new image to Github, check if the <code>HelmRelease</code> has been updated by Flux. Run below command and check that the image tag has been updated in the output</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get hr <span class="nt">-n</span> &lt;your-namespace&gt; &lt;your-helm-release-name&gt; <span class="nt">-o</span> yaml
+</code></pre></div></li>
+<li><p>If Image is not updated in above, <a href="#change-in-git-is-not-applied-to-cluster">Change in git is not applied to cluster</a>.</p></li>
+<li><p>If the image tag is updated and still application pods are not deployed, see <a href="#updated-helmrelease-is-not-deployed-to-cluster">Updated HelmRelease is not deployed to cluster</a></p></li>
+</ul>
+<h3 id="flux-did-not-commit-latest-image-to-github">Flux did not commit latest image to Github</h3>
+
+<ul>
+<li>Image automation is run from management cluster (CFTPTL). Please login to cftptl cluster before further troubleshooting.</li>
+<li>Image reflector controller keeps polling ACR for new images, but it should generally update the new image in 10 minutes.</li>
+<li><p>Check status of <code>imagerepositories</code> and verify the last scan.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get imagerepositories <span class="nt">-n</span> flux-system  &lt;repository name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span>
+</code></pre></div></li>
+<li><p>If the last scan doesn&rsquo;t update, check image reflector controller logs to see if there any logs related to the helm repo.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller <span class="nt">--tail</span><span class="o">=</span><span class="nt">-1</span>
+<span class="c"># search for specific image</span>
+kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-reflector-controller <span class="nt">--tail</span><span class="o">=</span><span class="nt">-1</span> | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If the last scan is latest, check <code>imagepolicy</code> status to verify that the image returned matches the expectation.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get imagepolicies <span class="nt">-n</span> flux-system &lt;policy name<span class="o">(</span>usually helm release name<span class="o">)&gt;</span>
+</code></pre></div></li>
+<li><p>If it doesn&rsquo;t match the expected tag, verify image reflector controller logs as described above.</p></li>
+<li><p>If the <code>imagepolicy</code> object returned shows the expected image, but it didn&rsquo;t commit to Github, check image automation controller logs.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-automation-controller
+<span class="c"># search for specific image</span>
+kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>image-automation-controller | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+</ul>
+<h3 id="updated-helmrelease-is-not-deployed-to-cluster">Updated HelmRelease is not deployed to cluster</h3>
+
+<ul>
+<li>Helm operator queues all the updates, so it could take up to 20 minutes sometimes to be picked up.</li>
+<li><p>Check HelmRelease status to see the status.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get hr <span class="nt">-n</span> &lt;namespace&gt; &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>Look at helm operator logs to see if there are any errors specific to your helm release</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>helm-controller <span class="nt">--tail</span><span class="o">=</span>1000 | <span class="nb">grep</span> &lt;Release Name&gt;
+</code></pre></div></li>
+<li><p>If you see any errors like, <code>status &#39;pending-install&#39; of release does not allow a safe upgrade&quot;</code>. You need to delete <code>HelmRelease</code> for fixing this, request platops for help if you do not have permissions.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
+</code></pre></div></li>
+<li><p>In most cases, helm release gets timed out with an error in log similar to <code>failed: timed out waiting for the condition</code>. This usually means application pods didn&rsquo;t startup in time and you need to look at your pods to know more.</p>
+<p>Check the latest status on helm release and if it has already been rolled back to previous release.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl describe hr &lt;helm-release-name&gt; <span class="nt">-n</span> &lt;your-namespace&gt;
+</code></pre></div></li>
+<li><p>If you are looking at pods after a long time, <code>HelmRelease</code> might have been rolled back and you won&rsquo;t have failed pods. Easiest way is to add a simple change like a dummy environment variable in flux-config to re-trigger the release and debug the issue when it occurs.</p></li>
+<li><p>If your old pods are still running when you check, follow <a href="#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a> to troubleshoot further.</p></li>
+</ul>
+<h3 id="change-in-git-is-not-applied-to-cluster">Change in git is not applied to cluster</h3>
+
+<ul>
+<li><p>To check if latest github commit has been downloaded by checking status</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get gitrepositories flux-config <span class="nt">-n</span> flux-system
+</code></pre></div></li>
+<li><p>If the commit doesn&rsquo;t match latest id, verify source controller logs to see any related errors</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>source-controller
+</code></pre></div></li>
+<li><p>If commit id is recent, verify status of flux kustomization for your namespace to get the version of git applied.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get kustomizations.kustomize.toolkit.fluxcd.io <span class="nt">-n</span> flux-system &lt;namespace&gt;
+</code></pre></div></li>
+<li><p>If the above status doesn&rsquo;t show latest commit/ show any error , see kustomize controller logs to find relevant errors.</p></li>
+</ul>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller
+   <span class="c"># search for specific image</span>
+   kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>kustomize-controller | <span class="nb">grep</span> &lt;namespace&gt;
+</code></pre></div><h2 id="connecting-to-aks-clusters">Connecting to AKS Clusters</h2>
+
+<ul>
+<li>By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.</li>
+<li>You can connect to AKS clusters using <code>az aks get-credentials</code>. Below are some handy commands:</li>
+</ul>
+
+<div class="platform-selector" id="troubleshooting-clusters" data-module="app-tabs">
+  <ul class="app-tabs" role="tablist">
+    <li class="app-tabs__item js-tabs__item js-tabs__item--open" role="presentation">
+      <a href="#troubleshooting-cft" role="tab" aria-controls="troubleshooting-cft" aria-expanded="false">
+        CFT
+      </a>
+    </li>
+    <li class="app-tabs__item js-tabs__item app-tabs__item--current" role="presentation">
+      <a href="#troubleshooting-sds" role="tab" aria-controls="troubleshooting-sds" aria-expanded="true">
+      SDS
+      </a>
+    </li>
+  </ul>
+  <div class="app-tabs__heading js-tabs__heading">
+    <button aria-controls="troubleshooting-cft" class="app-tabs__heading-button">CFT</button>
+  </div>
+  <div class="app-tabs__container js-tabs__container app-tabs__container--hidden" id="troubleshooting-cft" role="tabpanel" aria-hidden="true">
+    <div class="app-example__code">
+      <pre data-module="app-copy" tabindex="0">
+        <code>
+  # Preview (only one cluster is active at a given time)
+  az aks get-credentials --resource-group cft-preview-00-rg --name cft-preview-00-aks --subscription DCD-CFTAPPS-DEV
+  az aks get-credentials --resource-group cft-preview-01-rg --name cft-preview-01-aks --subscription DCD-CFTAPPS-DEV
+
+  # AAT
+  az aks get-credentials --resource-group cft-aat-00-rg --name cft-aat-00-aks --subscription DCD-CFTAPPS-STG
+  az aks get-credentials --resource-group cft-aat-01-rg --name cft-aat-01-aks --subscription DCD-CFTAPPS-STG
+
+  # Perftest
+  az aks get-credentials --resource-group cft-perftest-00-rg --name cft-perftest-00-aks --subscription DCD-CFTAPPS-TEST
+  az aks get-credentials --resource-group cft-perftest-01-rg --name cft-perftest-01-aks --subscription DCD-CFTAPPS-TEST
+
+  # ITHC
+  az aks get-credentials --resource-group cft-ithc-00-rg --name cft-ithc-00-aks --subscription DCD-CFTAPPS-ITHC
+  az aks get-credentials --resource-group cft-ithc-01-rg --name cft-ithc-01-aks --subscription DCD-CFTAPPS-ITHC
+  
+  # Demo
+  az aks get-credentials --resource-group cft-demo-01-rg --name cft-demo-01-aks --subscription DCD-CFTAPPS-DEMO
+  
+  # Prod (Requires additional permissions)
+  az aks get-credentials --resource-group cft-prod-00-rg --name cft-prod-00-aks --subscription DCD-CFTAPPS-PROD
+  az aks get-credentials --resource-group cft-prod-01-rg --name cft-prod-01-aks --subscription DCD-CFTAPPS-PROD
+  
+  # CFTPTL (Prod management)
+  az aks get-credentials --resource-group cft-ptl-00-rg --name cft-ptl-00-aks --subscription DTS-CFTPTL-INTSVC
+</code></pre>
+    </div>
+  </div>
+  
+  <div class="app-tabs__heading js-tabs__heading app-tabs__heading--current">
+    <button aria-controls="troubleshooting-sds" class="app-tabs__heading-button" aria-expanded="true">SDS</button>
+  </div>
+
+  <div class="app-tabs__container js-tabs__container" id="troubleshooting-sds" role="tabpanel" aria-hidden="false">
+    <div>
+      <pre data-module="app-copy" tabindex="0">
+        <code>
+  # Dev
+  az aks get-credentials --resource-group ss-dev-01-rg --name ss-dev-01-aks --subscription DTS-SHAREDSERVICES-DEV
+  
+  # Staging
+  az aks get-credentials --resource-group ss-stg-00-rg --name ss-stg-00-aks --subscription DTS-SHAREDSERVICES-STG
+  az aks get-credentials --resource-group ss-stg-01-rg --name ss-stg-01-aks --subscription DTS-SHAREDSERVICES-STG
+
+  # Test
+  az aks get-credentials --resource-group ss-test-00-rg --name ss-test-00-aks --subscription DTS-SHAREDSERVICES-TEST
+  az aks get-credentials --resource-group ss-test-01-rg --name ss-test-01-aks --subscription DTS-SHAREDSERVICES-TEST
+  
+  # ITHC
+  az aks get-credentials --resource-group ss-ithc-00-rg --name ss-ithc-00-aks --subscription DTS-SHAREDSERVICES-ITHC
+  az aks get-credentials --resource-group ss-ithc-01-rg --name ss-ithc-01-aks --subscription DTS-SHAREDSERVICES-ITHC
+  
+  # Demo
+  az aks get-credentials --resource-group ss-demo-00-rg --name ss-demo-00-aks --subscription DTS-SHAREDSERVICES-DEMO
+  
+  # Prod (Requires additional permissions)
+  az aks get-credentials --resource-group ss-prod-00-rg --name ss-prod-00-aks --subscription DTS-SHAREDSERVICES-PROD
+  az aks get-credentials --resource-group ss-prod-01-rg --name ss-prod-01-aks --subscription DTS-SHAREDSERVICES-PROD
+  
+  # SDSPTL (Prod management)
+  az aks get-credentials --resource-group ss-ptl-00-rg --name ss-ptl-00-aks --subscription DTS-SHAREDSERVICESPTL  
+</code></pre>
+    </div>
+  </div>
+</div>
+<p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl config use-context cft-perftest-00-aks
+kubectl config use-context cft-aat-00-aks
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2023-02-05">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 5 August 2022.
+
+        It needs to be reviewed again on 5 February 2023
+        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
+        .
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 5 February 2023
+       by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
+          </main>
+
+          <aside>
+              <ul class="contribution-banner">
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/troubleshooting/index.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Troubleshooting+issues%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Ftroubleshooting%2F%29&amp;labels=bug&amp;title=Re%3A+%27Troubleshooting+issues%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
+              </ul>
+          </aside>
+
+          <footer class="govuk-footer app-footer" role="contentinfo">
+  <div class="govuk-footer__meta">
+    <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+
+
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="govuk-footer__licence-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 483.2 195.7"
+        height="17"
+        width="41"
+      >
+        <path
+          fill="currentColor"
+          d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+        />
+      </svg>
+      <span class="govuk-footer__licence-description">
+        All content is available under the
+        <a
+          class="govuk-footer__link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="license"
+        >Open Government Licence v3.0</a>, except where otherwise stated
+      </span>
+    </div>
+    <div class="govuk-footer__meta-item">
+      <a
+        class="govuk-footer__link govuk-footer__copyright-logo"
+        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+      >© Crown copyright</a>
+    </div>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-170132988-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('set', 'displayFeaturesTask', null);
+  ga('set', 'transport', 'beacon');
+  ga('set', 'page', location.pathname+location.search+location.hash);
+  ga('send', 'pageview');
+  </script>
+
+    <script src="../../javascripts/application.js"></script>
+  </body>
+</html>

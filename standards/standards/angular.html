@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en" class="govuk-template no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Angular - HMCTS</title>
+
+    <link href="../../stylesheets/manifest.css" rel="stylesheet" />
+
+    <link rel="canonical" href="https://hmcts.github.io/standards/standards/angular.html">
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="hmcts.github.io" />
+      <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
+      <meta name="twitter:title" content="Angular - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/standards/standards/angular.html" />
+
+      <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
+      <meta property="og:site_name" content="HMCTS" />
+      <meta property="og:title" content="Angular" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://hmcts.github.io/standards/standards/angular.html" />
+
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+        <header class="govuk-header app-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-header__container--full-width">
+    <div class="govuk-header__logo">
+      <a href="https://github.com/hmcts" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__product-name">
+          HMCTS
+        </span>
+      </a>
+        <strong class="govuk-tag">Live</strong>
+    </div>
+    <div class="govuk-header__content">
+      <nav class="govuk-header__navigation govuk-header__navigation--end" aria-label="Menu">
+        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu">Menu</button>
+        <ul id="navigation" class="govuk-header__navigation-list">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://hmcts-dts.slack.com/app_redirect?channel=platops-help">Support</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/">Documentation</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://github.com/hmcts">GitHub</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </button>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
+              <div class="search" data-module="search" data-path-to-site-root="../../">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
+    <input type="hidden" name="as_sitesearch" value="https://hmcts.github.io"/>
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
+      Search (via Google)
+    </label>
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
+  </form>
+</div>
+
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="../../index.html"><span>The HMCTS way</span></a>
+  </li>
+  <li>
+    <a href="../../hmcts-overview/index.html"><span>HMCTS overview</span></a>
+  </li>
+<li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
+<ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
+<ul>
+<li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
+<ul>
+</ul>
+</li>
+  <li>
+    <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
+  </li>
+<li><a href="../../cloud-native-platform/common-pipeline/publishing-libraries/index.html"><span>Publishing libraries</span></a>
+<ul>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/new-component/index.html"><span>Starting a new component</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/feature-flags.html"><span>Feature flags</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/path-to-live/index.html"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/public-dns.html"><span>Public DNS</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/front-door.html"><span>Front Door configuration</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/oat.html"><span>Operational Acceptance Testing</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/guides/index.html"><span>Guides</span></a>
+<ul>
+</ul>
+</li>
+  <li>
+    <a href="../../cloud-native-platform/glossary/index.html"><span>Glossary</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/troubleshooting/index.html"><span>Troubleshooting issues</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/asking-for-help/index.html"><span>Asking for help</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/api-docs/index.html"><span>API Documentation</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../cjs-common-platform/index.html"><span>CJS Common Platform</span></a>
+  </li>
+  <li>
+    <a href="../../legacy/index.html"><span>Legacy applications</span></a>
+  </li>
+<li><a href="../../standards/index.html"><span>Standards</span></a>
+<ul>
+<li><a href="../../standards/principles/index.html"><span>Principles</span></a>
+<ul>
+  <li>
+    <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/test.html"><span>Testing</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../standards/practices/index.html"><span>Practices</span></a>
+<ul>
+  <li>
+    <a href="../../standards/practices/frontend.html"><span>Frontend applications</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/backends.html"><span>Backend applications</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/apis.html"><span>APIs</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/certificates.html"><span>Certificates</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../standards/standards/index.html"><span>Standards</span></a>
+<ul>
+  <li>
+    <a href="../../standards/standards/angular.html"><span>Angular</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../standards/technology-stack/index.html"><span>Technology stack</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../ways-of-working/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="angular">Angular</h1>
+<h2 id="follow-conventions">Follow Conventions</h2>
+<p>One of the core arguments to choose a framework over traditional way with <a href="http://vanilla-js.com/">Vanilla JavaScript</a> is its clearly defined way of how things are supposed to be done. That defined way enables the creation of a uniform code base across an organization, without worrying about defining certain rules. Following them does not only increase the uniformity and therefore the quality of the code. This strict approach also comes in handy across cooperation borders. It enables new developers to integrate into a new team very quickly, because of the high familiarity with the code. We should follow the <a href="https://angular.io/guide/styleguide">Angular Style Guide</a> to get the most out of the Angular Framework. It will make our life a lot easier, when coming into new projects and will increase the quality of our code almost automatically.</p>
+<h2 id="use-angular-cli">Use Angular CLI</h2>
+<p>The <a href="https://cli.angular.io/">Angular CLI</a> is the best way to build Angular Applications. Angular CLI can be installed easily via terminal by typing in the following command:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>npm install -g @angular/cli
+</code></pre></div><p>The CLI has <a href="https://angular.io/guide/schematics">scaffolding tools</a> for creating new projects and generating new code, such as, modules, services, components, directives and pipes. However, this isn&rsquo;t the main benefit. The main benefit of the CLI is the way it automates the build pipeline for both live development with <code>ng serve</code>, as well as for production code that we would ship down to browsers with <code>ng build --prod</code>. Other common commands available are <code>ng lint</code>, <code>ng test</code> and <code>ng e2e</code>.</p>
+<h2 id="isolate-api-hacks">Isolate API hacks</h2>
+<p>Sometimes, we need to add some logic in the code to make up for bugs in the APIs. Instead of having the hacks in components where they are needed, it is better to isolate them in one place like in a function or a service and use them. When fixing the bugs in the APIs, it is easier to look for them in one file rather than looking for the hacks that could be spread across the codebase.</p>
+<h2 id="prefer-observables-over-promises">Prefer Observables over Promises</h2>
+<p><a href="https://rxjs-dev.firebaseapp.com/guide/observable">Observables</a> partly overlaps the standard JavaScript <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> functionality. Both are meant to handle asynchronous code. However, Observables can do so much more than Promises. Observables can resolve to more than just one value, because they are a stream of values. Observables are everywhere in Angular Framework. We can see that, by looking at the Angular <a href="https://angular.io/guide/http">HttpClient</a>. It returns Observables, even when it is clear, that a HTTP call can never result in more than one response. Mixing Observables with Promises isn&rsquo;t a good solution. That way, we have completely different implementations, that are hardly compatible with each other in different parts of our application.</p>
+<h2 id="subscribe-in-template">Subscribe in template</h2>
+<p>Avoid subscribing to observables from components and instead subscribe to the observables from the template. To consume a stream, we need to subscribe that stream, that&rsquo;s simply how observables work. The <a href="https://angular.io/api/common/AsyncPipe">async</a> pipe unsubscribe themselves automatically and it makes the code simpler by eliminating the need to manually manage subscriptions.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>@Component({
+  selector: 'my-component',
+  template: `&lt;child-component [data]="data$ | async"&gt;&lt;/child-component&gt;`
+})
+export class MyComponent {
+  data$: Observable&lt;object&gt;;
+}
+</code></pre></div><p>Using of the <a href="https://medium.com/angular-in-depth/angular-question-rxjs-subscribe-vs-async-pipe-in-component-templates-c956c8c0c794">subscribe() instead of the async pipe</a> introduces complementary need to unsubscribe at the end of the component life-cycle to avoid memory leaks. Subscribing to the observable manually in the <code>ngOnInit()</code> doesn&rsquo;t work with <code>OnPush</code> Change Detection Strategy. The <a href="https://angular.io/api/core/ChangeDetectionStrategy">OnPush</a> is great for performance, so, we should use <code>async</code> pipe as much as possible.</p>
+<h2 id="avoid-memory-leaks">Avoid memory leaks</h2>
+<p>When subscribing to observables, always unsubscribe from them appropriately by using operators like <code>take</code>, <code>takeUntil</code>, &hellip; or calling <code>unsubscribe()</code>. To consume a stream, we need to subscribe to that stream. That subscription will keep on living until the stream is completed or until we unsubscribe manually from that stream. While Angular takes care of unsubscribing when using the <code>async</code> pipe, it quickly becomes a mess when we need to do it ourselves. Failing to unsubscribe from observables will lead to unwanted <a href="https://itnext.io/angular-rxjs-detecting-memory-leaks-bdd312a070a0">memory leaks</a> as the observable stream is left open, potentially even after a component has been destroyed or the user has navigated to another page. This risk can also be mitigated by using a <a href="https://www.npmjs.com/package/rxjs-tslint-rules">lint rule</a> to detect unsubscribed observables.</p>
+<h2 id="avoid-nested-subscriptions">Avoid nested subscriptions</h2>
+<p>Nesting subscribes is something that needs to be avoided as much as possible. It makes the code unreadable, complex, and introduces side effects. It basically forces us to not think reactively. The next implementation is considered a bad practice:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>this.route.params
+  .pipe(map(param =&gt; param.id))
+  .subscribe(id =&gt; this.userService.fetchById(id)
+    .subscribe(user =&gt; (this.user = user)));
+}
+</code></pre></div><h2 id="do-not-pass-streams-to-components-directly">Do not pass streams to components directly</h2>
+<p>Passing streams to child components is a bad practice because it creates a very close link between the parent component and the child component. A component should always receive an object or value and should not even care if that object or value comes from a stream or not. It is better to handle the subscription in the parent component itself. Angular has a feature called the <a href="https://angular.io/api/common/AsyncPipe">async</a> pipe that can be used for this.</p>
+<h2 id="do-not-pass-streams-to-services">Do not pass streams to services</h2>
+<p>By passing a stream to a service we don&rsquo;t know what&rsquo;s going to happen to it. The stream could be subscribed to, or even combined with another stream that has a longer lifecycle, that could eventually determine the state of our application. Subscriptions might trigger unwanted behavior. It&rsquo;s recommended to use higher order streams in the components for these situations.</p>
+<h2 id="use-pipeable-operators">Use pipeable operators</h2>
+<p>Use <a href="https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md">pipeable operators</a> when using RxJS operators. A pipeable operator is basically any function that returns a function with the signature: <code>&lt;T, R&gt;(source: Observable&lt;T&gt;) =&gt; Observable&lt;R&gt;</code>. Pipeable operators are <a href="https://medium.com/@netxm/what-is-tree-shaking-de7c6be5cadd">tree-shakable</a> meaning only the code we need to execute will be included when they are imported. This also makes it easy to identify unused operators in the files.</p>
+<h2 id="use-pure-functions">Use pure functions</h2>
+<p>RxJS follows the concepts of functional reactive programming which basically means that we will use pure functions to create our reactive flow. In the beginning it might seem pragmatic to use side effects, but that mostly means we aren&rsquo;t fully thinking reactively. Therefore, avoid side effects at much as possible.</p>
+<h2 id="avoid-manual-subscribes">Avoid manual subscribes</h2>
+<p>If a component needs values from different streams, we need to subscribe all those streams and manually map all the values to unique properties. Angular has a feature called the <code>async</code> pipe. The <code>async</code> pipe unsubscribe themselves automatically and it makes the code simpler by eliminating the need to manually manage subscriptions. It also reduces the risk of accidentally forgetting to unsubscribe a subscription in the component, which would cause a memory leak. It triggers change detection automatically and cleans up the code a lot.</p>
+<h2 id="do-not-share-all-subscriptions">Do not share all subscriptions</h2>
+<p>Since most streams are cold by default, every subscription will trigger the producer of these streams. However, subscribing to Angular its <code>http.get()</code> multiple times will actually perform multiple XHR calls. In some cases, we may want to share the subscriptions:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>users$ = this.http.get(...).pipe(share());
+</code></pre></div><p>It works, but it is a common mistake to share everything. Angular also provides an alternative that can reduce the sharing of streams to a minimum by using the <code>async as else</code> syntax.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>@Component({
+  selector: 'my-component',
+  template: `
+    &lt;div *ngIf="users$ | async as users; else loading"&gt;
+        Number of users:
+        &lt;users-grid [users]="users"&gt;&lt;/users-grid&gt;
+    &lt;/div&gt;
+    &lt;ng-template #loading&gt;Loading...&lt;/ng-template&gt;
+  `
+})
+class MyComponent {
+  users$ = this.http.get(...);
+}
+</code></pre></div><h2 id="when-to-subscribe">When to Subscribe?</h2>
+<p>The answer to that question is, &ldquo;Only when we absolutely have to.&rdquo; Because if we don&rsquo;t subscribe, we don&rsquo;t have to unsubscribe. In Services, it&rsquo;s recommended never to subscribe to Observables. In components, we can use the <a href="https://angular.io/api/common/AsyncPipe">async</a> pipe. So, we will subscribe when we absolutely have to, and we almost never have to.</p>
+<h2 id="when-to-use-subjects">When to use Subjects?</h2>
+<p>A <a href="https://rxjs-dev.firebaseapp.com/guide/subject">Subject</a> is both a hot observable and an observer at the same time. This gives us the opportunity to next values into the stream ourselves. Subjects tend to be overused by people that didn&rsquo;t make the mind switch towards reactive programming yet. Only use them when really needed, for instance it&rsquo;s fine to use Subjects when we are mocking streams in tests, when we want to create streams from outputs in Angular or when handling circular references. For most other cases an <code>operator</code> or <code>Observable.create</code> might be enough.</p>
+<h2 id="do-not-expose-subjects">Do not expose subjects</h2>
+<p>There is a pretty common practice to use Observable Data Services in Angular:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export class DataService {
+  private data: BehaviorSubject&lt;number&gt; = new BehaviorSubject&lt;number&gt;(0);
+
+  readonly data$: Observable&lt;number&gt; = this.data.asObservable();
+
+  increment(): void {
+    this.data.next(this.data.getValue() + 1);
+  }
+}
+</code></pre></div><p>Here we&rsquo;re exposing data stream as observable. Just to make sure it can be changed only through a data service interface.</p>
+<h2 id="handle-rxjs-errors">Handle RxJS errors</h2>
+<p>Error handling is an essential part of RxJS. By default, if something goes wrong with an Observable, it just dies. If we don&rsquo;t deal with such errors, it will happen silently, and we won&rsquo;t know why we are not receiving data anymore. <a href="https://blog.angular-university.io/rxjs-error-handling/">RxJS Error Handling - Complete Practical Guide</a> provides the most common error handling strategies.</p>
+<h2 id="rxjs-clean-code-practices">RxJS clean-code practices</h2>
+<p>Consistent code indentation and formatting can improve the readability of complex streams:</p>
+
+<ul>
+<li>  Align operators below each other;</li>
+<li>  Extract into different streams when it becomes unreadable;</li>
+<li>  Put complex functionalities in private methods;</li>
+<li>  Avoid the use of brackets for readability.</li>
+</ul>
+<h2 id="use-marble-diagrams">Use marble diagrams</h2>
+<p><a href="https://rxmarbles.com/">Marble Diagrams</a> provide a visual way for us to represent the behavior of an Observable. We can use them to assert that a particular Observable behaves as expected, as well as to create <a href="https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339">hot and cold observables</a> we can use as mocks. Marble diagram is a domain specific language for RxJS to help us to model the interactions and the values of one or more observable in our test. Most of the documentation about <a href="https://rxjs-dev.firebaseapp.com/guide/testing/marble-testing">marble testing</a> can be found on official documentation.</p>
+<h2 id="use-appropriate-operators">Use appropriate operators</h2>
+<p><a href="https://rxjs-dev.firebaseapp.com/guide/operators">RxJS Operators</a> are the essential pieces that allow complex asynchronous code to be easily composed in a declarative manner. There are operators for different purposes, and they may be categorized as: <code>creation</code>, <code>transformation</code>, <code>filtering</code>, <code>joining</code>, <code>multicasting</code>, <code>error handling</code>, <code>utility</code>, etc. When using <a href="https://medium.com/angular-in-depth/switchmap-bugs-b6de69155524">flattening operators</a> with our observables, use the appropriate operator for the situation. Using a single operator when possible instead of chaining together multiple other operators to achieve the same effect can cause less code to be shipped to the user. Using the wrong operators can lead to unwanted behavior, as different operators handle observables in different ways.</p>
+<h2 id="use-a-state-management-library">Use a state management library</h2>
+<p>When building large and complex applications that has lots of information coming from and going to the database, and where state is shared across multiple components, we might start considering adding a <a href="https://medium.com/@2muchcoffee/angular-state-management-a-must-have-for-large-scale-angular-apps-8b98e5a761c7">state management</a> library. By using a state management library, we can keep the application state in one single place, which reduces the communication between components and keeps our app more predictable and easier to understand. A <a href="https://ngrx.io/guide/store/">Store</a> isolates all state related logic in one place and makes it consistent across the application. It also has memorization mechanism in place when accessing the information in the Store leading to a more performant application. A Store combined with the change detection strategy of Angular leads to a faster application.\
+There is however, an over use of, for example NgRx. The need for state management increases the complexity of the application. Large stores increase the memory footprint of an application at run time.\
+Don&rsquo;t automatically reach for a store solution if most of what you are doing could be stored in a service or component to manage local state.  An injectable Angular service singleton provided in the might suffice in many cases if the service is set up correctly using function programming paradigms, as long as that service is always the single source of truth for that data and the only way to mutate that data. Consider the issues around data security and  make sure you clear state and date from the store on application exit.\
+See discussion on NgRx Pros and Cons here.  <a href="https://www.toptal.com/angular/why-use-ngrx">A Deep Dive Into NgRx Advantages and Features</a></p>
+<h2 id="avoid-any-type-everything">Avoid any. Type everything</h2>
+<p>Always declare variables or constants with a <code>type</code> other than <code>any</code>. When declaring variables or constants in Typescript without a typing, the typing of the variable/constant will be deduced by the value that gets assigned to it. This will cause unintended problems. Another advantage of having good typings in our application is that it makes refactoring easier and safer. The any type isn&rsquo;t necessarily a bad thing and, in fact, does still come in useful sometimes. However, in most cases, there is a better alternative that leads to having better defined types overall. In new projects, it is worth setting <code>strict:true</code> in the <code>tsconfig.json</code> file to enable all strict type checking options.</p>
+<h2 id="make-use-of-lint-rules">Make use of lint rules</h2>
+<p>Having lint rules in place means that we will get a nice error when we are doing something that we should not be. This will enforce consistency in our application and readability. Besides checking style, linters are also excellent tools for finding certain classes of bugs, such as those related to variable scope. We can combine <a href="https://palantir.github.io/tslint">TSLint</a> with <a href="https://prettier.io/">Prettier</a>. TSLint is an extensible static analysis tool that checks TypeScript code for readability, maintainability, and functionality errors. Prettier is an amazing tool that enforces a consistent style by parsing our code and re-printing it, with its own rules in place. Having Prettier setup with TSLint gives us a strong foundation for our applications, as we no longer need to maintain our code-style manually. Combined with <a href="https://www.npmjs.com/package/husky">husky</a> makes for an excellent workflow.</p>
+<h2 id="lift-principle">LIFT Principle</h2>
+<p>The <a href="https://angular.io/guide/styleguide#lift">LIFT Principle</a> helps us to find code quickly. Structuring the app such that we can Locate code quickly, Identify the code immediately, keep the flattest structure we can, and Try to be DRY. Keep a flat folder structure as long as possible. It&rsquo;s very important to give good names for methods, variables, and parameters. 5 seconds rule says that if we can&rsquo;t understand in 5 seconds, we probably need a refactor. We must organize the class code by putting the most important things first, properties followed by methods, grouped and sorted with consistent naming and spelling matter.</p>
+<h2 id="do-not-repeat-yourself">Do not Repeat Yourself</h2>
+<p>Make sure we do not have the same code copied into different places in the codebase. Extract the repeating code and use it in place of the repeated code. Having the same code in multiple places means that if we want to make a change to the logic in that code, we must do it in multiple places. This makes it difficult to maintain and is prone to bugs where we could miss updating it in all occurrences. It takes longer to make changes to the logic and testing it is a lengthy process as well. In those cases, extract the repeating code and use it instead. This means only one place to change and one thing to test. Having less duplicate code shipped to users means the application will be faster.</p>
+<h2 id="avoid-long-functions">Avoid long functions</h2>
+<p>Long functions generally indicate that they are doing too many things. Small functions are better to read and faster to understand the purpose. If our function has more than 10 lines, we need to ask ourselves if it would be better to break it into smaller functions. The best functions or methods are from 5 to 10 lines of code. Try to use the <a href="https://codeburst.io/understanding-solid-principles-single-responsibility-b7c7ec0bf80">Single Responsibility Principle</a>. The method itself might be doing one thing, but inside it, there are a few other operations that could be happening. We can extract those methods into their own method and make them do one thing each and use them instead. This is sometimes measured as &ldquo;cyclomatic complexity&rdquo;. There are also some TSLint rules to detect <a href="https://palantir.github.io/tslint/rules/cyclomatic-complexity/">cyclomatic/cognitive complexity</a>, which we could use in your project to avoid bugs and detect code smells and maintainability issues.</p>
+<h2 id="avoid-change-the-dom-directly">Avoid change the DOM directly</h2>
+<p>It&rsquo;s important to know that Angular uses Lifecycle Hooks that determine how and when components will be rendered and updated. Direct DOM access or manipulation can corrupt these lifecycle hooks, leading to unexpected behavior of the whole app. Direct access to the DOM can make our application more vulnerable to <a href="https://owasp.org/www-community/attacks/xss/">XSS attacks</a>. Use <a href="https://angular.io/api/core/ElementRef">ElementRef</a> as the last resort when direct access to DOM is needed. Use templating and data-binding provided by Angular instead. Alternatively we can take a look at <a href="https://angular.io/api/core/Renderer2">Renderer2</a> which provides API that can safely be used even when direct access to native elements is not supported.</p>
+<h2 id="avoid-computing-values-in-the-template">Avoid computing values in the template</h2>
+<p>Sometimes in Angular templates, we may be tempted to bind a method in the HTML template. The problem is that the methods are constantly getting called during the <a href="https://blog.angular-university.io/how-does-angular-2-change-detection-really-work/">Angular Change Detection Cycle</a>.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>@Component({
+  selector: 'my-component',
+  template: `&lt;h1&gt;{{ getTitle() }}&lt;/h1&gt;`
+})
+export class MyComponent {
+  getTitle(): string {
+    return 'Page Title';
+  }
+}
+</code></pre></div><p>It&rsquo;s highly <a href="https://medium.com/showpad-engineering/why-you-should-never-use-function-calls-in-angular-template-expressions-e1a50f9c0496">recommended not to use methods calls</a> in Angular template expressions. While method calls in Angular templates are super convenient and technically valid, they may cause serious performance issues because the method is called every time change detection runs. Instead, we can use pure <a href="https://angular.io/guide/pipes">pipes</a> or manually calculate the values with <a href="https://angular.io/guide/lifecycle-hooks">Lifecycle Hooks</a>.</p>
+<h2 id="avoid-logic-in-templates">Avoid logic in templates</h2>
+<p>If we have any kind of logic in our templates, even if it is a simple &amp;&amp; clause, it is good to extract it out into its component. Having logic in the template means that it is not possible to test with isolated unit tests it and therefore it is more prone to bugs when changing template code. Logic should be contained in one place (the component class) instead of being spread in two places. Keeping the component&rsquo;s presentation logic in the class instead of the template improves testability, maintainability, and reusability.</p>
+<h2 id="use-mandatory-inputs">Use mandatory inputs</h2>
+<p>To make the requirement explicit we can use the selector in the <code>@Component</code> decorator to require that the attribute on our component must exist.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>@Component({
+  selector: 'my-component[items]',
+})
+export class MyComponent {
+  @Input()
+  items: object[];
+}
+</code></pre></div><p>Resulting an error, when we start the application or at compile time when the application is built Ahead of Time (AoT), if the <code>MyComponent</code> doesn&rsquo;t have a items attribute. This approach improves the readability of the code because helps other developers to integrate this component into their projects, throwing errors, and we don&rsquo;t need to define explicit validations to check if it exists.</p>
+<h2 id="provide-private-services">Provide private services</h2>
+<p>Most <a href="https://angular.io/guide/providers">providers</a> in angular are designed to act on a global scope. They are then provided at an application level (AppModule). This makes sense if the use of the <a href="https://angular.io/guide/singleton-services">global-singleton-pattern</a> is required. However, there are services that do not need to be provided globally. Especially if they are used by just one component. In that case, it can make sense to provide that service inside of the component, instead of globally. That is, if the service is directly tied to that component, as shown below.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>@Component({
+  selector: 'my-component',
+  providers: [MyService]
+})
+export class MyComponent {}
+</code></pre></div><p>Providers are <a href="https://angular.io/guide/dependency-injection-providers#tree-shakable-providers">tree-shakable</a>, the Angular compiler removes the associated services from the final output when it determines that our application doesn&rsquo;t use those services. It also minimizes the risk of dead code and reduces the size of our bundles.</p>
+<h2 id="use-onpush">Use OnPush</h2>
+<p>By default, Angular uses the <code>ChangeDetectionStrategy.Default</code> <a href="https://angular.io/api/core/ChangeDetectionStrategy">change detection strategy</a>. The Default strategy doesn&rsquo;t assume anything about the application, therefore every time something changes in our application, as a result of various user events, timers, XHR, promises, etc., a change detection will run on all components. This means anything from a click event to data received from an ajax call causes the change detection to be triggered. Now, imagine a big application with thousands of expressions. If we let Angular check every single one of them when a change detection cycle runs, we might encounter a performance problem. We can set the <code>ChangeDetectionStrategy</code> of our component to <code>ChangeDetectionStrategy.OnPush</code>. This tells Angular that the component only depends on its <code>@inputs()</code> and needs to be checked only in the following cases:</p>
+
+<ul>
+<li>  Input reference of the component changes;</li>
+<li>  An event originated from the component or one of its children;</li>
+<li>  Emission of an observable event subscribed with <code>async</code> pipe;</li>
+<li>  Change detection is manually run.</li>
+</ul>
+<p>This practice is even more important for large and complex applications as the number of components skipped by the change detection is substantial. We need to note that when we are working with observable subscriptions, there is no away for Angular to know that we are updating a component attribute. In such cases, it is recommended to subscribe with <code>async</code> pipe.</p>
+<h2 id="use-trackby">Use trackBy</h2>
+<p>When using <code>ngFor</code> to loop over an array in templates, use it with a <code>trackBy</code> function which will return an unique identifier for each item. When an array changes, Angular re-renders the whole DOM tree. But if we use <code>trackBy</code>, Angular will know which element has changed and will only make DOM changes for that element.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>@Component({
+  selector: 'my-component',
+  template: `&lt;li *ngFor="let item of items; trackBy: trackByFn"&gt;{{ item.name }}&lt;/li&gt;`
+})
+export class MyComponent {
+  @Input()
+  items: object[];
+
+  trackByFn(index: number, item: object): number {
+    return item.id;
+  }
+}
+</code></pre></div><h2 id="use-virtual-scrolling">Use virtual scrolling</h2>
+<p>In <a href="https://dev.to/adamklein/build-your-own-virtual-scroll-part-i-11ib">virtual scrolling</a>, we don&rsquo;t display the entire content on the screen, to reduce the amount of DOM node rendering and calculations. We &ldquo;fool&rdquo; the user to think the entire content is rendered by always rendering just the part inside the window, and a bit more on the top and bottom to ensure smooth transitions. We can use <code>&lt;cdk-virtual-scroll-viewport&gt;</code> directive from <a href="https://material.angular.io/cdk/scrolling/">Angular CDK</a>.</p>
+<h2 id="use-lazy-loading">Use lazy loading</h2>
+<p>When possible, try to lazy load the modules in Angular application. <a href="https://angular.io/guide/lazy-loading-ngmodules">Lazy loading</a> helps keep initial bundle sizes smaller, which in turn helps decrease load times.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>const routes: Routes = [{
+  path: "customer-list",
+  loadChildren: () =&gt; import("./customers/customers.module").then(m =&gt; m.CustomersModule)
+}];
+</code></pre></div><p>Lazy, or &ldquo;on demand&rdquo;, loading is a great way to optimize our site or application. This practice essentially involves splitting our code at logical breakpoints, and then loading it once the user has done something that requires, or will require, a new block of code. This speed up the initial load of the application and lightens its overall weight as some blocks may never even be loaded.</p>
+<h2 id="avoid-poorly-structured-css">Avoid poorly structured CSS</h2>
+<p>Common mistakes are excessive use of deep selectors and inline styles. <a href="https://www.w3schools.com/css/css_howto.asp">Inline styles</a> are considered as bad practice due to poor scalability and maintainability. As a rule of thumb, define all styles in the CSS files. Usage of <a href="https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep">::ng-deep</a> to overwrite styles in other components is incredibly popular. Despite being a working solution, it&rsquo;s marked as deprecated. The main reason for that is that this mechanism for piercing the style isolation sandbox around a component can potentially encourage bad styling practices. Though, it isn&rsquo;t going away until Angular implements <code>::part()</code> and <code>::theme()</code> from the <a href="https://drafts.csswg.org/css-shadow-parts/">CSS Shadow Parts</a> spec, as there is no better alternative.</p>
+<h2 id="lack-of-meaningful-unit-tests">Lack of meaningful unit tests</h2>
+<p>Angular CLI encourages to write unit tests by spanning out <code>*.spec.ts</code> files with every created component. However, don&rsquo;t leave them empty or be satisfied by configuring the <a href="https://angular.io/api/core/testing/TestBed">TestBed</a> with component initialization without actual tests. If developers don&rsquo;t write tests, then absence of a test file would clearly indicate the state of affairs to other developers, rather than misleading them by giving a false sense of security with a rudimental <code>*.spec.ts</code> file. We need to cover with tests the most fragile parts, rather than covering what&rsquo;s easier to test.</p>
+<h2 id="add-caching-mechanisms">Add caching mechanisms</h2>
+<p>When making API calls, responses from some of them do not change often. In those cases, we can add a caching mechanism and store the value from the API. When another request to the same API is made, we checked if there is a value for it in the cache and if so, use it. Otherwise, make the API call and cache the result. Having a caching mechanism means avoiding unwanted API calls. By only making the API calls when required and avoiding duplication, the speed of the application improves as we do not have to wait for the network. It also means we do not download the same information repeatedly.</p>
+<h2 id="avoid-magic-numbers">Avoid magic numbers</h2>
+<p>Magic numbers are values that appear in source code without any explanation of what they mean. This makes the code difficult to understand and maintain. Magic numbers should be avoided as they often lack documentation. Forcing them to be stored in variables gives them implicit documentation. With <a href="https://palantir.github.io/tslint/rules/no-magic-numbers/">no-magic-numbers</a> lint rule, we make code more readable and refactoring easier by ensuring that special numbers are declared as constants to make their meaning explicit.</p>
+<h2 id="avoid-useless-code-comments">Avoid useless code comments</h2>
+<p>Comments are considered a best practice, but if we are adding a comment, it&rsquo;s because it&rsquo;s not self-explanatory and we should choose a better way to implement it.</p>
+<p>Good comments are informative comments, when be useful to provide basic information. For example, a comment that contains legal information, or are a warning, when we are working with multiple developers on a project, we could use a comment to warn other developers about certain consequences, or are a to-do comments for tasks a developer thinks should be done, but for some reason can&rsquo;t be done at this moment.</p>
+<p>Bad Comments are commented-out code is a common practice, but we shouldn&rsquo;t do it, because other developers will think the code is there for a reason and won&rsquo;t have the courage to delete it. Just delete the code. We have got version control, so the code isn&rsquo;t lost forever. Another case is noise comments. Some comments that we see are just noise. They restate the obvious and serve no real purpose. Redundant comments are comments that are not more informative than the code. These comments only clutter the code.</p>
+<h2 id="remove-unused-code">Remove unused code</h2>
+<p>Unused code or <a href="https://dev.to/apastuhov/dead-code-problem-3o2">dead code</a> is any code which will never be executed. It may be some condition, loop or any file which was simply created but wasn&rsquo;t used in our project. It is a problem because that code has no sense and we can drop it. <a href="https://webpack.js.org/guides/tree-shaking/">Dead-code Elimination</a> also reduces the size of our bundles and repositories. Less code also increases maintenance, IDE performance and makes it easier to understand. Common mistakes in TypeScript projects are unused imports, variables, functions and private class members. With <a href="https://palantir.github.io/tslint/rules/no-unused-variable/">no-unused-variable</a> lint rule are automatically remove unused imports, variables, functions, and private class members, when using TSLint&rsquo;s &ndash;fix option.</p>
+<h2 id="separation-of-concerns">Separation of concerns</h2>
+<p>Angular is built around separation of concerns. This is a <a href="https://medium.com/@rkay301/programming-fundamentals-part-5-separation-of-concerns-software-architecture-f04a900a7c50">design-pattern</a> that makes our code easier to maintain and extend, and more reusable and testable. It helps us encapsulate and limit the logic of components to satisfy what the template needs, and nothing more. Separation of concerns is the core of writing clean code in Angular. It&rsquo;s important follow the <a href="https://angular.io/guide/styleguide">Angular Style Guide</a>. It will make our life a lot easier, when coming into new projects and will increase the quality of our code almost automatically.</p>
+<h2 id="use-aliases-for-imports">Use aliases for imports</h2>
+<p>Sometimes, we may use imports three folders deep or more, so the following import is not the ideal solution for the project.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>import { LoaderService } from '../../../loader/loader.service'
+</code></pre></div><p>In TypeScript, we can avoid these &ldquo;bad&rdquo; looking imports with the help of <a href="https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping">path aliases</a>. With path aliases we can declare aliases that map to a certain absolute path in our application. Path aliases are defined in the <code>compilerOptions</code> section in the <code>tsconfig.json</code> file.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>import { LoaderService } from ' @app/loader/loader.service'
+</code></pre></div><h2 id="develop-in-a-modular-way">Develop in a modular way</h2>
+<p>When we start developing in Angular, we may be tempted to disregard creation of modules for the sake of using components solely. That approach might be fine for smaller apps, but as our app starts to grow, development will become cumbersome. That&rsquo;s when separation of concerns steps in, which is fueled by a modular Angular app. Splitting our app into core, shared and multiple feature modules will make our life much easier. Each module can have its own components, services, directives and pipes. Modules help to organize our code into smaller bundles to make finding things easier. With the help of lazy-loaded modules, we can also improve the user experience by only downloading the parts of the application, that are required at that moment.</p>
+<h2 id="components-should-only-deal-with-display-logic">Components should only deal with display logic</h2>
+<p>We want our components to be as simple as possible. Avoid having any logic other than the display logic in the components whenever possible and make the component deal only with the display logic. Components are designed for presentational purposes and control what the view should do. This means if our component needs to do some complex logic we need to decide if that logic belongs to the component or not. Any business logic should be extracted into its own methods/services where appropriate, separating business logic from view logic. Business logic is usually easier to unit test when extracted out to a service and can be reused by any other components that need the same business logic applied.</p>
+<h2 id="small-reusable-components">Small reusable components</h2>
+<p>Ideally, a single component should render a specific bit of our page or modify a behavior. It means, we should keep them small, so that one component corresponds to one function. Make the component as dumb as possible, as this will make it work in more scenarios. Making a component dumb means that the component does not have any special logic in it and operates purely based on the inputs and outputs provided to it. Dumb components are simpler, so they are less likely to have bugs. Dumb components make us think harder about the public component API and help sniff out mixed concerns. Generally, the last child in the component tree will be the dumbest of all. Reusable components reduce duplication of code therefore making it easier to maintain and make changes.</p>
+<h2 id="smart-and-dummy-components">Smart and dummy components</h2>
+<p>Most common use case of developing Angular&rsquo;s components is a separation of <a href="https://blog.angular-university.io/angular-2-smart-components-vs-presentation-components-whats-the-difference-when-to-use-each-and-why/">smart and presentation components</a>. A &lsquo;dumb&rsquo; component is a component used for presentation purposes only, meaning that the component doesn&rsquo;t know where the data came from. For that purpose, we can use one or more smart components that will inherit dummy&rsquo;s component presentation logic. Making a component dumb means that the component does not have any special logic in it and operates purely based on the inputs and outputs provided to it. Dumb components are simpler, so they are less likely to have bugs. A smart component does not have to be a top-level router component only. We can have other components further down the tree and don&rsquo;t necessarily get their data only from <code>@Input()</code>.\
+All component templates should be dumb, maybe a better metaphor here is parent child or shell host, the parent or host handles dependancies and hands data to the child this makes the child component easy to test, since dependancies can be stubbed.  If the outer (parent or shell) component handles the data fetch and keeps the children hidden until it has been hydrated, the child component can make certain assumptions about its role and state. </p>
+<h2 id="base-component-classes">Base component classes</h2>
+<p>Create a base class component may come in handy when we have lots of reused stuff and don&rsquo;t want to pollute each component with the same code all over. Common situations are when we are creating form components, when we have pages with the same behavior, such as a list with the create, read, update and delete methods, or pages with HTML forms. In these examples, having the same code in multiple places means that if we want to make a change to the logic in that code, we must do it in multiple places. We can create a base class with the common data and methods. Thus, we don&rsquo;t have the same duplicate code in different locations in the code base.</p>
+<h2 id="do-not-remove-view-encapsulation">Do not remove view encapsulation</h2>
+<p>In Angular, component CSS styles are encapsulated into the component&rsquo;s view and don&rsquo;t affect the rest of the application. To control how this encapsulation happens on a per component basis, we can set the <a href="https://angular.io/guide/view-encapsulation">view encapsulation</a> mode in the component metadata. The default is Emulated and it emulates the behavior of <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM">Shadow DOM</a> by preprocessing the CSS code to effectively scope the CSS to the component&rsquo;s view. In the None mode, styles from the component propagate back to the main HTML and therefore are visible to all components on the page. We can use this option, but we need to be careful and adopt other strategies like nested CSS or naming conventions like <a href="http://getbem.com/introduction/">BEM</a>.</p>
+<h2 id="use-reactive-forms">Use reactive forms</h2>
+<p>Angular presents two different methods for creating forms: <a href="https://angular.io/guide/forms">template-driven</a> and <a href="https://angular.io/guide/reactive-forms">reactive forms</a>. Reactive forms provide a model-driven approach to handling form inputs whose values change over time. The Reactive approach removes validation logic from the template, keeping the templates clean of validation logic. Reactive forms use an explicit and immutable approach to managing the state of a form at a given point in time. Each change to the form state returns a new state, which maintains the integrity of the model between changes.</p>
+<h2 id="bibliography">Bibliography</h2>
+
+<ul>
+<li>  <a href="https://angular.io/guide/styleguide">Angular coding style guide</a></li>
+<li>  <a href="https://medium.com/slackernoon/angular-performance-enhancement-413c6f950ebb">Angular Performance Advice</a></li>
+<li>  <a href="https://medium.com/angular-in-depth/angular-bad-practices-revisited-4f607fcb75da">Angular Bad Practices</a></li>
+<li>  <a href="https://blog.angular-university.io/angular-reactive-templates/">Angular Reactive Templates with ngIf and the Async Pipe</a></li>
+<li>  <a href="https://blog.angular-university.io/angular-2-smart-components-vs-presentation-components-whats-the-difference-when-to-use-each-and-why/">Angular Smart Components vs Presentational Components</a></li>
+<li>  <a href="https://netbasal.com/a-comprehensive-guide-to-angular-onpush-change-detection-strategy-5bac493074a4">A Comprehensive Guide to Angular onPush Change Detection Strategy</a></li>
+<li>  <a href="https://medium.com/free-code-camp/best-practices-for-a-clean-and-performant-angular-application-288e7b39eb6f">Best practices for a clean and performant Angular application</a></li>
+<li>  <a href="https://itnext.io/best-practices-in-angular-a8926fa02ae2">Best Practices in Angular</a></li>
+<li>  Clean Code Checklist in Angular</li>
+<li>  <a href="https://dev.to/nikpoltoratsky/don-t-follow-rxjs-best-practices-4893">Don&rsquo;t follow RxJS Best Practices</a></li>
+<li>  <a href="https://indepth.dev/posts/1279/rxjs-in-angular-when-to-subscribe-rarely">RxJS in Angular: When To Subscribe?</a></li>
+<li>  <a href="https://malcoded.com/posts/improve-your-angular-codebase/">5 Things that Improve your Angular Codebase Right Now</a></li>
+<li>  <a href="https://alex-klaus.com/angular-code-review/">6 most common mistakes of Angular devs revealed on code reviews</a></li>
+</ul>
+
+            
+          </main>
+
+          <aside>
+              <ul class="contribution-banner">
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/standards/standards/angular.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Angular%27+%28https%3A%2F%2Fhmcts.github.io%2Fstandards%2Fstandards%2Fangular.html%29&amp;labels=bug&amp;title=Re%3A+%27Angular%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
+              </ul>
+          </aside>
+
+          <footer class="govuk-footer app-footer" role="contentinfo">
+  <div class="govuk-footer__meta">
+    <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+
+
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="govuk-footer__licence-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 483.2 195.7"
+        height="17"
+        width="41"
+      >
+        <path
+          fill="currentColor"
+          d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+        />
+      </svg>
+      <span class="govuk-footer__licence-description">
+        All content is available under the
+        <a
+          class="govuk-footer__link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="license"
+        >Open Government Licence v3.0</a>, except where otherwise stated
+      </span>
+    </div>
+    <div class="govuk-footer__meta-item">
+      <a
+        class="govuk-footer__link govuk-footer__copyright-logo"
+        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+      >© Crown copyright</a>
+    </div>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-170132988-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('set', 'displayFeaturesTask', null);
+  ga('set', 'transport', 'beacon');
+  ga('set', 'page', location.pathname+location.search+location.hash);
+  ga('send', 'pageview');
+  </script>
+
+    <script src="../../javascripts/application.js"></script>
+  </body>
+</html>

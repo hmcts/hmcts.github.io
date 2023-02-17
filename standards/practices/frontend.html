@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Sandbox Cleardown - HMCTS</title>
+    <title>Frontend applications - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html">
+    <link rel="canonical" href="https://hmcts.github.io/standards/practices/frontend.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Sandbox Cleardown - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta name="twitter:title" content="Frontend applications - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/standards/practices/frontend.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Sandbox Cleardown" />
+      <meta property="og:title" content="Frontend applications" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta property="og:url" content="https://hmcts.github.io/standards/practices/frontend.html" />
 
     
   </head>
@@ -262,75 +262,39 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="sandbox-cleardown">Sandbox Cleardown</h1>
-<h3 id="what-is-this-for">What is this for?</h3>
-<p>The sandbox cleardown repo contains pipelines and scripts to remove resources from the sandbox environment based on resource tags in Azure.</p>
-<p>All resources in the sandbox environment will have an expiresAfter tag with a date value.</p>
-<p>Any resources that have an expiresAfter tag value dated in the past, based on the script runtime, will be deleted.</p>
-<p>This ensures resources that are not required long term are removed.</p>
-<h3 id="the-expiresafter-tag">The expiresAfter tag</h3>
-<p>In the Sandbox environment resources must be tagged with an end date after which they are no longer needed.
-They will then be automatically deleted after this date.</p>
-<p>By default a tag will be added as <code>now() + 30 days</code>.</p>
-<p>You can customise this by setting an explicit date:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"2023-01-01"</span> <span class="c1"># YYYY-MM-DD</span>
-<span class="p">}</span>
-</code></pre></div><p>Or by setting it to never expire with a date far into the future:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"3000-01-01"</span> <span class="c1"># never expire</span>
-<span class="p">}</span>
-</code></pre></div><h3 id="sandbox-cleardown-channel">Sandbox Cleardown Channel</h3>
-<p>The<a href="https://hmcts-reform.slack.com/archives/C04PBAYU35E">#sandbox-cleardown</a> slack channel has been created to post warning messages and on resources that are scheduled to be cleared down in the sandbox environment.</p>
-<p>Once a resource has been deleted, an alert will posted in the channel.</p>
-<p>See timelines below:</p>
-<div class="table-container">
-        <table>
-          <tr>
-<th>Alert Type</th>
-<th>Timeline</th>
-</tr><tr>
-<td>Resource will be Deleted</td>
-<td>5 days prior until day of deletion</td>
-</tr><tr>
-<td>Deleted Resource</td>
-<td>Day of deletion</td>
-</tr><tr>
-<td>Unable to Delete Resource</td>
-<td>Day of deletion</td>
-</tr>
-        </table>
-      </div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-07">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 7 February 2023.
+            <h1 id="frontend-applications">Frontend applications</h1>
+<p>Citizen frontend applications should be built using a node.js based Server Side Rendering (SSR) framework such as Express.</p>
+<p>Professional frontend applications should be built using a node.js based Single Page Application (SPA) framework such as Angular.</p>
+<p>Both citizen and professional applications should be based on the <a href="https://design-system.service.gov.uk/">GOV.UK Design System</a> and use
+<a href="https://frontend.design-system.service.gov.uk/">GOV.UK Frontend</a> or a derivative such as <a href="https://hmcts.github.io/hmcts-frontend/">HMCTS Frontend</a>.</p>
+<h3 id="node-js">Node.js</h3>
+<p>Use the current LTS version. Ensure that there is a process in place to upgrade it as new versions released.</p>
+<p>Deno is not currently recommended.</p>
+<h3 id="dependency-management">Dependency management</h3>
+<p>Ensure dependabot or renovate has been configured so that dependencies are kept up to date.</p>
+<p>NPM or Yarn is acceptable.</p>
+<h3 id="typescript">TypeScript</h3>
+<p>TypeScript is recommended for all new projects.</p>
+<h3 id="browser-support">Browser support</h3>
+<p>Applications should support the latest version of Chrome, Edge, Firefox and Safari.</p>
+<p>Where possible applications should aim to use a responsive layout in order to work on mobile devices.</p>
+<h3 id="code-style">Code style</h3>
+<p>Use an opinionated code linter such as eslint and code formatter such as prettier to eliminate discussions about subjective coding preferences.</p>
+<h3 id="accessibility">Accessibility</h3>
+<p>Use Pa11y for accessibility testing to WCAG 2.1 AA.</p>
+<h3 id="cross-browser-and-ui-testing">Cross-browser and UI testing</h3>
+<p>Use playwright or cypress to test applications in the browser.</p>
+<h3 id="security">Security</h3>
+<p>Configure the Content Security Policy headers to prevent XSS attacks.</p>
+<p>Add CSRF protection to forms to ensure that they cannot be submitted by a third party.</p>
 
-        It needs to be reviewed again on 7 August 2023
-        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
-        .
-    </div>
-
-    <div class='page-expiry--expired'>
-      This page was set to be reviewed before 7 August 2023
-       by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
-      This might mean the content is out of date.
-    </div>
-  </div>
-
+            
           </main>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/environments/sandbox-cleardown.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Sandbox+Cleardown%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fenvironments%2Fsandbox-cleardown.html%29&amp;labels=bug&amp;title=Re%3A+%27Sandbox+Cleardown%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/standards/practices/frontend.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Frontend+applications%27+%28https%3A%2F%2Fhmcts.github.io%2Fstandards%2Fpractices%2Ffrontend.html%29&amp;labels=bug&amp;title=Re%3A+%27Frontend+applications%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

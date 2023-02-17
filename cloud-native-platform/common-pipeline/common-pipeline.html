@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Sandbox Cleardown - HMCTS</title>
+    <title>Common pipeline - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html">
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/common-pipeline/common-pipeline.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Sandbox Cleardown - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta name="twitter:title" content="Common pipeline - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/common-pipeline/common-pipeline.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Sandbox Cleardown" />
+      <meta property="og:title" content="Common pipeline" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/common-pipeline/common-pipeline.html" />
 
     
   </head>
@@ -262,64 +262,131 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="sandbox-cleardown">Sandbox Cleardown</h1>
-<h3 id="what-is-this-for">What is this for?</h3>
-<p>The sandbox cleardown repo contains pipelines and scripts to remove resources from the sandbox environment based on resource tags in Azure.</p>
-<p>All resources in the sandbox environment will have an expiresAfter tag with a date value.</p>
-<p>Any resources that have an expiresAfter tag value dated in the past, based on the script runtime, will be deleted.</p>
-<p>This ensures resources that are not required long term are removed.</p>
-<h3 id="the-expiresafter-tag">The expiresAfter tag</h3>
-<p>In the Sandbox environment resources must be tagged with an end date after which they are no longer needed.
-They will then be automatically deleted after this date.</p>
-<p>By default a tag will be added as <code>now() + 30 days</code>.</p>
-<p>You can customise this by setting an explicit date:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"2023-01-01"</span> <span class="c1"># YYYY-MM-DD</span>
-<span class="p">}</span>
-</code></pre></div><p>Or by setting it to never expire with a date far into the future:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"3000-01-01"</span> <span class="c1"># never expire</span>
-<span class="p">}</span>
-</code></pre></div><h3 id="sandbox-cleardown-channel">Sandbox Cleardown Channel</h3>
-<p>The<a href="https://hmcts-reform.slack.com/archives/C04PBAYU35E">#sandbox-cleardown</a> slack channel has been created to post warning messages and on resources that are scheduled to be cleared down in the sandbox environment.</p>
-<p>Once a resource has been deleted, an alert will posted in the channel.</p>
-<p>See timelines below:</p>
+            <h1 id="common-pipeline">Common pipeline</h1>
+
+<blockquote>
+<p>To get onboarded to the common pipeline please see <a href="../onboarding/team/jenkins.html">Jenkins onboarding</a>.</p>
+</blockquote>
+<p>The common pipeline is a Jenkins pipeline defined by <a href="https://github.com/hmcts/cnp-jenkins-library">code</a>
+which implements Continuous Delivery to production while enforcing a standard set of
+checks on the code processed.</p>
+<p>It enables HMCTS Reform to deploy changes to the platform in a well defined
+manner providing the confidence that all the test and verification
+stages have been executed in a structured and repeatable sequence.
+This allows for fast feedback to developers to improve code development velocity.</p>
+<p>The delivery pipeline combines infrastructure and database schema changes with the
+application deployment, therefore taking advantage of the microservices architecture
+in use at HMCTS.</p>
+<p>Code changes are subjected to a round of static tests - consisting of unit tests, static
+code analysis and security checks - before being deployed to a non-prod environment in a
+non-publicly accessible AKS (Kubernetes) deployment. Here, a range of smoke tests and
+non-destructive functional tests verifies the app is functioning. At this point a promotion
+process is started which labels the Docker image produced by the previous stages of the
+pipeline as production-ready. Production deployments are managed by flux which takes care
+of keeping an application deployment up to date with the latest production-ready image generated
+by the delivery pipeline.</p>
+<p>Smoke tests are available in production as part of a flux deployment and run from a separate container.</p>
+<p>The entire Delivery Pipeline is a hands-off, automated process, triggered at the point of change. Code merged
+to master is deployed to production without any further human intervention. For this reason:</p>
+
+<ul>
+<li>PRs need to be carefully reviewed</li>
+<li>Feature Flagging, to separate the deployment of changes from their activation, is a practical necessity for all apps.</li>
+</ul>
+<h3 id="more-information">More information</h3>
+<p>For an in-depth guide on how the common pipeline works and how it should be used, please refer to the <a href="https://github.com/hmcts/cnp-jenkins-library/blob/master/README.md">cnp-jenkins-library README</a></p>
+<h3 id="deploying-applications-using-the-common-pipeline">Deploying applications using the common pipeline</h3>
+<p><a href="https://helm.sh">Helm</a> is the package manager for Kubernetes.
+We deploy all of our applications using a helm chart to Kubernetes.
+For more information about Helm, please see the related new component
+<a href="../new-component/helm-chart.html">docs</a></p>
+<p><a href="../../images/common-pipeline.png" rel="noopener noreferrer"><img src="../../images/common-pipeline.png" alt="The Common Pipeline" /></a></p>
+<p>The diagram below shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of a non path to live environment that is <em>optionally</em> deployed to.</p>
+<p>An application consists of the different infrastructure levels of platform, product and component as detailed in <a href="../new-component/infrastructure-as-code.html#infrastructure-levels">Infrastructure levels</a>.</p>
+<p>The product and component levels are combined to define the name of the application, denoted by app-name in the diagram below. The values for product and component should be defined in the Jenkinsfile within the github repo.</p>
+<p>Example: <a href="https://github.com/hmcts/cnp-plum-frontend/blob/master/Jenkinsfile_CNP">cnp-plum-frontend</a></p>
+<p>The environments shown in the diagram reflect CFT. Review the table below to see the corresponding SDS environment names.</p>
 <div class="table-container">
         <table>
           <tr>
-<th>Alert Type</th>
-<th>Timeline</th>
+<th>CFT Environment</th>
+<th>SDS Environment</th>
 </tr><tr>
-<td>Resource will be Deleted</td>
-<td>5 days prior until day of deletion</td>
+<td>AAT</td>
+<td>Staging</td>
 </tr><tr>
-<td>Deleted Resource</td>
-<td>Day of deletion</td>
+<td>Perftest</td>
+<td>Test</td>
 </tr><tr>
-<td>Unable to Delete Resource</td>
-<td>Day of deletion</td>
+<td>Preview</td>
+<td>Dev</td>
+</tr><tr>
+<td>Prod</td>
+<td>Prod</td>
 </tr>
         </table>
-      </div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-07">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 7 February 2023.
+      </div><p><a href="../../images/aks-release.png" rel="noopener noreferrer"><img src="../../images/aks-release.png" alt="AKS Release" /></a></p>
+<p>End to end process:</p>
 
-        It needs to be reviewed again on 7 August 2023
+<ol>
+<li>Commit changes to feature branch</li>
+<li>Create a pull request</li>
+<li>Jenkins will push an image with tag</li>
+<li>Jenkins will force a new Helm release to AKS</li>
+<li>Jenkins will run automated tests</li>
+<li>Merging and closing the PR will merge the feature with master</li>
+<li>The merge with master will trigger a webhook to start the Jenkins pipeline</li>
+<li>Jenkins will push an image with tag</li>
+<li>Jenkins will force a new Helm release to AKS</li>
+<li>Jenkins will run automated tests</li>
+<li>Jenkins will destroy the pod</li>
+<li>Jenkins will promote the image by:
+
+<ul>
+<li>retagging the image in ACR</li>
+<li>updating the github flux repo with the new image name</li>
+</ul></li>
+<li>Flux will see new changes and deploy new pod</li>
+</ol>
+<h3 id="finding-your-pipeline">Finding your pipeline</h3>
+<p>Within Jenkins, there exists the concept of organisation folders. This enables Jenkins to scan a GitHub Organization to discover repositories and automatically create managed pipelines for them.</p>
+<p>Your pipeline will exist within a specific organisation folder which should have been defined when the pipeline integration was first configured.</p>
+<p>See Step 4 of <a href="../onboarding/team/jenkins.html">Jenkins Onboarding</a> for details.</p>
+<h3 id="finding-your-application">Finding your application</h3>
+<p>Within AKS, your application pods will exist within a namespace. The namespace will correspond to what has been configured in the Jenkins team-config.yml file.</p>
+<p><a href="https://github.com/hmcts/cnp-jenkins-config/blob/4172d1409ec33072a867dee75fb8bb15192961e0/team-config.yml#L3">CFT example</a></p>
+<p><a href="https://github.com/hmcts/sds-jenkins-config/blob/edda067f268fe4056c19963fc5c7419cbd559856/team-config.yml#L3">SDS example</a></p>
+<h3 id="resource-locks">Resource locks</h3>
+<p>Resources in Azure are locked in Staging or Production to prevent their destruction.</p>
+<p>If you need to rename or destroy a resource, you will need to temporarily remove the lock. This can be done using the link in the readme of the <a href="https://github.com/hmcts/azure-resource-locks/#pipeline-jobs">Azure Resource Locks</a> repository.</p>
+<h3 id="ssh-access-to-resources">SSH access to resources</h3>
+<p>To SSH into Azure resources, such as a Postgres Database, you will typically need to go via a Bastion.</p>
+
+<ul>
+<li>Staging and production resources use the Production Bastion</li>
+<li>Other resources use the Non-production Bastion</li>
+</ul>
+<p>To SSH into the bastion, you must first get a temporary access pass on <a href="https://myaccess.microsoft.com/@CJSCommonPlatform.onmicrosoft.com#/access-packages">myaccess.microsoft.com</a>.</p>
+<h3 id="building-infrastructure-in-the-demo-environment">Building infrastructure in the demo environment</h3>
+<p>To build infrastructure in demo, you will need to create a branch called &ldquo;demo&rdquo;. All merges to this branch will be deployed in the Demo environment.</p>
+<h3 id="key-vaults-build-failures">Key vaults build failures</h3>
+<p>If your infrastructure pipeline requires the use of a Key Vault to build, and the Key Vault is also itself being built in the pipeline, then it is common for the first deployment to fail. Just rebuild the pipeline.</p>
+<h3 id="troubleshooting-build-issues">Troubleshooting build issues</h3>
+<p>See <a href="../troubleshooting/">troubleshooting issues</a>.</p>
+<h3 id="tips-and-tricks">Tips and Tricks</h3>
+<p>See <a href="./tips_and_tricks.html">tips and tricks</a>.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-15">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 15 February 2023.
+
+        It needs to be reviewed again on 15 August 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 7 August 2023
+      This page was set to be reviewed before 15 August 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -329,8 +396,8 @@ They will then be automatically deleted after this date.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/environments/sandbox-cleardown.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Sandbox+Cleardown%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fenvironments%2Fsandbox-cleardown.html%29&amp;labels=bug&amp;title=Re%3A+%27Sandbox+Cleardown%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/common-pipeline/common-pipeline.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Common+pipeline%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fcommon-pipeline%2Fcommon-pipeline.html%29&amp;labels=bug&amp;title=Re%3A+%27Common+pipeline%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

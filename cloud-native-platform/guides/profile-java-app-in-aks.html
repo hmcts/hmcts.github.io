@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Sandbox Cleardown - HMCTS</title>
+    <title>Profile a Java application running in an AKS cluster - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html">
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/guides/profile-java-app-in-aks.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Sandbox Cleardown - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta name="twitter:title" content="Profile a Java application running in an AKS cluster - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/guides/profile-java-app-in-aks.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Sandbox Cleardown" />
+      <meta property="og:title" content="Profile a Java application running in an AKS cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/guides/profile-java-app-in-aks.html" />
 
     
   </head>
@@ -262,64 +262,93 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="sandbox-cleardown">Sandbox Cleardown</h1>
-<h3 id="what-is-this-for">What is this for?</h3>
-<p>The sandbox cleardown repo contains pipelines and scripts to remove resources from the sandbox environment based on resource tags in Azure.</p>
-<p>All resources in the sandbox environment will have an expiresAfter tag with a date value.</p>
-<p>Any resources that have an expiresAfter tag value dated in the past, based on the script runtime, will be deleted.</p>
-<p>This ensures resources that are not required long term are removed.</p>
-<h3 id="the-expiresafter-tag">The expiresAfter tag</h3>
-<p>In the Sandbox environment resources must be tagged with an end date after which they are no longer needed.
-They will then be automatically deleted after this date.</p>
-<p>By default a tag will be added as <code>now() + 30 days</code>.</p>
-<p>You can customise this by setting an explicit date:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"2023-01-01"</span> <span class="c1"># YYYY-MM-DD</span>
-<span class="p">}</span>
-</code></pre></div><p>Or by setting it to never expire with a date far into the future:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"3000-01-01"</span> <span class="c1"># never expire</span>
-<span class="p">}</span>
-</code></pre></div><h3 id="sandbox-cleardown-channel">Sandbox Cleardown Channel</h3>
-<p>The<a href="https://hmcts-reform.slack.com/archives/C04PBAYU35E">#sandbox-cleardown</a> slack channel has been created to post warning messages and on resources that are scheduled to be cleared down in the sandbox environment.</p>
-<p>Once a resource has been deleted, an alert will posted in the channel.</p>
-<p>See timelines below:</p>
-<div class="table-container">
-        <table>
-          <tr>
-<th>Alert Type</th>
-<th>Timeline</th>
-</tr><tr>
-<td>Resource will be Deleted</td>
-<td>5 days prior until day of deletion</td>
-</tr><tr>
-<td>Deleted Resource</td>
-<td>Day of deletion</td>
-</tr><tr>
-<td>Unable to Delete Resource</td>
-<td>Day of deletion</td>
-</tr>
-        </table>
-      </div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-07">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 7 February 2023.
+            <h1 id="profile-a-java-application-running-in-an-aks-cluster">Profile a Java application running in an AKS cluster</h1>
+<p>This page describes how to profile a java application which is deployed in one of our AKS clusters.</p>
+<h2 id="prerequisites">Prerequisites</h2>
 
-        It needs to be reviewed again on 7 August 2023
+<ol>
+<li>Your user will need to have permissions to run kubectl exec and to ssh to a node. (Subscription contributor role works)</li>
+<li>Install <a href="https://github.com/kvaps/kubectl-node-shell">kubectl node-shell</a> which in turn requires <a href="https://krew.sigs.k8s.io/">krew</a></li>
+<li>Something to open .jfr files with like <a href="https://adoptopenjdk.net/jmc.html">Java Mission Control</a></li>
+</ol>
+<h2 id="setup">Setup</h2>
+<p>You&rsquo;ll need the following bits of information during this exercise:
+1. namespace (hopefully you just know this or browse <code>kubectl get namespaces</code>)
+2. pod name (find it in <code>kubectl get pods -n $namespace</code>)
+3. container name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.spec.containers[0].name}&#39;</code>)
+4. node name (<code>kubectl get pods -n $namespace $podName -o=jsonpath=&#39;{.spec.nodeName}&#39;</code>)</p>
+<p>Example</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
+<span class="nv">podName</span><span class="o">=</span>rpe-send-letter-service-java-7fc6fffdf9-qvfd6
+<span class="nv">containerName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.containers[0].name}'</span><span class="si">)</span>
+<span class="nv">nodeName</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">-n</span> <span class="nv">$namespace</span> <span class="nv">$podName</span> <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.nodeName}'</span><span class="si">)</span>
+</code></pre></div><h2 id="running-java-flight-recorder-jfr">Running Java Flight Recorder (JFR)</h2>
+<p>After completing the setup above you can run
+<code>kubectl exec $podName -n $namespace -- jattach 1 jcmd &quot;JFR.start name=profile1&quot;</code>
+The output will look something like this</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Connected to remote JVM
+Response code <span class="o">=</span> 0
+Started recording 1. No limit specified, using <span class="nv">maxsize</span><span class="o">=</span>250MB as default.
+Use jcmd 1 JFR.dump <span class="nv">name</span><span class="o">=</span>1 <span class="nv">filename</span><span class="o">=</span>FILEPATH to copy recording data to file.
+</code></pre></div><p>At this point you can run any tests you want to capture any data in the profile report.</p>
+<p>Once complete, you can dump the data to a file on the container:
+<code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.dump</code>
+If you don&rsquo;t specify a name in the command, a time-stamped filename will be generated.
+The output will look something like this</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Connected to remote JVM
+Response code <span class="o">=</span> 0
+Dumped recording, 4.5 MB written to:
+/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr
+</code></pre></div><p>Make a note of the filename for retrieving later</p>
+<p>Run <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd &quot;JFR.stop name=profile1&quot;</code>
+to stop the recording. You can use <code>kubectl exec $podName -n $namespace -- jattach 1 jcmd JFR.check</code>
+to list all in-flight recordings</p>
+<h2 id="downloading-the-file">Downloading the file</h2>
+<p>As our images don&rsquo;t have a shell installed or tar (can&rsquo;t use <code>kubectl cp</code>) it&rsquo;s a little bit more involved to get the
+JFR report.</p>
+<p>To figure out where the file is, you need to use nsenter to get a shell onto the node and find the mount point for the
+specific container you need.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl node-shell <span class="nv">$nodeName</span> <span class="nt">-n</span> admin
+spawning <span class="s2">"nsenter-x8uq64"</span> on <span class="s2">"aks-linux-81166528-vmss00005t"</span>
+If you don<span class="s1">'t see a command prompt, try pressing enter.
+root@aks-linux-81166528-vmss00005T:/#
+</span></code></pre></div><p>Make a note of the name of the spawned instance (in this case <code>nsenter-x8uq64</code>).</p>
+<p>At this point you&rsquo;ll need your variables from earlier</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">namespace</span><span class="o">=</span>rpe
+<span class="nv">containerName</span><span class="o">=</span>rpe-send-letter-service-java
+<span class="nv">pod</span><span class="o">=</span>rpe-send-letter-service-java-6fb55dd776-87b6f
+</code></pre></div><p>You&rsquo;ll also need some additional information out of containerd using crictl.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">podId</span><span class="o">=</span><span class="si">$(</span>crictl pods <span class="nt">--namespace</span> <span class="nv">$namespace</span> <span class="nt">--name</span> <span class="nv">$pod</span> <span class="nt">--state</span> Ready <span class="nt">--quiet</span><span class="si">)</span>
+<span class="nv">containerId</span><span class="o">=</span><span class="si">$(</span>crictl ps <span class="nt">-p</span> <span class="nv">$podId</span> <span class="nt">--no-trunc</span> <span class="nt">--label</span> io.kubernetes.container.name<span class="o">=</span><span class="nv">$containerName</span> <span class="nt">-q</span><span class="si">)</span>
+<span class="nv">targetPid</span><span class="o">=</span><span class="si">$(</span>crictl inspect <span class="nv">$containerId</span> | jq .info.pid<span class="si">)</span>
+</code></pre></div><p>Now we can use nsenter to create us a shell at the mount point for the container</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>nsenter <span class="nt">--target</span> <span class="nv">$targetPid</span> <span class="nt">--uts</span> <span class="nt">--net</span> <span class="nt">--pid</span> unshare <span class="nt">--mount-proc</span> sh <span class="nt">-c</span> <span class="s2">"cd /run/containerd/io.containerd.runtime.v2.task/k8s.io/</span><span class="nv">$containerId</span><span class="s2">/rootfs/opt/app &amp;&amp; exec bash"</span>
+<span class="nb">groups</span>: cannot find name <span class="k">for </span>group ID 11
+To run a <span class="nb">command </span>as administrator <span class="o">(</span>user <span class="s2">"root"</span><span class="o">)</span>, use <span class="s2">"sudo &lt;command&gt;"</span><span class="nb">.</span>
+See <span class="s2">"man sudo_root"</span> <span class="k">for </span>details.
+</code></pre></div><p>When we list the files you can see the hotspot JFR file which was dumped by jattach earlier.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>root@rpe-send-letter-service-java-6fb55dd776-87b6f:/run/containerd/io.containerd.runtime.v2.task/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app# <span class="nb">ls
+</span>AI-Agent.xml                         hotspot-pid-1-2022_01_20_14_32_49.jfr
+applicationinsights-agent-2.5.1.jar  send-letter-service.jar
+</code></pre></div><p>To download this file we need to go back to a terminal on our local machine and run <code>kubectl cp</code> to copy from the spawned instance
+ (<code>nsenter-x8uq64</code>) using the path we just discovered above
+ (<code>/run/containerd/io.containerd.runtime.v2.task/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app</code>)
+appended by the file name <code>hotspot-pid-1-2022_01_20_14_32_49.jfr</code> like so:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nb">cp </span>admin/nsenter-x8uq64:/run/containerd/io.containerd.runtime.v2.task/k8s.io/9704b2c0b9b559001eb23156a06e40d25e10ceeffc4849bb51b1688025da6f61/rootfs/opt/app/hotspot-pid-1-2022_01_20_14_32_49.jfr ./hotspot-pid-1-2022_01_20_14_32_49.jfr
+<span class="nb">tar</span>: Removing leading <span class="sb">`</span>/<span class="s1">' from member names
+</span></code></pre></div><p>You can now open this file locally using Java Mission Control and terminate your connection to the nsenter pod.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2023-01-13">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 13 July 2022.
+
+        It needs to be reviewed again on 13 January 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 7 August 2023
+      This page was set to be reviewed before 13 January 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -329,8 +358,8 @@ They will then be automatically deleted after this date.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/environments/sandbox-cleardown.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Sandbox+Cleardown%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fenvironments%2Fsandbox-cleardown.html%29&amp;labels=bug&amp;title=Re%3A+%27Sandbox+Cleardown%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/guides/profile-java-app-in-aks.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Profile+a+Java+application+running+in+an+AKS+cluster%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fguides%2Fprofile-java-app-in-aks.html%29&amp;labels=bug&amp;title=Re%3A+%27Profile+a+Java+application+running+in+an+AKS+cluster%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>

@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Sandbox Cleardown - HMCTS</title>
+    <title>Shutter Implementation and Design - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html">
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/path-to-live/shutter.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Sandbox Cleardown - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta name="twitter:title" content="Shutter Implementation and Design - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/path-to-live/shutter.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Sandbox Cleardown" />
+      <meta property="og:title" content="Shutter Implementation and Design" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/ways-of-working/environments/sandbox-cleardown.html" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/path-to-live/shutter.html" />
 
     
   </head>
@@ -262,64 +262,111 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="sandbox-cleardown">Sandbox Cleardown</h1>
-<h3 id="what-is-this-for">What is this for?</h3>
-<p>The sandbox cleardown repo contains pipelines and scripts to remove resources from the sandbox environment based on resource tags in Azure.</p>
-<p>All resources in the sandbox environment will have an expiresAfter tag with a date value.</p>
-<p>Any resources that have an expiresAfter tag value dated in the past, based on the script runtime, will be deleted.</p>
-<p>This ensures resources that are not required long term are removed.</p>
-<h3 id="the-expiresafter-tag">The expiresAfter tag</h3>
-<p>In the Sandbox environment resources must be tagged with an end date after which they are no longer needed.
-They will then be automatically deleted after this date.</p>
-<p>By default a tag will be added as <code>now() + 30 days</code>.</p>
-<p>You can customise this by setting an explicit date:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"2023-01-01"</span> <span class="c1"># YYYY-MM-DD</span>
-<span class="p">}</span>
-</code></pre></div><p>Or by setting it to never expire with a date far into the future:</p>
-<div class="highlight"><pre class="highlight terraform" tabindex="0"><code><span class="k">module</span> <span class="s2">"tags"</span> <span class="p">{</span>
-  <span class="nx">source</span>      <span class="p">=</span> <span class="s2">"git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"</span>
-  <span class="nx">environment</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">env</span>
-  <span class="nx">product</span>     <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">product</span>
-  <span class="nx">builtFrom</span>   <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">builtFrom</span>
-  <span class="nx">expiresAfter</span> <span class="p">=</span> <span class="s2">"3000-01-01"</span> <span class="c1"># never expire</span>
-<span class="p">}</span>
-</code></pre></div><h3 id="sandbox-cleardown-channel">Sandbox Cleardown Channel</h3>
-<p>The<a href="https://hmcts-reform.slack.com/archives/C04PBAYU35E">#sandbox-cleardown</a> slack channel has been created to post warning messages and on resources that are scheduled to be cleared down in the sandbox environment.</p>
-<p>Once a resource has been deleted, an alert will posted in the channel.</p>
-<p>See timelines below:</p>
-<div class="table-container">
-        <table>
-          <tr>
-<th>Alert Type</th>
-<th>Timeline</th>
-</tr><tr>
-<td>Resource will be Deleted</td>
-<td>5 days prior until day of deletion</td>
-</tr><tr>
-<td>Deleted Resource</td>
-<td>Day of deletion</td>
-</tr><tr>
-<td>Unable to Delete Resource</td>
-<td>Day of deletion</td>
-</tr>
-        </table>
-      </div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-07">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 7 February 2023.
+            <h1 id="shutter-implementation-and-design">Shutter Implementation and Design</h1>
+<h2 id="purpose">Purpose</h2>
+<p>The purpose of this document is to describe the shutter solution design and its end to end implementation.</p>
+<h2 id="solution">Solution</h2>
+<p><a href="../../images/Shuttersolution_v2.png" rel="noopener noreferrer"><img src="../../images/Shuttersolution_v2.png" alt="Shutter Solution Design Docs" /></a></p>
+<h2 id="default-shutter-page">Default shutter page</h2>
+<p>By default the following shutter page is used as per the GOV.UK patterns <a href="https://design-system.service.gov.uk/patterns/service-unavailable-pages/">service-unavailable-pages</a></p>
+<h2 id="implementation-and-customization">Implementation and Customization</h2>
+<p>Creating and Enabling the shutter solution for an application is a 3 step process as outlined below:</p>
 
-        It needs to be reviewed again on 7 August 2023
+<ul>
+<li>Create CDN infrastructure</li>
+<li>Upload static content to Azure storage account</li>
+<li>Enable shutter with a DNS swap</li>
+</ul>
+<h2 id="pre-requisite">Pre-requisite</h2>
+<p>Before creating the the CDN profiles, custom domains needs to registered with Azure public DNS.
+For more details about custom domains see <a href="https://docs.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain#map-the-temporary-cdnverify-subdomain">Azure CDN custom Domain</a></p>
+<p>Follow <a href="public-dns.html#setup-required-for-an-application">Setup required for an application</a> to get your
+DNS records created.</p>
+<h3 id="cdn-infrastructure">CDN infrastructure</h3>
+<p>CDN infrastructure comprise of the following Azure resources:</p>
+
+<ul>
+<li>Azure storage account</li>
+<li>Azure CDN profile</li>
+</ul>
+<p><a href="https://github.com/hmcts/azure-platform-terraform/tree/master/modules/shutter_page">shutter_page</a> terraform module is used to create the required resources in Azure.</p>
+<p>CDN infrastructure is automatically created by enabling frontend configuration with respective env.tfvars file e.g. <a href="https://github.com/hmcts/azure-platform-terraform/pull/91/files">Frontend config</a></p>
+<p>The above configuration creates the following resources:</p>
+
+<ul>
+<li>Azure storage account using <code>name</code> attribute for each of the frontends</li>
+<li>Enable azure static website with <code>$web</code> blob conatiner</li>
+<li>Common Azure CDN profile for the environment e.g. <code>hmcts-shutter-prod</code></li>
+<li>Azure CDN endpoint for each of the frontend with the origin as the primary endpoint of the corresponding azure storage account</li>
+<li>Enable custom domain for the static website</li>
+<li>Enable https on the custom domain using certificates in the Azure Keyvault</li>
+</ul>
+<h3 id="uploading-static-shutter-pages-to-azure-storage-account">Uploading static shutter pages to Azure storage account</h3>
+<p>Once the shutter infrastructure is created, static content needs to be uploaded to the storage account.
+Following repository is used <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a></p>
+<p>There is a default shutter page available to be used.</p>
+<p>In order to use the <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/default">default</a>
+shutter page follow the below steps:</p>
+
+<ul>
+<li>Create a PR with the following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>${shuttername}:
+  name: '${shuttername}'
+  shutter: 'default'
+</code></pre></div><p>where:</p>
+<p><code>${shuttername}</code> is the <code>name</code> attribute from env.tfvars file without the <code>-</code> dashes e.g. <a href="https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17">name attribute</a></p>
+<p>Few key things:</p>
+
+<ul>
+<li>Do not use dashes with <code>${shuttername}</code> as storage accounts doesn&rsquo;t allow it.</li>
+<li>Use the first 8 characters only, of the <code>name</code> attribute from the env.tfvar file e.g. If the <code>name</code> attribute in env.tfvars file is <code>xui-manage-org</code> then ${shuttername} will be <code>xuimanag</code>.</li>
+</ul>
+<p>Customized shutter pages can also be created/uploaded by following the below steps:</p>
+
+<ul>
+<li><p>Create a PR with:</p>
+
+<ul>
+<li>Directories for your shutter page(s), e.g. <code>mkdir sscscor</code></li>
+<li>Copy your static contents in <code>sscscor/</code></li>
+<li>Update the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/CODEOWNERS">CODEOWNERS</a> file with your teams folders and GitHub team</li>
+<li>Make following changes in the <a href="https://github.com/hmcts/azure-shutter-pages/blob/master/azure-pipelines.yml">azure-pipelines.yml</a> file.</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>sscscor:
+  name: 'sscscor'
+  shutter: 'sscscor'
+</code></pre></div><p>Where:</p>
+<p><code>shutter: &#39;sscscor&#39;</code> shou ld be the name of the directory created in this repository with the static contents.</p></li>
+</ul>
+<p>Once the PR is reviewed and merged all the static contents will be uploaded to the respective storage accounts.</p>
+<h3 id="enable-shutter-with-a-dns-swap">Enable shutter with a DNS swap</h3>
+<p>Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure CDN endpoint with the following steps</p>
+
+<ul>
+<li>Clone the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a> repository</li>
+<li>Lets assume this application need to be shuttered <code>www.decree-absolute.apply-divorce.service.gov.uk</code></li>
+<li>Create a PR with the appropriate <a href="https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41">prod zone</a></li>
+<li>The above contents will be updated as follows:</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- name: "www.decree-absolute"
+  ttl: 300
+  record: "hmcts-prod.azurefd.net"
+  shutter: true
+</code></pre></div><p><code>shutter: true</code> will enable the shutter page and redirect all the traffic to Azure CDN.
+<code>shutter: false</code> will disable the shutter page and redirect all the traffic back to Azure Frontdoor.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-16">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 16 May 2022.
+
+        It needs to be reviewed again on 16 November 2022
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 7 August 2023
+      This page was set to be reviewed before 16 November 2022
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -329,8 +376,8 @@ They will then be automatically deleted after this date.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/ways-of-working/environments/sandbox-cleardown.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Sandbox+Cleardown%27+%28https%3A%2F%2Fhmcts.github.io%2Fways-of-working%2Fenvironments%2Fsandbox-cleardown.html%29&amp;labels=bug&amp;title=Re%3A+%27Sandbox+Cleardown%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/path-to-live/shutter.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Shutter+Implementation+and+Design%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fpath-to-live%2Fshutter.html%29&amp;labels=bug&amp;title=Re%3A+%27Shutter+Implementation+and+Design%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
