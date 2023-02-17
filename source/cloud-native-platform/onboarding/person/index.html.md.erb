@@ -1,0 +1,104 @@
+---
+title: Person
+last_reviewed_on: 2023-02-15
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+## Azure AD groups
+
+Azure AD is used to give you and your team-mates access to specific subscriptions and resources in Azure.
+When your GitHub user has access to a subscription, you will be able to view, create and modify Azure resources for your team.
+
+Access to most systems is granted by being added to Azure AD groups, you can join these by sending a pull request
+and getting it approved by Platform Operations.
+
+The file is [prod_users.yml](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml).
+
+To start with join these groups:
+
+```yaml
+- name: username
+  groups:
+  - DTS CFT Developers
+  - <your-team-group> # check other team members to find the group
+```
+
+Where `username` is the part of your email before `@` (usually firstname.lastname like john.smith),
+`justice.gov.uk` users need to include their full email, e.g. `mary.jayne@justice.gov.uk`.
+
+These groups will give you access to the [VPN](https://portal.platform.hmcts.net), [LaunchDarkly](/cloud-native-platform/new-component/feature-flags.html#accessing-launchdarkly), the [Azure Portal](https://portal.azure.com/) and logs.
+
+
+## GitHub
+
+Read the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance).
+If you agree to follow it then ask someone in your team who has access to add you in the [GitHub management](https://github.com/hmcts/github-management) repository by submitting a pull request.
+
+GitHub teams are managed by your Technical Lead or a senior member of the team, ask them to add you to any team groups.
+
+Once you've joined GitHub make sure you add your user to the [Slack -> GitHub mapping](https://github.com/hmcts/github-slack-user-mappings).
+
+## Deploying your first application
+
+It's highly encouraged that all new Software Engineers deploy their first application now.
+
+We're creating a set of guides known as the 'Golden path' to help you do this.
+
+The purpose of these guides is:
+
+> The Golden Path is the opinionated and supported path to build your system and the Golden Path tutorial walks you through this path
+
+The two available tutorials will guide you through deploying your first Java or Node.js application and will help you make your first change to it:
+
+- [Golden path - Java](https://backstage.platform.hmcts.net/docs/default/component/golden-path-java)
+- [Golden path - Node.js](https://backstage.platform.hmcts.net/docs/default/component/golden-path-nodejs)
+
+## Office 365
+
+You should have your Office 365 team through the Jira onboarding process, but ask your team lead to add you to any email groups.
+Often there's a `$team-developers@hmcts.net` and a `$team@hmcts.net` group.
+
+## Docker Business Licence
+
+In order to use Docker Desktop at HMCTS you need to have a business license, this is linked to your Docker Hub account. Docker Hub isn't really used apart from for assigning licenses.
+
+Docker Desktop version 4.4.0 and above will redirect you to a web browser to sign in via single sign on by entering your HMCTS email address.
+
+To use the docker cli with your account, you will need to set up a Personal Authentication Token (PAT). See [docker documentation](https://docs.docker.com/docker-hub/access-tokens/) for how to create a PAT.
+
+You must be in one of the following groups:
+
+- DTS Platform Operations
+- DTS CFT Developers
+- DTS SDS Developers
+- DTS Docker Hub
+
+## Recommended reading
+
+- [Continuous Delivery](https://continuousdelivery.com/)
+- [How, when and where to ask for help?](../../ways-of-working/asking-for-help)
+
+### Software Engineer specific reading
+
+- [Trunk Based Development](https://trunkbaseddevelopment.com/)
+- [Kubernetes Basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
+- [Using Helm](https://helm.sh/docs/intro/using_helm/)
+
+### Guides for specific roles
+
+#### Software engineer
+
+#### The following tools are commonly used
+
+- an IDE (e.g. IntelliJ or Visual Studio Code)
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+- [Docker](https://docs.docker.com/install/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [Helm CLI](https://helm.sh/docs/intro/install/)
+
+#### Tech lead
+
+Join the [reform-tech-leads Slack channel](https://hmcts-reform.slack.com/messages/reform-tech-leads)

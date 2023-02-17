@@ -1,0 +1,23 @@
+---
+title: Load balancer configuration
+last_reviewed_on: 2022-05-16
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+In all our path-to-live environments we run two clusters for high availability
+and zero down-time upgrades. We load balance across these clusters using an
+[Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview) which has a health probe for each application
+deployed to an environment.
+
+For backend applications a couple of lines of config need to be added:
+
+- CFT Platform: [load balancer config](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/backend_lb_config.yaml)
+- SDS Platform: [load balancer config](https://github.com/hmcts/sds-azure-platform/blob/master/environments/prod/backend_lb_config.yaml)
+
+Frontend applications are automatically handled as part of the
+[front door config](front-door.html),
+that config provides all the information we need for setting up the load balancer,
+so frontend applications skip the above step.

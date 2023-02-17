@@ -1,0 +1,12 @@
+---
+title: Standards
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+Standards are a low level specification of how a particular technology should be used. Where possible, standards should be implemented through tooling and libraries rather than documentation.
+
+<% current_page.children.each do |page| %>
+- [<%= page.data.title %>](<%= page.url %>)
+<% end %>

@@ -1,0 +1,138 @@
+---
+title: Common pipeline
+last_reviewed_on: 2023-02-15
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+> To get onboarded to the common pipeline please see [Jenkins onboarding](/cloud-native-platform/onboarding/team/jenkins.html).
+
+The common pipeline is a Jenkins pipeline defined by [code](https://github.com/hmcts/cnp-jenkins-library)
+which implements Continuous Delivery to production while enforcing a standard set of
+checks on the code processed.
+
+It enables HMCTS Reform to deploy changes to the platform in a well defined
+manner providing the confidence that all the test and verification
+stages have been executed in a structured and repeatable sequence.
+This allows for fast feedback to developers to improve code development velocity.
+
+The delivery pipeline combines infrastructure and database schema changes with the
+application deployment, therefore taking advantage of the microservices architecture
+in use at HMCTS.
+
+Code changes are subjected to a round of static tests - consisting of unit tests, static
+code analysis and security checks - before being deployed to a non-prod environment in a
+non-publicly accessible AKS (Kubernetes) deployment. Here, a range of smoke tests and
+non-destructive functional tests verifies the app is functioning. At this point a promotion
+process is started which labels the Docker image produced by the previous stages of the
+pipeline as production-ready. Production deployments are managed by flux which takes care
+of keeping an application deployment up to date with the latest production-ready image generated
+by the delivery pipeline.
+
+Smoke tests are available in production as part of a flux deployment and run from a separate container.
+
+The entire Delivery Pipeline is a hands-off, automated process, triggered at the point of change. Code merged
+to master is deployed to production without any further human intervention. For this reason:
+
+- PRs need to be carefully reviewed
+- Feature Flagging, to separate the deployment of changes from their activation, is a practical necessity for all apps.
+
+### More information
+
+For an in-depth guide on how the common pipeline works and how it should be used, please refer to the [cnp-jenkins-library README](https://github.com/hmcts/cnp-jenkins-library/blob/master/README.md)
+
+### Deploying applications using the common pipeline
+
+[Helm](https://helm.sh) is the package manager for Kubernetes.
+We deploy all of our applications using a helm chart to Kubernetes.
+For more information about Helm, please see the related new component
+[docs](../new-component/helm-chart.html)
+
+![The Common Pipeline](/images/common-pipeline.png)
+
+The diagram below shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of a non path to live environment that is _optionally_ deployed to.
+
+An application consists of the different infrastructure levels of platform, product and component as detailed in [Infrastructure levels](/cloud-native-platform/new-component/infrastructure-as-code.html#infrastructure-levels).
+
+The product and component levels are combined to define the name of the application, denoted by app-name in the diagram below. The values for product and component should be defined in the Jenkinsfile within the github repo.
+
+Example: [cnp-plum-frontend](https://github.com/hmcts/cnp-plum-frontend/blob/master/Jenkinsfile_CNP)
+
+The environments shown in the diagram reflect CFT. Review the table below to see the corresponding SDS environment names.
+
+|CFT Environment|SDS Environment|
+|-|-|
+|AAT|Staging|
+|Perftest|Test|
+|Preview|Dev|
+|Prod|Prod|
+
+![AKS Release](/images/aks-release.png)
+
+End to end process:
+
+1. Commit changes to feature branch
+2. Create a pull request
+3. Jenkins will push an image with tag
+4. Jenkins will force a new Helm release to AKS
+5. Jenkins will run automated tests
+6. Merging and closing the PR will merge the feature with master
+7. The merge with master will trigger a webhook to start the Jenkins pipeline
+8. Jenkins will push an image with tag
+9. Jenkins will force a new Helm release to AKS
+10. Jenkins will run automated tests
+11. Jenkins will destroy the pod
+12. Jenkins will promote the image by:
+    - retagging the image in ACR
+    - updating the github flux repo with the new image name
+13. Flux will see new changes and deploy new pod
+
+### Finding your pipeline
+
+Within Jenkins, there exists the concept of organisation folders. This enables Jenkins to scan a GitHub Organization to discover repositories and automatically create managed pipelines for them.
+
+Your pipeline will exist within a specific organisation folder which should have been defined when the pipeline integration was first configured.
+
+See Step 4 of [Jenkins Onboarding](/cloud-native-platform/onboarding/team/jenkins.html) for details.
+
+### Finding your application
+
+Within AKS, your application pods will exist within a namespace. The namespace will correspond to what has been configured in the Jenkins team-config.yml file.
+
+[CFT example](https://github.com/hmcts/cnp-jenkins-config/blob/4172d1409ec33072a867dee75fb8bb15192961e0/team-config.yml#L3)
+
+[SDS example](https://github.com/hmcts/sds-jenkins-config/blob/edda067f268fe4056c19963fc5c7419cbd559856/team-config.yml#L3)
+
+### Resource locks
+
+Resources in Azure are locked in Staging or Production to prevent their destruction.
+
+If you need to rename or destroy a resource, you will need to temporarily remove the lock. This can be done using the link in the readme of the [Azure Resource Locks](https://github.com/hmcts/azure-resource-locks/#pipeline-jobs) repository.
+
+### SSH access to resources
+
+To SSH into Azure resources, such as a Postgres Database, you will typically need to go via a Bastion.
+
+- Staging and production resources use the Production Bastion
+- Other resources use the Non-production Bastion
+
+To SSH into the bastion, you must first get a temporary access pass on [myaccess.microsoft.com](https://myaccess.microsoft.com/@CJSCommonPlatform.onmicrosoft.com#/access-packages).
+
+### Building infrastructure in the demo environment
+
+To build infrastructure in demo, you will need to create a branch called "demo". All merges to this branch will be deployed in the Demo environment.
+
+### Key vaults build failures
+
+If your infrastructure pipeline requires the use of a Key Vault to build, and the Key Vault is also itself being built in the pipeline, then it is common for the first deployment to fail. Just rebuild the pipeline.
+
+
+### Troubleshooting build issues
+
+See [troubleshooting issues](../troubleshooting/).
+
+### Tips and Tricks
+
+See [tips and tricks](./tips_and_tricks.html).
