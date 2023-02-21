@@ -78,3 +78,10 @@ nodejs:
 | [toffee-frontend](https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/toffee/toffee-frontend/demo/demo.yaml) | traefik | [toffee-frontend](https://toffee.demo.platform.hmcts.net) | Open link in private browsing mode |
 | [toffee-recipes-service](https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/toffee/toffee-recipe-backend/demo/demo.yaml) | traefik-private | [toffee-recipes-service](https://toffee-recipe-backend.demo.platform.hmcts.net) | Connect to VPN first |
 | [pip-frontend](https://github.com/hmcts/sds-flux-config/blob/master/k8s/namespaces/pip/pip-frontend/patches/demo/pip-frontend.yaml) | traefik-no-proxy | [pip-frontend](https://pip-frontend.demo.platform.hmcts.net/) |  |
+
+### Examples
+
+|  Application GitHub  | IngressClass | Application URL | Note |
+|-|-|-|-|
+| [plum-frontend](https://github.com/hmcts/cnp-flux-config/blob/master/apps/cnp/plum-frontend/demo.yaml) | traefik | [plum-frontend](https://plum.demo.platform.hmcts.net) | Open link in private browsing mode |
+| [plum-recipe-backend](https://github.com/hmcts/cnp-flux-config/blob/master/apps/cnp/plum-recipe-backend/demo.yaml) | traefik-private | [toffee-recipes-service](https://plum-recipe-backend.service.core-compute-demo.internal) | Connect to VPN first |
