@@ -58,6 +58,7 @@ To add a completely new page, create a file with a `.html.md` extension in the `
 
 For example, `source/about.html.md` will be accessible on <http://localhost:4567/about.html>.
 
+
 ## Preview
 
 Whilst writing documentation we can run a middleman server to preview how the
@@ -83,6 +84,7 @@ If all goes well something like the following output will be displayed:
 ```
 
 You should now be able to view a live preview at http://localhost:4567.
+In addtioned, this links above will be accessible on local host url when you run the boundle server. 
 
 ## Build
 
