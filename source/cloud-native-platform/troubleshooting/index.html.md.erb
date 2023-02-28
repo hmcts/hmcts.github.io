@@ -141,6 +141,14 @@ Gradle is failing a functional test. To help get more information on why, you co
 
 And then reference this branch within your repo's [Jenkinsfile](https://github.com/hmcts/document-management-store-app/blob/646593336377fd59112b0b6c84fd223d0cb7832c/Jenkinsfile_CNP#L12)
 
+### Error message `channel_not_found`
+
+When you want to send Jenkins pipeline notifications to a slack channel, you must make sure the Jenkins app has been added to the channel.
+
+If you don't do this, you will receive the `channel_not_found` error message and the pipeline will fail.
+
+See the instructions on the [slack](/cloud-native-platform/onboarding/team/slack.html) section of the onboarding guide to find out how to do this.
+
 ## Debug Application Startup issues in AKS
 
 - There could be many reasons why applications could fail to startup like :
