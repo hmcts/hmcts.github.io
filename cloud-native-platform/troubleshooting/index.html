@@ -385,6 +385,9 @@ You can check if the issue lies with artifactory by temporarily bypassing it usi
 <p>When you want to send Jenkins pipeline notifications to a slack channel, you must make sure the Jenkins app has been added to the channel.</p>
 <p>If you don&rsquo;t do this, you will receive the <code>channel_not_found</code> error message and the pipeline will fail.</p>
 <p>See the instructions on the <a href="../onboarding/team/slack.html">slack</a> section of the onboarding guide to find out how to do this.</p>
+<p>If you are getting this message on a PR pipeline and the error also says <code>Failed to notify @U1234ABCD</code>, that means your github username has been mapped to an invalid slack id.</p>
+<p>Find your slack id by clicking on <code>View profile</code> within the slack app, then click on the three dots and click <code>Copy member ID</code>.</p>
+<p>Update your github to slack user mapping in <a href="https://github.com/hmcts/github-slack-user-mappings/blob/master/slack.json">this file</a> and try running the pipeline again.</p>
 <h2 id="debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</h2>
 
 <ul>
