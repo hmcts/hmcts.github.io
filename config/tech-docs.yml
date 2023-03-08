@@ -20,7 +20,7 @@ enable_search: true
 ga_tracking_id: UA-170132988-1
 
 # Enable multipage navigation in the sidebar
-multipage_nav: true
+multipage_nav: false
 
 # Enable collapsible navigation in the sidebar
 collapsible_nav: true

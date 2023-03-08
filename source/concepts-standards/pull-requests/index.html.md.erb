@@ -1,0 +1,141 @@
+---
+title: Pull requests
+last_reviewed_on: 2023-02-23
+review_in: 6 months
+weight: 1
+# hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+As a PR writer I will:
+
+- keep PRs small
+
+As a PR reviewer I will:
+
+- make an effort to review as soon as I get a second.
+- approve, as long as it’s better than before
+- favour suggestions over rejections, particularly when a multipart PR is indicated
+
+We practice code review on all changes at HMCTS to:
+
+- improve code quality
+- get team buy in on changes
+- validate change correctness
+- knowledge sharing
+
+Pull requests should not be opened when everything is finished.
+They should be opened as soon as you have something to show.
+
+Leaving it to the last minute leaves a lot of pressure to the reviewer,
+often someone is told the code is done but they aren’t
+told that the review hasn’t happened, pressure comes on to ship the code but there’s design problems
+ in it that need addressing, this could take hours, or days.
+
+## Size
+The smaller your pull request the easier it is to review, to test and the safer it is to send to production.
+Separating your changes out is a great skill to practice, some tips:
+
+* don’t make unrelated changes in a PR, you should still make the change if you think it improves the code
+Just take the 10 minutes to create a new branch and open a separate PR, it can be quickly merged and you can continue with your task
+* refactor the code to make your change easier first
+* avoid unrelated whitespace changes if possible, they distract the reviewer and can cause conflicts with other people working in similar areas
+* look at the code before you start coding and see roughly what you need to do, perhaps do this with another developer, this can also make the review easier that on
+    if two developers were involved in the design there’s more buy in
+* mention in your PR description that there is going to be more PRs and what is still to come
+
+## When should review happen
+Reviews need to happen often, otherwise you will build up a backlog of changes.
+Before you start your task for the day check all the open PRs to see if there’s any code that needs a review or if someone needs a bit of help.
+
+The daily reminder can be automated with the GitHub Slack integration.
+
+A GitHub team maintainer can go to their [GitHub teams settings](https://github.com/orgs/hmcts/teams?type=source), click 'Scheduled reminders'
+and configure daily reminders for all of your teams pull requests.
+See also GitHub's documentation on [scheduled reminders](https://docs.github.com/en/github/setting-up-and-managing-organizations-and-teams/managing-scheduled-reminders-for-your-team#creating-a-scheduled-reminder-for-a-team).
+
+But importantly reviews should not happen just first thing in the morning,
+they should be done throughout the day, after a break is a good time to do them, also before you start a new ticket or after you’ve opened a PR yourself.
+
+Once you submit your review comments, and especially if you block the merge, you need to be ready to respond quickly to follow up comments so as not to hold up the person who has created the pull request.
+
+## Who should review
+
+All developers in the team should be reviewing, junior developers to tech lead.
+Code review isn’t just about improving the code and the solution being correct, it is also about
+sharing knowledge of the code and different techniques that can be used in software engineering.
+
+If you know that someone has particular experience in an area, send the PR to them and ask if they would be able to review it when they have time.
+
+## Review techniques
+
+* think "how could I make it easier for myself if I was reviewing it?"
+* pre-empt the reviewer by explaining (as comments) on your PR any compromises / or limitations that your implementation has
+* if there’s conflict occurring on the PR on the next steps to proceed on it, take it offline, go sit next to the person, chat on Slack or call them to
+  agree the next step, involve someone else if needed, post the result on the PR so that other people can see why the direction has changed.
+
+## How long should a PR be open
+
+Pull requests should be small and often, if it is open for more than 2-3 days there is probably something wrong.
+It is much better to have work flowing quickly than a backlog of work building up.
+You’re introducing a much riskier change and will have to do a lot more work to get it merged, satisfying reviewers
+and resolving conflicts due to other people’s merges.
+
+
+## Tooling to help
+
+### Stale PRs
+In order to reduce the length of time PRs are open,
+the cognitive load on having to see them all the time,
+wonder whether they should be merged, and the cost of running any infrastructure related to the PRs.
+
+We use [Close Stale Issues](https://github.com/marketplace/actions/close-stale-issues) to automate reminders about PRs and close them if no response or further work happens on it.
+
+We recommend config like:
+
+```yaml
+steps:
+- uses: actions/stale@v5
+  with:
+    repo-token: ${{ secrets.GITHUB_TOKEN }}
+    stale-issue-message: >
+      This issue has been automatically marked as stale because it has not had
+      recent activity. It will be closed if no further activity occurs. Thank you
+      for your contributions.
+    stale-pr-message: >
+      This pull request has been automatically marked as stale because it has not had
+      recent activity. It will be closed if no further activity occurs. Thank you
+      for your contributions.
+    stale-issue-label: 'stale'
+    stale-pr-label: 'stale'
+    days-before-close: '4'
+    days-before-stale: '7'
+    exempt-pr-labels: 'pinned,dependencies'
+```
+Source: [hmcts/cnp-flux-config/.github/workflows/stale.yml](https://github.com/hmcts/cnp-flux-config/blob/master/.github/workflows/stale.yml)
+
+You can tune the numbers slightly but please make sure pull requests are closed within 2 weeks
+If you have a PR that needs to stay around because you are demoing it or some other valid reason
+you can add to the configuration a permanent label such as `pinned` this will never become stale
+
+These should be reviewed regularly and closed if no longer required.
+
+Note that you don’t have to finish the PR within the period you set, it is the time from the last commit or activity on the PR
+and you can add a comment or remove the label on the PR if it is not actually stale.
+
+### Templates for PRs
+
+Our standard template for PRs is stored in the [hmcts/.github configuration repository](https://github.com/hmcts/.github/blob/master/PULL_REQUEST_TEMPLATE.md)
+
+All repositories in the organisation will automatically use this by default.
+
+You should start with this and adopt for your needs as needed by copying it into repository in the `.github` folder and editing it.
+
+## Additional reading
+
+We highly recommend reading at least the hackernoon article, some very good points there:
+
+- [https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9](https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9)
+- [https://www.atlassian.com/blog/git/written-unwritten-guide-pull-requests](https://www.atlassian.com/blog/git/written-unwritten-guide-pull-requests)
+- [https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104](https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104)

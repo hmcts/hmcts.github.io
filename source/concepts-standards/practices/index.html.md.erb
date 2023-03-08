@@ -1,0 +1,13 @@
+---
+title: Practices
+weight: 2
+# hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+Practices are concepts that are applicable within specific contexts such as a particular language, framework, or technology.
+
+<% current_page.children.each do |page| %>
+- [<%= page.data.title %>](<%= page.url %>)
+<% end %>
