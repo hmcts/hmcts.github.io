@@ -19,7 +19,7 @@ jobs:
           architecture: 'x64'
           bundler-cache: true
       - name: Build
-        run: bundle exec middleman build --verbose
+        run: bundle exec middleman build
       - name: Publish
         run: |
           rm -rf build
