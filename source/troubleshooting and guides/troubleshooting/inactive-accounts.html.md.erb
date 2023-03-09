@@ -1,0 +1,32 @@
+---
+title: Inactive Accounts
+last_reviewed_on: 2023-03-08
+review_in: 6 months
+weight: 99
+---
+# <%= current_page.data.title %>
+## Receiving an email regarding inactive account
+
+You may have received an email from our scheduled pipeline which deletes guest user accounts if they're inactive for longer than 31 days.
+
+### Account close to being deleted
+
+Users who are within a week of being deleted get notified via email on the lead up to the deletion date, starting 7 days before.
+
+If you have received an email about your account being close to being deleted, because of inactivity, that is because you haven't logged into the `CJS Common Platform` Azure Tenant for a while and need to do so now to keep your access.
+
+Please don't ignore this email if you use the `CJS Common Platform` Tenant or GitHub as you will lose access to both if you don't log in.
+
+To extend your access, visit the [CJS Common Platform Azure portal](https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082).
+
+Login link: [CJS Common Platform]( https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082)
+
+*Note:* We're looking into fixing this soon so that as long as you're active in either GitHub or the `CJS Common Platform` Tenant you will not lose access.
+
+### Account has been deleted
+
+If your account has been deleted and you need it re-enabled, you need to create a ticket via slack in the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) channel and someone will send you another guest invite.
+
+Once that is done you will then be able to get your GitHub access back by asking one of your team members to create a PR in the [github-management](https://github.com/hmcts/github-management) repository, adding your user back in.
+
+[Example PR - adding a user](https://github.com/hmcts/github-management/pull/1079/files) (requires access to the HMCTS GitHub organisation)

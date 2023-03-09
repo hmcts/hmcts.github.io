@@ -1,0 +1,18 @@
+---
+title: Connecting to AKS Clusters
+last_reviewed_on: 2023-03-08
+review_in: 6 months
+weight: 99
+---
+# <%= current_page.data.title %>
+- By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.
+- You can connect to AKS clusters using `az aks get-credentials`. Below are some handy commands:
+
+<%= partial 'clusters' %>
+
+Once you have logged in, you can switch between clusters using [kubectx](https://github.com/ahmetb/kubectx) or below kubectl commands:
+
+```shell
+kubectl config use-context cft-perftest-00-aks
+kubectl config use-context cft-aat-00-aks
+```
