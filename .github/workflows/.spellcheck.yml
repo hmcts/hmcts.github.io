@@ -1,4 +1,7 @@
 name: Spellcheck Action
+defaults:
+  run:
+    working-directory: .
 on:
   pull_request:
     branches:
@@ -17,5 +20,6 @@ jobs:
     - uses: rojopolis/spellcheck-github-actions@0.30.0
       name: Spellcheck
       with:
-        source_files: /source
+        config_path: '/.spellcheck_config.yml'
+        # source_files: ../../source/
         task_name: Markdown
