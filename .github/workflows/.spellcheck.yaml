@@ -16,3 +16,6 @@ jobs:
     - uses: actions/checkout@v3
     - uses: rojopolis/spellcheck-github-actions@0.30.0
       name: Spellcheck
+      with:
+        source_files: /source
+        task_name: Markdown
