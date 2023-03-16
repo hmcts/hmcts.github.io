@@ -263,39 +263,43 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="infrastructure-as-code">Infrastructure as Code</h1>
-<p>We prefer <a href="https://en.wikipedia.org/wiki/Software_as_a_service">Software as a Service</a> (SaaS) over <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform as a Service</a> (PaaS) over <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service">Infrastructure as a Service</a> (IaaS).</p>
-<p>With this in mind, infrastructure as code refers to</p>
+
+<!-- Lots of acronyms all at once, provide examples/explanation here instead of wikipedia? -->
+<p>We prefer <a href="https://en.wikipedia.org/wiki/Software_as_a_service">Software as a Service</a> (SaaS)
+over <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform as a Service</a> (PaaS)
+over <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service">Infrastructure as a Service</a> (IaaS).</p>
+<p>With this in mind, &ldquo;infrastructure as code&rdquo; refers to:</p>
 
 <ul>
-<li>configuration for SaaS offerings</li>
-<li>provisioning and configuration of PaaS offerings</li>
-<li>provisioning and configuration of IaaS devices.</li>
+<li>Configuration for SaaS offerings.</li>
+<li>Provisioning and configuration of PaaS offerings.</li>
+<li>Provisioning and configuration of IaaS devices.</li>
 </ul>
 <p>All our infrastructure is public cloud-based. We use <a href="https://www.terraform.io/docs/index.html">Terraform</a> to manage infrastructure as code.</p>
-<p>Service and common component teams are responsible for defining their own infrastructure for their products
-and components.</p>
+<p>Service and common component teams are responsible for defining their own infrastructure for their products and components.</p>
 <p>All configuration code is managed under source control in GitHub and should be public as described in the <a href="https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable">GDS Service Manual</a>.</p>
+<p>Sensitive information such as passwords and key pairs should neither be managed by Terraform nor present in GitHub and instead retrieved from a Key Vault. See <a href="../secrets-management">secrets management</a> for more information.</p>
 <p>The infrastructure code will be used to provision and configure <strong>one set of infrastructure in each environment</strong>.</p>
 <h2 id="infrastructure-levels">Infrastructure levels</h2>
-<p>Infrastructure is layered into the following levels</p>
+<p>Infrastructure is layered into the following levels:</p>
 
 <ul>
 <li>Platform</li>
 <li>Product</li>
 <li>Component</li>
 </ul>
-<p>Each level builds on lower levels so, in order to provision and configure product-level infrastructure, the platform-level
-infrastructure must first have been provisioned and configured. Similarly, product-level infrastructure must
-have been provisioned before component-level infrastructure.</p>
-<p>In each environment, there will be <strong>one set</strong> of all platform-level infrastructure and <strong>one set</strong> of each of the product- and component-level infrastructure configurations.</p>
+<p>Each level builds on lower levels so, the platform-level infrastructure must be provisioned before the
+product-level infrastructure, which in turn must be provisioned before the component-level infrastructure.</p>
+<p>In each environment, there will be <strong>exactly one set</strong> of all platform-level infrastructure and <strong>exactly one set</strong> of each of the product and component-level infrastructure configurations.</p>
 <p>Taken together, these infrastructure levels fully constitute an application.</p>
-<p>The following diagram shows the layers and the types of infrastructure that might be found in each.</p>
+<p>The following diagram shows the layers and the types of infrastructure that might be found in a given environment.</p>
 <p><img src="../../images/infrastructure-levels.png"/></p>
 <h3 id="platform-level-infrastructure">Platform-level infrastructure</h3>
 <p>This is the base-level infrastructure you can expect to find in each environment. It&rsquo;s managed by the Platform Operations team.
-Service and common component teams can assume that this infrastructure exists in every environment.</p>
+Service and common component teams can assume that this infrastructure already exists in every environment.</p>
 <p>The code is managed in various repositories in GitHub. For some configuration, service and common component teams may need to update
-these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then be reviewed and approved appropriately. Examples of this can be found in the <a href="../path-to-live">path-to-live documentation</a>.</p>
+these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then
+be reviewed and approved appropriately. Examples of this can be found in the <a href="../path-to-live">path-to-live documentation</a>.</p>
 <h3 id="product-and-component-level-infrastructure">Product- and component-level infrastructure</h3>
 <p>These levels of infrastructure are provisioned by service and common component teams. It is often called &ldquo;shared infrastructure&rdquo; and that
 is the naming convention that has been adopted for repositories.</p>
@@ -314,10 +318,10 @@ The diagram above shows the types of things that might exist in each level.</p>
 <p>The <a href="https://github.com/hmcts/draft-store/tree/master/infrastructure">draft-store</a> component is a good example.</p>
 <p>The <a href="../common-pipeline">common build pipeline</a> must be used to build the infrastructure.</p>
 <h2 id="infrastructure-modules">Infrastructure modules</h2>
-<p>For infrastructure resources commonly used by teams a set of pre-packaged Terraform modules is provided to make it easier to provision them.
+<p>For infrastructure resources commonly used by teams, a set of pre-packaged Terraform modules is provided to make it easier to provision them.
 These modules provide sensible defaults for many configuration options and also include mandated security settings enabling faster
 development.</p>
-<p>Some frequently used modules are</p>
+<p>Some frequently used modules are:</p>
 
 <ul>
 <li><a href="https://github.com/hmcts/cnp-module-postgres">Azure Database for Postgres</a></li>
@@ -332,7 +336,7 @@ It is possible to add addtional whitelisted resources for specific products and 
 <p>The <a href="../common-pipeline">common build pipeline</a> will enforce the whitelist and will halt with an error if non-approved resources or modules are used.</p>
 <h2 id="environment-specific-variables">Environment-specific variables</h2>
 <p>The <a href="../common-pipeline">common build pipeline</a> supports environment-specific values for Terraform variables. The values can be defined in files named <code>{environment}.tfvars</code> (e.g. <code>prod.tfvars</code>, <code>sandbox.tfvars</code>) placed alongside your <code>.tf</code> files. The appropropriate <code>.tfvars</code> file will be passed into Terraform when the pipeline builds infrastrucuture.</p>
-<p>You do not need to specify the value of the environment variables provided by Jenkins such as <code>env</code> (below). However you do need to create an empty variable ready to accept the variables Jenkins injects.</p>
+<p>You do not need to specify the value of the environment variables provided by Jenkins such as <code>env</code> (see below). However you do need to create an empty variable ready to accept the variables Jenkins injects.</p>
 <h2 id="environment-variables-provided-by-jenkins">Environment variables provided by Jenkins</h2>
 <p>Jenkins will inject a number of variables into your deployments. You do not need to specify their values in the infrastructure code, but you do need to create an empty variable ready to accept them if you want to use them:</p>
 
@@ -348,21 +352,21 @@ It is possible to add addtional whitelisted resources for specific products and 
 <li><code>jenkins_AAD_objectId</code></li>
 </ul>
 <h2 id="terraform-version">Terraform version</h2>
-<p>You must specify what version of terraform you want Jenkins to use with a .terraformversion file in the root directory. <a href="https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version">Example</a></p>
+<p>You must specify what version of terraform you want Jenkins to use with a <code>.terraformversion</code> file in the root directory of your repository. <a href="https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version">Example</a>.</p>
 <h2 id="jenkinsfile-cnp">Jenkinsfile_CNP</h2>
-<p>You must add a Jenkinsfile_CNP to the root directory. <a href="https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP">Example</a></p>
+<p>You must add a <code>Jenkinsfile_CNP</code> to the root directory of your repository in order to define a build pipeline for it. <a href="https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP">Example</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-11-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-09-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 May 2022.
+      This page was last reviewed on 15 March 2023.
 
-        It needs to be reviewed again on 17 November 2022
+        It needs to be reviewed again on 15 September 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 November 2022
+      This page was set to be reviewed before 15 September 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
