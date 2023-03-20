@@ -427,7 +427,7 @@ Use a promise – Microtask queue
 Promise.resolve(null).then(() => -- Troublesome code here;);
 ---
 
-Instead of a macrotask Promise.then creates a microtask. The microtask queue is processed after the current synchronous code has finished executing hence the update to the property will happen after the verification step.
+Instead of a macrotask `Promise.then` creates a microtask. The microtask queue is processed after the current synchronous code has finished executing hence the update to the property will happen after the verification step.
 
 The problem here is that you may be trying to use a sticking plaster to fix a broken arm. Using this type of hack to suppress the error hides a potential structural or design problem in your code.
 see NG0100: [Expression has changed after it was checked.](https://angular.io/errors/NG0100)
