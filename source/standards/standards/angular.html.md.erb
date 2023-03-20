@@ -410,7 +410,7 @@ Angular presents two different methods for creating forms: [template-driven](htt
 Dealing with NG0100 Errors – Only use set Timeout as a last resort
 ------------------------------------------------------------------
 Angular throws an `ExpressionChangedAfterItHasBeenCheckedError` when an expression value has been changed after change detection has completed. Angular only throws this error in development mode.
-If you search stack overflow for a solution, the quick fix is to wrap the offending code in a setTimeOut.
+If you search stackoverflow for a solution, the quick fix is to wrap the offending code in a `setTimeOut`.
 
 ...
 ngAfterViewInit() {
