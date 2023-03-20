@@ -420,7 +420,8 @@ ngAfterViewInit() {
 }
 ...
 
-The setTimeout function schedules a macrotask then will be executed in the following VM turn. It is also possible to executed the update in the current VM turn but after the current synchronous code has finished executing by using then callback of a promise:
+The `setTimeout` function schedules a macrotask then will be executed in the following VM turn.
+It is also possible to executed the update in the current VM turn but after the current synchronous code has finished executing by using then callback of a promise:
 
 Use a promise – Microtask queue
 ---
