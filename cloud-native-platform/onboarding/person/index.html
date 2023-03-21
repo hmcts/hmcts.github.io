@@ -269,19 +269,28 @@ When your GitHub user has access to a subscription, you will be able to view, cr
 <p>Access to most systems is granted by being added to Azure AD groups, you can join these by sending a pull request
 and getting it approved by Platform Operations.</p>
 <p>The file is <a href="https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml">prod_users.yml</a>.</p>
-<p>To start with join these groups:</p>
-<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">username</span>
+<p>To start with read the <a href="https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance">acceptable use policy</a> or send it to the new starter.</p>
+<p>Then add these groups:</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="c1"># username is the part of the email before @ for hmcts.net users, e.g. mary.jayne</span>
+<span class="c1"># for justice.gov.uk users it's the full email, e.g. mary.jayne@justice.gov.uk</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">username</span>
   <span class="na">groups</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">DTS CFT Developers</span> <span class="c1"># or if you're working on SDS 'DTS SDS Developers'</span>
+  <span class="pi">-</span> <span class="s">DTS CFT Developers</span> <span class="c1"># or if you're working on SDS 'DTS SDS Developers', if you only need access to GitHub you can skip this</span>
   <span class="pi">-</span> <span class="s">DTS GitHub Access</span> <span class="c1"># if you need access to GitHub</span>
   <span class="pi">-</span> <span class="s">&lt;your-team-group&gt;</span> <span class="c1"># check other team members to find the group</span>
-</code></pre></div><p>Where <code>username</code> is the part of your email before <code>@</code> (usually firstname.lastname like john.smith),
-<code>justice.gov.uk</code> users need to include their full email, e.g. <code>mary.jayne@justice.gov.uk</code>.</p>
-<p>These groups will give you access to the <a href="https://portal.platform.hmcts.net">VPN</a>, <a href="../../new-component/feature-flags.html#accessing-launchdarkly">LaunchDarkly</a>, the <a href="https://portal.azure.com/">Azure Portal</a> and logs.</p>
+</code></pre></div><p>These groups will give you access to:</p>
+
+<ul>
+<li><a href="https://portal.platform.hmcts.net">VPN</a></li>
+<li><a href="../../new-component/feature-flags.html#accessing-launchdarkly">LaunchDarkly</a></li>
+<li>the <a href="https://portal.azure.com/">Azure Portal</a></li>
+<li>application logs</li>
+<li><a href="https://github.com/orgs/hmcts/sso">GitHub</a></li>
+</ul>
 <h2 id="github">GitHub</h2>
-<p>Read the <a href="https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance">acceptable use policy</a>.
-If you agree to follow it then ask someone in your team who has access to add you in the <a href="https://github.com/hmcts/github-management">GitHub management</a> repository by submitting a pull request.</p>
-<p>GitHub teams are managed by your Technical Lead or a senior member of the team, ask them to add you to any team groups.</p>
+<p>Once you&rsquo;ve joined the <code>DTS GitHub Access</code> AzureAD group you will be able to join GitHub from your <a href="https://myapps.microsoft.com/hmcts.net">myapps.microsoft.com</a> dashboard.</p>
+<p>GitHub teams are managed either by being <a href="https://docs.github.com/en/enterprise-cloud@latest/organizations/organizing-members-into-teams/synchronizing-a-team-with-an-identity-provider-group">linked to a team Azure AD group</a>
+or by or a senior member of the team, ask them to add you to any team groups.</p>
 <p>Once you&rsquo;ve joined GitHub make sure you add your user to the <a href="https://github.com/hmcts/github-slack-user-mappings">Slack -&gt; GitHub mapping</a>.</p>
 <h2 id="deploying-your-first-application">Deploying your first application</h2>
 <p>It&rsquo;s highly encouraged that all new Software Engineers deploy their first application now.</p>
