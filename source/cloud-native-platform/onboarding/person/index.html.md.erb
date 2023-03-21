@@ -17,28 +17,34 @@ and getting it approved by Platform Operations.
 
 The file is [prod_users.yml](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml).
 
-To start with join these groups:
+To start with read the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance) or send it to the new starter.
+
+Then add these groups:
 
 ```yaml
+# username is the part of the email before @ for hmcts.net users, e.g. mary.jayne
+# for justice.gov.uk users it's the full email, e.g. mary.jayne@justice.gov.uk
 - name: username
   groups:
-  - DTS CFT Developers # or if you're working on SDS 'DTS SDS Developers'
+  - DTS CFT Developers # or if you're working on SDS 'DTS SDS Developers', if you only need access to GitHub you can skip this
   - DTS GitHub Access # if you need access to GitHub
   - <your-team-group> # check other team members to find the group
 ```
 
-Where `username` is the part of your email before `@` (usually firstname.lastname like john.smith),
-`justice.gov.uk` users need to include their full email, e.g. `mary.jayne@justice.gov.uk`.
+These groups will give you access to:
 
-These groups will give you access to the [VPN](https://portal.platform.hmcts.net), [LaunchDarkly](/cloud-native-platform/new-component/feature-flags.html#accessing-launchdarkly), the [Azure Portal](https://portal.azure.com/) and logs.
-
+- [VPN](https://portal.platform.hmcts.net)
+- [LaunchDarkly](/cloud-native-platform/new-component/feature-flags.html#accessing-launchdarkly)
+- the [Azure Portal](https://portal.azure.com/)
+- application logs
+- [GitHub](https://github.com/orgs/hmcts/sso)
 
 ## GitHub
 
-Read the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance).
-If you agree to follow it then ask someone in your team who has access to add you in the [GitHub management](https://github.com/hmcts/github-management) repository by submitting a pull request.
+Once you've joined the `DTS GitHub Access` AzureAD group you will be able to join GitHub from your [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net) dashboard.
 
-GitHub teams are managed by your Technical Lead or a senior member of the team, ask them to add you to any team groups.
+GitHub teams are managed either by being [linked to a team Azure AD group](https://docs.github.com/en/enterprise-cloud@latest/organizations/organizing-members-into-teams/synchronizing-a-team-with-an-identity-provider-group)
+or by or a senior member of the team, ask them to add you to any team groups.
 
 Once you've joined GitHub make sure you add your user to the [Slack -> GitHub mapping](https://github.com/hmcts/github-slack-user-mappings).
 
