@@ -1,0 +1,25 @@
+---
+title: Cookies
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+Follow the guidance in the [Technical Guidance Library](https://tools.hmcts.net/confluence/display/DACS/C.4e+Cookie+Consent).
+
+- Collect user consent explicitly before storing cookies on a user's device
+  - Inform users about our data collection activities before cookies are set
+  - Provide an option to choose whether users allow them or not
+- Clearly state the cookie categories and their purpose
+- Block all non-exempt cookies and scripts from being run until after the consent is given by the user
+  - If the user’s device is not running JavaScript, display a version of the cookie banner which tells them what to do in order to set or change their cookie preferences. Do not set any non-essential cookies, because the user has not consented to them
+- Provide a link in the banner to a more detailed cookie policy
+
+Use the [HMCTS Cookie Manager library](https://github.com/hmcts/cookie-manager) to manage consent.
+
+### Cookie options
+
+- Secure - in production ensure `Secure` is set
+- SameSite - use `Strict` unless you need `Lax` for an [Oauth implementation](https://github.com/simov/grant/issues/199),
+- HttpOnly - set to true unless you need to access the cookie from JavaScript
+- Domain - do not set the domain unless you need to share the cookie across subdomains
