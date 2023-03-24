@@ -35,7 +35,7 @@
   az aks get-credentials --resource-group cft-ithc-01-rg --name cft-ithc-01-aks --subscription DCD-CFTAPPS-ITHC
   
   # Demo
-  az aks get-credentials --resource-group cft-demo-01-rg --name cft-demo-01-aks --subscription DCD-CFTAPPS-DEMO
+  az aks get-credentials --resource-group cft-demo-00-rg --name cft-demo-00-aks --subscription DCD-CFTAPPS-DEMO
   az aks get-credentials --resource-group cft-demo-01-rg --name cft-demo-01-aks --subscription DCD-CFTAPPS-DEMO
   
   # Prod (Requires additional permissions)
