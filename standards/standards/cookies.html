@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Infrastructure as Code - HMCTS</title>
+    <title>Cookies - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/new-component/infrastructure-as-code.html">
+    <link rel="canonical" href="https://hmcts.github.io/standards/standards/cookies.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Infrastructure as Code - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/new-component/infrastructure-as-code.html" />
+      <meta name="twitter:title" content="Cookies - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/standards/standards/cookies.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Infrastructure as Code" />
+      <meta property="og:title" content="Cookies" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/new-component/infrastructure-as-code.html" />
+      <meta property="og:url" content="https://hmcts.github.io/standards/standards/cookies.html" />
 
     
   </head>
@@ -265,122 +265,41 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="infrastructure-as-code">Infrastructure as Code</h1>
-
-<!-- Lots of acronyms all at once, provide examples/explanation here instead of wikipedia? -->
-<p>We prefer <a href="https://en.wikipedia.org/wiki/Software_as_a_service">Software as a Service</a> (SaaS)
-over <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform as a Service</a> (PaaS)
-over <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service">Infrastructure as a Service</a> (IaaS).</p>
-<p>With this in mind, &ldquo;infrastructure as code&rdquo; refers to:</p>
+            <h1 id="cookies">Cookies</h1>
+<p>Follow the guidance in the <a href="https://tools.hmcts.net/confluence/display/DACS/C.4e+Cookie+Consent">Technical Guidance Library</a>.</p>
 
 <ul>
-<li>Configuration for SaaS offerings.</li>
-<li>Provisioning and configuration of PaaS offerings.</li>
-<li>Provisioning and configuration of IaaS devices.</li>
-</ul>
-<p>All our infrastructure is public cloud-based. We use <a href="https://www.terraform.io/docs/index.html">Terraform</a> to manage infrastructure as code.</p>
-<p>Service and common component teams are responsible for defining their own infrastructure for their products and components.</p>
-<p>All configuration code is managed under source control in GitHub and should be public as described in the <a href="https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable">GDS Service Manual</a>.</p>
-<p>Sensitive information such as passwords and key pairs should neither be managed by Terraform nor present in GitHub and instead retrieved from a Key Vault. See <a href="../secrets-management">secrets management</a> for more information.</p>
-<p>The infrastructure code will be used to provision and configure <strong>one set of infrastructure in each environment</strong>.</p>
-<h2 id="infrastructure-levels">Infrastructure levels</h2>
-<p>Infrastructure is layered into the following levels:</p>
+<li>Collect user consent explicitly before storing cookies on a user&rsquo;s device
 
 <ul>
-<li>Platform</li>
-<li>Product</li>
-<li>Component</li>
-</ul>
-<p>Each level builds on lower levels so, the platform-level infrastructure must be provisioned before the
-product-level infrastructure, which in turn must be provisioned before the component-level infrastructure.</p>
-<p>In each environment, there will be <strong>exactly one set</strong> of all platform-level infrastructure and <strong>exactly one set</strong> of each of the product and component-level infrastructure configurations.</p>
-<p>Taken together, these infrastructure levels fully constitute an application.</p>
-<p>The following diagram shows the layers and the types of infrastructure that might be found in a given environment.</p>
-<p><img src="../../images/infrastructure-levels.png"/></p>
-<h3 id="platform-level-infrastructure">Platform-level infrastructure</h3>
-<p>This is the base-level infrastructure you can expect to find in each environment. It&rsquo;s managed by the Platform Operations team.
-Service and common component teams can assume that this infrastructure already exists in every environment.</p>
-<p>The code is managed in various repositories in GitHub. For some configuration, service and common component teams may need to update
-these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then
-be reviewed and approved appropriately. Examples of this can be found in the <a href="../path-to-live">path-to-live documentation</a>.</p>
-<h3 id="product-and-component-level-infrastructure">Product- and component-level infrastructure</h3>
-<p>These levels of infrastructure are provisioned by service and common component teams. It is often called &ldquo;shared infrastructure&rdquo; and that
-is the naming convention that has been adopted for repositories.</p>
-<p>There are no hard rules around what infrastructure belongs in product-level or component-level but, in general,
-if something can be shared between components within a product then it should belong in the product-level infrastructure.
-The diagram above shows the types of things that might exist in each level.</p>
-<h4 id="product-level-shared-infrastructure">Product-level (shared) infrastructure</h4>
-<p>This is infrastructure provisioned by the product team and is shared between all components within the product.</p>
-<p>The infrastructure code must be managed in a GitHub repository. The repository should be named <code>{product}-shared-infrastructure</code>.</p>
-<p>Terraform <code>.tf</code> files must be placed in the root of the repository.</p>
-<p>The <a href="../common-pipeline">common build pipeline</a> must be used to build the infrastructure.</p>
-<h4 id="component-level-infrastructure">Component-level infrastructure</h4>
-<p>This is infrastructure provisioned by the product team and is specific to a single component within the product.</p>
-<p>The infrastructure code must be managed in the component GitHub repository.</p>
-<p>Terraform <code>.tf</code> files must be placed in the <code>/infrastructure</code> directory in the repository.</p>
-<p>The <a href="https://github.com/hmcts/draft-store/tree/master/infrastructure">draft-store</a> component is a good example.</p>
-<p>The <a href="../common-pipeline">common build pipeline</a> must be used to build the infrastructure.</p>
-<h2 id="infrastructure-modules">Infrastructure modules</h2>
-<p>For infrastructure resources commonly used by teams, a set of pre-packaged Terraform modules is provided to make it easier to provision them.
-These modules provide sensible defaults for many configuration options and also include mandated security settings enabling faster
-development.</p>
-<p>Some frequently used modules are:</p>
+<li>Inform users about our data collection activities before cookies are set</li>
+<li>Provide an option to choose whether users allow them or not</li>
+</ul></li>
+<li>Clearly state the cookie categories and their purpose</li>
+<li>Block all non-exempt cookies and scripts from being run until after the consent is given by the user
 
 <ul>
-<li><a href="https://github.com/hmcts/cnp-module-postgres">Azure Database for Postgres</a></li>
-<li><a href="https://github.com/hmcts/cnp-module-key-vault">Azure Key Vault</a></li>
-<li><a href="https://github.com/hmcts/cnp-module-redis">Azure Cache for Redis</a></li>
+<li>If the user’s device is not running JavaScript, display a version of the cookie banner which tells them what to do in order to set or change their cookie preferences. Do not set any non-essential cookies, because the user has not consented to them</li>
+</ul></li>
+<li>Provide a link in the banner to a more detailed cookie policy</li>
 </ul>
-<p>A full list of modules can be <a href="https://github.com/hmcts?q=cnp-module">found in GitHub</a>.</p>
-<h2 id="whitelisted-infrastructure">Whitelisted infrastructure</h2>
-<p>To maintain integrity and security of our environments, service and common component teams may only use
-a pre-defined set of Azure resources and Terraform infrastructure modules. The whitelist is managed in <a href="https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder">a GitHub repository</a>.
-It is possible to add addtional whitelisted resources for specific products and components with appropriate approval.</p>
-<p>The <a href="../common-pipeline">common build pipeline</a> will enforce the whitelist and will halt with an error if non-approved resources or modules are used.</p>
-<h2 id="environment-specific-variables">Environment-specific variables</h2>
-<p>The <a href="../common-pipeline">common build pipeline</a> supports environment-specific values for Terraform variables. The values can be defined in files named <code>{environment}.tfvars</code> (e.g. <code>prod.tfvars</code>, <code>sandbox.tfvars</code>) placed alongside your <code>.tf</code> files. The appropropriate <code>.tfvars</code> file will be passed into Terraform when the pipeline builds infrastrucuture.</p>
-<p>You do not need to specify the value of the environment variables provided by Jenkins such as <code>env</code> (see below). However you do need to create an empty variable ready to accept the variables Jenkins injects.</p>
-<h2 id="environment-variables-provided-by-jenkins">Environment variables provided by Jenkins</h2>
-<p>Jenkins will inject a number of variables into your deployments. You do not need to specify their values in the infrastructure code, but you do need to create an empty variable ready to accept them if you want to use them:</p>
+<p>Use the <a href="https://github.com/hmcts/cookie-manager">HMCTS Cookie Manager library</a> to manage consent.</p>
+<h3 id="cookie-options">Cookie options</h3>
 
 <ul>
-<li><code>env</code></li>
-<li><code>product</code> (name of the product)</li>
-<li><code>subscription</code> (applicable Azure subscription)</li>
+<li>Secure - in production ensure <code>Secure</code> is set</li>
+<li>SameSite - use <code>Strict</code> unless you need <code>Lax</code> for an <a href="https://github.com/simov/grant/issues/199">Oauth implementation</a>,</li>
+<li>HttpOnly - set to true unless you need to access the cookie from JavaScript</li>
+<li>Domain - do not set the domain unless you need to share the cookie across subdomains</li>
 </ul>
-<p>For <a href="https://github.com/hmcts/cnp-module-key-vault">Azure Key Vault</a>, you need to create empty variables for:</p>
 
-<ul>
-<li><code>tenant_id</code></li>
-<li><code>jenkins_AAD_objectId</code></li>
-</ul>
-<h2 id="terraform-version">Terraform version</h2>
-<p>You must specify what version of terraform you want Jenkins to use with a <code>.terraformversion</code> file in the root directory of your repository. <a href="https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version">Example</a>.</p>
-<h2 id="jenkinsfile-cnp">Jenkinsfile_CNP</h2>
-<p>You must add a <code>Jenkinsfile_CNP</code> to the root directory of your repository in order to define a build pipeline for it. <a href="https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP">Example</a>.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2023-09-15">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 March 2023.
-
-        It needs to be reviewed again on 15 September 2023
-        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
-        .
-    </div>
-
-    <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 September 2023
-       by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
-      This might mean the content is out of date.
-    </div>
-  </div>
-
+            
           </main>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/new-component/infrastructure-as-code.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Infrastructure+as+Code%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fnew-component%2Finfrastructure-as-code.html%29&amp;labels=bug&amp;title=Re%3A+%27Infrastructure+as+Code%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/standards/standards/cookies.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Cookies%27+%28https%3A%2F%2Fhmcts.github.io%2Fstandards%2Fstandards%2Fcookies.html%29&amp;labels=bug&amp;title=Re%3A+%27Cookies%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
