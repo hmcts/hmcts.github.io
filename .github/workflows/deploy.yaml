@@ -35,8 +35,6 @@ jobs:
             cspell:typescript/typescript.txt
             cspell:html/html.txt
             cspell:css/css.txt
-          expect:
-            .github/allow-list.txt
     
   build:
     runs-on: ubuntu-latest
