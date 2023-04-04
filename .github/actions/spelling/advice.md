@@ -1,0 +1,1 @@
+Please consider adding the mistake to `actions/spelling/allow.txt` if it is a genuine false positive.
