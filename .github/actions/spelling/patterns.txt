@@ -1,2 +1,4 @@
+# Excluded patterns per line in Perl regex
+
 # Ignore lines with https:// urls
-\b https?:// [\w\-]+(?:\.[\w\-]+)+ [\w\-\.,@?^=%&amp;:/~\+#]* \b
+\bhttps?://[\w\-]+(?:\.[\w\-]+)+[\w\-\.,@?^=%&:/~\+#]*(?<![^\s])
