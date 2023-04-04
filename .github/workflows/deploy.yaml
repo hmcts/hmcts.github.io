@@ -16,25 +16,15 @@ jobs:
         uses: check-spelling/check-spelling@v0.0.21
         with:
           extra_dictionaries:
-            cspell:en_GB/src/wordsEnGb.txt
-            cspell:en_GB/src/additional_words.txt
-            cspell:en_US/src/en_US.txt
             cspell:software-terms/src/software-terms.txt
             cspell:software-terms/src/software-tools.txt
             cspell:software-terms/src/network-protocols.txt
-            cspell:software-terms/src/network-os.txt
-            cspell:public-licenses/src/generated/public-licenses.txt
             cspell:docker/src/docker-words.txt
             cspell:bash/bash-words.txt
-            cspell:fullstack/fullstack.txt
-            cspell:node/node.txt
             cspell:npm/npm.txt
             cspell:python/src/python/python.txt
-            cspell:python/src/python/python-lib.txt
-            cspell:python/src/common/extra.txt
-            cspell:typescript/typescript.txt
-            cspell:html/html.txt
-            cspell:css/css.txt
+          extra_dictionary_limit: 7
+          
     
   build:
     runs-on: ubuntu-latest
