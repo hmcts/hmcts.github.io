@@ -1,14 +1,8 @@
-ABCD
-abcbe
-abe
-acb
 acme
 aad
 aat
 acheive
-adamklein
 adf
-ahmetb
 barrelsby
 certs
 cfb
