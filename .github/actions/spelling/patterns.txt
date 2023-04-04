@@ -1,0 +1,2 @@
+# Ignore lines with https:// urls
+\b https?:// [\w\-]+(?:\.[\w\-]+)+ [\w\-\.,@?^=%&amp;:/~\+#]* \b
