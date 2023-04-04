@@ -1,4 +1,4 @@
 # Excluded patterns per line in Perl regex
 
 # Ignore lines with https:// urls
-\[[^\]]*\]\((?:https?|ftp):\/\/[^\)]*\)
+\[([^\]]+)\](?=\((https?:\/\/[^\s)]+)\))
