@@ -1,5 +1,10 @@
 # Excluded patterns per line in Perl regex
 
-# Ignore lines with https:// urls
-\[([^\]]+)\](?=\((https?:\/\/[^\s)]+)\))
-\[[^\]]+\]\([^\)]+\)
+# Catch lines with https:// urls
+https?://\S+
+# Catch pod names (containing dashes and word characters)
+podName=[^\s\/]+
+# Catch container names
+.*containerd(.*)$
+# Google analytics ID
+.*UA-.*$
