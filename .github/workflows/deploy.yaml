@@ -23,8 +23,12 @@ jobs:
             cspell:bash/bash-words.txt
             cspell:npm/npm.txt
             cspell:python/src/python/python.txt
-          extra_dictionary_limit: 7
-          
+            cspell:python/src/python/python-lib.txt
+            cspell:php/php.txt
+            cspell:node/node.txt
+            cspell:html/html.txt
+            cspell:filetypes/filetypes.txt
+            cspell:cpp/src/cpp.txt
     
   build:
     runs-on: ubuntu-latest

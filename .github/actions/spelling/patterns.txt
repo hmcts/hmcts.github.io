@@ -2,7 +2,7 @@
 
 # Catch lines with https:// urls
 https?://\S+
-# Catch pod names (containing dashes and word characters)
+# Catch pod names (containing dashes and chars)
 podName=[^\s\/]+
 # Catch container names
 .*containerd(.*)$
