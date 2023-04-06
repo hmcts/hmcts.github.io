@@ -9,9 +9,11 @@ portile
 afdverify
 aks
 deno
+dra
 alex
 allejo
 IaaS
+Iaa
 pipeable
 SaaS
 PaaS
@@ -21,9 +23,12 @@ sassc
 Tful
 RESTful
 hashie
+prebuilds
 acme
 acmebot
 racc
+TGL
+nta
 toc
 aad
 AAD
@@ -54,6 +59,8 @@ azurecr
 azuredevops
 azureedge
 azurefd
+paa
+Intelli
 azurerm
 backports
 barrelsby
