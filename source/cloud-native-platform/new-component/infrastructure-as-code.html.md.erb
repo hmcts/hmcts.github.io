@@ -106,13 +106,13 @@ A full list of modules can be [found in GitHub](https://github.com/hmcts?q=cnp-m
 
 To maintain integrity and security of our environments, service and common component teams may only use
 a pre-defined set of Azure resources and Terraform infrastructure modules. The whitelist is managed in [a GitHub repository](https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder).
-It is possible to add addtional whitelisted resources for specific products and components with appropriate approval.
+It is possible to add additional whitelisted resources for specific products and components with appropriate approval.
 
 The [common build pipeline](../common-pipeline) will enforce the whitelist and will halt with an error if non-approved resources or modules are used.
 
 ## Environment-specific variables
 
-The [common build pipeline](../common-pipeline) supports environment-specific values for Terraform variables. The values can be defined in files named `{environment}.tfvars` (e.g. `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files. The appropropriate `.tfvars` file will be passed into Terraform when the pipeline builds infrastrucuture.
+The [common build pipeline](../common-pipeline) supports environment-specific values for Terraform variables. The values can be defined in files named `{environment}.tfvars` (e.g. `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files. The appropriate `.tfvars` file will be passed into Terraform when the pipeline builds infrastructure.
 
 You do not need to specify the value of the environment variables provided by Jenkins such as `env` (see below). However you do need to create an empty variable ready to accept the variables Jenkins injects.
 

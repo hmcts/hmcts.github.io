@@ -7,6 +7,23 @@ on:
       - source
 
 jobs:
+  spellcheck:
+    runs-on: ubuntu-latest
+    name: Check spelling
+    steps:
+      - name: Spell-Check
+        uses: check-spelling/check-spelling@v0.0.21
+        with:
+          checkout: true
+          extra_dictionaries:
+            cspell:software-terms/src/software-terms.txt
+            cspell:cpp/src/cpp.txt
+            cspell:php/php.txt
+            cspell:npm/npm.txt
+            cspell:python/src/python/python-lib.txt
+            cspell:software-terms/src/software-tools.txt
+            cspell:python/src/python/python.txt
+    
   build:
     runs-on: ubuntu-latest
     name: Deploy

@@ -1,0 +1,12 @@
+# Excluded patterns per line in Perl regex
+
+# Catch lines with https:// urls
+.*https?://\S+
+# Catch pod names (containing dashes and chars)
+podName=[^\s\/]+
+# Catch container names
+.*containerd(.*)$
+# Google analytics ID
+.*UA-.*$
+.*.yml
+.*.yaml

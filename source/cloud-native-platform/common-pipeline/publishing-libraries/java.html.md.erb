@@ -10,7 +10,7 @@ hide_in_navigation: true
 
 For publishing Java libraries, we use JitPack as our artifact repository and GitHub Actions to publish the libraries.
 
-## Publishing with Jitpack
+## Publishing with JitPack
 
 JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: `com.github.hmcts:Repo:Version`.
 
@@ -39,7 +39,7 @@ jdk:
 ```
 
 ## Custom configuration:
-By default, Jitpack compiles projects using OpenJDK Java 8 and uses `./gradlew install` for the maven plugin and `./gradlew build publishToMavenLocal` for the maven-publish plugin.
+By default, JitPack compiles projects using OpenJDK Java 8 and uses `./gradlew install` for the maven plugin and `./gradlew build publishToMavenLocal` for the maven-publish plugin.
 If you use both, JitPack will default to using install.
 In your `jitpack.yml` you can override the install command like so:
 
