@@ -100,6 +100,20 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -108,20 +122,6 @@
 </li>
   <li>
     <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
-  </li>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
-<ul>
-  <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
-  </li>
-  <li>
-    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
 </ul>
 </li>
@@ -148,10 +148,10 @@
     <a href="../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
   </li>
   <li>
     <a href="../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
@@ -215,10 +215,10 @@
     <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
   </li>
   <li>
     <a href="../../standards/principles/test.html"><span>Testing</span></a>
@@ -365,7 +365,7 @@ wonder whether they should be merged, and the cost of running any infrastructure
     <span class="na">exempt-pr-labels</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pinned,dependencies'</span>
 </code></pre></div><p>Source: <a href="https://github.com/hmcts/cnp-flux-config/blob/master/.github/workflows/stale.yml">hmcts/cnp-flux-config/.github/workflows/stale.yml</a></p>
 <p>You can tune the numbers slightly but please make sure pull requests are closed within 2 weeks
-If you have a PR that needs to stay around because you are demoing it or some other valid reason
+If you have a PR that needs to stay around because you are using it for a demo or some other valid reason
 you can add to the configuration a permanent label such as <code>pinned</code> this will never become stale</p>
 <p>These should be reviewed regularly and closed if no longer required.</p>
 <p>Note that you don’t have to finish the PR within the period you set, it is the time from the last commit or activity on the PR

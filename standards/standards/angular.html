@@ -100,6 +100,20 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -108,20 +122,6 @@
 </li>
   <li>
     <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
-  </li>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
-<ul>
-  <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
-  </li>
-  <li>
-    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
 </ul>
 </li>
@@ -148,10 +148,10 @@
     <a href="../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
   </li>
   <li>
     <a href="../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
@@ -215,10 +215,10 @@
     <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
   </li>
   <li>
     <a href="../../standards/principles/test.html"><span>Testing</span></a>
@@ -470,7 +470,7 @@ export class MyComponent {
 <p>Ideally, a single component should render a specific bit of our page or modify a behavior. It means, we should keep them small, so that one component corresponds to one function. Make the component as dumb as possible, as this will make it work in more scenarios. Making a component dumb means that the component does not have any special logic in it and operates purely based on the inputs and outputs provided to it. Dumb components are simpler, so they are less likely to have bugs. Dumb components make us think harder about the public component API and help sniff out mixed concerns. Generally, the last child in the component tree will be the dumbest of all. Reusable components reduce duplication of code therefore making it easier to maintain and make changes.</p>
 <h2 id="smart-and-dummy-components">Smart and dummy components</h2>
 <p>Most common use case of developing Angular&rsquo;s components is a separation of <a href="https://blog.angular-university.io/angular-2-smart-components-vs-presentation-components-whats-the-difference-when-to-use-each-and-why/">smart and presentation components</a>. A &lsquo;dumb&rsquo; component is a component used for presentation purposes only, meaning that the component doesn&rsquo;t know where the data came from. For that purpose, we can use one or more smart components that will inherit dummy&rsquo;s component presentation logic. Making a component dumb means that the component does not have any special logic in it and operates purely based on the inputs and outputs provided to it. Dumb components are simpler, so they are less likely to have bugs. A smart component does not have to be a top-level router component only. We can have other components further down the tree and don&rsquo;t necessarily get their data only from <code>@Input()</code>.\
-All component templates should be dumb, maybe a better metaphor here is parent child or shell host, the parent or host handles dependancies and hands data to the child this makes the child component easy to test, since dependancies can be stubbed.  If the outer (parent or shell) component handles the data fetch and keeps the children hidden until it has been hydrated, the child component can make certain assumptions about its role and state. </p>
+All component templates should be dumb, maybe a better metaphor here is parent child or shell host, the parent or host handles dependencies and hands data to the child this makes the child component easy to test, since dependencies can be stubbed.  If the outer (parent or shell) component handles the data fetch and keeps the children hidden until it has been hydrated, the child component can make certain assumptions about its role and state. </p>
 <h2 id="base-component-classes">Base component classes</h2>
 <p>Create a base class component may come in handy when we have lots of reused stuff and don&rsquo;t want to pollute each component with the same code all over. Common situations are when we are creating form components, when we have pages with the same behavior, such as a list with the create, read, update and delete methods, or pages with HTML forms. In these examples, having the same code in multiple places means that if we want to make a change to the logic in that code, we must do it in multiple places. We can create a base class with the common data and methods. Thus, we don&rsquo;t have the same duplicate code in different locations in the code base.</p>
 <h2 id="do-not-remove-view-encapsulation">Do not remove view encapsulation</h2>

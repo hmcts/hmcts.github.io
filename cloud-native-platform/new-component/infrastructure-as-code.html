@@ -100,6 +100,20 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -108,20 +122,6 @@
 </li>
   <li>
     <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
-  </li>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
-<ul>
-  <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
-  </li>
-  <li>
-    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
 </ul>
 </li>
@@ -148,10 +148,10 @@
     <a href="../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
   </li>
   <li>
     <a href="../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
@@ -215,10 +215,10 @@
     <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
   </li>
   <li>
     <a href="../../standards/principles/test.html"><span>Testing</span></a>
@@ -341,10 +341,10 @@ development.</p>
 <h2 id="whitelisted-infrastructure">Whitelisted infrastructure</h2>
 <p>To maintain integrity and security of our environments, service and common component teams may only use
 a pre-defined set of Azure resources and Terraform infrastructure modules. The whitelist is managed in <a href="https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder">a GitHub repository</a>.
-It is possible to add addtional whitelisted resources for specific products and components with appropriate approval.</p>
+It is possible to add additional whitelisted resources for specific products and components with appropriate approval.</p>
 <p>The <a href="../common-pipeline">common build pipeline</a> will enforce the whitelist and will halt with an error if non-approved resources or modules are used.</p>
 <h2 id="environment-specific-variables">Environment-specific variables</h2>
-<p>The <a href="../common-pipeline">common build pipeline</a> supports environment-specific values for Terraform variables. The values can be defined in files named <code>{environment}.tfvars</code> (e.g. <code>prod.tfvars</code>, <code>sandbox.tfvars</code>) placed alongside your <code>.tf</code> files. The appropropriate <code>.tfvars</code> file will be passed into Terraform when the pipeline builds infrastrucuture.</p>
+<p>The <a href="../common-pipeline">common build pipeline</a> supports environment-specific values for Terraform variables. The values can be defined in files named <code>{environment}.tfvars</code> (e.g. <code>prod.tfvars</code>, <code>sandbox.tfvars</code>) placed alongside your <code>.tf</code> files. The appropriate <code>.tfvars</code> file will be passed into Terraform when the pipeline builds infrastructure.</p>
 <p>You do not need to specify the value of the environment variables provided by Jenkins such as <code>env</code> (see below). However you do need to create an empty variable ready to accept the variables Jenkins injects.</p>
 <h2 id="environment-variables-provided-by-jenkins">Environment variables provided by Jenkins</h2>
 <p>Jenkins will inject a number of variables into your deployments. You do not need to specify their values in the infrastructure code, but you do need to create an empty variable ready to accept them if you want to use them:</p>

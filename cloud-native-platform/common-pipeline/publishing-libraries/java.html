@@ -100,6 +100,20 @@
   </li>
 <li><a href="../../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
+<li><a href="../../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+  <li>
+    <a href="../../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
 <li><a href="../../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -108,20 +122,6 @@
 </li>
   <li>
     <a href="../../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
-  </li>
-</ul>
-</li>
-<li><a href="../../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
-</ul>
-</li>
-<li><a href="../../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
-<ul>
-  <li>
-    <a href="../../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
-  </li>
-  <li>
-    <a href="../../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
 </ul>
 </li>
@@ -148,10 +148,10 @@
     <a href="../../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
   </li>
   <li>
-    <a href="../../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+    <a href="../../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
   </li>
   <li>
-    <a href="../../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+    <a href="../../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
   </li>
   <li>
     <a href="../../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
@@ -215,10 +215,10 @@
     <a href="../../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
   </li>
   <li>
-    <a href="../../../standards/principles/devops.html"><span>DevOps</span></a>
+    <a href="../../../standards/principles/programming.html"><span>Programming</span></a>
   </li>
   <li>
-    <a href="../../../standards/principles/programming.html"><span>Programming</span></a>
+    <a href="../../../standards/principles/devops.html"><span>DevOps</span></a>
   </li>
   <li>
     <a href="../../../standards/principles/test.html"><span>Testing</span></a>
@@ -273,7 +273,7 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="java">Java</h1>
 <p>For publishing Java libraries, we use JitPack as our artifact repository and GitHub Actions to publish the libraries.</p>
-<h2 id="publishing-with-jitpack">Publishing with Jitpack</h2>
+<h2 id="publishing-with-jitpack">Publishing with JitPack</h2>
 <p>JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: <code>com.github.hmcts:Repo:Version</code>.</p>
 <h2 id="setting-up-jitpack">Setting up JitPack</h2>
 <p>The first time you request a project, JitPack checks out the code, builds it and sends the Jar files back to you.
@@ -296,7 +296,7 @@ To resolve this issue, a github workflow has been created to build it as soon as
 <div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">jdk</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">openjdk11</span>
 </code></pre></div><h2 id="custom-configuration">Custom configuration:</h2>
-<p>By default, Jitpack compiles projects using OpenJDK Java 8 and uses <code>./gradlew install</code> for the maven plugin and <code>./gradlew build publishToMavenLocal</code> for the maven-publish plugin.
+<p>By default, JitPack compiles projects using OpenJDK Java 8 and uses <code>./gradlew install</code> for the maven plugin and <code>./gradlew build publishToMavenLocal</code> for the maven-publish plugin.
 If you use both, JitPack will default to using install.
 In your <code>jitpack.yml</code> you can override the install command like so:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>jdk:
