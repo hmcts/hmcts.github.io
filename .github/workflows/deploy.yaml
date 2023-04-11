@@ -11,14 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Check spelling
     steps:
-      - uses: actions/checkout@v3
       - name: Spell-Check
         uses: check-spelling/check-spelling@v0.0.21
         with:
+          checkout: true
           extra_dictionaries:
             cspell:software-terms/src/software-terms.txt
             cspell:cpp/src/cpp.txt
             cspell:php/php.txt
+            cspell:companies/companies.txt
             cspell:npm/npm.txt
             cspell:python/src/python/python-lib.txt
             cspell:software-terms/src/software-tools.txt
