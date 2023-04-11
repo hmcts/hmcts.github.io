@@ -19,7 +19,6 @@ jobs:
             cspell:software-terms/src/software-terms.txt
             cspell:cpp/src/cpp.txt
             cspell:php/php.txt
-            cspell:companies/companies.txt
             cspell:npm/npm.txt
             cspell:python/src/python/python-lib.txt
             cspell:software-terms/src/software-tools.txt
