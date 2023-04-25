@@ -23,11 +23,18 @@ Azure Database Migration Service is an universal tool used to migrate databases 
 
 ### Prerequisite 
 
-- Create an `Azure Resource Group`
-- Update "out of scope" list by adding above Resource Group in azure-policy repo for respective subscription.
-        [eg.]( https://github.com/hmcts/azure-policy/pull/200)
 - Update Postgresql Single server `Azure replication support` to `logical`. This will `restart` postgresql server. 
 - Create target Postgresql flexible server using terraform module. Make sure database names and sizes are identical and equal or larger in size respectively.
 
 ### Migration Steps
-    Follow Azure [documentation](https://learn.microsoft.com/en-us/azure/dms/tutorial-postgresql-azure-postgresql-online-portal) 
+    Azure Database Migration Service instance have been pre created.  
+        | DMS instance Name | Subscription | Service | Environment | Additional Information |
+        | - | - | - | - | - | 
+        | cft-nonprod-db-migration | DTS-CFTPTL-INTSVC | CFT | non prod | <ul><li>Used for all non-prod database migrations </li></ul> |
+        | cft-prod-db-migration | DTS-CFTPTL-INTSVC | CFT | Prod | <ul><li>Used for all prod database migrations </li></ul> |
+        | ss-nonprod-db-migration | DTS-SHAREDSERVICESPTL | SDS | non prod | <ul><li>Used for all non-prod database migrations </li></ul> |
+        | ss-prod-db-migration | DTS-SHAREDSERVICESPTL | SDS | Prod | <ul><li>Used for all prod database migrations </li></ul> |
+        | ss-ptlsbox-db-migration | DTS-SHAREDSERVICESPTL-SBOX | SDS | ptlsbox | <ul><li>Used for all sbox database migrations </li></ul> |
+        | cft-ptlsbox-db-migration | DTS-CFTSBOX-INTSVC | CFT | ptlsbox | <ul><li>Used for all sbox database migrations </li></ul> |
+
+    Follow Azure [documentation](https://learn.microsoft.com/en-us/azure/dms/tutorial-postgresql-azure-postgresql-online-portal)
