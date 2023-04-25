@@ -8,7 +8,7 @@ hide_in_navigation: true
 
 # <%= current_page.data.title %>
 
-Azure Database Migration Service is an universal tool to migrate databases to Azure platform. For migrating larger databases(> 50GB) it is adivsed to use this tool as it has minimal downtime. 
+Azure Database Migration Service is an universal tool used to migrate databases to Azure platform. For migrating larger databases(> 50GB) it is adivsed to use this tool as it has minimal downtime. 
 
 ### Limitations
 
@@ -26,8 +26,8 @@ Azure Database Migration Service is an universal tool to migrate databases to Az
 - Create an `Azure Resource Group`
 - Update "out of scope" list by adding above Resource Group in azure-policy repo for respective subscription.
         [eg.]( https://github.com/hmcts/azure-policy/pull/200)
-- Update Postgressql Single server `Azure replication support` to `logical`. This will `restart`  postgressql server. 
-- Create Target Postgressql flexible server using terraform moudule. Make sure database names and sizes are identical and equal or larger in size respectively.
+- Update Postgressql Single server `Azure replication support` to `logical`. This will `restart` postgressql server. 
+- Create target Postgressql flexible server using terraform moudule. Make sure database names and sizes are identical and equal or larger in size respectively.
 
 ### Migration Steps
     Follow Azure [documentation](https://learn.microsoft.com/en-us/azure/dms/tutorial-postgresql-azure-postgresql-online-portal) 
