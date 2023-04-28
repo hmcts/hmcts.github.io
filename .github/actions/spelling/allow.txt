@@ -278,3 +278,5 @@ yamls
 yml
 zalando
 snyk
+CFTSBOX
+nonprod
