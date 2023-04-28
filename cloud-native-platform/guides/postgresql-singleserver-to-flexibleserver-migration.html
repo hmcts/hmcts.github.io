@@ -292,19 +292,56 @@
 <li>Create target Postgresql flexible server using terraform module. Make sure database names and sizes are identical and equal or larger in size respectively.</li>
 </ul>
 <h3 id="migration-steps">Migration Steps</h3>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Azure Database Migration Service instance have been pre created.  
-    | DMS instance Name | Subscription | Service | Environment | Additional Information |
-    | - | - | - | - | - | 
-    | cft-nonprod-db-migration | DTS-CFTPTL-INTSVC | CFT | non prod | &lt;ul&gt;&lt;li&gt;Used for all non-prod database migrations &lt;/li&gt;&lt;/ul&gt; |
-    | cft-prod-db-migration | DTS-CFTPTL-INTSVC | CFT | Prod | &lt;ul&gt;&lt;li&gt;Used for all prod database migrations &lt;/li&gt;&lt;/ul&gt; |
-    | ss-nonprod-db-migration | DTS-SHAREDSERVICESPTL | SDS | non prod | &lt;ul&gt;&lt;li&gt;Used for all non-prod database migrations &lt;/li&gt;&lt;/ul&gt; |
-    | ss-prod-db-migration | DTS-SHAREDSERVICESPTL | SDS | Prod | &lt;ul&gt;&lt;li&gt;Used for all prod database migrations &lt;/li&gt;&lt;/ul&gt; |
-    | ss-ptlsbox-db-migration | DTS-SHAREDSERVICESPTL-SBOX | SDS | ptlsbox | &lt;ul&gt;&lt;li&gt;Used for all sbox database migrations &lt;/li&gt;&lt;/ul&gt; |
-    | cft-ptlsbox-db-migration | DTS-CFTSBOX-INTSVC | CFT | ptlsbox | &lt;ul&gt;&lt;li&gt;Used for all sbox database migrations &lt;/li&gt;&lt;/ul&gt; |
+<p>Azure Database Migration Service instance have been pre created.</p>
+<div class="table-container">
+        <table>
+          <tr>
+<th>DMS instance Name</th>
+<th>Subscription</th>
+<th>Service</th>
+<th>Environment</th>
+<th>Additional Information</th>
+</tr><tr>
+<td>cft-nonprod-db-migration</td>
+<td>DTS-CFTPTL-INTSVC</td>
+<td>CFT</td>
+<td>non prod</td>
+<td><ul><li>Used for all non-prod database migrations </li></ul></td>
+</tr><tr>
+<td>cft-prod-db-migration</td>
+<td>DTS-CFTPTL-INTSVC</td>
+<td>CFT</td>
+<td>Prod</td>
+<td><ul><li>Used for all prod database migrations </li></ul></td>
+</tr><tr>
+<td>ss-nonprod-db-migration</td>
+<td>DTS-SHAREDSERVICESPTL</td>
+<td>SDS</td>
+<td>non prod</td>
+<td><ul><li>Used for all non-prod database migrations </li></ul></td>
+</tr><tr>
+<td>ss-prod-db-migration</td>
+<td>DTS-SHAREDSERVICESPTL</td>
+<td>SDS</td>
+<td>Prod</td>
+<td><ul><li>Used for all prod database migrations </li></ul></td>
+</tr><tr>
+<td>ss-ptlsbox-db-migration</td>
+<td>DTS-SHAREDSERVICESPTL-SBOX</td>
+<td>SDS</td>
+<td>ptlsbox</td>
+<td><ul><li>Used for all sbox database migrations </li></ul></td>
+</tr><tr>
+<td>cft-ptlsbox-db-migration</td>
+<td>DTS-CFTSBOX-INTSVC</td>
+<td>CFT</td>
+<td>ptlsbox</td>
+<td><ul><li>Used for all sbox database migrations </li></ul></td>
+</tr>
+        </table>
+      </div><p>Follow Azure <a href="https://learn.microsoft.com/en-us/azure/dms/tutorial-postgresql-azure-postgresql-online-portal">documentation</a>
+Developers needs to reach out to platform operation team for database password.</p>
 
-Follow Azure [documentation](https://learn.microsoft.com/en-us/azure/dms/tutorial-postgresql-azure-postgresql-online-portal)
-Developers needs to reach out to platform operation team for database password.
-</code></pre></div>
               <div data-module='page-expiry' data-last-reviewed-on="2023-10-24">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 24 April 2023.
