@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Make a new Virtual Network accessible over the VPN - HMCTS</title>
+    <title>Postgresql single server to flexible server migration using Azure DMS - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/guides/connect-via-vpn.html">
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/guides/postgresql-singleserver-to-flexibleserver-migration.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Make a new Virtual Network accessible over the VPN - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/guides/connect-via-vpn.html" />
+      <meta name="twitter:title" content="Postgresql single server to flexible server migration using Azure DMS - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/guides/postgresql-singleserver-to-flexibleserver-migration.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Make a new Virtual Network accessible over the VPN" />
+      <meta property="og:title" content="Postgresql single server to flexible server migration using Azure DMS" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/guides/connect-via-vpn.html" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/guides/postgresql-singleserver-to-flexibleserver-migration.html" />
 
     
   </head>
@@ -271,39 +271,51 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="make-a-new-virtual-network-accessible-over-the-vpn">Make a new Virtual Network accessible over the VPN</h1>
-<p>This page describes how to expose a new Virtual Network to the HMCTS VPN.
-To do this you will need to setup network peering between the VPN and your Virtual Network.
-Your project will need to be managed by Terraform to set this up.</p>
-<p>This is an example of the Terraform used to <a href="https://github.com/hmcts/aks-sds-deploy/blob/0061d448847a7a16154ae3a23772c4e9a57587f1/components/01-network/21-peering.tf#L82-L104">setup peering between two Vnets</a>.</p>
-<p>The destination Virtual Network details are:</p>
+            <h1 id="postgresql-single-server-to-flexible-server-migration-using-azure-dms">Postgresql single server to flexible server migration using Azure DMS</h1>
+<p>Azure Database Migration Service is an universal tool used to migrate databases to Azure platform. For migrating larger databases(&gt; 50GB) it is advised to use this tool as it has minimal downtime.</p>
+<h3 id="limitations">Limitations</h3>
 
 <ul>
-<li>vnet name: <code>core-infra-vnet-mgmt</code></li>
-<li>subscription id: <code>ed302caf-ec27-4c64-a05e-85731c3ce90e</code></li>
-<li>vnet resource group: <code>rg-mgmt</code></li>
-<li>net subscription: <code>Reform-CFT-Mgmt</code></li>
+<li>Can&rsquo;t handle database of sizes &gt; 1 TB</li>
+<li>Can&rsquo;t handle write-intensive workload</li>
+<li>You can have only one active migration to your flexible server.</li>
+<li>You can select a max of eight databases in one migration attempt. If you&rsquo;ve more than eight databases, you must wait for the first migration to be complete before initiating another migration for the rest of the databases. Support for migration of more than eight databases in a single migration will be introduced later.</li>
+<li>The source and target server must be in the same Azure region. Cross region migrations are not supported.</li>
+<li>The tool takes care of the migration of data and schema. It doesn&rsquo;t migrate managed service features such as server parameters, connection security details, firewall rules, users, roles and permissions. In the later part of the document, we point you to docs that can help you perform the migration of users, roles and firewall rules from single server to flexible server.</li>
+<li>The migration tool shows the number of tables copied from source to target server. You need to validate the data in target server post migration.</li>
+<li>The tool only migrates user databases and not system databases like template_0, template_1, azure_sys and azure_maintenance.</li>
 </ul>
-<p>Once this is setup and deployed, you can then make a request to the Platform Operations team in <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a>.  Raise a new request using the &lsquo;Help request with plato&rsquo; shortcut, which will automatically raise a ticket for you and all messages will be synced to Jira.</p>
-<p>Raise a request to add the Address Space for your Vnet or Virtual Machine with what ports to whitelist, please include:</p>
+<h3 id="prerequisite">Prerequisite</h3>
 
 <ul>
-<li>Network name:</li>
-<li>IP Range:</li>
-<li>Ports to allow: 443 (sometimes 80, 22 as well)</li>
+<li>Update Postgresql Single server <code>Azure replication support</code> to <code>logical</code>. This will <code>restart</code> postgresql server. </li>
+<li>Create target Postgresql flexible server using terraform module. Make sure database names and sizes are identical and equal or larger in size respectively.</li>
 </ul>
+<h3 id="migration-steps">Migration Steps</h3>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Azure Database Migration Service instance have been pre created.  
+    | DMS instance Name | Subscription | Service | Environment | Additional Information |
+    | - | - | - | - | - | 
+    | cft-nonprod-db-migration | DTS-CFTPTL-INTSVC | CFT | non prod | &lt;ul&gt;&lt;li&gt;Used for all non-prod database migrations &lt;/li&gt;&lt;/ul&gt; |
+    | cft-prod-db-migration | DTS-CFTPTL-INTSVC | CFT | Prod | &lt;ul&gt;&lt;li&gt;Used for all prod database migrations &lt;/li&gt;&lt;/ul&gt; |
+    | ss-nonprod-db-migration | DTS-SHAREDSERVICESPTL | SDS | non prod | &lt;ul&gt;&lt;li&gt;Used for all non-prod database migrations &lt;/li&gt;&lt;/ul&gt; |
+    | ss-prod-db-migration | DTS-SHAREDSERVICESPTL | SDS | Prod | &lt;ul&gt;&lt;li&gt;Used for all prod database migrations &lt;/li&gt;&lt;/ul&gt; |
+    | ss-ptlsbox-db-migration | DTS-SHAREDSERVICESPTL-SBOX | SDS | ptlsbox | &lt;ul&gt;&lt;li&gt;Used for all sbox database migrations &lt;/li&gt;&lt;/ul&gt; |
+    | cft-ptlsbox-db-migration | DTS-CFTSBOX-INTSVC | CFT | ptlsbox | &lt;ul&gt;&lt;li&gt;Used for all sbox database migrations &lt;/li&gt;&lt;/ul&gt; |
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-24">
+Follow Azure [documentation](https://learn.microsoft.com/en-us/azure/dms/tutorial-postgresql-azure-postgresql-online-portal)
+Developers needs to reach out to platform operation team for database password.
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2023-10-24">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 February 2023.
+      This page was last reviewed on 24 April 2023.
 
-        It needs to be reviewed again on 24 August 2023
+        It needs to be reviewed again on 24 October 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 August 2023
+      This page was set to be reviewed before 24 October 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -313,8 +325,8 @@ Your project will need to be managed by Terraform to set this up.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/guides/connect-via-vpn.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Make+a+new+Virtual+Network+accessible+over+the+VPN%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fguides%2Fconnect-via-vpn.html%29&amp;labels=bug&amp;title=Re%3A+%27Make+a+new+Virtual+Network+accessible+over+the+VPN%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/guides/postgresql-singleserver-to-flexibleserver-migration.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Postgresql+single+server+to+flexible+server+migration+using+Azure+DMS%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fguides%2Fpostgresql-singleserver-to-flexibleserver-migration.html%29&amp;labels=bug&amp;title=Re%3A+%27Postgresql+single+server+to+flexible+server+migration+using+Azure+DMS%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
