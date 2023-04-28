@@ -1,0 +1,20 @@
+---
+title: Support and maintenance
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+In order to improve the existing services from a support and maintenance perspective the Legacy team are undergoing a process of migrating the Web application services to two HMCTS managed AWS platforms:
+
+- **AWS Cloud Platform** - This platform will host the services which can be migrated to run as Linux dockerised containers.
+
+  The official documentation for this environment can be found [on confluence](https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide/)
+
+- **AWS Modernisation Platform** - This platform will host the services which have been written using old versions of the Windows .Net platform and cannot be easily upgraded to .Net Core
+
+  The official documentation for this environment can be found [on confluence](https://user-guide.modernisation-platform.service.justice.gov.uk/)
+
+The aim is to provide a standardised hosting architecture, pipeline build and an upgraded set of application components (Java versions, database versions) where possible.
+
+Both platform migrations require the creation of Terraform Infrastructure as Code scripts, which currently do not exist.
