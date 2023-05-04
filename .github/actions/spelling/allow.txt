@@ -67,6 +67,7 @@ bfaac
 bitnami
 blobstorage
 blockquote
+burstable
 cdk
 cdn
 cdnverify
