@@ -18,7 +18,7 @@ This simple method has lower chances of failure and no restrictions in terms of 
 
 ### Prerequisite 
 
-- Create target Postgresql flexible server using terraform module. Make sure database names and sizes are identical and equal or larger in size respectively.
+- Create target Postgresql flexible server using [terraform module](https://github.com/hmcts/terraform-module-postgresql-flexible). Make sure database names and sizes are identical and equal or larger in size respectively.
 - Allowlist all required extensions as shown in [Migrate from Azure Database for PostgreSQL Single Server to Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/migrate/concepts-single-to-flexible#allow-list-required-extensions). It is important to allowlist the extensions before you initiate a migration using this tool.
 
 ### Migration Steps
