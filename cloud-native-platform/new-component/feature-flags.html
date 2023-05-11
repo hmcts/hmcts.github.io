@@ -307,7 +307,9 @@ Their <a href="https://launchdarkly.com/blog/">blog</a> contains good informatio
 <h3 id="creating-a-new-project">Creating a new project</h3>
 <p>See <a href="https://github.com/hmcts/launchdarkly-terraform">hmcts/launchdarkly-terraform</a> for instructions on how to setup your new project.</p>
 <h3 id="environments">Environments</h3>
-<p>We currently provide &lsquo;Test&rsquo; and &lsquo;Production&rsquo; environments only within Launch Darkly. Flags are generally set to the same value in both &lsquo;Production&rsquo; and the &lsquo;Test&rsquo; environment, <a href="https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting">flag targeting</a> is used to control rollout of flags to users across environments.</p>
+<p>We currently provide &lsquo;Test&rsquo; and &lsquo;Production&rsquo; environments by default within Launch Darkly. Flags are generally set to the same value in both &lsquo;Production&rsquo; and the &lsquo;Test&rsquo; environment, <a href="https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting">flag targeting</a> is used to control rollout of flags to users across environments.</p>
+<p>If your team does require additional environments, you can do this by updating your teams <a href="https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61">terraform.tfvars</a>. 
+It is not recommended to do this as targeting rules should be simpler to manage and ensure consistency across environments.</p>
 
               <div data-module='page-expiry' data-last-reviewed-on="2023-09-17">
     <div class='page-expiry--not-expired'>
