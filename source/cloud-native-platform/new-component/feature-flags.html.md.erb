@@ -47,5 +47,8 @@ See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terrafo
 
 ### Environments
 
-We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
+We currently provide 'Test' and 'Production' environments by default within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
+
+If your team does require additional environments, you can do this by updating your teams terraform.tfvars as [example](https://github.com/hmcts/launchdarkly-terraform/blob/master/terraform.tfvars#L59-L61) shows. 
+(A pull request is neccessary for additional environments and will be reviewed to determine if the requirement is valid.)
 
