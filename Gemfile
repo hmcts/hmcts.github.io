@@ -10,4 +10,10 @@ gem 'tzinfo-data', platforms: [:mswin, :mingw, :jruby]
 
 # Include the tech docs gem
 gem 'govuk_tech_docs'
+
+# HAML 6 isn't currently working with middleman
+# ruby/3.2.2/lib/ruby/gems/3.2.0/gems/middleman-syntax-3.2.0/lib/middleman-syntax/haml_monkey_patch.rb:4:in `<module:Haml>': Filters is not a module (TypeError)
+# ruby/3.2.2/lib/ruby/gems/3.2.0/gems/haml-6.1.1/lib/haml/filters/base.rb:5: previous definition of Filters was here
+gem 'haml', '~> 5.2', '>= 5.2.2'
+
 gem 'middleman-gh-pages'
