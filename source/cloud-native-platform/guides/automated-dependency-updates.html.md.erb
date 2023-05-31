@@ -1,0 +1,132 @@
+---
+title: Automated dependency updates
+last_reviewed_on: 2023-05-31
+review_in: 3 months
+weight: 10
+hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+Renovate is a tool that automates dependency updates in your project.
+It can save you time by automatically creating pull requests to update your dependencies.
+
+Here's how to set it up:
+
+`renovate.json` or `.github/renovate.json`:
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>hmcts/.github:renovate-config"
+  ]
+}
+```
+
+This configuration will use the default configuration for most options, and will label pull requests with the "dependencies" label.
+
+It will only run in the morning to minimise disruption to your day and to also create the pull requests while the non production environments are running.
+
+You can see all the configured options in [hmcts/.github:renovate-config.json](https://github.com/hmcts/.github/blob/master/renovate-config.json).
+
+## Minimising work for your team
+
+It's great that renovate is keeping your dependencies up to date, but it can take a lot of time to manage it.
+
+We have provided two presets that will automerge pull requests for you if their CI checks are passing.
+
+Depending on your project's test coverage, you can use one of the following presets:
+
+[`automerge-minor`](https://github.com/hmcts/.github/blob/master/renovate/automerge-minor.json):
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>hmcts/.github:renovate-config",
+    "local>hmcts/.github//renovate/automerge-minor"
+  ]
+}
+```
+
+[`automerge-all`](https://github.com/hmcts/.github/blob/master/renovate/automerge-all.json):
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>hmcts/.github:renovate-config",
+    "local>hmcts/.github//renovate/automerge-all"
+  ]
+}
+```
+
+[renovate-approve](https://github.com/apps/renovate-approve) will automatically approve pull requests from renovate, so you don't need to worry about approving them.
+
+### Codeowners
+
+If you have codeowners setup in your repository renovate won't be able to merge the pull requests automatically unless you remove the dependency files from `CODEOWNERS`.
+
+For Java:
+
+```
+# https://help.github.com/en/articles/about-code-owners
+
+* @hmcts/$team-name
+
+# Renovate files
+gradle/wrapper/gradle-wrapper.properties
+Dockerfile
+build.gradle
+charts/**/Chart.yaml
+infrastructure/state.tf # or whichever file you use for terraform provider version sometimes provider.tf
+.github/workflows/*.yaml
+```
+
+For NodeJS:
+
+```
+# https://help.github.com/en/articles/about-code-owners
+
+* @hmcts/$team-name
+
+# Renovate
+.pnp.cjs
+.yarn/**
+package.json
+yarn.lock
+charts/**/Chart.yaml
+.github/workflows/*.yaml
+```
+
+## Grouping pull requests
+
+Renovate will create a pull request for each dependency update, which can be a lot of pull requests.
+
+If you are subscribed to the whole repository you will get a notification for each pull request.
+The above section on `CODEOWNERS` would help with this as you can unsubscribe from the repository and then won't get requested for review.
+
+If you group the pull requests it will reduce the number of pull requests you get from renovate.
+
+Below are a couple of examples on how to accomplish this:
+
+- [sscs-renovate](https://github.com/hmcts/sscs-common/blob/master/.github/sscs-renovate.json)
+- [cnp-jenkins-docker](https://github.com/hmcts/cnp-jenkins-docker/blob/a510706034dc2f288142046b254947919e30aed2/.github/renovate.json#L7)
+
+For more information, see the [Renovate documentation](https://docs.renovatebot.com/).
+
+## Dependabot vs Renovate
+
+We do not recommend using dependabot.
+
+It is nowhere near as powerful as renovate.
+
+Feature's missing: 
+
+- Centralised configuration
+- Flexible scheduling
+- Automerge
+- Grouping pull requests
+- Regex support for dependency files
+- Many missing package managers - gradle wrapper, helm, terraform, nodejs version manager, etc
