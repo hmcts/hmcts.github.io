@@ -1,4 +1,7 @@
+automerge
+cjs
 DLRM
 dockerised
 knowledgebase
+pnp
 roadmap
