@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Guides - HMCTS</title>
+    <title>Automated dependency updates - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/guides/">
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/guides/automated-dependency-updates.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Guides - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/guides/" />
+      <meta name="twitter:title" content="Automated dependency updates - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/guides/automated-dependency-updates.html" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Guides" />
+      <meta property="og:title" content="Automated dependency updates" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/guides/" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/guides/automated-dependency-updates.html" />
 
     
   </head>
@@ -278,33 +278,104 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="guides">Guides</h1>
-<p>Guides and how-to documents:</p>
+            <h1 id="automated-dependency-updates">Automated dependency updates</h1>
+<p>Renovate is a tool that automates dependency updates in your project.
+It can save you time by automatically creating pull requests to update your dependencies.</p>
+<p>Here&rsquo;s how to set it up:</p>
+<p><code>renovate.json</code> or <code>.github/renovate.json</code>:</p>
+<div class="highlight"><pre class="highlight json" tabindex="0"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"$schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://docs.renovatebot.com/renovate-schema.json"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"extends"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"local&gt;hmcts/.github:renovate-config"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><p>This configuration will use the default configuration for most options, and will label pull requests with the &ldquo;dependencies&rdquo; label.</p>
+<p>It will only run in the morning to minimise disruption to your day and to also create the pull requests while the non production environments are running.</p>
+<p>You can see all the configured options in <a href="https://github.com/hmcts/.github/blob/master/renovate-config.json">hmcts/.github:renovate-config.json</a>.</p>
+<h2 id="minimising-work-for-your-team">Minimising work for your team</h2>
+<p>It&rsquo;s great that renovate is keeping your dependencies up to date, but it can take a lot of time to manage it.</p>
+<p>We have provided two presets that will automerge pull requests for you if their CI checks are passing.</p>
+<p>Depending on your project&rsquo;s test coverage, you can use one of the following presets:</p>
+<p><a href="https://github.com/hmcts/.github/blob/master/renovate/automerge-minor.json"><code>automerge-minor</code></a>:</p>
+<div class="highlight"><pre class="highlight json" tabindex="0"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"$schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://docs.renovatebot.com/renovate-schema.json"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"extends"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"local&gt;hmcts/.github:renovate-config"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"local&gt;hmcts/.github//renovate/automerge-minor"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><p><a href="https://github.com/hmcts/.github/blob/master/renovate/automerge-all.json"><code>automerge-all</code></a>:</p>
+<div class="highlight"><pre class="highlight json" tabindex="0"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"$schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://docs.renovatebot.com/renovate-schema.json"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"extends"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"local&gt;hmcts/.github:renovate-config"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"local&gt;hmcts/.github//renovate/automerge-all"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><p><a href="https://github.com/apps/renovate-approve">renovate-approve</a> will automatically approve pull requests from renovate, so you don&rsquo;t need to worry about approving them.</p>
+<h3 id="codeowners">Codeowners</h3>
+<p>If you have codeowners setup in your repository renovate won&rsquo;t be able to merge the pull requests automatically unless you remove the dependency files from <code>CODEOWNERS</code>.</p>
+<p>For Java:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code># https://help.github.com/en/articles/about-code-owners
+
+* @hmcts/$team-name
+
+# Renovate files
+gradle/wrapper/gradle-wrapper.properties
+Dockerfile
+build.gradle
+charts/**/Chart.yaml
+infrastructure/state.tf # or whichever file you use for terraform provider version sometimes provider.tf
+.github/workflows/*.yaml
+</code></pre></div><p>For NodeJS:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code># https://help.github.com/en/articles/about-code-owners
+
+* @hmcts/$team-name
+
+# Renovate
+.pnp.cjs
+.yarn/**
+package.json
+yarn.lock
+charts/**/Chart.yaml
+.github/workflows/*.yaml
+</code></pre></div><h2 id="grouping-pull-requests">Grouping pull requests</h2>
+<p>Renovate will create a pull request for each dependency update, which can be a lot of pull requests.</p>
+<p>If you are subscribed to the whole repository you will get a notification for each pull request.
+The above section on <code>CODEOWNERS</code> would help with this as you can unsubscribe from the repository and then won&rsquo;t get requested for review.</p>
+<p>If you group the pull requests it will reduce the number of pull requests you get from renovate.</p>
+<p>Below are a couple of examples on how to accomplish this:</p>
 
 <ul>
-<li><a href="afd-waf.html">Azure Frontdoor Web Application Firewall Debug</a></li>
-<li><a href="pr-url.html">How to get the test URL for a PR build</a></li>
-<li><a href="flyway-database-migrations.html">Flyway database migration</a></li>
-<li><a href="automated-dependency-updates.html">Automated dependency updates</a></li>
-<li><a href="managing-manual-key-vault-secrets.html">Managing Manual Key Vault Secrets</a></li>
-<li><a href="postgresql-singleserver-to-flexibleserver-migration-portal.html">Postgresql single server to flexible server migration using Azure Portal</a></li>
-<li><a href="creating-a-new-subscription.html">Creating a new subscription</a></li>
-<li><a href="connect-via-vpn.html">Make a new Virtual Network accessible over the VPN</a></li>
-<li><a href="profile-java-app-in-aks.html">Profile a Java application running in an AKS cluster</a></li>
-<li><a href="postgresql-singleserver-to-flexibleserver-migration-dms.html">Postgresql single server to flexible server migration using Azure DMS</a></li>
+<li><a href="https://github.com/hmcts/sscs-common/blob/master/.github/sscs-renovate.json">sscs-renovate</a></li>
+<li><a href="https://github.com/hmcts/cnp-jenkins-docker/blob/a510706034dc2f288142046b254947919e30aed2/.github/renovate.json#L7">cnp-jenkins-docker</a></li>
+</ul>
+<p>For more information, see the <a href="https://docs.renovatebot.com/">Renovate documentation</a>.</p>
+<h2 id="dependabot-vs-renovate">Dependabot vs Renovate</h2>
+<p>We do not recommend using dependabot.</p>
+<p>It is nowhere near as powerful as renovate.</p>
+<p>Features missing:</p>
+
+<ul>
+<li>Centralised configuration</li>
+<li>Flexible scheduling</li>
+<li>Automerge</li>
+<li>Grouping pull requests</li>
+<li>Regex support for dependency files</li>
+<li>Many missing package managers - gradle wrapper, helm, terraform, nodejs version manager, etc</li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-11-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-31">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 November 2022.
+      This page was last reviewed on 31 May 2023.
 
-        It needs to be reviewed again on 3 November 2023
+        It needs to be reviewed again on 31 August 2023
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 November 2023
+      This page was set to be reviewed before 31 August 2023
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -314,8 +385,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/guides/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Guides%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fguides%2F%29&amp;labels=bug&amp;title=Re%3A+%27Guides%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/guides/automated-dependency-updates.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Automated+dependency+updates%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fguides%2Fautomated-dependency-updates.html%29&amp;labels=bug&amp;title=Re%3A+%27Automated+dependency+updates%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
