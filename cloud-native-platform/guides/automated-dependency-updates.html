@@ -100,16 +100,6 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
-<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
-<ul>
-  <li>
-    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
-  </li>
-  <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
-  </li>
-</ul>
-</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -123,6 +113,16 @@
 </li>
 <li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
 <ul>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
 </ul>
 </li>
 <li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
@@ -313,6 +313,8 @@ It can save you time by automatically creating pull requests to update your depe
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><p><a href="https://github.com/apps/renovate-approve">renovate-approve</a> will automatically approve pull requests from renovate, so you don&rsquo;t need to worry about approving them.</p>
+<p>Make sure you <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request#enabling-auto-merge">enable auto-merge on the repository settings</a>:</p>
+<p><a href="../images/automerge.png" rel="noopener noreferrer"><img src="../images/automerge.png" alt="Auto-merge settings" /></a></p>
 <h3 id="codeowners">Codeowners</h3>
 <p>If you have codeowners setup in your repository renovate won&rsquo;t be able to merge the pull requests automatically unless you remove the dependency files from <code>CODEOWNERS</code>.</p>
 <p>For Java:</p>
