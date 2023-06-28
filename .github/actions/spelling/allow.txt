@@ -281,3 +281,5 @@ zalando
 snyk
 CFTSBOX
 nonprod
+plpgsql
+pg_stat_statements
