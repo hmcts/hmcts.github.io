@@ -23,7 +23,7 @@ jobs:
             cspell:python/src/python/python-lib.txt
             cspell:software-terms/src/software-tools.txt
             cspell:python/src/python/python.txt
-    
+
   build:
     runs-on: ubuntu-latest
     name: Deploy
