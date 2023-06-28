@@ -283,14 +283,13 @@
 <h2 id="access-to-a-an-existing-team">Access to a an existing team.</h2>
 <p>Follow the instructions on the <a href="/cloud-native-platform/onboarding/person/#azure-ad-groups">person onboarding guide</a>.</p>
 <h2 id="creating-a-new-team">Creating a new team</h2>
-<p>If you are unsure which groups you need to be a part of, ask your team or create a help request in the <a href="https://hmcts-reform.slack.com/messages/platops-help">#platops-help</a> channel on Slack. For example:</p>
+<p>If you are a new team or just need a group created, then do a pull request to the <a href="https://github.com/hmcts/devops-azure-ad/blob/master/users/groups.yml">devops-azure-ad</a> repository and get it approved by Platform Operations.</p>
+<p>It should look like:</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code>
+<span class="na">groups</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DTS Your Team name</span>
 
-<blockquote>
-<p>Hi
-I am part of a new team &ldquo;[Team name]&rdquo;</p>
-<p>Can you please create a team AAD group: &ldquo;DTS [Team name]&rdquo;</p>
-</blockquote>
-
+</code></pre></div>
               <div data-module='page-expiry' data-last-reviewed-on="2023-08-22">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 22 February 2023.
