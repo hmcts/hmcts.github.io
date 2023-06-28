@@ -19,8 +19,27 @@ This simple method has lower chances of failure and no restrictions in terms of 
 ### Prerequisite 
 
 - Create target Postgresql flexible server using [terraform module](https://github.com/hmcts/terraform-module-postgresql-flexible). Make sure database names and sizes are identical and equal or larger in size respectively.
-- Allowlist all required extensions as shown in [Migrate from Azure Database for PostgreSQL Single Server to Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/migrate/concepts-single-to-flexible#allow-list-required-extensions). It is important to allowlist the extensions before you initiate a migration using this tool.
+- Enable `extensions` on flexible server. List of extensions should be identical to single server. 
 
+```yaml
+# run SQL query on single server to get list of extensions. 
+select * from pg_extension;
+```
+
+```yaml
+# Update/Add this `terraform variable` with the list of required extensions.
+pgsql_server_configuration = [
+    {
+      name  = azure.extensions
+      value = <name of extension eg. plpgsql>
+    },
+    {
+      name  = azure.extensions
+      value = <name of extension eg. pg_stat_statements>
+    }
+    ]
+
+```
 ### Migration Steps
 
 AzureDevops pipeline as been created to facilitate migration process. Follow instructions in README.MD file located in [repo](https://github.com/hmcts/flexible-server-migration).
