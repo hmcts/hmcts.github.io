@@ -1,0 +1,22 @@
+---
+title: Migrate Azure Front Door (classic) to Standard/Premium tier
+last_reviewed_on: 2023-06-30
+review_in: 6 months
+weight: 10
+hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+The Azure Portal can be used to perform an migration of a Azure Front door (Classic) to Standard/Premium tier
+
+### Prerequisite 
+
+- Review the [About Front Door tier migration](https://learn.microsoft.com/en-us/azure/frontdoor/tier-migration) article.
+- Ensure your Front Door (classic) profile can be migrated:
+  - Azure Front Door Standard and Premium requires all custom domains to use HTTPS. If you don't have your own certificate, you can use an Azure Front Door managed certificate. The certificate is free of charge and gets managed for you.
+  - Session affinity gets enabled in the origin group settings for an Azure Front Door Standard or Premium profile. In Azure Front Door (classic), session affinity is set at the domain level. As part of the migration, session affinity is based on the Front Door (classic) profile settings. If you have two domains in your classic profile that shares the same backend pool (origin group), session affinity has to be consistent across both domains in order for migration validation to pass.
+
+### Migration Steps
+
+Azure [documentation](https://learn.microsoft.com/en-us/azure/frontdoor/migrate-tier).
