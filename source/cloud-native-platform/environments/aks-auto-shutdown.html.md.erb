@@ -40,14 +40,9 @@ If required, an AKS cluster can be started or stopped using a GitHub action on t
 5. Select 'build' under 'Jobs'
 6. Expand the 'AKS Auto Shutdown' dropdown to view the job output.
 
-
-### How to update tags in portal
-
-1. Navigate to 'Kubernetes services' on the Azure Portal.
-2. Select the relevant cluster from the list.
-3. Select the 'edit' button beside tags.
-4. If auto-shutdown of the specific AKS cluster is enabled, there will be a tag with the name 'autoShutdown' and its value will be 'true'. To disable auto-shutdown for this cluster change this value to false.
-
+### Skip shutdown functionality
+In the event that an environment or environments are needed outside of the default hours, you can raise a request to automatically exclude it from the shutdown schedule.
+You can view more details in the aks-auto-shutdown [README](https://github.com/hmcts/aks-auto-shutdown#skip-shutdown-functionality)
 
 ### How to ask for help
 If you need help you can raise a help request to the Platform Operations team via the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) channel.
