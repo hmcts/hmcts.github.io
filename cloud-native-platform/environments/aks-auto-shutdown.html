@@ -110,6 +110,10 @@
   </li>
 </ul>
 </li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -119,10 +123,6 @@
   <li>
     <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
   </li>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
 </ul>
 </li>
 <li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
@@ -148,10 +148,10 @@
     <a href="../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
   </li>
   <li>
     <a href="../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
@@ -337,14 +337,9 @@
 <li>Select &lsquo;build&rsquo; under &lsquo;Jobs&rsquo;</li>
 <li>Expand the &lsquo;AKS Auto Shutdown&rsquo; dropdown to view the job output.</li>
 </ol>
-<h3 id="how-to-update-tags-in-portal">How to update tags in portal</h3>
-
-<ol>
-<li>Navigate to &lsquo;Kubernetes services&rsquo; on the Azure Portal.</li>
-<li>Select the relevant cluster from the list.</li>
-<li>Select the &lsquo;edit&rsquo; button beside tags.</li>
-<li>If auto-shutdown of the specific AKS cluster is enabled, there will be a tag with the name &lsquo;autoShutdown&rsquo; and its value will be &lsquo;true&rsquo;. To disable auto-shutdown for this cluster change this value to false.</li>
-</ol>
+<h3 id="skip-shutdown-functionality">Skip shutdown functionality</h3>
+<p>In the event that an environment or environments are needed outside of the default hours, you can raise a request to automatically exclude it from the shutdown schedule.
+You can view more details in the aks-auto-shutdown <a href="https://github.com/hmcts/aks-auto-shutdown#skip-shutdown-functionality">README</a></p>
 <h3 id="how-to-ask-for-help">How to ask for help</h3>
 <p>If you need help you can raise a help request to the Platform Operations team via the <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> channel.</p>
 
