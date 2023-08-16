@@ -1,6 +1,6 @@
 ---
 title: Operational Acceptance Testing
-last_reviewed_on: 2022-09-27
+last_reviewed_on: 2023-08-16
 review_in: 6 months
 weight: 6
 ---
@@ -56,7 +56,7 @@ Service Operations Guide (SOG) is a living document for each service that should
 This OAT is to ensure that there are sufficient resources available to make sure the service is maintainable and to facilitate knowledge transfer.
 
 - SOG should be updated with:
-  * Links to application, Infrastructure code in GitHub and related build pipelines.
+  * Links to application, Infrastructure code is found in GitHub and the related build pipelines.
   * Links to High / Low Level Design Documents or a high level purpose of each application.
   * Details of Azure Infrastructure being used like Key Vaults, Databases.
   * Dependencies on any external services.
@@ -88,7 +88,7 @@ This OAT is to capture any specific Non-functional requirements (NFRs) unique to
 
 This OAT is to ensure the software and licenses for infrastructure and hosting is appropriately licensed and supported for the proposed design of the environments required for the service.
 
-- Development team are to assess and document in SOG if there are any tools / dependencies which are not covered under standard open source licensing.
+- Development team are to assess and document in SOG if there are any tools or dependencies which are not covered under standard open source licensing.
 - Tools like Camunda, Launch Darkly can be marked as "Platform Managed".
 
 ### Support Capability - Incident Handling
@@ -126,7 +126,7 @@ This OAT is to ensure that the service has a robust approach for dealing with th
 
 This OAT is applicable for front end services to ensure they have a shuttering mechanism in place.
 
-- [Shuttering](https://hmcts.github.io/ways-of-working/path-to-live/shutter.html) should be configured and tested before documenting in SOG.
+- [Shuttering](https://hmcts.github.io/cloud-native-platform/path-to-live/shutter.html#shutter-implementation-and-design) should be configured and tested before documenting in SOG.
 
 ### Resilience / Recoverability
 
@@ -153,7 +153,7 @@ This OAT is to ensure the data can be reliably and frequently backed up.
 
 ### Monitoring & Alerting
 
-This OAT is to ensure the service has checks for  all possible points of failure and that alerts are triggered in the event of a failure.
+This OAT ensures service checks for all possible points of failure and alerts triggered in the event of a failure.
 
 - SOG to be updated with monitoring and alerting details either in Application Insights or Dynatrace.
 
