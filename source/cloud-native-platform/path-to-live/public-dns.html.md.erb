@@ -1,6 +1,6 @@
 ---
 title: Public DNS
-last_reviewed_on: 2023-02-27
+last_reviewed_on: 2023-08-21
 review_in: 6 months
 weight: 3
 ---
@@ -21,7 +21,7 @@ for a new service.
 - Clone the [Azure Public DNS](https://github.com/hmcts/azure-public-dns) repository.
 - Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment.
 There can be multiple zones in one environment,
-- Create afdverify and cdnverify CNAME records in the appropriate zone file for environments.
+- Create afdverify CNAME records in the appropriate zone file for environments.
 Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull/43/files),
 - Create a PR with records as per the below convention
 (make sure you replace the variables with the correct values).
@@ -30,9 +30,6 @@ Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull
 - name: "afdverify.${name}"
   ttl: 300
   record: "afdverify.hmcts-${env}.azurefd.net"
-- name: "cdnverify.${name}" # only needed on prod as we don't shutter non production apps
-  ttl: 300
-  record: "cdnverify.hmcts-${name}-shutter-${env}.azureedge.net"
 - name: "${name}"
   ttl: 300
   record: "hmcts-${env}.azurefd.net"
