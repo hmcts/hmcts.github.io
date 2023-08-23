@@ -1,0 +1,43 @@
+---
+title: Postgresql single server to flexible server migration using Azure DMS 
+last_reviewed_on: 2023-04-24
+review_in: 6 months
+weight: 10
+hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+Azure Database Migration Service is an universal tool used to migrate databases to Azure platform. For migrating larger databases(> 50GB) it is advised to use this tool as it has minimal downtime. 
+
+### Limitations
+
+- Can't handle database of sizes > 1 TB
+- Can't handle write-intensive workload
+- You can have only one active migration to your flexible server.
+- You can select a max of eight databases in one migration attempt. If you've more than eight databases, you must wait for the first migration to be complete before initiating another migration for the rest of the databases. Support for migration of more than eight databases in a single migration will be introduced later.
+- The source and target server must be in the same Azure region. Cross region migrations are not supported.
+- The tool takes care of the migration of data and schema. It doesn't migrate managed service features such as server parameters, connection security details, firewall rules, users, roles and permissions. In the later part of the document, we point you to docs that can help you perform the migration of users, roles and firewall rules from single server to flexible server.
+- The migration tool shows the number of tables copied from source to target server. You need to validate the data in target server post migration.
+- The tool only migrates user databases and not system databases like template_0, template_1, azure_sys and azure_maintenance.
+
+### Prerequisite 
+
+- Update Postgresql Single server `Azure replication support` to `logical`. This will `restart` postgresql server. 
+- Create target Postgresql flexible server using terraform module. Make sure database names and sizes are identical and equal or larger in size respectively.
+
+### Migration Steps
+
+Azure Database Migration Service instance have been pre created.  
+
+| DMS instance Name | Subscription | Service | Environment | Additional Information |
+| - | - | - | - | - | 
+| cft-nonprod-db-migration | DTS-CFTPTL-INTSVC | CFT | non prod | <ul><li>Used for all non-prod database migrations </li></ul> |
+| cft-prod-db-migration | DTS-CFTPTL-INTSVC | CFT | Prod | <ul><li>Used for all prod database migrations </li></ul> |
+| ss-nonprod-db-migration | DTS-SHAREDSERVICESPTL | SDS | non prod | <ul><li>Used for all non-prod database migrations </li></ul> |
+| ss-prod-db-migration | DTS-SHAREDSERVICESPTL | SDS | Prod | <ul><li>Used for all prod database migrations </li></ul> |
+| ss-ptlsbox-db-migration | DTS-SHAREDSERVICESPTL-SBOX | SDS | ptlsbox | <ul><li>Used for all sbox database migrations </li></ul> |
+| cft-ptlsbox-db-migration | DTS-CFTSBOX-INTSVC | CFT | ptlsbox | <ul><li>Used for all sbox database migrations </li></ul> |
+
+Follow Azure [documentation](https://learn.microsoft.com/en-us/azure/dms/tutorial-postgresql-azure-postgresql-online-portal)
+Developers need to reach out to platform operation team for database password.

@@ -390,7 +390,7 @@ Smart and dummy components
 --------------------------
 
 Most common use case of developing Angular's components is a separation of [smart and presentation components](https://blog.angular-university.io/angular-2-smart-components-vs-presentation-components-whats-the-difference-when-to-use-each-and-why/). A 'dumb' component is a component used for presentation purposes only, meaning that the component doesn't know where the data came from. For that purpose, we can use one or more smart components that will inherit dummy's component presentation logic. Making a component dumb means that the component does not have any special logic in it and operates purely based on the inputs and outputs provided to it. Dumb components are simpler, so they are less likely to have bugs. A smart component does not have to be a top-level router component only. We can have other components further down the tree and don't necessarily get their data only from `@Input()`.\
-All component templates should be dumb, maybe a better metaphor here is parent child or shell host, the parent or host handles dependancies and hands data to the child this makes the child component easy to test, since dependancies can be stubbed.  If the outer (parent or shell) component handles the data fetch and keeps the children hidden until it has been hydrated, the child component can make certain assumptions about its role and state. 
+All component templates should be dumb, maybe a better metaphor here is parent child or shell host, the parent or host handles dependencies and hands data to the child this makes the child component easy to test, since dependencies can be stubbed.  If the outer (parent or shell) component handles the data fetch and keeps the children hidden until it has been hydrated, the child component can make certain assumptions about its role and state. 
 
 Base component classes
 ----------------------
@@ -406,6 +406,36 @@ Use reactive forms
 ------------------
 
 Angular presents two different methods for creating forms: [template-driven](https://angular.io/guide/forms) and [reactive forms](https://angular.io/guide/reactive-forms). Reactive forms provide a model-driven approach to handling form inputs whose values change over time. The Reactive approach removes validation logic from the template, keeping the templates clean of validation logic. Reactive forms use an explicit and immutable approach to managing the state of a form at a given point in time. Each change to the form state returns a new state, which maintains the integrity of the model between changes.
+
+Dealing with NG0100 Errors – Only use set Timeout as a last resort
+------------------------------------------------------------------
+Angular throws an `ExpressionChangedAfterItHasBeenCheckedError` when an expression value has been changed after change detection has completed. Angular only throws this error in development mode.
+If you search stackoverflow for a solution, the quick fix is to wrap the offending code in a `setTimeOut`.
+
+...
+ngAfterViewInit() {
+    setTimeout(() => {
+        -- Troublesome code here;
+    });
+}
+...
+
+The `setTimeout` function schedules a macrotask then will be executed in the following VM turn.
+It is also possible to executed the update in the current VM turn but after the current synchronous code has finished executing by using then callback of a promise:
+
+Use a promise – Microtask queue
+---
+Promise.resolve(null).then(() => -- Troublesome code here;);
+---
+
+Instead of a macrotask `Promise.then` creates a microtask. The microtask queue is processed after the current synchronous code has finished executing hence the update to the property will happen after the verification step.
+
+The problem here is that you may be trying to use a sticking plaster to fix a broken arm. Using this type of hack to suppress the error hides a potential structural or design problem in your code.
+see NG0100: [Expression has changed after it was checked.](https://angular.io/errors/NG0100)
+
+Many times the issue here is caused by not respecting Unidirectional Data Flow within the template, and this should be considered before changing the change detection strategy for the component.
+
+If for example you have a error loop between the Parent and Child components in the view, the best fix is to make the parent component initialise the data connection via an async pipe in the top of the template and then provide the data to the child components so the data flows down the page only once.
 
 Bibliography
 ------------

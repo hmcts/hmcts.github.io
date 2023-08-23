@@ -1,0 +1,36 @@
+---
+title: Java
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Follow the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
+
+When using Gradle, use the [HMCTS Java plugin](https://github.com/hmcts/rse-gradle-java-plugin/) to ensure consistent formatting and code quality checks.
+
+Otherwise, install [Checkstyle](https://checkstyle.org/) and use the [HMCTS Checkstyle configuration](https://github.com/hmcts/rse-gradle-java-plugin/blob/master/src/main/resources/hmcts-checkstyle.xml).
+
+### Immutability
+
+Make objects immutable where possible. Be particularly wary of shared mutable state and stateful objects. Mutability of variables inside a method is acceptable.
+
+### Lombok
+
+Optionally, use [Lombok](https://projectlombok.org/) to reduce boilerplate code.
+
+### JSON
+
+Use [Jackson](https://github.com/FasterXML/jackson) to serialise and deserialise JSON. Ensure you keep it up to date to avoid security vulnerabilities.
+
+### Logging
+
+Use [SLF4J](https://www.slf4j.org/) for logging. When using Lombok, make use the `@Slf4j` annotation from Lombok to get a logger.
+
+### Feign
+
+Use [Feign](https://github.com/OpenFeign/feign) for HTTP clients.
+
+### Testing
+
+Use [JUnit 5](https://junit.org/junit5/) for testing.

@@ -1,0 +1,7 @@
+ignore$
+\.png$
+\.svg$
+\.drawio$
+\.t$
+^LICENSE\.txt$
+^\.github/

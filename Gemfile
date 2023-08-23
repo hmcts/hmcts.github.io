@@ -10,4 +10,5 @@ gem 'tzinfo-data', platforms: [:mswin, :mingw, :jruby]
 
 # Include the tech docs gem
 gem 'govuk_tech_docs'
+
 gem 'middleman-gh-pages'

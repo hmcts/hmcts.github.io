@@ -1,6 +1,6 @@
 ---
 title: Feature flags
-last_reviewed_on: 2022-05-17
+last_reviewed_on: 2023-03-17
 review_in: 6 months
 weight: 99
 ---
@@ -30,9 +30,7 @@ End to end Process:
 ### Accessing LaunchDarkly
 
 Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non-developers can get access with the 'DTS LaunchDarkly' group.
-see [onboarding](../../onboarding/person/index.html) process to request access. You will need to login from [myapps.microsoft.com](https://myapps.microsoft.com).
-If you don't see it and you are in the correct groups then make sure you are in the 'CJS Common Platform' tenant, click your profile picture in the top right and it should be at the top.
-If you aren't then click 'Switch organisation' and select the correct one.
+see [onboarding](../../onboarding/person/index.html) process to request access. You will need to login from [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net).
 
 After you've logged in once you will be able to login from [app.launchdarkly.com](https://app.launchdarkly.com/).
 
@@ -49,5 +47,8 @@ See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terrafo
 
 ### Environments
 
-We currently provide 'Test' and 'Production' environments only within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
+We currently provide 'Test' and 'Production' environments by default within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
+
+If your team does require additional environments, you can do this by updating your teams [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61). 
+It is not recommended to do this as targeting rules should be simpler to manage and ensure consistency across environments.
 

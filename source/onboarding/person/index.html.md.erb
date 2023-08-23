@@ -1,6 +1,6 @@
 ---
 title: Person
-last_reviewed_on: 2023-02-15
+last_reviewed_on: 2023-05-16
 review_in: 6 months
 weight: 2
 ---
@@ -10,34 +10,41 @@ weight: 2
 ## Azure AD groups
 
 Azure AD is used to give you and your team-mates access to specific subscriptions and resources in Azure.
-When your GitHub user has access to a subscription, you will be able to view, create and modify Azure resources for your team.
+When your Azure AD user has access to a subscription, you will be able to view, create and modify Azure resources for your team.
 
-Access to most systems is granted by being added to Azure AD groups, you can join these by sending a pull request
-and getting it approved by Platform Operations.
+As GitHub access is also provided by adding an Azure AD Group, an existing teammate should create a pull request
+to [devops-azure-ad](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml) and get it approved by Platform Operations.
 
-The file is [prod_users.yml](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml).
+The first user in a team should raise a [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) request with the required groups.
 
-To start with join these groups:
+To start with send the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance) to the new starter.
+
+Then add these groups:
 
 ```yaml
+# username is the part of the email before @ for hmcts.net users, e.g. mary.jayne
+# for justice.gov.uk users it's the full email, e.g. mary.jayne@justice.gov.uk
 - name: username
   groups:
-  - DTS CFT Developers
+  - DTS CFT Developers # or if you're working on SDS 'DTS SDS Developers', if you only need access to GitHub you can skip this
+  - DTS GitHub Access # if you need access to GitHub
   - <your-team-group> # check other team members to find the group
 ```
 
-Where `username` is the part of your email before `@` (usually firstname.lastname like john.smith),
-`justice.gov.uk` users need to include their full email, e.g. `mary.jayne@justice.gov.uk`.
+These groups will give you access to:
 
-These groups will give you access to the [VPN](https://portal.platform.hmcts.net), [LaunchDarkly](/cloud-native-platform/new-component/feature-flags.html#accessing-launchdarkly), the [Azure Portal](https://portal.azure.com/) and logs.
-
+- [VPN](https://portal.platform.hmcts.net)
+- [LaunchDarkly](/cloud-native-platform/new-component/feature-flags.html#accessing-launchdarkly)
+- the [Azure Portal](https://portal.azure.com/)
+- application logs
+- [GitHub](https://github.com/orgs/hmcts/sso)
 
 ## GitHub
 
-Read the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance).
-If you agree to follow it then ask someone in your team who has access to add you in the [GitHub management](https://github.com/hmcts/github-management) repository by submitting a pull request.
+Once you've joined the `DTS GitHub Access` AzureAD group you will be able to join GitHub from your [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net) dashboard.
 
-GitHub teams are managed by your Technical Lead or a senior member of the team, ask them to add you to any team groups.
+GitHub teams are managed either by being [linked to a team Azure AD group](https://docs.github.com/en/enterprise-cloud@latest/organizations/organizing-members-into-teams/synchronizing-a-team-with-an-identity-provider-group)
+or by or a senior member of the team, ask them to add you to any team groups.
 
 Once you've joined GitHub make sure you add your user to the [Slack -> GitHub mapping](https://github.com/hmcts/github-slack-user-mappings).
 
@@ -79,7 +86,7 @@ You must be in one of the following groups:
 ## Recommended reading
 
 - [Continuous Delivery](https://continuousdelivery.com/)
-- [How, when and where to ask for help?](../../ways-of-working/asking-for-help)
+- [How, when and where to ask for help?](../../asking-for-help/index.html)
 
 ### Software Engineer specific reading
 
@@ -99,6 +106,6 @@ You must be in one of the following groups:
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Helm CLI](https://helm.sh/docs/intro/install/)
 
-#### Tech lead
+#### Slack channels
 
-Join the [reform-tech-leads Slack channel](https://hmcts-reform.slack.com/messages/reform-tech-leads)
+Join the [developers Slack channel](https://hmcts-reform.slack.com/messages/developers)

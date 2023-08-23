@@ -18,6 +18,10 @@
     <div class="app-example__code">
       <pre data-module="app-copy" tabindex="0">
         <code>
+  # Sandbox
+  az aks get-credentials --resource-group cft-sbox-00-rg --name cft-sbox-00-aks --subscription DCD-CFTAPPS-SBOX
+  az aks get-credentials --resource-group cft-sbox-01-rg --name cft-sbox-01-aks --subscription DCD-CFTAPPS-SBOX
+
   # Preview (only one cluster is active at a given time)
   az aks get-credentials --resource-group cft-preview-00-rg --name cft-preview-00-aks --subscription DCD-CFTAPPS-DEV
   az aks get-credentials --resource-group cft-preview-01-rg --name cft-preview-01-aks --subscription DCD-CFTAPPS-DEV
@@ -35,6 +39,7 @@
   az aks get-credentials --resource-group cft-ithc-01-rg --name cft-ithc-01-aks --subscription DCD-CFTAPPS-ITHC
   
   # Demo
+  az aks get-credentials --resource-group cft-demo-00-rg --name cft-demo-00-aks --subscription DCD-CFTAPPS-DEMO
   az aks get-credentials --resource-group cft-demo-01-rg --name cft-demo-01-aks --subscription DCD-CFTAPPS-DEMO
   
   # Prod (Requires additional permissions)
@@ -55,6 +60,10 @@
     <div>
       <pre data-module="app-copy" tabindex="0">
         <code>
+  # Sandbox
+  az aks get-credentials --resource-group ss-sbox-00-rg --name ss-sbox-00-aks --subscription DTS-SHAREDSERVICES-SBOX
+  az aks get-credentials --resource-group ss-sbox-01-rg --name ss-sbox-01-aks --subscription DTS-SHAREDSERVICES-SBOX
+
   # Dev
   az aks get-credentials --resource-group ss-dev-01-rg --name ss-dev-01-aks --subscription DTS-SHAREDSERVICES-DEV
   

@@ -1,56 +1,61 @@
 ---
 title: Infrastructure as Code
-last_reviewed_on: 2022-05-17
+last_reviewed_on: 2023-03-15
 review_in: 6 months
 weight: 2
 ---
 
 # <%= current_page.data.title %>
 
-We prefer [Software as a Service](https://en.wikipedia.org/wiki/Software_as_a_service) (SaaS) over [Platform as a Service](https://en.wikipedia.org/wiki/Platform_as_a_service) (PaaS) over [Infrastructure as a Service](https://en.wikipedia.org/wiki/Infrastructure_as_a_service) (IaaS).
+<!-- Lots of acronyms all at once, provide examples/explanation here instead of wikipedia? -->
 
-With this in mind, infrastructure as code refers to
+We prefer [Software as a Service](https://en.wikipedia.org/wiki/Software_as_a_service) (SaaS)
+over [Platform as a Service](https://en.wikipedia.org/wiki/Platform_as_a_service) (PaaS)
+over [Infrastructure as a Service](https://en.wikipedia.org/wiki/Infrastructure_as_a_service) (IaaS).
 
-* configuration for SaaS offerings
-* provisioning and configuration of PaaS offerings
-* provisioning and configuration of IaaS devices.
+With this in mind, "infrastructure as code" refers to:
+
+* Configuration for SaaS offerings.
+* Provisioning and configuration of PaaS offerings.
+* Provisioning and configuration of IaaS devices.
 
 All our infrastructure is public cloud-based. We use [Terraform](https://www.terraform.io/docs/index.html) to manage infrastructure as code.
 
-Service and common component teams are responsible for defining their own infrastructure for their products
-and components.
+Service and common component teams are responsible for defining their own infrastructure for their products and components.
 
 All configuration code is managed under source control in GitHub and should be public as described in the [GDS Service Manual](https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable).
+
+Sensitive information such as passwords and key pairs should neither be managed by Terraform nor present in GitHub and instead retrieved from a Key Vault. See [secrets management](../secrets-management) for more information.
 
 The infrastructure code will be used to provision and configure **one set of infrastructure in each environment**.
 
 ## Infrastructure levels
 
-Infrastructure is layered into the following levels
+Infrastructure is layered into the following levels:
 
 * Platform
 * Product
 * Component
 
-Each level builds on lower levels so, in order to provision and configure product-level infrastructure, the platform-level
-infrastructure must first have been provisioned and configured. Similarly, product-level infrastructure must
-have been provisioned before component-level infrastructure.
+Each level builds on lower levels so, the platform-level infrastructure must be provisioned before the
+product-level infrastructure, which in turn must be provisioned before the component-level infrastructure.
 
-In each environment, there will be **one set** of all platform-level infrastructure and **one set** of each of the product- and component-level infrastructure configurations.
+In each environment, there will be **exactly one set** of all platform-level infrastructure and **exactly one set** of each of the product and component-level infrastructure configurations.
 
 Taken together, these infrastructure levels fully constitute an application.
 
-The following diagram shows the layers and the types of infrastructure that might be found in each.
+The following diagram shows the layers and the types of infrastructure that might be found in a given environment.
 
 <img src="/images/infrastructure-levels.png"/>
 
 ### Platform-level infrastructure
 
 This is the base-level infrastructure you can expect to find in each environment. It's managed by the Platform Operations team.
-Service and common component teams can assume that this infrastructure exists in every environment.
+Service and common component teams can assume that this infrastructure already exists in every environment.
 
 The code is managed in various repositories in GitHub. For some configuration, service and common component teams may need to update
-these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then be reviewed and approved appropriately. Examples of this can be found in the [path-to-live documentation](../path-to-live).
+these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then
+be reviewed and approved appropriately. Examples of this can be found in the [path-to-live documentation](../path-to-live).
 
 ### Product- and component-level infrastructure
 
@@ -71,7 +76,6 @@ Terraform `.tf` files must be placed in the root of the repository.
 
 The [common build pipeline](../common-pipeline) must be used to build the infrastructure.
 
-
 #### Component-level infrastructure
 
 This is infrastructure provisioned by the product team and is specific to a single component within the product.
@@ -86,13 +90,13 @@ The [common build pipeline](../common-pipeline) must be used to build the infras
 
 ## Infrastructure modules
 
-For infrastructure resources commonly used by teams a set of pre-packaged Terraform modules is provided to make it easier to provision them.
+For infrastructure resources commonly used by teams, a set of pre-packaged Terraform modules is provided to make it easier to provision them.
 These modules provide sensible defaults for many configuration options and also include mandated security settings enabling faster
 development.
 
-Some frequently used modules are
+Some frequently used modules are:
 
-* [Azure Database for Postgres](https://github.com/hmcts/cnp-module-postgres)
+* [Postgresql Flexible Server](https://github.com/hmcts/terraform-module-postgresql-flexible)
 * [Azure Key Vault](https://github.com/hmcts/cnp-module-key-vault)
 * [Azure Cache for Redis](https://github.com/hmcts/cnp-module-redis)
 
@@ -102,15 +106,15 @@ A full list of modules can be [found in GitHub](https://github.com/hmcts?q=cnp-m
 
 To maintain integrity and security of our environments, service and common component teams may only use
 a pre-defined set of Azure resources and Terraform infrastructure modules. The whitelist is managed in [a GitHub repository](https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder).
-It is possible to add addtional whitelisted resources for specific products and components with appropriate approval.
+It is possible to add additional whitelisted resources for specific products and components with appropriate approval.
 
 The [common build pipeline](../common-pipeline) will enforce the whitelist and will halt with an error if non-approved resources or modules are used.
 
 ## Environment-specific variables
 
-The [common build pipeline](../common-pipeline) supports environment-specific values for Terraform variables. The values can be defined in files named `{environment}.tfvars` (e.g. `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files. The appropropriate `.tfvars` file will be passed into Terraform when the pipeline builds infrastrucuture.
+The [common build pipeline](../common-pipeline) supports environment-specific values for Terraform variables. The values can be defined in files named `{environment}.tfvars` (e.g. `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files. The appropriate `.tfvars` file will be passed into Terraform when the pipeline builds infrastructure.
 
-You do not need to specify the value of the environment variables provided by Jenkins such as `env` (below). However you do need to create an empty variable ready to accept the variables Jenkins injects.
+You do not need to specify the value of the environment variables provided by Jenkins such as `env` (see below). However you do need to create an empty variable ready to accept the variables Jenkins injects.
 
 ## Environment variables provided by Jenkins
 
@@ -127,9 +131,9 @@ For [Azure Key Vault](https://github.com/hmcts/cnp-module-key-vault), you need t
 
 ## Terraform version
 
-You must specify what version of terraform you want Jenkins to use with a .terraformversion file in the root directory. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version)
+You must specify what version of terraform you want Jenkins to use with a `.terraformversion` file in the root directory of your repository. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version).
 
 ## Jenkinsfile_CNP
 
-You must add a Jenkinsfile_CNP to the root directory. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP)
+You must add a `Jenkinsfile_CNP` to the root directory of your repository in order to define a build pipeline for it. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP).
 
