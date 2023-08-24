@@ -1,8 +1,13 @@
 ---
-title: Standards
-weight: 6
-hide_in_navigation: true
+title: Concepts and standards
+last_reviewed_on: 2023-02-24
+review_in: 6 months
+weight: 2
 ---
+
+# <%= current_page.data.title %>
+Standards are a low level specification of how a particular technology should be used. Where possible, standards should be implemented through tooling and libraries rather than documentation.
+
 
 # Principles, practices and standards
 
@@ -23,3 +28,13 @@ Practices are concepts that are applicable within specific contexts such as a pa
 ### Standards
 
 Standards are a low level specification of how a particular technology should be used. Where possible, standards should be implemented through tooling and libraries rather than documentation.
+
+
+- Apps must adhere to [Twelve-Factor](https://12factor.net) principles
+- All pipelines must follow the [common build pipeline](../common-pipeline/)
+- Use standardised [environments](../environments/)
+- Testing
+- Deployment
+- Release
+  - [Feature flags](../new-component/feature-flags.html#feature-flags)
+- [Branching strategies](../new-component/feature-flags.html#trunk-based-development)

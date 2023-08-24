@@ -1,0 +1,44 @@
+---
+title: Continuous delivery
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+All teams should use a Continuous Integration and Continuous Delivery pipeline.
+
+[Trunk Based Development](https://trunkbaseddevelopment.com/) is the recommended branching strategy for continuous delivery:
+
+- All changes integrate into the trunk
+- If branches from the trunk are used:
+  - They originate from the trunk
+  - They re-integrate to the trunk
+  - They are short-lived and removed after the merge
+
+Git-flow is [not recommended](https://nvie.com/posts/a-successful-git-branching-model/), even by the original author.
+
+## Principles of Continuous Delivery
+
+### Early feedback
+
+Ensure automated tests are run as often as possible (preferably when ever a chance is made) to the branch which is to be merged in.
+
+### Early integration
+
+Integrating early and often will help avoid complicated merge conflicts and ensure that the code is always in a releasable state.
+
+### Early business input
+
+To ensure smooth flow of work being deployed, it is important that The Business/Product Owner sign off tickets to be released to production as soon as possible. Before work begins, it needs to be agreed whether or not a Feature Flag is needed to allow for code to be deployed into production, prior to a business release being approved. This could be to allow for time for staff training or legislation to be announced.
+
+### Release as frequently as possible
+
+The more often a change is released, the lower the risk of a change being deployed for a long time and the easier it is to rollback. Releasing often gives developers confidence in, and understanding of the deployment process. Pipelines should be well maintained and reliable.
+
+### Release as small as possible
+
+The smaller the change, the lower the risk, the easier to rollback and the simpler to debug any issues which may arise from the deployment.
+
+### Backward compatible only
+
+Avoid making any breaking changes to ensure rollbacks are very simple (or fix forward).

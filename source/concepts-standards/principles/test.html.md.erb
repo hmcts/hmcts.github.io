@@ -1,0 +1,63 @@
+---
+title: Testing
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Your tests should be:
+
+### Automated
+
+Tests should be automated. They should be run as part of the build process. They should be run as part of the deployment process.
+
+### Reliable
+
+Tests should be reliable. They should not fail randomly. They should not fail when the system is under load.
+
+### Fast
+
+Tests should be fast. If they are slow, they will be ignored.
+
+### Repeatable
+
+Tests should be repeatable. They should be able to run in any environment. They should be able to run in parallel.
+
+### Maintainable
+
+Tests should be maintainable. They should be easy to understand. They should be easy to write. They should be easy to maintain.
+
+## Types of testing
+
+![Testing pyramid](./images/testing-pyramid.png)
+
+UI tests are more valuable as they are closer to the user but they are more expensive to write and maintain. Unit tests are faster and easier to write.
+
+The number of tests should be a structured as a pyramid: more tests to the lower layer of the pyramid and less at the end-to-end layer.
+
+### Unit Tests
+
+Write lots of small and fast unit tests. Unit tests are targeted at an individual class level, each class generally have a corresponding test class that tests the internals of that class.
+
+They should ensure that all your non-trivial code paths are tested (including happy path and edge cases).
+
+### Integration tests
+
+Integration tests test the integration of your application with all the parts that live outside of your application.
+
+Write integration tests for each integrated application in isolation.
+
+Use the Arrange, Act, Assert pattern:
+
+|   | Integration with REST API | Integration with DB |
+|---|---|---|
+| Arrange |	1. Start your application and stubs (e.g. WireMock) | 1. Start your application and database |
+| Act | 2. Invoke the function in your application that requests the response from the 3rd party | 2. Invoke the function in your application that writes the data to the DB |
+| Assert | 3. Verify that your application deserialise the response correctly | 3. Inspect the DB whether the data being written correctly |
+
+### UI tests
+
+Have a small number of tests that run with the full stack deployed in a real environment that is as close to production as possible.
+
+Put extra effort into making sure the tests are reliable.
+

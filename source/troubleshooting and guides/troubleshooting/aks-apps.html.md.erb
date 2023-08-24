@@ -1,0 +1,50 @@
+---
+title: Debug Application Startup issues in AKS
+last_reviewed_on: 2023-03-08
+review_in: 6 months
+weight: 99
+---
+# <%= current_page.data.title %>
+- There could be many reasons why applications could fail to startup like :
+  - A secret referred in helm chart is missing in keyvaults
+  - Pod identity is not able to pull keyvault secrets due to missing permissions
+  - There is not enough space in the cluster to fit in a new pod.
+  - Pod is scheduled, but fails to pass readiness (`/health/readiness`) or  liveness (`/health/liveness`) checks.
+  - A misconfigured environment variable, example - incorrect URL of a dependent service.
+
+- Below are some handy kubectl commands to debug the issues
+
+  To check latest events on your namespace:
+
+   ```shell
+   kubectl get events -n <your-namespace>
+   ```
+
+   To check status of pods:
+
+   ```shell
+   kubectl get pods -n <your-namespace> | grep <helm-release-name>
+
+   #Examples
+   # kubectl get pods -n ccd | grep ccd-data-store-api
+   # kubectl get pods -n ccd | grep pr-123
+   ```
+
+   To check status of a specific pod which is not running
+
+   ```shell
+   kubectl describe pod <pod-name> -n <your-namespace>
+   ```
+
+   To check logs of pods which is not starting
+
+   ```shell
+   kubectl logs <pod-name> -n <your-namespace>
+
+   #To follow logs
+   kubectl logs <pod-name> -n <your-namespace> -f
+
+   # To check previous pod logs if its restarting
+   kubectl logs <pod-name> -n <your-namespace> -p
+
+   ```
