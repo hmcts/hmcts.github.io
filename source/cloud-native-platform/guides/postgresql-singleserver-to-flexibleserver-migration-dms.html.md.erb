@@ -23,7 +23,7 @@ Azure Database Migration Service is an universal tool used to migrate databases 
 
 ### Prerequisite 
 
-- Update Postgresql Single server `Azure replication support` to `logical`. This will `restart` postgresql server. 
+- Update Postgresql Single server `Azure replication support` to `logical`. This will `restart` postgresql server. (This is completed via the Azure Portal, Select Postgresql server -> Replication -> Azure replication support: Logical)
 - Create target Postgresql flexible server using terraform module. Make sure database names and sizes are identical and equal or larger in size respectively.
 
 ### Migration Steps
