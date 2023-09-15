@@ -100,6 +100,10 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -119,10 +123,6 @@
   <li>
     <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
   </li>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
 </ul>
 </li>
 <li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
@@ -222,10 +222,10 @@
     <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
   </li>
   <li>
     <a href="../../standards/principles/test.html"><span>Testing</span></a>
@@ -279,7 +279,7 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="azure-frontdoor-web-application-firewall-debug">Azure Frontdoor Web Application Firewall Debug</h1>
-<p>When testing through the Azure Frontdoor you may be presented with an error page saying &lsquo;The request is blocked&rsquo;, which normally results in being a Web Application Firewall(WAF) rule being blocked.</p>
+<p>When testing through the Azure Frontdoor you may be presented with an error page saying &lsquo;The request is blocked&rsquo;, which normally results in being a Web Application Firewall (WAF) rule being blocked.</p>
 <p><a href="../../images/waf-error.png" rel="noopener noreferrer"><img src="../../images/waf-error.png" alt="Azure Frontdoor WAF Error Page" /></a></p>
 <h2 id="investigate">Investigate</h2>
 <p>You can find out what the blocked rule is by following these steps:</p>
@@ -287,28 +287,30 @@
 <ol>
 <li>Go to the spective Azure Frontdoor <code>hmcts-{env}</code> for CFT and <code>sdshmcts-{env}</code> for SDS. <a href="https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/microsoft.cdn%2Fprofiles">Azure Frontdoors</a></li>
 <li>Go down the side menu to <code>Monitoring &gt; Logs</code></li>
-<li>Go to the query and add the query below, updating <code>{Request URL}</code> with the URL you are requesting. example <code>toffee.aat.platform.hmcts.net</code> <br/><br/>
-<code>
-AzureDiagnostics
-| where ResourceProvider == &quot;MICROSOFT.NETWORK&quot; and Category == &quot;FrontdoorAccessLog&quot; and requestUri_s contains &quot;{Request URL}&quot;
-</code></li>
+<li>Go to the query and add the query below, updating <code>{Tracking reference}</code> with the reference from the WAF error message.</li>
+</ol>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>AzureDiagnostics 
+| where ResourceProvider == "MICROSOFT.NETWORK" and Category == "FrontdoorWebApplicationFirewallLog"
+| where trackingReference_s == "{Tracking reference}"
+</code></pre></div>
+<ol>
 <li>You can change the <code>Time range</code> to scope the search down.</li>
 </ol>
 <p>For more information you can look at the <a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-monitor?pivots=front-door-standard-premium#logs-and-diagnostics">Azure Documentation</a></p>
 <h2 id="exclude-rules">Exclude Rules</h2>
 <p>If you need to allow this block through then you can update the exclusion rules for your frontdoor configuration following the <a href="https://github.com/hmcts/azure-platform-terraform#WAF-Exclusions">Azure Platform Terraform ReadMe</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-03-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 August 2023.
+      This page was last reviewed on 15 September 2023.
 
-        It needs to be reviewed again on 16 February 2024
+        It needs to be reviewed again on 15 March 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 February 2024
+      This page was set to be reviewed before 15 March 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
