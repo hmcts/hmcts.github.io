@@ -192,14 +192,17 @@ npmjs
 onboarded
 onpush
 ooc
+openapi
 osba
 owasp
 palo
 pcq
 perftest
+pgsql
 pid
 platops
 pls
+Postgre
 postgresql
 prebuild
 prioritise
@@ -257,6 +260,7 @@ tfvar
 TLS
 toml
 TRO
+trunc
 ttl
 typescriptlang
 uksouth
