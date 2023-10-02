@@ -33,7 +33,6 @@ toc
 aad
 AAD
 aat
-rb-inotify
 acr
 ada
 adf
@@ -48,7 +47,6 @@ Frontdoors
 servolux
 Vnets
 autoconfigure
-@U1234ABCD
 ABCD
 nsenter
 autoscaler
@@ -116,6 +114,7 @@ flywaydb
 frontdoor
 frontends
 fsevent
+getenv
 gitops
 gitpod
 gitrepositories
@@ -165,6 +164,7 @@ kustomization
 kustomizations
 kustomize
 kvaps
+launchdarkly
 letsencrypt
 lifecycle
 linting
@@ -192,14 +192,17 @@ npmjs
 onboarded
 onpush
 ooc
+openapi
 osba
 owasp
 palo
 pcq
 perftest
+pgsql
 pid
 platops
 pls
+Postgre
 postgresql
 prebuild
 prioritise
@@ -257,6 +260,7 @@ tfvar
 TLS
 toml
 TRO
+trunc
 ttl
 typescriptlang
 uksouth
@@ -282,6 +286,3 @@ snyk
 CFTSBOX
 nonprod
 plpgsql
-pg_stat_statements
-pg_buffercache
-

@@ -12,17 +12,20 @@ jobs:
     name: Check spelling
     steps:
       - name: Spell-Check
-        uses: check-spelling/check-spelling@v0.0.21
+        uses: check-spelling/check-spelling@v0.0.22
         with:
           checkout: true
+          # don't check extra dictionaries
+          check_extra_dictionaries: ''
           extra_dictionaries:
-            cspell:software-terms/src/software-terms.txt
-            cspell:cpp/src/cpp.txt
-            cspell:php/php.txt
-            cspell:npm/npm.txt
-            cspell:python/src/python/python-lib.txt
-            cspell:software-terms/src/software-tools.txt
-            cspell:python/src/python/python.txt
+            cspell:software-terms/dict/softwareTerms.txt
+            cspell:npm/dict/npm.txt
+            cspell:node/dict/node.txt
+          #   cspell:cpp/src/cpp.txt
+          #   cspell:php/php.txt
+          #   cspell:python/src/python/python-lib.txt
+          #   cspell:software-terms/src/software-tools.txt
+          #   cspell:python/src/python/python.txt
 
   build:
     runs-on: ubuntu-latest
