@@ -15,6 +15,8 @@ jobs:
         uses: check-spelling/check-spelling@v0.0.22
         with:
           checkout: true
+          # don't check extra dictionaries
+          check_extra_dictionaries: ''
           extra_dictionaries:
             cspell:software-terms/dict/softwareTerms.txt
             cspell:npm/dict/npm.txt
