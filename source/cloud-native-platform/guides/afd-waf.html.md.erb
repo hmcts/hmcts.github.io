@@ -22,7 +22,7 @@ You can find out what the blocked rule is by following these steps:
 
 ```
 AzureDiagnostics 
-| where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorAccessLog"
+| where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorWebApplicationFirewallLog"
 | where trackingReference_s == "{Tracking reference}"
 ```
 
