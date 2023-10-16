@@ -38,9 +38,7 @@
   
   # Prod (Requires additional permissions)
   COMING SOON
-  
-  # CFTPTL (Prod management)
-  COMING SOON
+
 </code></pre>
     </div>
   </div>
@@ -57,7 +55,7 @@
   sdshmcts-sbox-bueqa6a6hefjfne4.z01.azurefd.net
 
   # Dev
-  COMING SOON
+  sdshmcts-dev-c4ercybwaubzbmfn.z01.azurefd.net
   
   # Staging
   COMING SOON
@@ -73,9 +71,7 @@
   
   # Prod (Requires additional permissions)
   COMING SOON
-  
-  # SDSPTL (Prod management)
-  COMING SOON  
+   
 </code></pre>
     </div>
   </div>
