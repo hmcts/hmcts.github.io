@@ -58,7 +58,7 @@
   sdshmcts-dev-c4ercybwaubzbmfn.z01.azurefd.net
   
   # Staging
-  COMING SOON
+  sdshmcts-stg-abfwhrf8g0btcqhe.z01.azurefd.net
 
   # Test
   sdshmcts-test-a2d9enhbenftckhu.z01.azurefd.net
