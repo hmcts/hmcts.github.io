@@ -288,37 +288,120 @@ for a new service.</p>
 <h2 id="setup-required-for-an-application">Setup required for an application</h2>
 
 <ul>
+<li>Copy the FrontDoor endpoint hostname for the environment:</li>
+</ul>
+
+<div class="platform-selector" id="front-door-endpoint-clusters" data-module="app-tabs">
+  <ul class="app-tabs" role="tablist">
+    <li class="app-tabs__item js-tabs__item js-tabs__item--open" role="presentation">
+      <a href="#front-door-endpoint-cft" role="tab" aria-controls="front-door-endpoint-cft" aria-expanded="false">
+        CFT
+      </a>
+    </li>
+    <li class="app-tabs__item js-tabs__item app-tabs__item--current" role="presentation">
+      <a href="#front-door-endpoint-sds" role="tab" aria-controls="front-door-endpoint-sds" aria-expanded="true">
+      SDS
+      </a>
+    </li>
+  </ul>
+  <div class="app-tabs__heading js-tabs__heading">
+    <button aria-controls="front-door-endpoint-cft" class="app-tabs__heading-button">CFT</button>
+  </div>
+  <div class="app-tabs__container js-tabs__container app-tabs__container--hidden" id="front-door-endpoint-cft" role="tabpanel" aria-hidden="true">
+    <div class="app-example__code">
+      <pre data-module="app-copy" tabindex="0">
+        <code>
+  # Sandbox
+  hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net
+
+  # Preview (only used in very limited use-cases for FrontDoor)
+  hmcts-preview-fkhfehdgahcrhbds.z01.azurefd.net
+
+  # AAT
+  hmcts-aat-dbdveha6dnc7ejdt.z01.azurefd.net
+
+  # Perftest
+  hmcts-perftest-c5g8ard0d4c5cdd9.z01.azurefd.net
+
+  # ITHC
+  hmcts-ithc-h2aabtenhae2aqda.z01.azurefd.net
+  
+  # Demo
+  hmcts-demo-hpfvc6a4frdsdtbc.z01.azurefd.net
+  
+  # Prod (Requires additional permissions)
+  COMING SOON
+
+</code></pre>
+    </div>
+  </div>
+  
+  <div class="app-tabs__heading js-tabs__heading app-tabs__heading--current">
+    <button aria-controls="front-door-endpoint-sds" class="app-tabs__heading-button" aria-expanded="true">SDS</button>
+  </div>
+
+  <div class="app-tabs__container js-tabs__container" id="front-door-endpoint-sds" role="tabpanel" aria-hidden="false">
+    <div>
+      <pre data-module="app-copy" tabindex="0">
+        <code>
+  # Sandbox
+  sdshmcts-sbox-bueqa6a6hefjfne4.z01.azurefd.net
+
+  # Dev (only used in very limited use-cases for FrontDoor)
+  sdshmcts-dev-c4ercybwaubzbmfn.z01.azurefd.net
+  
+  # Staging
+  sdshmcts-stg-abfwhrf8g0btcqhe.z01.azurefd.net
+
+  # Test
+  sdshmcts-test-a2d9enhbenftckhu.z01.azurefd.net
+  
+  # ITHC
+  sdshmcts-ithc-hjd8acedcyeygkgk.z01.azurefd.net
+  
+  # Demo
+  sdshmcts-demo-d9brfxgseqf0cpen.z01.azurefd.net
+  
+  # Prod (Requires additional permissions)
+  COMING SOON
+   
+</code></pre>
+    </div>
+  </div>
+</div>
+
+<ul>
 <li>Clone the <a href="https://github.com/hmcts/azure-public-dns">Azure Public DNS</a> repository.</li>
 <li>Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment.
 There can be multiple zones in one environment,</li>
 <li>Create afdverify CNAME records in the appropriate zone file for environments.
-Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/43/files">Pull Request</a>,</li>
+Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/1387/files">Pull Request</a>,</li>
 <li>Create a PR with records as per the below convention
 (make sure you replace the variables with the correct values).</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- name: "afdverify.${name}"
   ttl: 300
-  record: "afdverify.hmcts-${env}.azurefd.net"
+  record: "afdverify.{copy endpoint hostname from frontdoor}"
 - name: "${name}"
   ttl: 300
-  record: "hmcts-${env}.azurefd.net"
+  record: "{copy endpoint hostname from frontdoor}"
 </code></pre></div><p>Where:</p>
 <p><code>${env}</code>  =  Name of the environment for which you are creating the recordsets. Valid values are <code>sbox</code> or <code>prod</code>.</p>
 <p><code>${name}</code> =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
 This should be the <code>name</code> attribute from env.tfvars file e.g. <a href="https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17">name attribute</a></p>
 <p>Send the PR for review to the <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-code-review">Platform Operations</a> team. Once the PR is merged terraform will create appropriate records.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-04-13">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 August 2023.
+      This page was last reviewed on 13 October 2023.
 
-        It needs to be reviewed again on 21 February 2024
+        It needs to be reviewed again on 13 April 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 February 2024
+      This page was set to be reviewed before 13 April 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>

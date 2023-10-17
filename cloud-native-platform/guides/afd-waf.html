@@ -290,7 +290,7 @@
 <li>Go to the query and add the query below, updating <code>{Tracking reference}</code> with the reference from the WAF error message.</li>
 </ol>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>AzureDiagnostics 
-| where ResourceProvider == "MICROSOFT.NETWORK" and Category == "FrontdoorWebApplicationFirewallLog"
+| where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorWebApplicationFirewallLog"
 | where trackingReference_s == "{Tracking reference}"
 </code></pre></div>
 <ol>
@@ -300,17 +300,17 @@
 <h2 id="exclude-rules">Exclude Rules</h2>
 <p>If you need to allow this block through then you can update the exclusion rules for your frontdoor configuration following the <a href="https://github.com/hmcts/azure-platform-terraform#WAF-Exclusions">Azure Platform Terraform ReadMe</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-03-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-04-13">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 September 2023.
+      This page was last reviewed on 13 October 2023.
 
-        It needs to be reviewed again on 15 March 2024
+        It needs to be reviewed again on 13 April 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 March 2024
+      This page was set to be reviewed before 13 April 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
