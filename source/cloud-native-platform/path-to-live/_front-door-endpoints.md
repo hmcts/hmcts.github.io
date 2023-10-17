@@ -54,7 +54,7 @@
   # Sandbox
   sdshmcts-sbox-bueqa6a6hefjfne4.z01.azurefd.net
 
-  # Dev
+  # Dev (only used in very limited use-cases for FrontDoor)
   sdshmcts-dev-c4ercybwaubzbmfn.z01.azurefd.net
   
   # Staging
