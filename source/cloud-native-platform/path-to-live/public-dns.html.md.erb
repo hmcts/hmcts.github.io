@@ -1,6 +1,6 @@
 ---
 title: Public DNS
-last_reviewed_on: 2023-08-21
+last_reviewed_on: 2023-10-13
 review_in: 6 months
 weight: 3
 ---
@@ -17,22 +17,26 @@ follow the [shuttering](shutter.html#pre-requisite) instructions for which recor
 for a new service.
 
 ## Setup required for an application
+- Copy the FrontDoor endpoint hostname for the environment:
+
+<%= partial 'front-door-endpoints' %>
 
 - Clone the [Azure Public DNS](https://github.com/hmcts/azure-public-dns) repository.
 - Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment.
 There can be multiple zones in one environment,
 - Create afdverify CNAME records in the appropriate zone file for environments.
-Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull/43/files),
+Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull/1387/files),
 - Create a PR with records as per the below convention
 (make sure you replace the variables with the correct values).
+
 
 ```
 - name: "afdverify.${name}"
   ttl: 300
-  record: "afdverify.hmcts-${env}.azurefd.net"
+  record: "afdverify.{copy endpoint hostname from frontdoor}"
 - name: "${name}"
   ttl: 300
-  record: "hmcts-${env}.azurefd.net"
+  record: "{copy endpoint hostname from frontdoor}"
 ```
 
 Where:

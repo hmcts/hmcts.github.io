@@ -1,6 +1,6 @@
 ---
 title: Azure Frontdoor Web Application Firewall Debug
-last_reviewed_on: 2023-09-15
+last_reviewed_on: 2023-10-13
 review_in: 6 months
 weight: 10
 hide_in_navigation: true
@@ -22,7 +22,7 @@ You can find out what the blocked rule is by following these steps:
 
 ```
 AzureDiagnostics 
-| where ResourceProvider == "MICROSOFT.NETWORK" and Category == "FrontdoorWebApplicationFirewallLog"
+| where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorWebApplicationFirewallLog"
 | where trackingReference_s == "{Tracking reference}"
 ```
 
