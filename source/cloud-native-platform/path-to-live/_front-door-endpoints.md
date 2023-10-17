@@ -21,7 +21,7 @@
   # Sandbox
   hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net
 
-  # Preview (only one cluster is active at a given time)
+  # Preview (only used in very limited use-cases for FrontDoor)
   hmcts-preview-fkhfehdgahcrhbds.z01.azurefd.net
 
   # AAT
