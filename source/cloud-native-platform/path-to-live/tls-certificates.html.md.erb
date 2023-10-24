@@ -1,6 +1,6 @@
 ---
 title: TLS certificates
-last_reviewed_on: 2023-03-17
+last_reviewed_on: 2023-10-19
 review_in: 6 months
 weight: 2
 ---
@@ -48,6 +48,6 @@ The naming convention for keyvaults and function App are acme<subscription name 
 
 The naming convention for certificate name in Key Vault is `<DNS Name/wildcard>-<DNSZone>` separated by hyphen.  E.g. `hmi-apim-test-platform-hmcts-net`, `wildcard-test-platform-hmcts-net`.
 
-You may need to use ACME certificate due to [managed certificate limitations](https://github.com/hmcts/ops-runbooks/blob/master/Certificates/managed.md) in Front Door by updating the `ssl_mode` and `custom_domain` attributes in the Front Door config, here is an example in [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/526a2399ea19cdad28f0e12893adf395e3e40eb7/environments/prod/prod.tfvars#L1499-L1500).
+You may need to use ACME certificate due to [managed certificate limitations](https://github.com/hmcts/ops-runbooks/blob/master/source/Certificates/managed.html.md.erb) in Front Door by updating the `ssl_mode` and `custom_domain` attributes in the Front Door config, here is an example in [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/526a2399ea19cdad28f0e12893adf395e3e40eb7/environments/prod/prod.tfvars#L1499-L1500).
 
 see [Create Certificates](https://hmcts.github.io/ops-runbooks/Certificates/letsencrypt.html) to create and renew certificates.
