@@ -12,6 +12,7 @@ cpen
 dbdveha
 DLRM
 dnc
+dnsauth
 dockerised
 ejdt
 enhbenftckhu
@@ -25,3 +26,4 @@ hpfvc
 knowledgebase
 pnp
 roadmap
+valildation
