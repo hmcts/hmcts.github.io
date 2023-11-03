@@ -294,7 +294,7 @@ over <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service">Infrast
 <p>All our infrastructure is public cloud-based. We use <a href="https://www.terraform.io/docs/index.html">Terraform</a> to manage infrastructure as code.</p>
 <p>Service and common component teams are responsible for defining their own infrastructure for their products and components.</p>
 <p>All configuration code is managed under source control in GitHub and should be public as described in the <a href="https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable">GDS Service Manual</a>.</p>
-<p>Sensitive information such as passwords and key pairs should neither be managed by Terraform nor present in GitHub and instead retrieved from a Key Vault. See <a href="../secrets-management">secrets management</a> for more information.</p>
+<p>Sensitive information such as passwords and key pairs should neither be managed by Terraform nor present in GitHub and instead retrieved from a Key Vault. See <a href="https://hmcts.github.io/cloud-native-platform/new-component/secrets-management.html">secrets management</a> for more information.</p>
 <p>The infrastructure code will be used to provision and configure <strong>one set of infrastructure in each environment</strong>.</p>
 <h2 id="infrastructure-levels">Infrastructure levels</h2>
 <p>Infrastructure is layered into the following levels:</p>
@@ -372,17 +372,17 @@ It is possible to add additional whitelisted resources for specific products and
 <h2 id="jenkinsfile-cnp">Jenkinsfile_CNP</h2>
 <p>You must add a <code>Jenkinsfile_CNP</code> to the root directory of your repository in order to define a build pipeline for it. <a href="https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP">Example</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-09-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-05-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 March 2023.
+      This page was last reviewed on 3 November 2023.
 
-        It needs to be reviewed again on 15 September 2023
+        It needs to be reviewed again on 3 May 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 September 2023
+      This page was set to be reviewed before 3 May 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
