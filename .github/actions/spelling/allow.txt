@@ -177,6 +177,7 @@ memoist
 mgmt
 microservices
 microsoft
+MicrosoftEntraID
 microtask
 mswin
 multipage
