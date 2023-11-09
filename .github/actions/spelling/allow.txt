@@ -178,6 +178,7 @@ memoist
 mgmt
 microservices
 microsoft
+microsoftentra
 microtask
 mswin
 multipage
