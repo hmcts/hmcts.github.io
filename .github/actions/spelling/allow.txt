@@ -99,7 +99,7 @@ dts
 dtspo
 dynatrace
 envsubst
-Entra
+entra
 erb
 erubis
 eventmachine
