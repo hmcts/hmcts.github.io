@@ -1,6 +1,6 @@
 ---
 title: Helm chart
-last_reviewed_on: 2023-03-20
+last_reviewed_on: 2023-11-03
 review_in: 6 months
 weight: 3
 ---
@@ -157,8 +157,6 @@ It does:
 - on tag: trigger a build that performs helm lint, helm install, helm test, helm package and
 publish to 'hmctspublic' ACR
 
-There are [reusable jobs](https://github.com/hmcts/cnp-azuredevops-libraries/tree/master/jobs/charts) that you can use.
-
 #### Performing a Release
 
 Performing a release consists of the following steps:
@@ -179,7 +177,7 @@ Join the `dcd_group_ado_user_v2` AzureAD group, this will give you:
 Add an azure-pipelines.yml file to your repo, using
 [chart-java](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) as a base.
 
-Ask on [#rpe](https://hmcts-reform.slack.com/app_redirect?channel=rpe) on slack for someone to setup the pipeline for you in AzureDevOps.
+Ask on [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) on slack for someone to setup the pipeline for you in AzureDevOps.
 
 ## All charts
 
