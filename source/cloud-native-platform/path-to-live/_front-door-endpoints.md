@@ -36,8 +36,8 @@
   # Demo
   hmcts-demo-hpfvc6a4frdsdtbc.z01.azurefd.net
   
-  # Prod (Requires additional permissions)
-  COMING SOON
+  # Prod
+  hmcts-prod-hdgpbqdkafhmcse9.z01.azurefd.net
 
 </code></pre>
     </div>
@@ -69,8 +69,8 @@
   # Demo
   sdshmcts-demo-d9brfxgseqf0cpen.z01.azurefd.net
   
-  # Prod (Requires additional permissions)
-  COMING SOON
+  # Prod
+  sdshmcts-prod-egd0dscwgwh0bpdq.z01.azurefd.net
    
 </code></pre>
     </div>

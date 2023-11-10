@@ -1,6 +1,6 @@
 ---
 title: Public DNS
-last_reviewed_on: 2023-10-13
+last_reviewed_on: 2023-10-30
 review_in: 6 months
 weight: 3
 ---
@@ -40,8 +40,6 @@ Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull
 ```
 
 Where:
-
-`${env}`  =  Name of the environment for which you are creating the recordsets. Valid values are `sbox` or `prod`.
 
 `${name}` =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
 This should be the `name` attribute from env.tfvars file e.g. [name attribute](https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17)
