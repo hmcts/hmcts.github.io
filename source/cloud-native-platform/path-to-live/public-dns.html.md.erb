@@ -39,21 +39,6 @@ Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull
   record: "{copy endpoint hostname from frontdoor}"
 ```
 
-
-## Verify custom domain on the Frontdoor
-- Create TXT records in the appropriate zone file for environments.
-Here is an example [Pull Request](https://github.com/hmcts/azure-public-dns/pull/1409/files),
-- Create a PR with records as per the below convention
-(make sure you replace the variables with the correct values).
-
-
-```
-- name: "_dnsauth.${name}"
-  ttl: 3600
-  record: 
-    - "{copy TXT record from frontdoor -> Domains -> and then click Pending in the validation state column}"
-```
-
 Where:
 
 `${name}` =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
