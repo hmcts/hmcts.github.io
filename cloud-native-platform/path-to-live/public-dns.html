@@ -379,10 +379,7 @@ Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/1387/
 <li>Create a PR with records as per the below convention
 (make sure you replace the variables with the correct values).</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- name: "afdverify.${name}"
-  ttl: 300
-  record: "afdverify.{copy endpoint hostname from frontdoor}"
-- name: "${name}"
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- name: "${name}"
   ttl: 300
   record: "{copy endpoint hostname from frontdoor}"
 </code></pre></div><p>Where:</p>
