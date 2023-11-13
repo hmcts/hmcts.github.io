@@ -25,7 +25,7 @@
     name                        = "app-name"
     custom_domain               = "your-app.service.gov.uk"
     backend_domain              = ["firewall-prod-int-palo-cftprod.uksouth.cloudapp.azure.com"]
-    add_txt_record              = true
+    dns_zone_name               = "service.gov.uk"
   }
 </code></pre>
     </div>
@@ -45,6 +45,7 @@
     name             = "app-name"
     custom_domain    = "your-app.service.gov.uk"
     backend_domain   = ["firewall-prod-int-palo-sdsprod.uksouth.cloudapp.azure.com"]
+    dns_zone_name    = "service.gov.uk"
   }
 </code></pre>
     </div>
