@@ -45,7 +45,7 @@
     name             = "app-name"
     custom_domain    = "your-app.service.gov.uk"
     backend_domain   = ["firewall-prod-int-palo-sdsprod.uksouth.cloudapp.azure.com"]
-    dns_zone_name    = "service.gov.uk"
+    dns_zone_name    = "your-app.service.gov.uk"
   }
 </code></pre>
     </div>
