@@ -305,23 +305,19 @@
       <span class="s">value = &lt;name of extension eg. pg_stat_statements&gt;</span>
     <span class="s">}</span>
 <span class="err">]</span>
+</code></pre></div><h4 id="set-allow-access-to-azure-services-to-quot-yes-quot-on-postgresql-single-server">Set allow access to azure services to &ldquo;Yes&rdquo; on Postgresql single server</h4>
+<p>Within Azure Portal:
+- Select the PostgreSQL single server
+- Under Settings -&gt; connection security
+- Ensure &ldquo;Allow access to Azure Services&rdquo; is set to <code>Yes</code></p>
+<p>If not, you may notice error similar to the below during the migration attempt:
+<code>bash
+S0002: Connecting to the Source DB server failed. ErrorMessage: Validation of one or more databases failed.Failed to run `select 1;` with exception 28000: SSL connection is required. Please specify SSL options and retry.. Parameter name: SourceDBServerResourceId
+</code></p>
+<h3 id="migration-steps">Migration Steps</h3>
+<p>AzureDevops pipeline as been created to facilitate migration process. Follow instructions in README.MD file located in <a href="https://github.com/hmcts/flexible-server-migration">repo</a>.</p>
+<p>Azure <a href="https://learn.microsoft.com/en-us/azure/postgresql/migrate/how-to-migrate-single-to-flexible-portal#configure-the-migration-task">documentation</a>.</p>
 
-<span class="c1">#### Set allow access to azure services to "Yes" on Postgresql single server</span>
-
-<span class="na">Within Azure Portal</span><span class="pi">:</span>
-<span class="pi">-</span> <span class="s">Select the PostgreSQL single server</span>
-<span class="pi">-</span> <span class="s">Under Settings -&gt; connection security</span>
-<span class="pi">-</span> <span class="s">Ensure "Allow access to Azure Services" is set to `Yes`</span>
-
-<span class="s">If not, you may notice error similar to the below during the migration attempt</span><span class="err">:</span>
-<span class="err">```</span><span class="s">bash</span>
-<span class="na">S0002</span><span class="pi">:</span> <span class="na">Connecting to the Source DB server failed. ErrorMessage</span><span class="pi">:</span> <span class="na">Validation of one or more databases failed.Failed to run `select 1;` with exception 28000</span><span class="pi">:</span> <span class="na">SSL connection is required. Please specify SSL options and retry.. Parameter name</span><span class="pi">:</span> <span class="s">SourceDBServerResourceId</span>
-</code></pre></div><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>### Migration Steps
-
-AzureDevops pipeline as been created to facilitate migration process. Follow instructions in README.MD file located in [repo](https://github.com/hmcts/flexible-server-migration).
-
-Azure [documentation](https://learn.microsoft.com/en-us/azure/postgresql/migrate/how-to-migrate-single-to-flexible-portal#configure-the-migration-task).
-</code></pre></div>
               <div data-module='page-expiry' data-last-reviewed-on="2023-12-28">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 28 June 2023.
