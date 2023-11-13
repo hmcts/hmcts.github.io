@@ -99,6 +99,7 @@ dts
 dtspo
 dynatrace
 envsubst
+entra
 erb
 erubis
 eventmachine
@@ -177,6 +178,7 @@ memoist
 mgmt
 microservices
 microsoft
+microsoftentra
 microtask
 mswin
 multipage
