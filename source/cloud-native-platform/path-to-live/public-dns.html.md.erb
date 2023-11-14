@@ -16,6 +16,21 @@ The DNS is self-service, managed in the
 follow the [shuttering](shutter.html#pre-requisite) instructions for which records you need to add
 for a new service.
 
+## Pipeline testing
+
+Jenkins pipelines run automated tests against your application in preview/dev by connecting to your application by it's private IP address, bypassing Azure Front Door.
+
+A tool called External DNS is deployed to the preview and dev clusters to automatically add DNS records to private DNS zones to allow Jenkins pipelines to run the automated tests.
+
+If you wish for these tests to be conducted through Azure Front Door, add a CNAME record in the [public DNS repo](https://github.com/hmcts/azure-public-dns/tree/master/environments) that points your application to the front door.
+
+Also, add an annotation to your application's ingress controller to tell External DNS to not create DNS records for it.
+
+```
+ingressAnnotations:
+  external-dns.alpha.kubernetes.io/exclude: "true"
+```
+
 ## Setup required for an application
 - Copy the FrontDoor endpoint hostname for the environment:
 
