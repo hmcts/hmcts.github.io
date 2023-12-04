@@ -195,7 +195,6 @@ onboarded
 onpush
 ooc
 openapi
-osba
 owasp
 palo
 pcq
