@@ -100,17 +100,13 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
-<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
-</ul>
-</li>
 <li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
 <ul>
   <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/environments/aks-auto-shutdown.html"><span>Environment schedule</span></a>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
   </li>
 </ul>
 </li>
@@ -123,6 +119,10 @@
   <li>
     <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
   </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
 </ul>
 </li>
 <li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
@@ -333,8 +333,8 @@ spun up on pull requests,</p>
 <li>a postgresql database - this is included in <a href="https://github.com/hmcts/chart-java#postgresql">chart-java</a> , with sensible defaults built in,</li>
 <li>a Redis cache,</li>
 <li><a href="https://github.com/hmcts/chart-idam-pr">chart-idam-pr</a> - a job that registers your <code>redirect_uri</code> in IDAM,</li>
-<li><a href="https://github.com/hmcts/chart-blobstorage">chart-blobstorage</a> - creates Azure Blob storage for you, using <a href="https://osba.sh/">OSBA</a>,</li>
-<li><a href="https://github.com/hmcts/chart-servicebus">chart-servicebus</a> - creates Azure Service Bus for you, using <a href="https://osba.sh/">OSBA</a>.</li>
+<li><a href="https://github.com/hmcts/chart-blobstorage">chart-blobstorage</a> - creates Azure Blob storage for you, using <a href="https://azure.github.io/azure-service-operator/">Azure Service Operator</a>,</li>
+<li><a href="https://github.com/hmcts/chart-servicebus">chart-servicebus</a> - creates Azure Service Bus for you, using <a href="https://azure.github.io/azure-service-operator/">Azure Service Operator</a>.</li>
 </ul>
 <p>If you are using another sub-chart just for preview such as an embedded redis container,
 then you should make this conditional with:</p>
