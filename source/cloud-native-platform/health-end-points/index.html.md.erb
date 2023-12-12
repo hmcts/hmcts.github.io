@@ -18,7 +18,7 @@ Failing readiness checks make containers temporarily unavailable, preventing inc
 - Avoid including soft dependencies; handle their unavailability in code for a better customer experience.
 
 **Good Example:**
-- A private cache/database (e.g., Redis or Elastic Search) exclusive to the application.
+- A private cache/database (e.g., Redis or Postgres) exclusive to the application.
 
 **Bad Example:**
 - Shared components like IDAM, S2S, or CCD.
