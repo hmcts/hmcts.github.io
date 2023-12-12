@@ -10,7 +10,8 @@ weight: 90
 
 ## What to include in readiness checks?
 
-On Kubernetes, readiness probes will be called periodically throughout the lifetime of the container. Container will be made temporarily unavailable from serving traffic when the readiness check fails.
+On Kubernetes, readiness probes will be called periodically throughout the lifetime of the container.
+Containers will be made temporarily unavailable from serving traffic when the readiness check fails.
 
 The requests won't even reach your application to handle errors. So, it is very important to consider what checks should be included into readiness probe.
 
