@@ -30,7 +30,8 @@ Bad example for check to be included in readiness:
 Any shared components like IDAM, S2S or CCD.
 
 
-### add db check to liveness probe
+### Add db check to liveness probe
 
-A new health check has been added to the liveness probe to check for database indicators,  an example on how to enable this on your application is [here](https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml)
+A new health check has been added to the liveness probe to check for database indicators,  an example on how to enable this on your application is [here](https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml).
+
 The “Liveness” state of an application tells whether its internal state allows it to work correctly, or recover by itself if it is currently failing. A broken “Liveness” state means that the application is in a state that it cannot recover from, and the infrastructure should restart the application.
