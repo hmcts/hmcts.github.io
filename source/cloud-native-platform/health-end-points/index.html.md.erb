@@ -1,37 +1,30 @@
 ---
-title: Health probes
-last_reviewed_on: 2023-12-7
+title: Health Probes
+last_reviewed_on: 2023-12-12
 review_in: 6 months
 weight: 90
 ---
 
 # <%= current_page.data.title %>
 
+## Readiness Checks on Kubernetes
 
-## What to include in readiness checks?
+Readiness probes are crucial in Kubernetes as they are called periodically, impacting container availability. 
+Failing readiness checks make containers temporarily unavailable, preventing incoming requests from reaching your application. It's essential to consider what checks to include in readiness probes to avoid unnecessary downtime.
 
-On Kubernetes, readiness probes will be called periodically throughout the lifetime of the container.
-Containers will be made temporarily unavailable from serving traffic when the readiness check fails.
+### Considerations:
 
-The requests won't even reach your application to handle errors. So, it is very important to consider what checks should be included into readiness probe.
+- Include exclusive/hard dependencies for your service in readiness checks.
+- Avoid including soft dependencies; handle their unavailability in code for a better customer experience.
 
-While adding all dependant services to readiness check can help in identifying any misconfiguration during startup, it could cause unwanted downtime for the application.
+**Good Example:**
+- A private cache/database (e.g., Redis or Elastic Search) exclusive to the application.
 
-K8s introduced startUp Probes (Alpha in 1.16 ) to handle startup cases separately.
+**Bad Example:**
+- Shared components like IDAM, S2S, or CCD.
 
-Based on above, you should include a dependency into readiness checks only if they are exclusive/hard dependencies for your service. Unavailability of soft dependencies needs to be handled in code to give appropriate customer experience.
+## Add Database Check to Liveness Probe
 
-Good example for check to be included in readiness:
+A new health check has been added to the liveness probe to monitor database indicators. To enable this on your application, refer to the example [here](https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml).
 
-A private cache / database like Redis or Elastic Search which are exclusive to the application (not shared).
-
-Bad example for check to be included in readiness:
-
-Any shared components like IDAM, S2S or CCD.
-
-
-### Add db check to liveness probe
-
-A new health check has been added to the liveness probe to check for database indicators,  an example on how to enable this on your application is [here](https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml).
-
-The “Liveness” state of an application tells whether its internal state allows it to work correctly, or recover by itself if it is currently failing. A broken “Liveness” state means that the application is in a state that it cannot recover from, and the infrastructure should restart the application.
+The "Liveness" state of an application indicates whether its internal state allows it to work correctly or recover by itself if failing. A broken "Liveness" state suggests the application cannot recover, prompting infrastructure to restart the application.
