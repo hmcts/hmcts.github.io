@@ -24,8 +24,11 @@ Failing readiness checks make containers temporarily unavailable, preventing inc
 - Shared components like IDAM, S2S, or CCD.
 - Another API that your team owns
 
-## Add Database Check to Liveness Probe
+## Add Database Check to Readiness Probe
+
+Enhance your application's health by incorporating a database health check through a readiness probe, with a focus on monitoring database indicators. Implementation guidance can be found in this [example](https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml).
+
+## Liveness Probe
 
 The "Liveness" state of an application indicates whether its internal state allows it to work correctly or recover by itself if failing. A broken "Liveness" state suggests the application cannot recover, prompting infrastructure to restart the application.
 
-Enhance your application's health by incorporating a database health check through a liveness probe, with a focus on monitoring database indicators. Implementation guidance can be found in this [example](https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml).
