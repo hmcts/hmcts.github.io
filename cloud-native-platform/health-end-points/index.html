@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Environments - HMCTS</title>
+    <title>Health Probes - HMCTS</title>
 
     <link href="../../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/environments/">
+    <link rel="canonical" href="https://hmcts.github.io/cloud-native-platform/health-end-points/">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts.github.io" />
       <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
-      <meta name="twitter:title" content="Environments - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/environments/" />
+      <meta name="twitter:title" content="Health Probes - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/cloud-native-platform/health-end-points/" />
 
       <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Environments" />
+      <meta property="og:title" content="Health Probes" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/environments/" />
+      <meta property="og:url" content="https://hmcts.github.io/cloud-native-platform/health-end-points/" />
 
     
   </head>
@@ -281,80 +281,37 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="environments">Environments</h1>
-<div class="table-container">
-        <table>
-          <tr>
-<th>Shared Services Environment</th>
-<th>CFT Environment</th>
-<th>Use case</th>
-<th>Path to live</th>
-<th>Additional Information</th>
-</tr><tr>
-<td>Prod</td>
-<td>Prod</td>
-<td>Live services</td>
-<td>Yes</td>
-<td></td>
-</tr><tr>
-<td>Staging</td>
-<td>AAT</td>
-<td>Automated Acceptance Testing before moving to Prod</td>
-<td>Yes</td>
-<td></td>
-</tr><tr>
-<td>Demo</td>
-<td>Demo</td>
-<td>External demonstrations</td>
-<td>No</td>
-<td><ul>
-<li>Used for demonstrating to external stakeholders</li> <li>No VPN required</li>
-</ul></td>
-</tr><tr>
-<td>ITHC</td>
-<td>ITHC</td>
-<td>IT Health Check, used for penetration testing</td>
-<td>No</td>
-<td></td>
-</tr><tr>
-<td>Test</td>
-<td>Perftest</td>
-<td>Performance testing</td>
-<td>No</td>
-<td></td>
-</tr><tr>
-<td>Dev</td>
-<td>Preview</td>
-<td>Pre-merge automated testing and Pull Request checks</td>
-<td>Yes</td>
-<td><ul> <li>Destroyed nightly</li> <li>Pull requests are deployed</li>​ <br> <li>Automatically tested with functional tests​</li> <br> <li>Application points to AAT instance for dependant services</li> </ul></td>
-</tr><tr>
-<td>Sandbox</td>
-<td>Sandbox</td>
-<td>Testing infrastructure changes, proof of concept, experimentation</td>
-<td>No</td>
-<td></td>
-</tr>
-        </table>
-      </div><h2 id="see-also">See also</h2>
+            <h1 id="health-probes">Health Probes</h1>
+<h2 id="readiness-checks-on-kubernetes">Readiness Checks on Kubernetes</h2>
+<p>Readiness probes are crucial in Kubernetes as they are called periodically, impacting container availability. 
+Failing readiness checks make containers temporarily unavailable, preventing incoming requests from reaching your application. It&rsquo;s essential to consider what checks to include in readiness probes to avoid unnecessary downtime.</p>
+<h3 id="considerations">Considerations:</h3>
 
 <ul>
-<li><a href="auto-shutdown.html">Environment schedule</a></li>
-<li><a href="external-ip-addresses.html">External IP addresses (Egress)</a></li>
-<li><a href="sandbox-cleardown.html">Sandbox Cleardown</a></li>
+<li>Include exclusive/hard dependencies for your service in readiness checks.</li>
+<li>Avoid including soft dependencies; handle their unavailability in code for a better customer experience.</li>
 </ul>
+<p><strong>Good Example:</strong>
+- A private cache/database (e.g., Redis or Postgres) exclusive to the application.</p>
+<p><strong>Bad Example:</strong>
+- Shared components like IDAM, S2S, or CCD.
+- Another API that your team owns</p>
+<h2 id="add-database-check-to-readiness-probe">Add Database Check to Readiness Probe</h2>
+<p>Enhance your application&rsquo;s health by incorporating a database health check through a readiness probe, with a focus on monitoring database indicators. Implementation guidance can be found in this <a href="https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml">example</a>.</p>
+<h2 id="liveness-probe">Liveness Probe</h2>
+<p>The &ldquo;Liveness&rdquo; state of an application indicates whether its internal state allows it to work correctly or recover by itself if failing. A broken &ldquo;Liveness&rdquo; state suggests the application cannot recover, prompting infrastructure to restart the application.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-04-30">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-06-12">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 31 October 2023.
+      This page was last reviewed on 12 December 2023.
 
-        It needs to be reviewed again on 30 April 2024
+        It needs to be reviewed again on 12 June 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 30 April 2024
+      This page was set to be reviewed before 12 June 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
@@ -364,8 +321,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/environments/index.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Environments%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fenvironments%2F%29&amp;labels=bug&amp;title=Re%3A+%27Environments%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/cloud-native-platform/health-end-points/index.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Health+Probes%27+%28https%3A%2F%2Fhmcts.github.io%2Fcloud-native-platform%2Fhealth-end-points%2F%29&amp;labels=bug&amp;title=Re%3A+%27Health+Probes%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
               </ul>
           </aside>
