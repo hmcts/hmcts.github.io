@@ -1,0 +1,34 @@
+---
+title: Health Probes
+last_reviewed_on: 2023-12-12
+review_in: 6 months
+weight: 90
+---
+
+# <%= current_page.data.title %>
+
+## Readiness Checks on Kubernetes
+
+Readiness probes are crucial in Kubernetes as they are called periodically, impacting container availability. 
+Failing readiness checks make containers temporarily unavailable, preventing incoming requests from reaching your application. It's essential to consider what checks to include in readiness probes to avoid unnecessary downtime.
+
+### Considerations:
+
+- Include exclusive/hard dependencies for your service in readiness checks.
+- Avoid including soft dependencies; handle their unavailability in code for a better customer experience.
+
+**Good Example:**
+- A private cache/database (e.g., Redis or Postgres) exclusive to the application.
+
+**Bad Example:**
+- Shared components like IDAM, S2S, or CCD.
+- Another API that your team owns
+
+## Add Database Check to Readiness Probe
+
+Enhance your application's health by incorporating a database health check through a readiness probe, with a focus on monitoring database indicators. Implementation guidance can be found in this [example](https://github.com/hmcts/spring-boot-template/blob/master/src/main/resources/application.yaml).
+
+## Liveness Probe
+
+The "Liveness" state of an application indicates whether its internal state allows it to work correctly or recover by itself if failing. A broken "Liveness" state suggests the application cannot recover, prompting infrastructure to restart the application.
+
