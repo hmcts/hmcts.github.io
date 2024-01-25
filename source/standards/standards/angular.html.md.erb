@@ -1,5 +1,7 @@
 ---
 title: Angular
+last_reviewed_on: 2024-01-25
+review_in: 12 months
 weight: 1
 ---
 
@@ -79,7 +81,7 @@ By passing a stream to a service we don't know what's going to happen to it. The
 Use pipeable operators
 ----------------------
 
-Use [pipeable operators](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md) when using RxJS operators. A pipeable operator is basically any function that returns a function with the signature: `<T, R>(source: Observable<T>) => Observable<R>`. Pipeable operators are [tree-shakable](https://medium.com/@netxm/what-is-tree-shaking-de7c6be5cadd) meaning only the code we need to execute will be included when they are imported. This also makes it easy to identify unused operators in the files.
+Use [pipeable operators](https://github.com/ReactiveX/rxjs/blob/master/apps/rxjs.dev/content/guide/operators.md#piping) when using RxJS operators. A pipeable operator is basically any function that returns a function with the signature: `<T, R>(source: Observable<T>) => Observable<R>`. Pipeable operators are [tree-shakable](https://medium.com/@netxm/what-is-tree-shaking-de7c6be5cadd) meaning only the code we need to execute will be included when they are imported. This also makes it easy to identify unused operators in the files.
 
 Use pure functions
 ------------------
