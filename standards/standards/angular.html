@@ -103,10 +103,10 @@
 <li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
 <ul>
   <li>
-    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
 </ul>
 </li>
@@ -225,10 +225,10 @@
     <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
   </li>
   <li>
     <a href="../../standards/principles/test.html"><span>Testing</span></a>
@@ -316,7 +316,7 @@ export class MyComponent {
 <h2 id="do-not-pass-streams-to-services">Do not pass streams to services</h2>
 <p>By passing a stream to a service we don&rsquo;t know what&rsquo;s going to happen to it. The stream could be subscribed to, or even combined with another stream that has a longer lifecycle, that could eventually determine the state of our application. Subscriptions might trigger unwanted behavior. It&rsquo;s recommended to use higher order streams in the components for these situations.</p>
 <h2 id="use-pipeable-operators">Use pipeable operators</h2>
-<p>Use <a href="https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md">pipeable operators</a> when using RxJS operators. A pipeable operator is basically any function that returns a function with the signature: <code>&lt;T, R&gt;(source: Observable&lt;T&gt;) =&gt; Observable&lt;R&gt;</code>. Pipeable operators are <a href="https://medium.com/@netxm/what-is-tree-shaking-de7c6be5cadd">tree-shakable</a> meaning only the code we need to execute will be included when they are imported. This also makes it easy to identify unused operators in the files.</p>
+<p>Use <a href="https://github.com/ReactiveX/rxjs/blob/master/apps/rxjs.dev/content/guide/operators.md#piping">pipeable operators</a> when using RxJS operators. A pipeable operator is basically any function that returns a function with the signature: <code>&lt;T, R&gt;(source: Observable&lt;T&gt;) =&gt; Observable&lt;R&gt;</code>. Pipeable operators are <a href="https://medium.com/@netxm/what-is-tree-shaking-de7c6be5cadd">tree-shakable</a> meaning only the code we need to execute will be included when they are imported. This also makes it easy to identify unused operators in the files.</p>
 <h2 id="use-pure-functions">Use pure functions</h2>
 <p>RxJS follows the concepts of functional reactive programming which basically means that we will use pure functions to create our reactive flow. In the beginning it might seem pragmatic to use side effects, but that mostly means we aren&rsquo;t fully thinking reactively. Therefore, avoid side effects at much as possible.</p>
 <h2 id="avoid-manual-subscribes">Avoid manual subscribes</h2>
@@ -524,7 +524,22 @@ see NG0100: <a href="https://angular.io/errors/NG0100">Expression has changed af
 <li>  <a href="https://alex-klaus.com/angular-code-review/">6 most common mistakes of Angular devs revealed on code reviews</a></li>
 </ul>
 
-            
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-25">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 25 January 2024.
+
+        It needs to be reviewed again on 25 January 2025
+        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
+        .
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 25 January 2025
+       by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
           </main>
 
           <aside>

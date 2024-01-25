@@ -103,10 +103,10 @@
 <li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
 <ul>
   <li>
-    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
   </li>
   <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
 </ul>
 </li>
@@ -225,10 +225,10 @@
     <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
   </li>
   <li>
-    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
   </li>
   <li>
     <a href="../../standards/principles/test.html"><span>Testing</span></a>
@@ -298,10 +298,10 @@
 <li>Some examples when Platform Operations would require an OAT:
 
 <ol>
-<li>New <a href="/glossary/#component">Component</a> being added. It could be a simple Job / Function.</li>
+<li>New <a href="../glossary/#component">Component</a> being added. It could be a simple Job / Function.</li>
 <li>Changes which have a performance or security impact. This is usually assessed early in release cycle to check the need for a performance test or an ITHC.</li>
-<li>New integration being added to existing <a href="/glossary/#component">Component</a>.</li>
-<li>Infrastructure changes or additions to a <a href="/glossary/#product">Product</a> / <a href="/glossary/#component">Component</a>.</li>
+<li>New integration being added to existing <a href="../glossary/#component">Component</a>.</li>
+<li>Infrastructure changes or additions to a <a href="../glossary/#product">Product</a> / <a href="../glossary/#component">Component</a>.</li>
 </ol></li>
 </ul>
 <h2 id="how-do-i-ask-for-an-oat">How do I ask for an OAT?</h2>
@@ -323,7 +323,7 @@
 
 <ul>
 <li>SOG should document all the required information on all OAT tasks detailed in later sections.</li>
-<li>Below are some example SOGs on Confluence:
+<li><p>Below are some example SOGs on Confluence:</p>
 
 <ul>
 <li><a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1274250278">IA Tech Team: Service Operations Guide</a></li>
@@ -349,52 +349,9 @@
 <ul>
 <li>Development team should identify and document SLAs of the applicable components in the OAT task.</li>
 <li>Any external SLAs other than Azure should be explicitly listed in SOG.</li>
-<li>Below are SLA details for some standard Azure services.</li>
+<li>SLA details for some standard Azure services can be found by downloading the latest file from <a href="https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services?lang=1">Azure</a>.</li>
 </ul>
-<div class="table-container">
-        <table>
-          <tr>
-<th>Azure service</th>
-<th>SLA</th>
-</tr><tr>
-<td>Azure Kubernetes Service</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/kubernetes-service/v1_1/">Kubernetes</a></td>
-</tr><tr>
-<td>Azure Container Registry</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/container-registry/v1_1/">Container-registry</a></td>
-</tr><tr>
-<td>Azure Application Gateway</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/application-gateway/v1_2/">Application-gateway</a></td>
-</tr><tr>
-<td>Azure Front Door</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/frontdoor/v1_0/">Frontdoor</a></td>
-</tr><tr>
-<td>Azure Firewall</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/azure-firewall/v1_1/">Azure-firewall</a></td>
-</tr><tr>
-<td>Azure DNS</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/dns/v1_1/">DNS</a></td>
-</tr><tr>
-<td>Azure Content Delivery Network</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/cdn/v1_0/">CDN</a></td>
-</tr><tr>
-<td>Azure Storage Account</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/storage/v1_5/">Storage Account</a></td>
-</tr><tr>
-<td>Microsoft Entra ID</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/active-directory/v1_0/">Microsoft Entra ID</a></td>
-</tr><tr>
-<td>Azure DevOps</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/azure-devops/v2_0/">Azure Devops</a></td>
-</tr><tr>
-<td>Azure PostgreSQL Database</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/postgresql/v1_1/">PostgreSQL</a></td>
-</tr><tr>
-<td>Azure Service Bus</td>
-<td><a href="https://azure.microsoft.com/en-us/support/legal/sla/service-bus/v1_1/">Service Bus</a></td>
-</tr>
-        </table>
-      </div><h3 id="licensing">Licensing</h3>
+<h3 id="licensing">Licensing</h3>
 <p>This OAT is to ensure the software and licenses for infrastructure and hosting is appropriately licensed and supported for the proposed design of the environments required for the service.</p>
 
 <ul>
@@ -436,7 +393,7 @@
 <p>This OAT is applicable for front end services to ensure they have a shuttering mechanism in place.</p>
 
 <ul>
-<li><a href="https://hmcts.github.io/cloud-native-platform/path-to-live/shutter.html#shutter-implementation-and-design">Shuttering</a> should be configured and tested before documenting in SOG.</li>
+<li><a href="shutter.html#shutter-implementation-and-design">Shuttering</a> should be configured and tested before documenting in SOG.</li>
 </ul>
 <h3 id="resilience-recoverability">Resilience / Recoverability</h3>
 <p>This OAT is to ensure that the system can recover or fail over to a secondary component in the event of failure.</p>
@@ -499,17 +456,17 @@
 <li>No customer information should be logged without a valid business justification and Security Operations approval.</li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-07-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 August 2023.
+      This page was last reviewed on 25 January 2024.
 
-        It needs to be reviewed again on 16 February 2024
+        It needs to be reviewed again on 25 July 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 February 2024
+      This page was set to be reviewed before 25 July 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
