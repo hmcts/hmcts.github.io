@@ -25,7 +25,6 @@ This covers details on the Operational Acceptance Testing (OAT) performed by Pla
      3. New integration being added to existing [Component](../glossary/#component).
      4. Infrastructure changes or additions to a [Product](../glossary/#product) / [Component](../glossary/#component).
 
-
 ## How do I ask for an OAT?
 
 - Requests comes through Release Management.
@@ -33,13 +32,11 @@ This covers details on the Operational Acceptance Testing (OAT) performed by Pla
 - Development team need to assess and comment on each of the OAT tickets on how the changes made are compliant with the criteria on OAT tasks. Refer [OAT Tasks and recommendations](#oat-tasks-and-recommendations) for more guidance.
 - Once all tickets and [Service Operations Guide](#service-operations-guide) have been updated, Release management will create a Jira ticket for Platform Operations to validate the OAT tasks.
 
-
 ## OAT Tasks and recommendations
 
 This section covers the tasks in OAT and some generic recommendations to ensure the service is compliant with OAT criteria.
 
 > Please note these are generic recommendations and may vary from service to service based on application design
-
 
 ### Service Operations Guide
 
@@ -47,9 +44,9 @@ Service Operations Guide (SOG) is a living document for each service that should
 
 - SOG should document all the required information on all OAT tasks detailed in later sections.
 - Below are some example SOGs on Confluence:
-   * [IA Tech Team: Service Operations Guide](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1274250278)
-   * [PCQ Service Operations Guide](https://tools.hmcts.net/confluence/display/PCQ/PCQ+Service+Operations+Guide)
 
+  - [IA Tech Team: Service Operations Guide](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1274250278)
+  - [PCQ Service Operations Guide](https://tools.hmcts.net/confluence/display/PCQ/PCQ+Service+Operations+Guide)
 
 ### Digital Operations Capability
 
@@ -111,7 +108,7 @@ This OAT is to ensure that the service has a robust approach for dealing with th
 
 This OAT is applicable for front end services to ensure they have a shuttering mechanism in place.
 
-- [Shuttering](https://hmcts.github.io/cloud-native-platform/path-to-live/shutter.html#shutter-implementation-and-design) should be configured and tested before documenting in SOG.
+- [Shuttering](shutter.html#shutter-implementation-and-design) should be configured and tested before documenting in SOG.
 
 ### Resilience / Recoverability
 
