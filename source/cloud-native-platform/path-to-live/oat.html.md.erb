@@ -1,6 +1,6 @@
 ---
 title: Operational Acceptance Testing
-last_reviewed_on: 2023-08-16
+last_reviewed_on: 2024-01-25
 review_in: 6 months
 weight: 6
 ---
@@ -20,10 +20,10 @@ This covers details on the Operational Acceptance Testing (OAT) performed by Pla
 - Though Platform Operations do not OAT every change, it is the development team's responsibility to make sure even a small code change complies with OAT objectives and criteria.
 - Medium and Large releases always go through Release Management team which involves Impact Analysis page completed. Development Lead will use the information in the IA to assess and document whether the release requires OAT which will be reviewed by Platform Operations.
 - Some examples when Platform Operations would require an OAT:
-     1. New [Component](/glossary/#component) being added. It could be a simple Job / Function.
+     1. New [Component](../glossary/#component) being added. It could be a simple Job / Function.
      2. Changes which have a performance or security impact. This is usually assessed early in release cycle to check the need for a performance test or an ITHC.
-     3. New integration being added to existing [Component](/glossary/#component).
-     4. Infrastructure changes or additions to a [Product](/glossary/#product) / [Component](/glossary/#component).
+     3. New integration being added to existing [Component](../glossary/#component).
+     4. Infrastructure changes or additions to a [Product](../glossary/#product) / [Component](../glossary/#component).
 
 
 ## How do I ask for an OAT?
@@ -67,22 +67,7 @@ This OAT is to capture any specific Non-functional requirements (NFRs) unique to
 
 - Development team should identify and document SLAs of the applicable components in the OAT task.
 - Any external SLAs other than Azure should be explicitly listed in SOG.
-- Below are SLA details for some standard Azure services.
-
-| Azure service | SLA |
-| - | - |
-| Azure Kubernetes Service | [Kubernetes](https://azure.microsoft.com/en-us/support/legal/sla/kubernetes-service/v1_1/) |
-| Azure Container Registry | [Container-registry](https://azure.microsoft.com/en-us/support/legal/sla/container-registry/v1_1/) |
-| Azure Application Gateway | [Application-gateway](https://azure.microsoft.com/en-us/support/legal/sla/application-gateway/v1_2/) |
-| Azure Front Door | [Frontdoor](https://azure.microsoft.com/en-us/support/legal/sla/frontdoor/v1_0/) |
-| Azure Firewall | [Azure-firewall](https://azure.microsoft.com/en-us/support/legal/sla/azure-firewall/v1_1/) |
-| Azure DNS | [DNS](https://azure.microsoft.com/en-us/support/legal/sla/dns/v1_1/) |
-| Azure Content Delivery Network | [CDN](https://azure.microsoft.com/en-us/support/legal/sla/cdn/v1_0/) |
-| Azure Storage Account | [Storage Account](https://azure.microsoft.com/en-us/support/legal/sla/storage/v1_5/) |
-| Microsoft Entra ID | [Microsoft Entra ID](https://azure.microsoft.com/en-us/support/legal/sla/active-directory/v1_0/) |
-| Azure DevOps | [Azure Devops](https://azure.microsoft.com/en-us/support/legal/sla/azure-devops/v2_0/) |
-| Azure PostgreSQL Database | [PostgreSQL](https://azure.microsoft.com/en-us/support/legal/sla/postgresql/v1_1/) |
-| Azure Service Bus | [Service Bus](https://azure.microsoft.com/en-us/support/legal/sla/service-bus/v1_1/)|
+- SLA details for some standard Azure services can be found by downloading the latest file from [Azure](https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services?lang=1).
 
 ### Licensing
 
