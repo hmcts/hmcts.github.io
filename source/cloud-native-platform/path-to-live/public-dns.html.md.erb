@@ -42,3 +42,14 @@ Where:
 This should be the `name` attribute from env.tfvars file e.g. [name attribute](https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17)
 
 Send the PR for review to the [Platform Operations](https://hmcts-reform.slack.com/app_redirect?channel=platops-code-review) team. Once the PR is merged terraform will create appropriate records.
+
+
+### Synchronising Public DNS Zone CNAME Records with Private DNS Zone
+
+We synchronize CNAME records from our public DNS zone to the corresponding private DNS zone, such as `sandbox.platform.hmcts.net`. This ensures that internal services can reach the correct destinations without encountering failures.
+
+If you prefer not to sync specific public CNAME records to the private DNS zone, you can easily achieve this by setting `syncPrivateDNS` to `false`. By default, this setting is `true`, simplifying the synchronisation process when needed. Please note that the pipeline responsible for syncing records is scheduled to run overnight.
+
+If you like to set different record for private dns zone, you can always update the  [azure-private-dns](https://github.com/hmcts/azure-private-dns) repo, the sync pipeline will neither overwrite nor delete any records on private dns zones.
+
+[Refer to this example](https://github.com/hmcts/azure-public-dns/blob/0295fff5f4e498b9f2acf564e9f656cf4f1dbb34/environments/sandbox.yml#L259) for guidance on excluding records from synchronisation.
