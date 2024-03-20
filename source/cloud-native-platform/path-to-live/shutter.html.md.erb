@@ -33,13 +33,15 @@ Creating and Enabling the shutter solution for an application is a 3 step proces
 
 With everything setup to render a shutter page you can now swap the DNS from Azure FrontDoor to the Azure Static Web App endpoint. This is only relevant for A and CNAME type records.
 
-- Clone the [azure-public-dns](https://github.com/hmcts/azure-public-dns) repository
-- Create a branch for your change
-- Within the `environments` and `shuttering` folders check that a file exists for the environment and DNS zone you need to change e.g. `environments/prod/platform-hmcts-net.yaml`
-- Lets assume this application need to be shuttered `www.decree-absolute.apply-divorce.service.gov.uk`
-- Find the relevant file relating to the DNS zone `apply-divorce-service-gov-uk` (and the environment being shuttered) and make sure there is a [record](https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41) for the service
-- Now check that an equivalent shuttering [configuration](https://github.com/hmcts/azure-public-dns/blob/27f3b5df3a1d3b847f2ca196e77a41c9ab896cc1/shuttering/prod/apply-divorce-service-gov-uk.yml#L20) exists for this record
-  - <details>
+1. Clone the [azure-public-dns](https://github.com/hmcts/azure-public-dns) repository
+2. Create a branch for your change
+3. Within the `environments` and `shuttering` folders check that a file exists for the environment and DNS zone you need to change e.g. `environments/prod/platform-hmcts-net.yaml`
+4. Lets assume this application need to be shuttered `www.decree-absolute.apply-divorce.service.gov.uk`
+5. Find the relevant file relating to the DNS zone `apply-divorce-service-gov-uk` (and the environment being shuttered) and make sure there is a [record](https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41) for the service
+
+6. Now check that an equivalent shuttering [configuration](https://github.com/hmcts/azure-public-dns/blob/27f3b5df3a1d3b847f2ca196e77a41c9ab896cc1/shuttering/prod/apply-divorce-service-gov-uk.yml#L20) exists for this record
+
+- <details>
     <summary>Adding a missing shutter config</summary>
     <ul style="padding-left:20px">
       <li>If no shutter config exists you will need to add it.</li>
@@ -49,13 +51,16 @@ With everything setup to render a shutter page you can now swap the DNS from Azu
       shutter: true</code></pre></div>
       </ul>
     </details>
-- If the shutter config exists, changing the shutter value from false to true is all that is required to enable shuttering for this service.
-  - <details>
+
+7. If the shutter config exists, changing the shutter value from false to true is all that is required to enable shuttering for this service.
+
+- <details>
     <summary>What happens when you change the shutter value</summary>
     <p>Setting <code>shutter: true</code> will enable the shutter page and redirect all the traffic to Azure CDN.<br>
     Setting <code>shutter: false</code> will disable the shutter page and redirect all the traffic back to Azure Frontdoor.</p>
     </details>
-- Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.
+
+8. Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.
 
 This is a self service request and does not require Platform Operations to create, approve or merge. Therefore this can be done out of hours without having Platform Operations around for shuttering only.
 
@@ -98,29 +103,3 @@ Simply enable or disable the shutter using True/False values
 Shuttering error message - 404 Not Found - we couldn't find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.  
 
 See [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages) repository for examples, where there is shutter pages for further directories beyond the main URL.  For example: [et-pet](https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet)
-
-
-
-
-
-Use the following steps to enable shuttering:
-
-Clone the azure-public-dns repository
-Create a branch for your change
-Within the environments and shuttering folders check that a file exists for the environment and DNS zone you need to change e.g. environments/prod/platform-hmcts-net.yaml
-Lets assume the application that needs to be shuttered is: www.decree-absolute.apply-divorce.service.gov.uk
-Find the relevant file relating to the DNS zone apply-divorce-service-gov-uk (and the environment being shuttered) and make sure there is a record for the service
-Now check that an equivalent shuttering configuration exists for this record
-Adding a missing shutter config
-If no shutter config exists you will need to add it.
-The shuttering file names match the environment file names so make sure to add it to the correct file. In this example we would need to add the shutter config value to shuttering/prod/apply-divorce-service-gov-uk.yml
-When adding a new shutter value, the name field must match that of the DNS record, this is how we know which shutter config matches which DNS record
-- name: "www.decree-absolute"
-  shutter: true
-If the shutter config exists, changing the shutter value from false to true is all that is required to enable shuttering for this service.
-What happens when you change the shutter value
-Setting shutter: true will enable the shutter page and redirect all the traffic to Azure CDN.
-Setting shutter: false will disable the shutter page and redirect all the traffic back to Azure Frontdoor.
-
-Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.
-This is a self service request and does not require Platform Operations to create, approve or merge. Therefore this can be done out of hours without having Platform Operations around for shuttering only.
