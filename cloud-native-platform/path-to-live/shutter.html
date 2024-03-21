@@ -100,6 +100,16 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -113,16 +123,6 @@
 </li>
 <li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
 <ul>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
-<ul>
-  <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
-  </li>
-  <li>
-    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
-  </li>
 </ul>
 </li>
 <li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
@@ -284,11 +284,12 @@
             <h1 id="shutter-implementation-and-design">Shutter Implementation and Design</h1>
 <h2 id="purpose">Purpose</h2>
 <p>The purpose of this document is to describe the shutter solution design and its end to end implementation.</p>
-<h2 id="solution">Solution</h2>
-<p><a href="../../images/shutter_solution_static_webapp.png" rel="noopener noreferrer"><img src="../../images/shutter_solution_static_webapp.png" alt="Shutter Solution Design Docs" /></a></p>
-<h2 id="default-shutter-page">Default shutter page</h2>
-<p>By default the following shutter page is used as per the GOV.UK patterns <a href="https://design-system.service.gov.uk/patterns/service-unavailable-pages/">service-unavailable-pages</a></p>
 <h2 id="implementation-and-customization">Implementation and Customization</h2>
+<h3 id="solution">Solution</h3>
+<p><img src="../../images/shutter_solution_static_webapp.png" alt="Shutter Solution Design Docs" width="500"/></p>
+<h3 id="default-shutter-page">Default shutter page</h3>
+<p>By default the following shutter page is used as per the GOV.UK patterns <a href="https://design-system.service.gov.uk/patterns/service-unavailable-pages/">service-unavailable-pages</a></p>
+<h3 id="implementation">Implementation</h3>
 <p>Creating and Enabling the shutter solution for an application is a 3 step process as outlined below:</p>
 
 <ul>
@@ -297,37 +298,149 @@
 <li>Enable shutter with a DNS swap</li>
 </ul>
 <h3 id="enable-shutter-with-a-dns-swap">Enable shutter with a DNS swap</h3>
-<p>Now everything is setup to render shutter page. Swap the DNS from Azure FrontDoor to Azure Static Web App endpoint with the following steps</p>
+<h4 id="individual-records">Individual Records</h4>
+<p>With everything setup to render a shutter page you can now swap the DNS from Azure FrontDoor to the Azure Static Web App endpoint. This is only relevant for A and CNAME type records.</p>
+
+<ol>
+<li>Clone the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a> repository</li>
+<li>Create a branch for your change</li>
+<li>Within the <code>environments</code> and <code>shuttering</code> folders check that a file exists for the environment and DNS zone you need to change e.g. <code>environments/prod/platform-hmcts-net.yaml</code></li>
+<li>Lets assume this application need to be shuttered <code>www.decree-absolute.apply-divorce.service.gov.uk</code></li>
+<li>Find the relevant file relating to the DNS zone <code>apply-divorce-service-gov-uk</code> (and the environment being shuttered) and make sure there is a <a href="https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41">record</a> for the service</li>
+<li>Now check that an equivalent shuttering <a href="https://github.com/hmcts/azure-public-dns/blob/27f3b5df3a1d3b847f2ca196e77a41c9ab896cc1/shuttering/prod/apply-divorce-service-gov-uk.yml#L20">configuration</a> exists for this record
 
 <ul>
-<li>Clone the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a> repository</li>
-<li>Lets assume this application need to be shuttered <code>www.decree-absolute.apply-divorce.service.gov.uk</code></li>
-<li>Create a PR with the appropriate <a href="https://github.com/hmcts/azure-public-dns/blob/a24128ffdc47687937cbab37aaa46040786c7955/environments/prod/apply-divorce-service-gov-uk.yml#L41">prod zone</a></li>
-<li>The above contents will be updated as follows:</li>
+<li><details>
+<summary>Adding a missing shutter config</summary>
+<ul style="padding-left:20px">
+<li>If no shutter config exists you will need to add it.</li>
+<li>The shuttering file names <b>match</b> the environment file names so make sure to add it to the correct file. In this example we would need to add the shutter config value to <code>shuttering/prod/apply-divorce-service-gov-uk.yml</code></li>
+<li>When adding a new shutter value, the <code>name</code> field must <b>match</b> that of the DNS record, this is how we know which shutter config matches which DNS record</li>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- name: &quot;www.decree-absolute&quot;
+shutter: true</code></pre></div>
 </ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>- name: "www.decree-absolute"
-  ttl: 300
-  record: "hmcts-prod.azurefd.net"
-  shutter: true
-</code></pre></div><p><code>shutter: true</code> will enable the shutter page and redirect all the traffic to Azure CDN.
-<code>shutter: false</code> will disable the shutter page and redirect all the traffic back to Azure Frontdoor.</p>
-<p>This is a self service request and does not require Platform Operations to create, approve or merge.
-Therefore this can be done out of hours without having Platform Operations around for shuttering only.</p>
+</details></li>
+</ul></li>
+<li>If the shutter config exists, changing the shutter value from false to true is all that is required to enable shuttering for this service.
+
+<ul>
+<li><details>
+<summary>What happens when you change the shutter value</summary>
+<p>Setting <code>shutter: true</code> will enable the shutter page and redirect all traffic to Azure CDN.<br>
+Setting <code>shutter: false</code> will disable the shutter page and redirect all traffic back to Azure Frontdoor.</p>
+</details></li>
+</ul></li>
+<li>Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.</li>
+</ol>
+<h4 id="all-records-in-a-single-dns-zone">All Records in a single DNS Zone</h4>
+<p>Shuttering all records in a single DNS zone follows a similar process to individual records.</p>
+<p>The ability to shutter all records in a single DNS zone allows for a complete service to be placed into shuttering for maintenance or upgrade purposes without needing to change every single record configuration.</p>
+<p>This is a quality of life change, the functionality of the shuttering remains the same.</p>
+
+<ol>
+<li>Clone the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a> repository</li>
+<li>Create a branch for your change</li>
+<li>Within the <code>environments</code> and <code>shuttering</code> folders check that a file exists for the environment and DNS zone you need to change e.g. <code>environments/prod/platform-hmcts-net.yaml</code></li>
+<li>Lets assume this zone needs to be shuttered <code>apply-divorce.service.gov.uk</code></li>
+<li>Find the relevant file relating to the DNS zone <code>apply-divorce-service-gov-uk</code> (and the environment being shuttered)</li>
+<li>Now check that an equivalent shuttering <a href="https://github.com/hmcts/azure-public-dns/blob/27f3b5df3a1d3b847f2ca196e77a41c9ab896cc1/shuttering/prod/apply-divorce-service-gov-uk.yml">configuration</a> exists for this record
+
+<ul>
+<li><details>
+<summary>Adding a missing shutter config</summary>
+<ul style="padding-left:20px">
+  <li>If no shutter config exists you will need to add it.</li>
+  <li>In the event that there is no shutter file with a name that <b>matches</b> the environment file it can be created by copying any existing file and renaming it to match the environment file name. In our example this would be <code>shuttering/prod/apply-divorce-service-gov-uk.yml</code></li>
+  <li>In this new file, make sure to remove any existing A and CNAME records and replace these with values from the DNS Zone in question</li>
+  <li>If this DNS zone has never had a shutter configuration then the component will also need to be updated.</li>
+  <li> Find the component for the DNS zone and add the following config, in this example the file would be: <a href="https://github.com/hmcts/azure-public-dns/blob/master/components/prod/apply-divorce.tf">components/prod/apply-divorce.tf</a> and the example config to add should be <a href="https://github.com/hmcts/azure-public-dns/blob/a13554fd2294464bfd3dd197747f9d800647e13e/components/prod/apply-divorce.tf#L5"> added to the file.</a>
+  </li>
+  <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>data &quot;local_file&quot; &quot;apply_divorce_shutter_config&quot; {
+    filename = &quot;${path.cwd}/../../shuttering/prod/apply-divorce-service-gov-uk.yml&quot;
+}<br>
+module &quot;apply-divorce&quot; {
+  // existing config
+  shutter_config      = data.local_file.apply_divorce_shutter_config.content
+}</code></pre></div>
+  <li>With this in place Terraform will now use this file and its configuration to shutter records in the DNS zone (e.g. <code>apply-divorce-service-gov-uk</code>)
+</ul>
+</details></li>
+</ul></li>
+<li>If the shutter already config exists, you can then shutter all records in the zone in one of two ways:
+
+<ul>
+<li>Use the <code>shutter_all</code> option to shutter every record in the zone, this overrides all other values in the shuttering config file.</li>
+<li>Use the individual <code>shutter_all_a</code> or <code>shutter_all_cname</code> options to shutter only that record type. These override all values for that specific record type; A or CNAME. This allows more granular control whilst still offering the option to shutter many records at once saving time.</li>
+</ul></li>
+<li>What happens when you change these shutter values
+
+<ul>
+<li><details>
+<summary>Effect</summary>
+<p>Setting <code>shutter_all: true</code> will enable the shutter pages and redirect all traffic to Azure CDN for <b>EVERY</b> record in that zone.<br>
+Setting <code>shutter_all_a: false</code> will enable the shutter pages and redirect all traffic to Azure CDN for <b>EVERY</b> A record in that zone.<br>
+Setting <code>shutter_all_cname: false</code> will enable the shutter pages and redirect all traffic to Azure CDN for <b>EVERY</b> CNAME record in that zone.<br>
+</details></li>
+<li><details>
+<summary>Hierarchy</summary>
+<code>shutter_all</code> is a master switch and overrides all other values.<br>
+<code>shutter_all_a</code> and <code>shutter_all_cname</code> are exclusive and will not overlap or affect each other. </p>
+</details></li>
+</ul></li>
+<li>Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.</li>
+</ol>
+<p>This is a self service request and <strong>does not</strong> require Platform Operations to create, approve or merge. Therefore this can be done out of hours without having Platform Operations around for shuttering only.</p>
+<h2 id="record-types">Record Types</h2>
+<p>There are two record types that allow shuttering to be enabled.
+These are:</p>
+
+<ul>
+<li>A records
+
+<ul>
+<li>The &ldquo;A&rdquo; stands for &ldquo;address&rdquo; and this is the most fundamental type of DNS record. It indicates the IPv4 address of a given domain.</li>
+</ul></li>
+<li>CNAME records
+
+<ul>
+<li>A &ldquo;canonical name&rdquo; (CNAME) record points from an alias domain to a &ldquo;canonical&rdquo; domain. A CNAME record is used in lieu of an A record, when a domain or subdomain is an alias of another domain. All CNAME records must point to a domain, never to an IP address.</li>
+</ul></li>
+</ul>
+<h3 id="shuttering-a-record-types">Shuttering A record types</h3>
+<p>A record types have some specific requirements with regard to shuttering. A records typically only allow IP addresses to be used BUT within Azure it is possible to direct A records to Azure resources, known as alias records.
+This means we can direct A record types to Azure services such as Azure Front Door or Azure Web Apps.</p>
+<p>The way DNS has been setup for this project, an A record can have one of the following set:</p>
+
+<ul>
+<li><strong>record</strong> - either a single IP or a list of IP addresses</li>
+<li><strong>shutter_resource_id</strong> - an Alias to an Azure resource specifically used for shuttering</li>
+<li><strong>alias_target_resource_id</strong> - an Alias to an Azure resource if not IP is used, can also be used for shutting but preference should be shutter_resource_id</li>
+</ul>
+<p>For shuttering purposes if you need to shutter an A record it <strong>must</strong> have one of the following settings in the A record configuration:</p>
+
+<ul>
+<li><strong>shutter_resource_id</strong></li>
+<li><strong>alias_target_resource_id</strong></li>
+</ul>
+<p>This is a requirement and failing to set one of these values on your A record before shuttering will result in the CI pipelines failing and your site may be in a limbo state until reverted or updated and re-run.</p>
+<h3 id="shuttering-cname-record-types">Shuttering CNAME record types</h3>
+<p>CNAME records are much easier to shutter, for each record an equivalent shutter config must exist, as detailed in the <em><a href="#individual-records">Individual Records</a></em> section.</p>
+<p>As long as there is a matching shutter config for the DNS record you can update the shutter value to true to enable a shutter.</p>
 <h2 id="shuttering-errors">Shuttering Errors</h2>
 <p>Shuttering error message - 404 Not Found - we couldn&rsquo;t find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.</p>
 <p>See <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a> repository for examples, where there is shutter pages for further directories beyond the main URL.  For example: <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet">et-pet</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-07-25">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-09-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 January 2024.
+      This page was last reviewed on 18 March 2024.
 
-        It needs to be reviewed again on 25 July 2024
+        It needs to be reviewed again on 18 September 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 July 2024
+      This page was set to be reviewed before 18 September 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
