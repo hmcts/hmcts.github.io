@@ -287,3 +287,9 @@ snyk
 CFTSBOX
 nonprod
 plpgsql
+afm
+bigdecimal
+ethon
+gsub
+ttfunk
+zeitwerk
