@@ -14,7 +14,7 @@ task :check_urls do
                 # Ignore pulls/branches as these do not translate to raw content
                 %r{github\.com/hmcts/(?=.*(?:pull|tree|commit))},
                 # This is a url that's generated each time we build the html by tech-docs-gem but does not exist
-                %r{https://github.com/hmcts/hmcts.github.io/blob/master/source/search/index.html}
+                %r{https://github.com/hmcts/hmcts.github.io/blob/source/source/search/index.html}
             ]
         })
 
@@ -27,7 +27,8 @@ task :check_urls do
             # to check the repo exists
             if base_url_parts.length == 5 && !request.base_url.include?('#')
                 request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
-                request.base_url += "/source/README.md"
+                # This repo builds from source branch
+                request.base_url += request.base_url.include?("hmcts.github.io") ? "/source/README.md" : "/master/README.md"
             # Checking for blob is to convert URLs pointing to files
             elsif request.base_url.include?("/blob/")
                 request.base_url = request.base_url.gsub("/blob", "")
