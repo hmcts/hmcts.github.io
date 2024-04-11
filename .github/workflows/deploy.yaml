@@ -21,15 +21,9 @@ jobs:
             cspell:software-terms/dict/softwareTerms.txt
             cspell:npm/dict/npm.txt
             cspell:node/dict/node.txt
-          #   cspell:cpp/src/cpp.txt
-          #   cspell:php/php.txt
-          #   cspell:python/src/python/python-lib.txt
-          #   cspell:software-terms/src/software-tools.txt
-          #   cspell:python/src/python/python.txt
-
   build:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: 'Build and Test'
     steps:
       - uses: actions/checkout@v4
       - name: Setup Ruby
@@ -40,6 +34,22 @@ jobs:
           bundler-cache: true
       - name: Build
         run: bundle exec middleman build
+      - name: 'Check for broken links'
+        run: bundle exec rake check_urls
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    name: 'Publish Site'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.1
+          architecture: 'x64'
+          bundler-cache: true
       - name: Publish
         run: |
           rm -rf build
