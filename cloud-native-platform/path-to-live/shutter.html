@@ -100,6 +100,20 @@
   </li>
 <li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
 <ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
 <li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
 <ul>
 <li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
@@ -108,20 +122,6 @@
 </li>
   <li>
     <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
-  </li>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
-<ul>
-</ul>
-</li>
-<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
-<ul>
-  <li>
-    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
-  </li>
-  <li>
-    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
   </li>
 </ul>
 </li>
@@ -428,6 +428,8 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p>As long as there is a matching shutter config for the DNS record you can update the shutter value to true to enable a shutter.</p>
 <h2 id="shuttering-all-cft-services">Shuttering all CFT services</h2>
 <p>To shutter all CFT services refer to these PRs as an example to use: <a href="https://github.com/hmcts/azure-public-dns/pull/1674">Shutter</a> and <a href="https://github.com/hmcts/azure-public-dns/pull/1677">Unshutter</a></p>
+<p><strong>Note:</strong> You can use the <code>Revert</code> button in the GitHub UI to create your unshutter PR for you.</p>
+<p><a href="../images/gh-revert.png" rel="noopener noreferrer"><img src="../images/gh-revert.png" alt="GitHub Revert Button" /></a></p>
 <h2 id="shuttering-errors">Shuttering Errors</h2>
 <p>Shuttering error message - 404 Not Found - we couldn&rsquo;t find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.</p>
 <p>See <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a> repository for examples, where there is shutter pages for further directories beyond the main URL.  For example: <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet">et-pet</a></p>
