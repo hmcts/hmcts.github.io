@@ -6,12 +6,23 @@ weight: 98
 ---
 
 # <%= current_page.data.title %>
+
+## Table of Contents
+
+- [GitHub](/cloud-native-platform/troubleshooting/index.html#github)
+- [Receiving an email regarding inactive account](/cloud-native-platform/troubleshooting/index.html#receiving-an-email-regarding-inactive-account)
+- [Jenkins](/cloud-native-platform/troubleshooting/index.html#jenkins)
+- [Debug Application Startup issues in AKS](</cloud-native-platform/troubleshooting/index.html#debug-application-startup-issues-in-aks>)
+- [Flux / Gitops](/cloud-native-platform/troubleshooting/index.html#flux/gitops)
+- [Connecting to AKS Clusters](/cloud-native-platform/troubleshooting/index.html#connecting-to-aks-clusters)
+- [Trouble accessing Services via F5 VPN](/cloud-native-platform/troubleshooting/index.html#trouble-accessing-services-via-f5-vpn)
+
 ## GitHub
 
 ### Adding a new user on GitHub
 
- - See [GitHub Onboarding](/cloud-native-platform/onboarding/team/github.html#access) for how to get access
- - Make sure the user has accepted the invite received on the email setup in Github or by visiting [github.com/hmcts](https://github.com/hmcts).
+- See [GitHub Onboarding](/cloud-native-platform/onboarding/team/github.html#access) for how to get access
+- Make sure the user has accepted the invite received on the email setup in Github or by visiting [github.com/hmcts](https://github.com/hmcts).
 
 ### Creating a new GitHub repository
 
@@ -19,10 +30,9 @@ See [create a GitHub repository](../new-component/github-repo.html#)
 
 ### Access to GitHub Repo
 
- - All repositories should be administered by the team who owns it.
- - Access should be managed through GitHub teams and not individuals.
- - If no one from your team have access, follow [asking for help](/cloud-native-platform/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
-
+- All repositories should be administered by the team who owns it.
+- Access should be managed through GitHub teams and not individuals.
+- If no one from your team have access, follow [asking for help](/cloud-native-platform/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
 
 ## Receiving an email regarding inactive account
 
@@ -313,3 +323,18 @@ Once you have logged in, you can switch between clusters using [kubectx](https:/
 kubectl config use-context cft-perftest-00-aks
 kubectl config use-context cft-aat-00-aks
 ```
+
+## Trouble accessing Services via F5 VPN
+
+Accessing services via the F5 VPN should just require you to connect to the VPN and then the service becomes available.
+
+However there have been issues in the past where this was not the case. 
+
+The problem in these cases has been that traffic for those services was not being redirected via the VPN and instead via the normal device internet access which resulted in a request denied or no response from the service.
+
+The solution was to disable IPv6 on the local device and reconnect to the F5 VPN, its not yet known why this happens but the solution should allow you to get up and running quickly.
+
+The process to disable IPv6 will depend on your operating system, please choose the correct link below based on what your device uses:
+
+- [Windows](https://www.windowscentral.com/software-apps/windows-11/how-to-disable-tcpipv6-ipv6-on-windows-11)
+- [Mac OSX](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-macos)
