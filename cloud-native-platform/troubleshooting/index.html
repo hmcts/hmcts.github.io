@@ -282,6 +282,17 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="troubleshooting-issues">Troubleshooting issues</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul>
+<li><a href="./#github">GitHub</a></li>
+<li><a href="./#receiving-an-email-regarding-inactive-account">Receiving an email regarding inactive account</a></li>
+<li><a href="./#jenkins">Jenkins</a></li>
+<li><a href="./#debug-application-startup-issues-in-aks">Debug Application Startup issues in AKS</a></li>
+<li><a href="./#flux-and-gitops">Flux and Gitops</a></li>
+<li><a href="./#connecting-to-aks-clusters">Connecting to AKS Clusters</a></li>
+<li><a href="./#trouble-accessing-services-via-f5-vpn">Trouble accessing Services via F5 VPN</a></li>
+</ul>
 <h2 id="github">GitHub</h2>
 <h3 id="adding-a-new-user-on-github">Adding a new user on GitHub</h3>
 
@@ -440,7 +451,7 @@ You can check if the issue lies with artifactory by temporarily bypassing it usi
 
 </code></pre></div></li>
 </ul>
-<h2 id="flux-gitops">Flux / Gitops</h2>
+<h2 id="flux-and-gitops">Flux and Gitops</h2>
 
 <blockquote>
 <p>Always check <strong>why</strong> your release or pod has failed in the first instance.
@@ -622,7 +633,18 @@ kubectl logs <span class="nt">-n</span> flux-system <span class="nt">-l</span> <
 <p>Once you have logged in, you can switch between clusters using <a href="https://github.com/ahmetb/kubectx">kubectx</a> or below kubectl commands:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl config use-context cft-perftest-00-aks
 kubectl config use-context cft-aat-00-aks
-</code></pre></div>
+</code></pre></div><h2 id="trouble-accessing-services-via-f5-vpn">Trouble accessing Services via F5 VPN</h2>
+<p>Accessing services via the F5 VPN should just require you to connect to the VPN and then the service becomes available.</p>
+<p>However there have been issues in the past where this was not the case.</p>
+<p>The problem in these cases has been that traffic for those services was not being redirected via the VPN and instead via the normal device internet access which resulted in a request denied or no response from the service.</p>
+<p>The solution was to disable IPv6 on the local device and reconnect to the F5 VPN, its not yet known why this happens but the solution should allow you to get up and running quickly.</p>
+<p>The process to disable IPv6 will depend on your operating system, please choose the correct link below based on what your device uses:</p>
+
+<ul>
+<li><a href="https://www.windowscentral.com/software-apps/windows-11/how-to-disable-tcpipv6-ipv6-on-windows-11">Windows</a></li>
+<li><a href="https://help.nordlayer.com/docs/how-to-disable-ipv6-on-macos">Mac OSX</a></li>
+</ul>
+
               <div data-module='page-expiry' data-last-reviewed-on="2024-04-18">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 18 October 2023.
