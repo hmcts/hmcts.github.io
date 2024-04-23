@@ -1,6 +1,6 @@
 ---
 title: TLS certificates
-last_reviewed_on: 2023-10-19
+last_reviewed_on: 2024-04-22
 review_in: 6 months
 weight: 2
 ---
@@ -42,12 +42,12 @@ the ticket should contain the following information:
 Let's Encrypt is a free, automated and open CA. ACME protocol is used to automate the certificate issuance.
 We are using [Key Vault Acmebot](https://github.com/shibayan/keyvault-acmebot) function app as an ACME client.
 
-Key Vault Acmebot is deployed as part of [ops-bootstrap](https://github.com/hmcts/ops-bootstrap) (private repo) using [terraform module](https://github.com/hmcts/terraform-module-acme-function), there is one instance per subscription.
+Key Vault Acmebot is deployed from this repository [azure-enterprise-acme](https://github.com/hmcts/azure-enterprise-acme/tree/main) via this [azure-devops pipeline](https://dev.azure.com/hmcts/PlatformOperations/_build?definitionId=656&_a=summary), there is one instance per subscription.
 
 The naming convention for keyvaults and function App are acme<subscription name without hyphen, `sharedservices` is replaced with `sds` because of length limits. E.g. `acmedtssdstest`.
 
 The naming convention for certificate name in Key Vault is `<DNS Name/wildcard>-<DNSZone>` separated by hyphen.  E.g. `hmi-apim-test-platform-hmcts-net`, `wildcard-test-platform-hmcts-net`.
 
-You may need to use ACME certificate due to [managed certificate limitations](https://github.com/hmcts/ops-runbooks/blob/master/source/Certificates/managed.html.md.erb) in Front Door by updating the `ssl_mode` and `custom_domain` attributes in the Front Door config, here is an example in [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/526a2399ea19cdad28f0e12893adf395e3e40eb7/environments/prod/prod.tfvars#L1499-L1500).
+You may need to use ACME certificate due to [managed certificate limitations](https://hmcts.github.io/ops-runbooks/Certificates/managed.html#when-to-use-managed-certificates) in Front Door by updating the `ssl_mode` and `custom_domain` attributes in the Front Door config, here is an example in [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/526a2399ea19cdad28f0e12893adf395e3e40eb7/environments/prod/prod.tfvars#L1499-L1500).
 
 see [Create Certificates](https://hmcts.github.io/ops-runbooks/Certificates/letsencrypt.html) to create and renew certificates.
