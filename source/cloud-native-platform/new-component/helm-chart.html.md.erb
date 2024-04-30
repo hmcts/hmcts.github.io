@@ -179,6 +179,43 @@ Add an azure-pipelines.yml file to your repo, using
 
 Ask on [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) on slack for someone to setup the pipeline for you in AzureDevOps.
 
+#### Adding Azure Resources when using Azure DevOps charts
+
+Like Jenkins it is possible to add Azure resources to your charts when publishing via Azure DevOps.
+The following resources can be created:
+
+##### Postgres Databases
+
+Postgres databases can be added and test via the existing Postgres Instance in the `chart-tests` namespace.
+Guidance can be found in the [chart]( https://github.com/hmcts/chart-postgresq) repository.
+
+The database instance used for Azure DevOps builds is:
+
+```yaml
+postgresql:
+  flexibleserver: chart-tests-flexibleserver-postgres-preview
+```
+
+##### Blob Storage
+
+Blob storage is typically used by Application charts built via Jenkins but it is possible to use the blob storage [chart](https://github.com/hmcts/chart-blobstorage/tree/master) to test other charts via ADO.
+You must use the `chart-tests` resource group to test with Blob Storage:
+
+```yaml
+blobstorage:
+  resourceGroup: "chart-tests-aso-rg"
+```
+
+##### Service Bus
+
+Service bus topics and queues can be tested much in the same way as Postgres as there is an existing namespace for the `chart-tests` namespace.
+Guidance is available via the [chart](https://github.com/hmcts/chart-servicebus) repository.
+
+```yaml
+resourceGroup: chart-tests-aso-rg
+sbNamespace: chart-tests-servicebus
+```
+
 ## All charts
 
 We follow a standard naming convention of `chart-<name>` for all Helm charts, you can find a list of all
