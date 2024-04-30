@@ -3,6 +3,7 @@ abfwhrf
 acedcyeygkgk
 aqda
 ard
+aso
 automerge
 bpdq
 brfxgseqf
@@ -21,6 +22,7 @@ ejdt
 enhbenftckhu
 ercybwaubzbmfn
 fkhfehdgahcrhbds
+flexibleserver
 frdsdtbc
 gufqadefbjgbhkhv
 hdgpbqdkafhmcse
@@ -29,5 +31,6 @@ hjd
 hpfvc
 knowledgebase
 pnp
+postgres
 roadmap
 vpn
