@@ -431,8 +431,12 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p><strong>Note:</strong> You can use the <code>Revert</code> button in the GitHub UI to create your unshutter PR for you.</p>
 <p><a href="../images/gh-revert.png" rel="noopener noreferrer"><img src="../images/gh-revert.png" alt="GitHub Revert Button" /></a></p>
 <h2 id="shuttering-errors">Shuttering Errors</h2>
+<h3 id="404-not-found">404 Not Found</h3>
 <p>Shuttering error message - 404 Not Found - we couldn&rsquo;t find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.</p>
-<p>See <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a> repository for examples, where there is shutter pages for further directories beyond the main URL.  For example: <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet">et-pet</a></p>
+<p>See <a href="https://github.com/hmcts/azure-shutter-pages">azure-shutter-pages</a> repository for examples, where there is shutter pages for further directories beyond the main URL. For example: <a href="https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet">et-pet</a></p>
+<h3 id="a-resource-with-id-already-exists">A resource with ID&hellip; already exists</h3>
+<p>If the pipeline fails with an error similar to the one below, you will need to import the offending record into terraform state. Documentation on how to do this can be found at <a href="https://developer.hashicorp.com/terraform/language/import">Import Block</a> and <a href="https://developer.hashicorp.com/terraform/cli/import/usage">Terraform CLI</a>.</p>
+<p><code>Error: A resource with the ID &quot;/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/xxxx/providers/Microsoft.Network/dnsZones/xxxx/CNAME/xxxx&quot; already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for &quot;azurerm_dns_cname_record&quot; for more information.</code></p>
 
               <div data-module='page-expiry' data-last-reviewed-on="2024-09-18">
     <div class='page-expiry--not-expired'>
