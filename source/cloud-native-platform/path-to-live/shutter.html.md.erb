@@ -156,6 +156,14 @@ To shutter all CFT services refer to these PRs as an example to use: [Shutter](h
 
 ## Shuttering Errors
 
+### 404 Not Found
+
 Shuttering error message - 404 Not Found - we couldn't find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.  
 
-See [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages) repository for examples, where there is shutter pages for further directories beyond the main URL.  For example: [et-pet](https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet)
+See [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages) repository for examples, where there is shutter pages for further directories beyond the main URL. For example: [et-pet](https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet)
+
+### A resource with ID... already exists
+
+If the pipeline fails with an error similar to the one below, you will need to import the offending record into terraform state. Documentation on how to do this can be found at [Import Block](https://developer.hashicorp.com/terraform/language/import) and [Terraform CLI](https://developer.hashicorp.com/terraform/cli/import/usage).
+
+`Error: A resource with the ID "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/xxxx/providers/Microsoft.Network/dnsZones/xxxx/CNAME/xxxx" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_dns_cname_record" for more information.`
