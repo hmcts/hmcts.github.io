@@ -414,21 +414,40 @@ publish to &lsquo;hmctspublic&rsquo; ACR</li>
 <p>Add an azure-pipelines.yml file to your repo, using
 <a href="https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml">chart-java</a> as a base.</p>
 <p>Ask on <a href="https://hmcts-reform.slack.com/app_redirect?channel=platops-help">#platops-help</a> on slack for someone to setup the pipeline for you in AzureDevOps.</p>
-<h2 id="all-charts">All charts</h2>
+<h4 id="adding-azure-resources-when-using-azure-devops-charts">Adding Azure Resources when using Azure DevOps charts</h4>
+<p>Like Jenkins it is possible to add Azure resources to your charts when publishing via Azure DevOps.
+The following resources can be created:</p>
+<h5 id="postgres-databases">Postgres Databases</h5>
+<p>Postgres databases can be added and test via the existing Postgres Instance in the <code>chart-tests</code> namespace.
+Guidance can be found in the <a href="https://github.com/hmcts/chart-postgresql">chart</a> repository.</p>
+<p>The database instance used for Azure DevOps builds is:</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">postgresql</span><span class="pi">:</span>
+  <span class="na">flexibleserver</span><span class="pi">:</span> <span class="s">chart-tests-flexibleserver-postgres-preview</span>
+</code></pre></div><h5 id="blob-storage">Blob Storage</h5>
+<p>Blob storage is typically used by Application charts built via Jenkins but it is possible to use the blob storage <a href="https://github.com/hmcts/chart-blobstorage/tree/master">chart</a> to test other charts via ADO.
+You must use the <code>chart-tests</code> resource group to test with Blob Storage:</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">blobstorage</span><span class="pi">:</span>
+  <span class="na">resourceGroup</span><span class="pi">:</span> <span class="s2">"</span><span class="s">chart-tests-aso-rg"</span>
+</code></pre></div><h5 id="service-bus">Service Bus</h5>
+<p>Service bus topics and queues can be tested much in the same way as Postgres as there is an existing namespace for the <code>chart-tests</code> namespace.
+Guidance is available via the <a href="https://github.com/hmcts/chart-servicebus">chart</a> repository.</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">resourceGroup</span><span class="pi">:</span> <span class="s">chart-tests-aso-rg</span>
+<span class="na">sbNamespace</span><span class="pi">:</span> <span class="s">chart-tests-servicebus</span>
+</code></pre></div><h2 id="all-charts">All charts</h2>
 <p>We follow a standard naming convention of <code>chart-&lt;name&gt;</code> for all Helm charts, you can find a list of all
 charts using Github Search in the organisation.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-05-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-10-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 November 2023.
+      This page was last reviewed on 30 April 2024.
 
-        It needs to be reviewed again on 3 May 2024
+        It needs to be reviewed again on 30 October 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 May 2024
+      This page was set to be reviewed before 30 October 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
