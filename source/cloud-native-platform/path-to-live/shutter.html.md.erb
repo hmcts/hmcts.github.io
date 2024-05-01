@@ -166,4 +166,4 @@ See [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages) reposito
 
 If the pipeline fails with an error similar to the one below, you will need to import the offending record into terraform state. Documentation on how to do this can be found at [Import Block](https://developer.hashicorp.com/terraform/language/import) and [Terraform CLI](https://developer.hashicorp.com/terraform/cli/import/usage).
 
-`Error: A resource with the ID "/subscriptions/<SUBSCRIPTION>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Network/dnsZones/<DNS_ZONE>/CNAME/<DNS_RECORD>" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_dns_cname_record" for more information.`
+`Error: A resource with the ID "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/xxxx/providers/Microsoft.Network/dnsZones/xxxx/CNAME/xxxx" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_dns_cname_record" for more information.`
