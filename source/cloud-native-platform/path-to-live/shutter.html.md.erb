@@ -154,6 +154,16 @@ To shutter all CFT services refer to these PRs as an example to use: [Shutter](h
 
 ![GitHub Revert Button](../images/gh-revert.png)
 
+## How to access your application when it is shuttered (For testing purposes only)
+
+When an application's shutter page is active, it's possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active. You will need the Frontend Private IP from the Application Gateway, which can be retrieved from the Azure Portal. The example entry below is for our Plum application in sandbox, you can add a similar one for your service:
+
+```
+10.2.13.114 http://plum.sandbox.platform.hmcts.net
+```
+
+**Note:** You may need to clear your DNS cache for changes to take effect.
+
 ## Shuttering Errors
 
 ### 404 Not Found
