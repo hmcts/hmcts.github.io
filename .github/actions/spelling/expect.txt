@@ -23,13 +23,16 @@ enhbenftckhu
 ercybwaubzbmfn
 fkhfehdgahcrhbds
 flexibleserver
+flushdns
 frdsdtbc
 gufqadefbjgbhkhv
 hdgpbqdkafhmcse
 hefjfne
 hjd
 hpfvc
+killall
 knowledgebase
+nslookup
 pnp
 postgres
 roadmap
@@ -37,6 +40,3 @@ vpn
 xxxx
 xxxxxxxx
 xxxxxxxxxxxx
-flushdns
-killall
-nslookup
