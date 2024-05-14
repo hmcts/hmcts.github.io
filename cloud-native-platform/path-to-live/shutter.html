@@ -431,10 +431,14 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p><strong>Note:</strong> You can use the <code>Revert</code> button in the GitHub UI to create your unshutter PR for you.</p>
 <p><a href="../images/gh-revert.png" rel="noopener noreferrer"><img src="../images/gh-revert.png" alt="GitHub Revert Button" /></a></p>
 <h2 id="how-to-access-your-application-when-it-is-shuttered-for-testing-purposes-only">How to access your application when it is shuttered (For testing purposes only)</h2>
-<p>When an application&rsquo;s shutter page is active, it&rsquo;s possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active. You will need the Frontend Private IP from the Application Gateway, which can be retrieved from the Azure Portal. The example entry below is for our Plum application in sandbox, you can add a similar one for your service:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>10.2.13.114 http://plum.sandbox.platform.hmcts.net
+<p>When an application&rsquo;s shutter page is active, it&rsquo;s possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active.</p>
+<p>You will need the IP address of the associated Azure FrontDoor Endpoint. You can run a <code>dig</code> or <code>nslookup</code> on the endpoint to retrieve the IP. Multiple IPs may be returned due to HA but either should work.</p>
+<p>e.g.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>dig hmcts-prod-hdgpbqdkafhmcse9.z01.azurefd.net
+</code></pre></div><p>This example hosts entry is for Probate, but the same process can be applied for your service:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>13.107.246.64 www.apply-for-probate.service.gov.uk
 </code></pre></div><p>Once your testing is complete, remove the entry and you should now see the shutter page again when trying to access the service.</p>
-<p><strong>Note:</strong> You may need to clear your DNS cache for changes to take effect.</p>
+<p><strong>Note:</strong> You may need to clear your DNS cache for changes to take effect. This can be done on Linux/Mac by running <code>sudo killall -HUP mDNSResponder</code> and on Windows by running <code>ipconfig /flushdns</code>.</p>
 <h2 id="shuttering-errors">Shuttering Errors</h2>
 <h3 id="404-not-found">404 Not Found</h3>
 <p>Shuttering error message - 404 Not Found - we couldn&rsquo;t find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.</p>
