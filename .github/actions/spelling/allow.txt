@@ -293,3 +293,6 @@ ethon
 gsub
 ttfunk
 zeitwerk
+flushdns
+killall
+nslookup
