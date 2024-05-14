@@ -156,15 +156,25 @@ To shutter all CFT services refer to these PRs as an example to use: [Shutter](h
 
 ## How to access your application when it is shuttered (For testing purposes only)
 
-When an application's shutter page is active, it's possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active. You will need the Frontend Private IP from the Application Gateway, which can be retrieved from the Azure Portal. The example entry below is for our Plum application in sandbox, you can add a similar one for your service:
+When an application's shutter page is active, it's possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active. 
+
+You will need the IP address of the associated Azure FrontDoor Endpoint. You can run a `dig` or `nslookup` on the endpoint to retrieve the IP. Multiple IPs may be returned due to HA but either should work. 
+
+e.g.
+
+```bash
+dig hmcts-prod-hdgpbqdkafhmcse9.z01.azurefd.net
+```
+
+This example hosts entry is for Probate, but the same process can be applied for your service:
 
 ```
-10.2.13.114 http://plum.sandbox.platform.hmcts.net
+13.107.246.64 www.apply-for-probate.service.gov.uk
 ```
 
 Once your testing is complete, remove the entry and you should now see the shutter page again when trying to access the service.
 
-**Note:** You may need to clear your DNS cache for changes to take effect.
+**Note:** You may need to clear your DNS cache for changes to take effect. This can be done on Linux/Mac by running `sudo killall -HUP mDNSResponder` and on Windows by running `ipconfig /flushdns`.
 
 ## Shuttering Errors
 
