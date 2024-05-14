@@ -37,3 +37,6 @@ vpn
 xxxx
 xxxxxxxx
 xxxxxxxxxxxx
+flushdns
+killall
+nslookup
