@@ -19,7 +19,7 @@ All browsers are single threaded. This means that they can only tackle a single 
 
 Excessive JavaScript execution on the main thread can delay visual updates, like CSS rendering or button clicks, causing "page jank" and negatively impacting user experience. Research shows any page interaction taking over [100ms is noticeable, affecting usability](https://developer.mozilla.org/en-US/docs/Web/Performance/How_long_is_too_long).
 
-Web Workers, background threads, offloading heavy tasks, preventing UI jank and improving responsiveness. However, their asynchronous nature demands careful integration. Libraries like [Comlink](https://github.com/GoogleChromeLabs/comlink) simplify Web Worker usage, but may increase JavaScript overhead, impacting performance on low-spec devices. For detailed information, refer to the [MDN Web Worker API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API).
+Web Workers, background threads, offload heavy tasks, preventing UI jank and improving responsiveness. However, their asynchronous nature demands careful integration. Libraries like [Comlink](https://github.com/GoogleChromeLabs/comlink) simplify Web Worker usage, but may increase JavaScript overhead, impacting performance on low-spec devices. For detailed information, refer to the [MDN Web Worker API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API).
 
 
 ### Use either Server-Side Rendering (SSR) or Static Site Generation (SSG)
@@ -75,7 +75,9 @@ SSR shifts some of the rendering work to the server, reducing the amount of Java
 
 #### Considerations
 
-There are some important considerations that should be thought about before using SSR. SSR increases the server-side workload, as the server needs to render each page for each user. This can impact scalability and requires careful server-side optimisation. Caching the rendered pages should be a high priority to reduce the server-side workload. It’s also important to consider SSR can add significant complexity to Angular applications.
+There are some important considerations that should be thought about before using SSR. SSR increases the server-side workload, as the server needs to render each page for each user. This can impact scalability and requires careful server-side optimisation. Caching the rendered pages should be a high priority to reduce the server-side workload.
+
+Before adopting SSR or SSG, evaluate if the added maintenance, documentation, and developer overhead outweigh potential benefits. Consider if the functionality risks becoming redundant.
 
 
 #### Summary
