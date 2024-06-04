@@ -19,7 +19,7 @@ All browsers are single threaded. This means that they can only tackle a single 
 
 Excessive JavaScript execution on the main thread can delay visual updates, like CSS rendering or button clicks, causing "page jank" and negatively impacting user experience. Research shows any page interaction taking over [100ms is noticeable, affecting usability](https://developer.mozilla.org/en-US/docs/Web/Performance/How_long_is_too_long).
 
-Web Workers, background threads, offload heavy tasks, preventing UI jank and improving responsiveness. However, their asynchronous nature demands careful integration. Libraries like [Comlink](https://github.com/GoogleChromeLabs/comlink) simplify Web Worker usage, but may increase JavaScript overhead, impacting performance on low-spec devices. For detailed information, refer to the [MDN Web Worker API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API).
+Web Workers, background threads, offloading heavy tasks, preventing UI jank and improving responsiveness. However, their asynchronous nature demands careful integration. Libraries like [Comlink](https://github.com/GoogleChromeLabs/comlink) simplify Web Worker usage, but may increase JavaScript overhead, impacting performance on low-spec devices. For detailed information, refer to the [MDN Web Worker API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API).
 
 
 ### Use either Server-Side Rendering (SSR) or Static Site Generation (SSG)
