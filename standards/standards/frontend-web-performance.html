@@ -362,9 +362,12 @@
 <p>HTTP/3, built on <a href="https://en.wikipedia.org/wiki/QUIC">QUIC</a>, offers several performance advantages over HTTP/2. It reduces latency due to faster connection establishment and eliminates <a href="https://en.wikipedia.org/wiki/Head-of-line_blocking">head-of-line blocking</a>, ensuring packet loss doesn&rsquo;t stall all data streams. This results in faster page loads and smoother user experiences, especially on unreliable networks or mobile devices. Should you be interested in reading more about HTTP/3 Smashing Magazine has an extremely in-depth <a href="https://www.smashingmagazine.com/2021/08/http3-core-concepts-part1/">3-part article</a> written by Robin Marx. It’s also worth noting that as of January 2024, <a href="https://github.com/alphagov/govuk-rfcs/blob/4d28064a477ab225864651f7c912c5aeae6c2fc1/rfc-139-enable-http3.md">GOV.UK uses HTTP/3 + QUIC</a>.</p>
 <p><strong>Important Note</strong>: Enable HTTP/3 + QUIC only if available on the platform hosting the service.</p>
 <h2 id="use-http-range-requests">Use HTTP range requests</h2>
-<p>HTTP range requests allow clients to fetch only specific parts of a resource, rather than the entire file. This is useful for:
- - <strong>Resuming interrupted downloads</strong>: If a download fails, the client can request the remaining portion instead of restarting. e.g. PDF&rsquo;s
- - <strong>Large file downloads</strong>: Clients can download parts in parallel for faster speeds.</p>
+<p>HTTP range requests allow clients to fetch only specific parts of a resource, rather than the entire file. This is useful for:</p>
+
+<ul>
+<li><strong>Resuming interrupted downloads</strong>: If a download fails, the client can request the remaining portion instead of restarting. e.g. PDF&rsquo;s</li>
+<li><strong>Large file downloads</strong>: Clients can download parts in parallel for faster speeds.</li>
+</ul>
 <p>Once implimented range requests optimize bandwidth usage and improve user experience in various scenarios. For more information on range requests see the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests">MDN Web Docs</a>.</p>
 
               <div data-module='page-expiry' data-last-reviewed-on="2025-06-05">
