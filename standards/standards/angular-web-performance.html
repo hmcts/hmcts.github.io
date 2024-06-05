@@ -285,15 +285,15 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="angular-web-performance">Angular Web Performance</h1>
-<h3 id="context">Context</h3>
+<h2 id="context">Context</h2>
 <p>By prioritizing frontend performance, government service teams can ensure that their online services are accessible, efficient, and user-friendly for all citizens, regardless of their device or connection. This fosters inclusivity, improves user satisfaction, and ultimately contributes to a more effective and trusted government. This aligns very closely with the topic of Frontend Performance in the <a href="https://gds-way.digital.cabinet-office.gov.uk/standards/optimise-frontend-perf.html">GDS Way</a> and the <a href="https://www.gov.uk/service-manual/technology/how-to-test-frontend-performance">Service Manual</a>. Creating services that are performant is also a fundamental skill of being a <a href="https://ddat-capability-framework.service.gov.uk/role/frontend-developer">Frontend Developer</a> in the Civil Service, according to the <a href="https://ddat-capability-framework.service.gov.uk/">Government Digital and Data Profession Capability Framework</a>.</p>
 <p>Within this section, we will make recommendations on the Frontend Performance of the shared components that are currently built on the Angular Framework.</p>
-<h3 id="use-web-workers-for-complex-tasks">Use Web Workers for complex tasks</h3>
+<h2 id="use-web-workers-for-complex-tasks">Use Web Workers for complex tasks</h2>
 <p>All browsers are single threaded. This means that they can only tackle a single task at any one time. This single thread is often called the “main thread”. If the main thread is busy, any tasks that the browser needs to complete are queued up for when it is no longer busy.</p>
 <p>Excessive JavaScript execution on the main thread can delay visual updates, like CSS rendering or button clicks, causing &ldquo;page jank&rdquo; and negatively impacting user experience. Research shows any page interaction taking over <a href="https://developer.mozilla.org/en-US/docs/Web/Performance/How_long_is_too_long">100ms is noticeable, affecting usability</a>.</p>
 <p>Web Workers, background threads, offload heavy tasks, preventing UI jank and improving responsiveness. However, their asynchronous nature demands careful integration. Libraries like <a href="https://github.com/GoogleChromeLabs/comlink">Comlink</a> simplify Web Worker usage, but may increase JavaScript overhead, impacting performance on low-spec devices. For detailed information, refer to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">MDN Web Worker API documentation</a>.</p>
-<h3 id="use-either-server-side-rendering-ssr-or-static-site-generation-ssg">Use either Server-Side Rendering (SSR) or Static Site Generation (SSG)</h3>
-<h3 id="server-side-rendering-ssr">Server-Side Rendering (SSR)</h3>
+<h2 id="use-either-server-side-rendering-ssr-or-static-site-generation-ssg">Use either Server-Side Rendering (SSR) or Static Site Generation (SSG)</h2>
+<h2 id="server-side-rendering-ssr">Server-Side Rendering (SSR)</h2>
 <p>Server-Side Rendering (SSR) significantly improves performance in Angular applications in several ways:</p>
 <p>Pros:</p>
 
@@ -310,24 +310,24 @@
 <li>Requires a Node.js server to render pages</li>
 </ul>
 <p>More details on the advantages of using SSR over purely client-side (browser) rendering of Angular components is discussed below.</p>
-<h4 id="faster-initial-page-load">Faster Initial Page Load</h4>
+<h3 id="faster-initial-page-load">Faster Initial Page Load</h3>
 <p>SSR generates the initial HTML of a page on the server and sends it to the client.</p>
 <p>This means the browser receives the first meaningful content much faster than if it had to wait for the Angular application to download and bootstrap on the client-side. This change has a significant positive impact on the <a href="https://web.dev/articles/ttfb">Time to First Byte (TTFB)</a>.</p>
 <p>Since the initial HTML is already rendered, the browser can quickly display content to the user, providing a better <a href="https://web.dev/articles/fcp">First Contentful Paint (FCP)</a> experience. This improves the perceived performance of the page for users.</p>
-<h4 id="improved-core-web-vitals">Improved Core Web Vitals</h4>
+<h3 id="improved-core-web-vitals">Improved Core Web Vitals</h3>
 <p>With SSR, the largest content elements (images, text blocks) are usually included in the initial HTML, leading to faster <a href="https://web.dev/articles/lcp">Largest Contentful Paint (LCP)</a> times. SSR also minimizes layout shifts that can occur when the Angular application is bootstrapped on the client-side and dynamically loads content. Reducing the <a href="https://web.dev/articles/cls">Cumulative Layout Shift (CLS)</a> of a page leads to a more visually stable experience.</p>
-<h4 id="better-search-engine-optimization-seo">Better Search Engine Optimization (SEO)</h4>
+<h3 id="better-search-engine-optimization-seo">Better Search Engine Optimization (SEO)</h3>
 <p>Search engine crawlers can easily index the fully rendered HTML content generated by SSR, which is <a href="https://web.dev/articles/pass-lighthouse-seo-audit">important for SEO visibility</a> and search engine crawlability. SSR ensures that social media platforms can accurately display previews of shared pages, as they can access the complete HTML structure and content, leading to improved Social Sharing.</p>
-<h4 id="enhanced-user-experience">Enhanced User Experience</h4>
+<h3 id="enhanced-user-experience">Enhanced User Experience</h3>
 <p>As mentioned above, the faster initial rendering and lower CLS contribute to a smoother and more engaging user experience, especially on slower connections or devices. This improves <a href="https://developer.mozilla.org/en-US/docs/Learn/Performance/Perceived_performance">perceived performance</a> for users. SSR makes content available to users with <a href="https://www.gov.uk/service-manual/technology/using-progressive-enhancement#do-not-assume-users-turn-off-css-or-javascript">JavaScript disabled or with network connectivity issues</a>. Users using screen readers will see an improvement in accessibility and inclusivity.</p>
-<h4 id="reduced-client-side-load">Reduced Client-Side Load</h4>
+<h3 id="reduced-client-side-load">Reduced Client-Side Load</h3>
 <p>SSR shifts some of the rendering work to the server, reducing the amount of JavaScript that needs to be executed on the client-side, potentially leading to faster interactions and reduced battery consumption on mobile devices. Less JavaScript Execution on the client is always a great performance target to aim for.</p>
-<h4 id="considerations">Considerations</h4>
+<h3 id="considerations">Considerations</h3>
 <p>There are some important considerations that should be thought about before using SSR. SSR increases the server-side workload, as the server needs to render each page for each user. This can impact scalability and requires careful server-side optimisation. Caching the rendered pages should be a high priority to reduce the server-side workload.</p>
 <p>Before adopting SSR or SSG, evaluate if the added maintenance, documentation, and developer overhead outweigh potential benefits. Consider if the functionality risks becoming redundant.</p>
-<h4 id="summary">Summary</h4>
+<h3 id="summary">Summary</h3>
 <p>Using Server-side Rendering in an Angular application comes with some trade-offs. But it can significantly improve performance, SEO, and user experience. These improvements are especially important for <a href="https://technology.blog.gov.uk/2019/04/18/why-we-focus-on-frontend-performance/">public-facing websites and applications where performance</a> and SEO are crucial.</p>
-<h3 id="static-site-generation-ssg">Static Site Generation (SSG)</h3>
+<h2 id="static-site-generation-ssg">Static Site Generation (SSG)</h2>
 <p>Pages are pre-rendered into static HTML files at build time. These files are then served directly to users, eliminating the need for the browser to execute JavaScript to render the content.</p>
 <p>SSG is Ideal for content-focused websites or blogs where the data doesn&rsquo;t change frequently. SSG provides the fastest possible initial load times and excellent SEO since search engine crawlers can easily index the pre-rendered HTML.</p>
 <p>Pros:</p>
@@ -344,18 +344,45 @@
 <li>Requires a rebuild to update content</li>
 <li>Limited personalization options</li>
 </ul>
-<h4 id="ssr-vs-ssg-key-differences">SSR vs SSG Key differences</h4>
+<h3 id="ssr-vs-ssg-key-differences">SSR vs SSG Key differences</h3>
 <p>See the table below for a quick overview of the key differences between SSR and SSG:</p>
-<p>| <strong>Feature</strong> | <strong>Static Site Generation (SSG)</strong> | <strong>Server-Side Rendering (SSR)</strong> |</p>
-<p>|&mdash;|&mdash;|&mdash;|</p>
-<p>| Content generation | At build time | On each request |</p>
-<p>| Initial page load | Extremely fast | Faster than client-side rendering |</p>
-<p>| SEO | Excellent | Better than client-side rendering |</p>
-<p>| Dynamic content | Not suitable | Supported |</p>
-<p>| Personalization | Limited | Supported |</p>
-<p>| Server load | Reduced | Increased |</p>
-<p>| Time to Interactive (TTI) | Very fast | Slower than SSG |</p>
-<h4 id="choosing-the-right-approach">Choosing the right approach</h4>
+<div class="table-container">
+        <table>
+          <tr>
+<th><strong>Feature</strong></th>
+<th><strong>Static Site Generation (SSG)</strong></th>
+<th><strong>Server-Side Rendering (SSR)</strong></th>
+</tr><tr>
+<td>Content generation</td>
+<td>At build time</td>
+<td>On each request</td>
+</tr><tr>
+<td>Initial page load</td>
+<td>Extremely fast</td>
+<td>Faster than client-side rendering</td>
+</tr><tr>
+<td>SEO</td>
+<td>Excellent</td>
+<td>Better than client-side rendering</td>
+</tr><tr>
+<td>Dynamic content</td>
+<td>Not suitable</td>
+<td>Supported</td>
+</tr><tr>
+<td>Personalization</td>
+<td>Limited</td>
+<td>Supported</td>
+</tr><tr>
+<td>Server load</td>
+<td>Reduced</td>
+<td>Increased</td>
+</tr><tr>
+<td>Time to Interactive (TTI)</td>
+<td>Very fast</td>
+<td>Slower than SSG</td>
+</tr>
+        </table>
+      </div><h3 id="choosing-the-right-approach">Choosing the right approach</h3>
 <p>The choice between SSG and SSR depends on your specific requirements:</p>
 
 <ul>
@@ -363,92 +390,153 @@
 <li><strong>SSR</strong>: Prioritize dynamic content, personalization, and SEO for applications with frequent updates.</li>
 <li><strong>Hybrid approach</strong>: Use SSG for static parts of your application and SSR for dynamic sections to get the best of both worlds.</li>
 </ul>
-<h4 id="static-site-generation-ssg-summary">Summary</h4>
+<h3 id="static-site-generation-ssg-summary">Summary</h3>
 <p>For content-focused websites with infrequent updates, Static Site Generation (SSG) surpasses Server-Side Rendering (SSR) in web performance and SEO. SSG&rsquo;s pre-rendered HTML delivers faster initial loads, enhancing user experience and search engine visibility. While SSR excels with dynamic content, SSG is optimal for static sites prioritizing speed and SEO, especially crucial for <a href="https://technology.blog.gov.uk/2019/04/18/why-we-focus-on-frontend-performance/">public-facing platforms</a>. However, both SSG and SSR can both introduce complexity in Angular apps.</p>
-<h3 id="avoid-complex-calculations-in-templates">Avoid Complex Calculations in Templates</h3>
+<h2 id="avoid-complex-calculations-in-templates">Avoid Complex Calculations in Templates</h2>
 <p>To avoid complex calculations within Angular templates and improve application performance, you can employ the following strategies:</p>
-<h4 id="precompute-values-in-component-classes">Precompute Values in Component Classes</h4>
+<h3 id="precompute-values-in-component-classes">Precompute Values in Component Classes</h3>
 <p>Move complex calculations or data manipulation logic from the template to the component&rsquo;s TypeScript class. You should also where possible store the results of these calculations in component properties, thus making them readily available in the template.</p>
-<h4 id="utilize-angular-pipes">Utilize Angular Pipes</h4>
+<h3 id="utilize-angular-pipes">Utilize Angular Pipes</h3>
 <p>Use pure pipes for simple transformations and formatting that depend solely on input values. Also create custom pure pipes for more complex calculations or transformations.</p>
-<h4 id="leverage-observables-and-async-pipes">Leverage Observables and Async Pipes</h4>
+<h3 id="leverage-observables-and-async-pipes">Leverage Observables and Async Pipes</h3>
 <p>If your calculations involve asynchronous operations (e.g., API calls), use Observables to handle the results. Also remember to employ the async pipe to automatically subscribe to the Observable in the template, display the latest value, and unsubscribe when the component is destroyed.</p>
-<h4 id="caching-data-where-applicable">Caching Data Where Applicable</h4>
+<h3 id="caching-data-where-applicable">Caching Data Where Applicable</h3>
 <p>If you have pure functions with repeated calculations, consider caching the results to avoid redundant computation.</p>
-<h4 id="performance-profiling">Performance Profiling</h4>
+<h3 id="performance-profiling">Performance Profiling</h3>
 <p>Angular comes with a <a href="https://angular.io/guide/devtools">powerful set of DevTools</a>, which can be used along with other profiling tools to identify bottlenecks caused by complex tasks in your templates. Once identified, look for optimisations to fix them and repeat the tests to ensure they have been fixed.</p>
 <p>More information on these techniques and how browser engines process DOM changes can be <a href="https://www.infiniswiss.com/blog/angular/2020/10/23/change-detection-angular/">found here</a>.</p>
-<h3 id="avoid-known-anti-patterns">Avoid known Anti-patterns</h3>
-<h4 id="not-using-modules-properly">Not Using Modules Properly</h4>
+<h2 id="avoid-known-anti-patterns">Avoid known Anti-patterns</h2>
+<h3 id="not-using-modules-properly">Not Using Modules Properly</h3>
 <p><strong>Monolithic Modules</strong>: Avoid putting all components, directives, and services into the AppModule. Instead, use feature modules and shared modules to organize code logically and facilitate lazy loading.</p>
-<h4 id="abusing-change-detection">Abusing Change Detection</h4>
+<h3 id="abusing-change-detection">Abusing Change Detection</h3>
 <p><strong>Using default Change Detection Everywhere</strong>: Relying solely on the default change detection strategy can lead to performance issues. Use <code>ChangeDetectionStrategy.OnPush</code> where possible to minimize unnecessary change detection cycles.</p>
-<h4 id="heavy-logic-in-components">Heavy Logic in Components</h4>
-<p>**Fat Components: **Placing business logic and heavy processing in components makes them challenging to test and maintain. Move such logic to services.</p>
-<h4 id="direct-dom-manipulation">Direct DOM Manipulation</h4>
-<p>**Bypassing Angular&rsquo;s Renderer: **Directly manipulating the DOM with native methods instead of using Angular&rsquo;s Renderer2 can lead to cross-platform compatibility issues and bypass Angular&rsquo;s change detection.</p>
-<h4 id="ignoring-rxjs-best-practices">Ignoring RxJS Best Practices</h4>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-my-component</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">templateUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./my-component.component.html</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">changeDetection</span><span class="p">:</span> <span class="nx">ChangeDetectionStrategy</span><span class="p">.</span><span class="nx">OnPush</span>
+<span class="p">})</span>
+</code></pre></div><h4 id="heavy-logic-in-components">Heavy Logic in Components</h4>
+<p><strong>Fat Components</strong>: Placing business logic and heavy processing in components makes them challenging to test and maintain. Move such logic to services.</p>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">myService</span><span class="p">:</span> <span class="nx">MyService</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+
+  <span class="nx">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">myService</span><span class="p">.</span><span class="nx">getData</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="c1">// Handle data</span>
+    <span class="p">});</span>
+</code></pre></div><h3 id="direct-dom-manipulation">Direct DOM Manipulation</h3>
+<p><strong>Bypassing Angular&rsquo;s Renderer</strong>: Directly manipulating the DOM with native methods instead of using Angular&rsquo;s Renderer2 can lead to cross-platform compatibility issues and bypass Angular&rsquo;s change detection.</p>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="kd">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">renderer</span><span class="p">:</span> <span class="nx">Renderer2</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+
+<span class="nx">changeBackgroundColor</span><span class="p">(</span><span class="nx">element</span><span class="p">:</span> <span class="nx">HTMLElement</span><span class="p">,</span> <span class="nx">color</span><span class="p">:</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="dl">'</span><span class="s1">background-color</span><span class="dl">'</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="ignoring-rxjs-best-practices">Ignoring RxJS Best Practices</h3>
 <p>Subscribing without Unsubscribing: Failing to unsubscribe from observables can cause memory leaks. Use <code>takeUntil</code>, <code>async</code> pipe, or <code>Subscription</code> management to handle unsubscriptions.</p>
-<h4 id="not-using-trackby-in-ngfor">Not Using TrackBy in ngFor</h4>
-<p>**Inefficient ngFor Loops: **Failing to use <code>trackBy</code> in <code>*ngFor</code> can lead to performance issues due to Angular re-rendering the entire list on changes.</p>
-<h4 id="using-any-for-type-declarations">Using Any for Type Declarations</h4>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="nx">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">data$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">myService</span><span class="p">.</span><span class="nx">getData</span><span class="p">().</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">takeUntil</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy$</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nx">ngOnDestroy</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">destroy$</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">destroy$</span><span class="p">.</span><span class="nx">complete</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="not-using-trackby-in-ngfor">Not Using TrackBy in ngFor</h3>
+<p><strong>Inefficient ngFor Loops</strong>: Failing to use <code>trackBy</code> in <code>*ngFor</code> can lead to performance issues due to Angular re-rendering the entire list on changes.</p>
+<div class="highlight"><pre class="highlight html" tabindex="0"><code><span class="nt">&lt;div</span> <span class="na">*ngFor=</span><span class="s">"let item of items; trackBy: trackByFn"</span><span class="nt">&gt;</span>{{ item.name }}<span class="nt">&lt;/div&gt;</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="nx">trackByFn</span><span class="p">(</span><span class="nx">index</span><span class="p">:</span> <span class="nx">number</span><span class="p">,</span> <span class="nx">item</span><span class="p">:</span> <span class="nx">any</span><span class="p">):</span> <span class="nx">number</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="using-any-for-type-declarations">Using Any for Type Declarations</h3>
 <p><strong>Lack of Strong Typing</strong>: Using any instead of proper type declarations defeats the purpose of TypeScript, leading to potential runtime errors.</p>
-<h4 id="tightly-coupled-components">Tightly Coupled Components</h4>
-<p>**Direct Dependencies: **Components that directly depend on each other are harder to maintain. Use services and dependency injection to decouple components.</p>
-<h4 id="excessive-use-of-angular-forms-api">Excessive Use of Angular Forms API</h4>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="kr">interface</span> <span class="nx">User</span> <span class="p">{</span>
+  <span class="nl">id</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="nl">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">getUser</span><span class="p">():</span> <span class="nx">User</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">John Doe</span><span class="dl">'</span> <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="tightly-coupled-components">Tightly Coupled Components</h3>
+<p><strong>Direct Dependencies</strong>: Components that directly depend on each other are harder to maintain. Use services and dependency injection to decouple components.</p>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="c1">// Instead of this:</span>
+<span class="kd">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">parentComponent</span><span class="p">:</span> <span class="nx">ParentComponent</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+
+<span class="c1">// Do this:</span>
+<span class="kd">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">dataService</span><span class="p">:</span> <span class="nx">DataService</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div><h3 id="excessive-use-of-angular-forms-api">Excessive Use of Angular Forms API</h3>
 <p><strong>Complex Template-Driven Forms</strong>: For complex forms, prefer reactive forms over template-driven forms for better control and scalability.</p>
-<h4 id="no-separation-of-concerns">No Separation of Concerns</h4>
-<p>**Mixing Concerns: **Avoid mixing different concerns like UI logic, business logic, and state management in a single class or file. Separate these concerns into different layers and services.</p>
-<h4 id="hardcoding-configuration-values">Hardcoding Configuration Values</h4>
-<p>**Hardcoding API Endpoints: **Avoid hardcoding configuration values like API endpoints in the code. Use environment configuration files to manage these values.</p>
-<h4 id="ignoring-best-practices-for-asynchronous-code">Ignoring Best Practices for Asynchronous Code</h4>
-<p>**Improper Async Handling: **Not handling asynchronous code properly can lead to unexpected behavior. Use async/await, observables, or promises appropriately.</p>
-<h4 id="poor-error-handling">Poor Error Handling</h4>
-<p>**Neglecting Error Handling: **Not handling errors properly can lead to a poor user experience. Implement comprehensive error handling strategies for HTTP calls and other async operations.</p>
-<h4 id="not-using-angular-cli">Not Using Angular CLI</h4>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="k">this</span><span class="p">.</span><span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="p">({</span>
+  <span class="na">name</span><span class="p">:</span> <span class="p">[</span><span class="dl">''</span><span class="p">,</span> <span class="nx">Validators</span><span class="p">.</span><span class="nx">required</span><span class="p">],</span>
+  <span class="na">age</span><span class="p">:</span> <span class="p">[</span><span class="dl">''</span><span class="p">,</span> <span class="nx">Validators</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="mi">18</span><span class="p">)]</span>
+<span class="p">});</span>
+</code></pre></div><h3 id="no-separation-of-concerns">No Separation of Concerns</h3>
+<p><strong>Mixing Concerns</strong>: Avoid mixing different concerns like UI logic, business logic, and state management in a single class or file. Separate these concerns into different layers and services.</p>
+<h3 id="hardcoding-configuration-values">Hardcoding Configuration Values</h3>
+<p><strong>Hardcoding API Endpoints</strong>: Avoid hardcoding configuration values like API endpoints in the code. Use environment configuration files to manage these values.</p>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">environment</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../environments/environment</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">this</span><span class="p">.</span><span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">environment</span><span class="p">.</span><span class="nx">apiUrl</span><span class="p">;</span>
+</code></pre></div><h3 id="ignoring-best-practices-for-asynchronous-code">Ignoring Best Practices for Asynchronous Code</h3>
+<p><strong>Improper Async Handling</strong>: Not handling asynchronous code properly can lead to unexpected behavior. Use async/await, observables, or promises appropriately.</p>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="k">async</span> <span class="nx">fetchData</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">).</span><span class="nx">toPromise</span><span class="p">();</span>
+    <span class="c1">// Handle data</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Handle error</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="poor-error-handling">Poor Error Handling</h3>
+<p><strong>Neglecting Error Handling</strong>: Not handling errors properly can lead to a poor user experience. Implement comprehensive error handling strategies for HTTP calls and other async operations.</p>
+<div class="highlight"><pre class="highlight javascript" tabindex="0"><code><span class="k">this</span><span class="p">.</span><span class="nx">myService</span><span class="p">.</span><span class="nx">getData</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span>
+  <span class="nx">data</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* Handle data */</span> <span class="p">},</span>
+  <span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* Handle error */</span> <span class="p">}</span>
+<span class="p">);</span>
+</code></pre></div><h3 id="not-using-angular-cli">Not Using Angular CLI</h3>
 <p><strong>Manual Build Configuration</strong>: Avoid manually configuring the build process. Use Angular CLI to generate, develop, and build your application for consistency and best practices.</p>
-<h3 id="fine-tune-templates-especially-for-loops">Fine tune templates especially for loops</h3>
-<h4 id="virtual-scrolling">Virtual Scrolling</h4>
+<h2 id="fine-tune-templates-especially-for-loops">Fine tune templates especially for loops</h2>
+<h3 id="virtual-scrolling">Virtual Scrolling</h3>
 <p><strong>Problem</strong>:</p>
 <p>Rendering large lists with <code>ngFor</code> can be slow, especially when dealing with thousands of items.</p>
 <p><strong>Solution</strong>:</p>
 <p>Use a virtual scrolling library like <a href="https://www.npmjs.com/package/@lithiumjs/ngx-virtual-scroll?activeTab=readme">ngx-virtual-scroller</a> or <a href="https://material.angular.io/cdk/scrolling/overview">cdk-virtual-scroll</a>. These libraries only render the visible portion of the list and dynamically load more items as the user scrolls, dramatically improving performance for large datasets.</p>
-<h4 id="optimize-data-structures">​​Optimize Data Structures</h4>
+<h3 id="optimize-data-structures">​​Optimize Data Structures</h3>
 <p><strong>Problem</strong>:</p>
 <p>Inefficient data structures or frequent updates can impact loop performance.</p>
 <p><strong>Solution</strong>:</p>
 <p>Ensure your data is well-structured and updates are batched or optimized to minimize unnecessary changes.</p>
-<h4 id="lazy-loading">Lazy Loading</h4>
+<h3 id="lazy-loading">Lazy Loading</h3>
 <p><strong>Problem</strong>:</p>
 <p>Loading large amounts of data upfront can slow down initial rendering.</p>
 <p><strong>Solution</strong>:</p>
 <p>Consider lazy loading items in the loop as the user scrolls or interacts with the list, especially if not all items need to be visible immediately.</p>
-<h4 id="nested-subscriptions">Nested Subscriptions</h4>
-<p>*<em>Problem: *</em></p>
+<h3 id="nested-subscriptions">Nested Subscriptions</h3>
+<p><strong>Problem</strong>:</p>
 <p>Subscribing to observables within other subscriptions can lead to complex code and potential memory leaks if subscriptions are not properly managed.</p>
-<p><strong>Solution:</strong></p>
+<p><strong>Solution</strong>:</p>
 <p>Use higher-order mapping operators (e.g., <code>switchMap</code>, <code>concatMap</code>, <code>mergeMap</code>) to flatten nested observables or consider using libraries like RxJS takeUntil to automatically unsubscribe.</p>
-<h3 id="other-angular-performance-tips">Other Angular Performance Tips</h3>
+<h2 id="other-angular-performance-tips">Other Angular Performance Tips</h2>
 
 <ul>
 <li>Use <code>ngIf</code> for conditional rendering: Avoid using <code>hidden</code> attribute, as it still renders elements in the DOM.</li>
 <li><strong>Avoid nested loops</strong>: Deeply nested loops can be expensive.</li>
-<li>**Use the <code>keyvalue</code> pipe</strong>: It&rsquo;s more efficient for iterating over objects than using a for loop.</li>
+<li><strong>Use the <code>keyvalue</code> pipe</strong>: It&rsquo;s more efficient for iterating over objects than using a for loop.</li>
 </ul>
 <p>Optimizing Angular applications for performance, SEO, and maintainability involves a multifaceted approach. Offloading complex calculations to Web Workers prevents UI blocking and improves responsiveness, while utilizing SSR or SSG ensures faster initial page loads and better search engine visibility.</p>
 <p>By strategically choosing between SSR and SSG based on content dynamism, developers can strike the right balance between performance and flexibility. Additionally, simplifying Angular templates by avoiding complex calculations enhances code readability, maintainability, and overall efficiency. These combined strategies lead to faster, more SEO-friendly Angular applications that deliver a superior user experience for all users.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-05-29">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-06-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 29 May 2024.
+      This page was last reviewed on 5 June 2024.
 
-        It needs to be reviewed again on 29 May 2025
+        It needs to be reviewed again on 5 June 2025
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 29 May 2025
+      This page was set to be reviewed before 5 June 2025
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
