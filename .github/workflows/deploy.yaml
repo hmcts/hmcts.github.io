@@ -6,10 +6,6 @@ on:
     branches:
       - source
 
-# For check-spelling to comment in the pull request
-permissions:
-  pull-requests: write
-
 jobs:
   spellcheck:
     runs-on: ubuntu-latest
