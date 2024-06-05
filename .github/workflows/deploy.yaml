@@ -6,6 +6,10 @@ on:
     branches:
       - source
 
+# For check-spelling to comment in the pull request
+permissions:
+  pull-requests: write
+
 jobs:
   spellcheck:
     runs-on: ubuntu-latest
@@ -21,6 +25,7 @@ jobs:
             cspell:software-terms/dict/softwareTerms.txt
             cspell:npm/dict/npm.txt
             cspell:node/dict/node.txt
+            cspell:en_GB/src/hunspell/en_GB.dic
   build:
     runs-on: ubuntu-latest
     name: 'Build and Test'
