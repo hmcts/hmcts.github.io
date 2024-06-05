@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en" class="govuk-template no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Frontend Web Performance - HMCTS</title>
+
+    <link href="../../stylesheets/manifest.css" rel="stylesheet" />
+
+    <link rel="canonical" href="https://hmcts.github.io/standards/standards/frontend-web-performance.html">
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="hmcts.github.io" />
+      <meta name="twitter:image" content="https://hmcts.github.io/images/govuk-large.png" />
+      <meta name="twitter:title" content="Frontend Web Performance - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts.github.io/standards/standards/frontend-web-performance.html" />
+
+      <meta property="og:image" content="https://hmcts.github.io/images/govuk-large.png" />
+      <meta property="og:site_name" content="HMCTS" />
+      <meta property="og:title" content="Frontend Web Performance" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://hmcts.github.io/standards/standards/frontend-web-performance.html" />
+
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+        <header class="govuk-header app-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-header__container--full-width">
+    <div class="govuk-header__logo">
+      <a href="https://github.com/hmcts" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__product-name">
+          HMCTS
+        </span>
+      </a>
+        <strong class="govuk-tag">Live</strong>
+    </div>
+    <div class="govuk-header__content">
+      <nav class="govuk-header__navigation govuk-header__navigation--end" aria-label="Menu">
+        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu">Menu</button>
+        <ul id="navigation" class="govuk-header__navigation-list">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://hmcts-dts.slack.com/app_redirect?channel=platops-help">Support</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="../../">Documentation</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://github.com/hmcts">GitHub</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </button>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
+              <div class="search" data-module="search" data-path-to-site-root="../../">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
+    <input type="hidden" name="as_sitesearch" value="https://hmcts.github.io"/>
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
+      Search (via Google)
+    </label>
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
+  </form>
+</div>
+
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="../../index.html"><span>The HMCTS way</span></a>
+  </li>
+  <li>
+    <a href="../../hmcts-overview/index.html"><span>HMCTS overview</span></a>
+  </li>
+<li><a href="../../cloud-native-platform/index.html"><span>Cloud Native Platform</span></a>
+<ul>
+<li><a href="../../cloud-native-platform/environments/index.html"><span>Environments</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/environments/sandbox-cleardown.html"><span>Sandbox Cleardown</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/environments/auto-shutdown.html"><span>Environment schedule</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/standards/index.html"><span>Concepts and standards</span></a>
+<ul>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/onboarding/index.html"><span>Onboarding</span></a>
+<ul>
+<li><a href="../../cloud-native-platform/onboarding/team/index.html"><span>Team</span></a>
+<ul>
+</ul>
+</li>
+  <li>
+    <a href="../../cloud-native-platform/onboarding/person/index.html"><span>Person</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/common-pipeline/index.html"><span>The common pipeline</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/common-pipeline/common-pipeline.html"><span>Common pipeline</span></a>
+  </li>
+<li><a href="../../cloud-native-platform/common-pipeline/publishing-libraries/index.html"><span>Publishing libraries</span></a>
+<ul>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/new-component/index.html"><span>Starting a new component</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/new-component/github-repo.html"><span>Create a Github Repository</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/infrastructure-as-code.html"><span>Infrastructure as Code</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/helm-chart.html"><span>Helm chart</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/gitops-flux.html"><span>GitOps</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/secrets-management.html"><span>Secrets Management</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/elasticsearch.html"><span>ElasticSearch</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/new-component/feature-flags.html"><span>Feature flags</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/path-to-live/index.html"><span>Path to live</span></a>
+<ul>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/load-balancer-configuration.html"><span>Load balancer configuration</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/tls-certificates.html"><span>TLS certificates</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/public-dns.html"><span>Public DNS</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/front-door.html"><span>Front Door configuration</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/shutter.html"><span>Shutter Implementation and Design</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/path-to-live/oat.html"><span>Operational Acceptance Testing</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../cloud-native-platform/guides/index.html"><span>Guides</span></a>
+<ul>
+</ul>
+</li>
+  <li>
+    <a href="../../cloud-native-platform/glossary/index.html"><span>Glossary</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/health-end-points/index.html"><span>Health Probes</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/troubleshooting/index.html"><span>Troubleshooting issues</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/asking-for-help/index.html"><span>Asking for help</span></a>
+  </li>
+  <li>
+    <a href="../../cloud-native-platform/api-docs/index.html"><span>API Documentation</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../cjs-common-platform/index.html"><span>CJS Common Platform</span></a>
+  </li>
+<li><a href="../../legacy/index.html"><span>Legacy applications</span></a>
+<ul>
+  <li>
+    <a href="../../legacy/support/index.html"><span>Support and maintenance</span></a>
+  </li>
+  <li>
+    <a href="../../legacy/knowledgebase/index.html"><span>Knowledgebase</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../standards/index.html"><span>Standards</span></a>
+<ul>
+<li><a href="../../standards/principles/index.html"><span>Principles</span></a>
+<ul>
+  <li>
+    <a href="../../standards/principles/continuous-delivery.html"><span>Continuous delivery</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/programming.html"><span>Programming</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/devops.html"><span>DevOps</span></a>
+  </li>
+  <li>
+    <a href="../../standards/principles/test.html"><span>Testing</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../standards/practices/index.html"><span>Practices</span></a>
+<ul>
+  <li>
+    <a href="../../standards/practices/frontend.html"><span>Frontend applications</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/backends.html"><span>Backend applications</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/apis.html"><span>APIs</span></a>
+  </li>
+  <li>
+    <a href="../../standards/practices/certificates.html"><span>Certificates</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../../standards/standards/index.html"><span>Standards</span></a>
+<ul>
+  <li>
+    <a href="../../standards/standards/angular.html"><span>Angular</span></a>
+  </li>
+  <li>
+    <a href="../../standards/standards/java.html"><span>Java</span></a>
+  </li>
+  <li>
+    <a href="../../standards/standards/frontend-web-performance.html"><span>Frontend Web Performance</span></a>
+  </li>
+  <li>
+    <a href="../../standards/standards/angular-web-performance.html"><span>Angular Web Performance</span></a>
+  </li>
+  <li>
+    <a href="../../standards/standards/cookies.html"><span>Cookies</span></a>
+  </li>
+  <li>
+    <a href="../../standards/standards/typescript.html"><span>TypeScript</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../../standards/technology-stack/index.html"><span>Technology stack</span></a>
+  </li>
+</ul>
+</li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="frontend-web-performance">Frontend Web Performance</h1>
+<h2 id="context">Context</h2>
+<p>By prioritizing frontend performance, governments can ensure that their online services are accessible, efficient, and user-friendly for all citizens, regardless of their device or connection. This fosters inclusivity, improves user satisfaction, and ultimately contributes to a more effective and trusted government. This aligns very closely with the topic of Frontend Performance in the <a href="https://gds-way.digital.cabinet-office.gov.uk/standards/optimise-frontend-perf.html">GDS Way</a> and the <a href="https://www.gov.uk/service-manual/technology/how-to-test-frontend-performance">Service Manual</a>. Creating services that are performant is also a fundamental skill of being a <a href="https://ddat-capability-framework.service.gov.uk/role/frontend-developer">Frontend Developer</a> in the Civil Service, according to the <a href="https://ddat-capability-framework.service.gov.uk/">Government Digital and Data Profession Capability Framework</a>.</p>
+<h2 id="use-a-cdn">Use a CDN</h2>
+<p>Using a Content Delivery Network (CDN) is essential for optimal frontend performance. By mirroring website assets across its network, a CDN serves content from the geographically closest server, minimizing HTTP connection time and accelerating asset downloads. This is crucial, as a browser can only download assets after establishing an HTTP connection.</p>
+<p>CDNs are essential for fast page loads, as they minimize a user&rsquo;s Time to First Byte (TTFB).</p>
+<p><strong>Important Note</strong>: Given most HMCTS users are likely UK-based, this recommendation is low priority.</p>
+<p>It&rsquo;s likely to:
+- add complexity to the service
+- add additional costs</p>
+<p>A cost-benefit analysis should precede any work on this recommendation.</p>
+<h2 id="use-brotli-compression-if-available">Use Brotli compression (If available)</h2>
+<p>Brotli, a lossless compression algorithm developed by Google, which offers up to 20% smaller file sizes than Gzip for web assets like CSS and JavaScript. Widely supported by browsers and CDNs <a href="https://caniuse.com/brotli">since late 2017</a>, Brotli seamlessly falls back to Gzip if unsupported, this browser decision is based on the <code>Accept-Encoding</code> and <code>Content-Encoding</code> headers during HTTP negotiation.</p>
+<p><strong>Important Note</strong>: Enable Brotli only if available on the platform hosting the service.</p>
+<h2 id="use-image-compression">Use Image compression</h2>
+<p>The key to good image compression is understanding which types of image compress well using each of the various image formats used on the web platform. For example:</p>
+
+<ul>
+<li><strong>JPEG</strong>: is a lossy compression algorithm that is widely used for compressing photographs.</li>
+<li><strong>GIF</strong>: is a lossless compression format that is mainly used for compressing animations.</li>
+<li><strong>PNG</strong>: Is a lossless compression format that is often used when transparency is required in a sites design.</li>
+<li><strong>WebP</strong>: is an open-source format which designed to be a superior replacement for older image formats like JPEG, PNG, and GIF files.</li>
+<li><strong>AVIF</strong>: is a modern image format that has better compression than WebP, JPEG, PNG and GIF. <a href="https://caniuse.com/avif">Browser support</a> should be considered if you plan to use it.</li>
+</ul>
+<p>If in doubt about which format to use, you can easily compare image compression results in a tool like <a href="https://squoosh.app/">Squoosh</a>. It’s important to consider both the resulting clarity of the compressed image and the file size output. Larger images increase data usage for users and can slow page loads by utilising a user&rsquo;s connection.</p>
+<h2 id="use-a-responsive-image-solution">Use a Responsive Image solution</h2>
+<p>Choosing a responsive image solution empowers the browser, and allows it to decide which size image format works best for the current device or screen size.</p>
+<p>For example, if a user is on a mobile device, a full resolution image is likely to be a waste of precious bandwidth. A better choice would be a smaller image size that is only a fraction of the size, without sacrificing message clarity. There are multiple options available when choosing a responsive image solution. Rather than repeating code that is available elsewhere on the web, before choosing a solution for your service, It’s recommended you read the following articles:</p>
+
+<ul>
+<li><a href="https://alistapart.com/article/responsive-images-in-practice/">Responsive Images in Practice</a> - A List Apart by Eric Portis.</li>
+<li><a href="https://cloudfour.com/thinks/responsive-images-101-definitions/">Responsive Images 101 (10-part series)</a> - by Jason Grigsby.</li>
+<li><a href="https://css-tricks.com/a-guide-to-the-responsive-images-syntax-in-html/">A Guide to the Responsive Images Syntax in HTML</a> by CSS-Tricks.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images">Native Responsive Images</a> by MDN Web Docs</li>
+</ul>
+<h2 id="ensure-asset-caching-is-set-correctly">Ensure asset caching is set correctly</h2>
+<p>Proper asset caching is crucial for repeat visitors and website navigation. By storing assets locally, browsers can avoid redundant downloads, saving bandwidth and reducing HTTP requests.</p>
+<p>An example that is very common on the web and a prime example of where caching is important is for images that persist across a whole website journey for users, for example, a company logo is a excellent candidate for efficient caching. A user&rsquo;s browser downloads it once on the entry page to the site, it is then reused for every subsequent page that the user visits. Once the logo asset is cached, the user&rsquo;s browser navigating between pages shouldn&rsquo;t need to make an additional HTTP request for it, as the browser can simply load it from the cache.</p>
+<p>The frontend performance monitoring tool <a href="https://www.webpagetest.org/">WebPageTest (WPT)</a> is an excellent tool to use if you are looking to optimise asset caching across user journeys. It is possible to programmatically give WPT a set of pages to navigate across, with each page load a new waterfall chart will be visualised. The aim of the task is to ensure subsequent visits across the user journey have a minimal <a href="https://nooshu.com/blog/2019/10/02/how-to-read-a-wpt-waterfall-chart/#basic-layout">waterfall visualisation</a> chart, as this then shows most assets required to load the later pages in the users&rsquo; journey have already been cached, and the asset can be retrieved from the cache without having to make a HTTP request at all.</p>
+<p>Reading the following articles will help you improve your asset caching across services:</p>
+
+<ul>
+<li><a href="https://csswizardry.com/2019/03/cache-control-for-civilians/">Cache-Control for Civilians</a> by Harry Roberts</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching">HTTP Caching</a> on MDN Web Docs</li>
+<li><a href="https://jakearchibald.com/2016/caching-best-practices/">Caching Best Practices &amp; Max-Age Gotchas</a> by Jake Archibald</li>
+<li><a href="https://www.keycdn.com/support/cache-definition-explanation">Cache Definition and Explanation</a> by KeyCDN</li>
+</ul>
+<h2 id="preload-prefetch-resources">Preload / prefetch resources</h2>
+<p>The preload and prefetch directives allow a developer to give the browser hints about what they may require in a future user interaction:</p>
+<h2 id="preload">Preload</h2>
+<p>This <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload">Preload directive</a> allows the developer to tell a browser that you are going to need this asset in the future (e.g. CSS or JS file). Therefore, download it straight away so it will be immediately available in the browsers cache when it is requested by the page. An example of a simple preload is seen below:</p>
+<div class="highlight"><pre class="highlight html" tabindex="0"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"preload"</span> <span class="na">href=</span><span class="s">"style.css"</span> <span class="na">as=</span><span class="s">"style"</span><span class="nt">&gt;</span>
+</code></pre></div><h2 id="prefetch">Prefetch</h2>
+<p>This <a href="https://developer.mozilla.org/en-US/docs/Glossary/Prefetch">Prefetch directive</a> allows the developer to start to prefetch a user&rsquo;s next page navigation. So when the user clicks the link, the page has already been requested and parsed. The browser decides to initiate a prefetch depending on the current network conditions and resource usage, so as not to slow down the initial page load. An example of a simple prefetch is seen below:</p>
+<div class="highlight"><pre class="highlight html" tabindex="0"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"prefetch"</span> <span class="na">href=</span><span class="s">"page2.html"</span><span class="nt">&gt;</span>
+</code></pre></div><p>When used correctly, the preload and prefetch directives can improve the perceived performance of a webpage for a user. It is also important to understand that overuse of either of these directives can harm performance for users. Make sure to test a page&rsquo;s performance before and after these directives are used. If performance is worse, it is advised to remove them and simply allow the browser to decide on the page load prioritisation process.</p>
+<h2 id="ensure-http-requests-are-minimised-by-using-modern-http-protocols">Ensure HTTP requests are minimised by using modern HTTP protocols</h2>
+<p>Individual HTTP requests are expensive in terms of page performance. Each HTTP request has three stages:</p>
+
+<ol>
+<li>DNS lookup</li>
+<li>Initial connection</li>
+<li>SSL Negotiation</li>
+</ol>
+<p>Depending on a user&rsquo;s connection speed and its stability, this process can range from 100’s of milliseconds to many seconds in some of the worst cases.</p>
+<p>It’s important to understand that while this connection is being established, a user will see nothing on their device&rsquo;s screen. As was mentioned earlier in the CDN section, minimising Time to first Byte (TTFB) is essential for fast page loads. The longer it takes for a HTTP connection to be established, the slower the TTFB and it doesn’t matter how optimised a webpage is in terms of asset filesize, if the TTFB is slow, the <a href="https://csswizardry.com/2019/08/time-to-first-byte-what-it-is-and-why-it-matters/">whole webpage will be slow</a>.</p>
+<h3 id="http-2">HTTP/2</h3>
+<p>Thankfully, modern HTTP protocols like HTTP/2 have been specifically designed to minimise the number of HTTP requests required to load a page. HTTP/2 also introduced a technology called <a href="https://daniel.haxx.se/blog/2016/08/18/http2-connection-coalescing/">HTTP/2 connection coalescing</a>. This allows a browser to download assets on an already established HTTP connection as long as the asset comes from the same server, e.g. on the same IP address and served using the same SSL Certificate. Connection coalescing is an excellent intermediate change that can be used if a service has used <a href="https://developer.mozilla.org/en-US/docs/Glossary/Domain_sharding">Domain Sharding</a> to circumvent a browsers <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Connection_management_in_HTTP_1.x">limited number of connections to a domain in HTTP 1.x</a>.</p>
+<h3 id="http-3-quic-if-available">HTTP/3 + QUIC (If available)</h3>
+<p>HTTP/3, built on <a href="https://en.wikipedia.org/wiki/QUIC">QUIC</a>, offers several performance advantages over HTTP/2. It reduces latency due to faster connection establishment and eliminates <a href="https://en.wikipedia.org/wiki/Head-of-line_blocking">head-of-line blocking</a>, ensuring packet loss doesn&rsquo;t stall all data streams. This results in faster page loads and smoother user experiences, especially on unreliable networks or mobile devices. Should you be interested in reading more about HTTP/3 Smashing Magazine has an extremely in-depth <a href="https://www.smashingmagazine.com/2021/08/http3-core-concepts-part1/">3-part article</a> written by Robin Marx. It’s also worth noting that as of January 2024, <a href="https://github.com/alphagov/govuk-rfcs/blob/4d28064a477ab225864651f7c912c5aeae6c2fc1/rfc-139-enable-http3.md">GOV.UK uses HTTP/3 + QUIC</a>.</p>
+<p><strong>Important Note</strong>: Enable HTTP/3 + QUIC only if available on the platform hosting the service.</p>
+<h2 id="use-http-range-requests">Use HTTP range requests</h2>
+<p>HTTP range requests allow clients to fetch only specific parts of a resource, rather than the entire file. This is useful for:
+ - <strong>Resuming interrupted downloads</strong>: If a download fails, the client can request the remaining portion instead of restarting. e.g. PDF&rsquo;s
+ - <strong>Large file downloads</strong>: Clients can download parts in parallel for faster speeds.</p>
+<p>Once implimented range requests optimize bandwidth usage and improve user experience in various scenarios. For more information on range requests see the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests">MDN Web Docs</a>.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2025-06-05">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 5 June 2024.
+
+        It needs to be reviewed again on 5 June 2025
+        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
+        .
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 5 June 2025
+       by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
+          </main>
+
+          <aside>
+              <ul class="contribution-banner">
+                <li><a href="https://github.com/hmcts/hmcts.github.io/blob/source/source/standards/standards/frontend-web-performance.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io/issues/new?body=Problem+with+%27Frontend+Web+Performance%27+%28https%3A%2F%2Fhmcts.github.io%2Fstandards%2Fstandards%2Ffrontend-web-performance.html%29&amp;labels=bug&amp;title=Re%3A+%27Frontend+Web+Performance%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/hmcts.github.io">GitHub Repo</a></li>
+              </ul>
+          </aside>
+
+          <footer class="govuk-footer app-footer" role="contentinfo">
+  <div class="govuk-footer__meta">
+    <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+
+
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="govuk-footer__licence-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 483.2 195.7"
+        height="17"
+        width="41"
+      >
+        <path
+          fill="currentColor"
+          d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+        />
+      </svg>
+      <span class="govuk-footer__licence-description">
+        All content is available under the
+        <a
+          class="govuk-footer__link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="license"
+        >Open Government Licence v3.0</a>, except where otherwise stated
+      </span>
+    </div>
+    <div class="govuk-footer__meta-item">
+      <a
+        class="govuk-footer__link govuk-footer__copyright-logo"
+        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+      >© Crown copyright</a>
+    </div>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-170132988-1', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('set', 'displayFeaturesTask', null);
+  ga('set', 'transport', 'beacon');
+  ga('set', 'page', location.pathname+location.search+location.hash);
+  ga('send', 'pageview');
+  </script>
+
+    <script src="../../javascripts/application.js"></script>
+  </body>
+</html>
