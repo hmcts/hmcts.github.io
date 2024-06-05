@@ -123,8 +123,9 @@ HTTP/3, built on [QUIC](https://en.wikipedia.org/wiki/QUIC), offers several perf
 ## Use HTTP range requests
 
 HTTP range requests allow clients to fetch only specific parts of a resource, rather than the entire file. This is useful for:
- - **Resuming interrupted downloads**: If a download fails, the client can request the remaining portion instead of restarting. e.g. PDF's
- - **Large file downloads**: Clients can download parts in parallel for faster speeds.
+
+ * **Resuming interrupted downloads**: If a download fails, the client can request the remaining portion instead of restarting. e.g. PDF's
+ * **Large file downloads**: Clients can download parts in parallel for faster speeds.
 
  Once implimented range requests optimize bandwidth usage and improve user experience in various scenarios. For more information on range requests see the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests).
 
