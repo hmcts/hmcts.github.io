@@ -21,6 +21,7 @@ jobs:
             cspell:software-terms/dict/softwareTerms.txt
             cspell:npm/dict/npm.txt
             cspell:node/dict/node.txt
+            cspell:en_GB/src/hunspell/en_GB.dic
   build:
     runs-on: ubuntu-latest
     name: 'Build and Test'
