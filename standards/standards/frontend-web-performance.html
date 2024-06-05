@@ -294,9 +294,12 @@
 <p>Using a Content Delivery Network (CDN) is essential for optimal frontend performance. By mirroring website assets across its network, a CDN serves content from the geographically closest server, minimizing HTTP connection time and accelerating asset downloads. This is crucial, as a browser can only download assets after establishing an HTTP connection.</p>
 <p>CDNs are essential for fast page loads, as they minimize a user&rsquo;s Time to First Byte (TTFB).</p>
 <p><strong>Important Note</strong>: Given most HMCTS users are likely UK-based, this recommendation is low priority.</p>
-<p>It&rsquo;s likely to:
-- add complexity to the service
-- add additional costs</p>
+<p>It&rsquo;s likely to:</p>
+
+<ul>
+<li>add complexity to the service</li>
+<li>add additional costs</li>
+</ul>
 <p>A cost-benefit analysis should precede any work on this recommendation.</p>
 <h2 id="use-brotli-compression-if-available">Use Brotli compression (If available)</h2>
 <p>Brotli, a lossless compression algorithm developed by Google, which offers up to 20% smaller file sizes than Gzip for web assets like CSS and JavaScript. Widely supported by browsers and CDNs <a href="https://caniuse.com/brotli">since late 2017</a>, Brotli seamlessly falls back to Gzip if unsupported, this browser decision is based on the <code>Accept-Encoding</code> and <code>Content-Encoding</code> headers during HTTP negotiation.</p>
