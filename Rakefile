@@ -14,7 +14,7 @@ task :check_urls do
                 # Ignore pulls/branches as these do not translate to raw content
                 %r{github\.com/hmcts/(?=.*(?:pull|tree|commit))},
                 # This is a url that's generated each time we build the html by tech-docs-gem but does not exist
-                %r{https://github.com/hmcts/hmcts.github.io/blob/source/source/search/index.html}
+                %r{https://github.com/hmcts/hmcts.github.io/blob/source/source/search/index.html},
                 # This handles new files that haven't been merged to master branch yet for this repo in a PR
                 %r{(?=.*hmcts.github.io)(?=.*github)}
             ]
