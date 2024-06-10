@@ -133,10 +133,12 @@ HTTP range requests allow clients to fetch only specific parts of a resource, ra
 
 By default, the HMCTS frontdoor module, [terraform-module-frontdoor](https://github.com/hmcts/terraform-module-frontdoor), sets the Azure frontdoor to automatically cache static files like images (jpg, png), stylesheets (css), icons (ico), and Javascript files (js). However, for applications behind the frontdoor to benefit from this caching, they need to set the correct headers in their responses.
 
-Here's an example: The Toffee application (see [pull request #431](https://github.com/hmcts/sds-toffee-frontend/pull/431/files#diff-318a36d55c848c97aa1adea654c62dd6551bf887c6b6db655364ab6879e11fa4R37) configures its headers to allow the frontdoor to cache static files for 60 seconds. This improves performance by reducing the number of times the application needs to send the same static content to users.
+Here's an example: The Toffee application (see [pull request #431](https://github.com/hmcts/sds-toffee-frontend/pull/431/files#diff-318a36d55c848c97aa1adea654c62dd6551bf887c6b6db655364ab6879e11fa4R37) ) configures its headers to allow the frontdoor to cache static files for 60 seconds. This improves performance by reducing the number of times the application needs to send the same static content to users.
 
 If you like to overwrite the default caching rule to include more static file type, please see below example for Toffee app.
+
 [Example](https://github.com/hmcts/sds-azure-platform/blob/74d7fe1c3c645bfaa6c00bd46b2a8c4a734a3a12/environments/sbox/sbox.tfvars#L38-L51)
 
 If you like to completely turn off caching, please see below example.
+
 [Example](https://github.com/hmcts/sds-azure-platform/blob/master/environments/stg/stg.tfvars#L427)
