@@ -433,10 +433,12 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p>CNAME records are much easier to shutter, for each record an equivalent shutter config must exist, as detailed in the <em><a href="#individual-records">Individual Records</a></em> section.</p>
 <p>As long as there is a matching shutter config for the DNS record you can update the shutter value to true to enable a shutter.</p>
 <h2 id="shuttering-all-cft-services">Shuttering all CFT services</h2>
-<p>To shutter all CFT services refer to these PRs as an example to use: <a href="https://github.com/hmcts/azure-public-dns/pull/1674">Shutter</a> and <a href="https://github.com/hmcts/azure-public-dns/pull/1677">Unshutter</a></p>
-<p><strong>Note:</strong> You can use the <code>Revert</code> button in the GitHub UI to create your unshutter PR for you.</p>
+<p>To shutter all CFT services refer to these PRs as an example to use: <a href="https://github.com/hmcts/azure-public-dns/pull/1745">Shutter</a>.</p>
+<p><strong>Note:</strong> You can use the <code>Revert</code> button in the GitHub UI to create your unshutter PR for you, which will also require PR approval.</p>
 <p><a href="../images/gh-revert.png" rel="noopener noreferrer"><img src="../images/gh-revert.png" alt="GitHub Revert Button" /></a></p>
-<h2 id="how-to-access-your-application-when-it-is-shuttered-for-testing-purposes-only">How to access your application when it is shuttered (For testing purposes only)</h2>
+<p>To ensure you have an updated list of all applicable CFT services - connect to the CFT AKS production cluster and run the following command:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get ingress -A | grep -v '.internal'
+</code></pre></div><h2 id="how-to-access-your-application-when-it-is-shuttered-for-testing-purposes-only">How to access your application when it is shuttered (For testing purposes only)</h2>
 <p>When an application&rsquo;s shutter page is active, it&rsquo;s possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active.</p>
 <p>You will need the IP address of the associated Azure FrontDoor Endpoint. You can run a <code>dig</code> or <code>nslookup</code> on the endpoint to retrieve the IP. Multiple IPs may be returned due to HA but either should work.</p>
 <p>e.g.</p>
