@@ -1,0 +1,144 @@
+---
+title: Frontend Web Performance
+last_reviewed_on: 2024-06-10
+review_in: 12 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+
+## Context
+
+By prioritizing frontend performance, governments can ensure that their online services are accessible, efficient, and user-friendly for all citizens, regardless of their device or connection. This fosters inclusivity, improves user satisfaction, and ultimately contributes to a more effective and trusted government. This aligns very closely with the topic of Frontend Performance in the [GDS Way](https://gds-way.digital.cabinet-office.gov.uk/standards/optimise-frontend-perf.html) and the [Service Manual](https://www.gov.uk/service-manual/technology/how-to-test-frontend-performance). Creating services that are performant is also a fundamental skill of being a [Frontend Developer](https://ddat-capability-framework.service.gov.uk/role/frontend-developer) in the Civil Service, according to the [Government Digital and Data Profession Capability Framework](https://ddat-capability-framework.service.gov.uk/).
+
+
+## Use a CDN
+
+Using a Content Delivery Network (CDN) is essential for optimal frontend performance. By mirroring website assets across its network, a CDN serves content from the geographically closest server, minimizing HTTP connection time and accelerating asset downloads. This is crucial, as a browser can only download assets after establishing an HTTP connection.
+
+CDNs are essential for fast page loads, as they minimize a user's Time to First Byte (TTFB).
+
+**Important Note**: Given most HMCTS users are likely UK-based, this recommendation is low priority.
+
+It's likely to:
+
+* add complexity to the service
+* add additional costs
+
+A cost-benefit analysis should precede any work on this recommendation.
+
+## Use Brotli compression (If available)
+
+Brotli, a lossless compression algorithm developed by Google, which offers up to 20% smaller file sizes than Gzip for web assets like CSS and JavaScript. Widely supported by browsers and CDNs [since late 2017](https://caniuse.com/brotli), Brotli seamlessly falls back to Gzip if unsupported, this browser decision is based on the `Accept-Encoding` and `Content-Encoding` headers during HTTP negotiation.
+
+**Important Note**: Enable Brotli only if available on the platform hosting the service.
+
+## Use Image compression
+
+The key to good image compression is understanding which types of image compress well using each of the various image formats used on the web platform. For example:
+
+* **JPEG**: is a lossy compression algorithm that is widely used for compressing photographs.
+* **GIF**: is a lossless compression format that is mainly used for compressing animations.
+* **PNG**: Is a lossless compression format that is often used when transparency is required in a sites design.
+* **WebP**: is an open-source format which designed to be a superior replacement for older image formats like JPEG, PNG, and GIF files.
+* **AVIF**: is a modern image format that has better compression than WebP, JPEG, PNG and GIF. [Browser support](https://caniuse.com/avif) should be considered if you plan to use it.
+
+If in doubt about which format to use, you can easily compare image compression results in a tool like [Squoosh](https://squoosh.app/). It’s important to consider both the resulting clarity of the compressed image and the file size output. Larger images increase data usage for users and can slow page loads by utilising a user's connection.
+
+
+## Use a Responsive Image solution
+
+Choosing a responsive image solution empowers the browser, and allows it to decide which size image format works best for the current device or screen size.
+
+For example, if a user is on a mobile device, a full resolution image is likely to be a waste of precious bandwidth. A better choice would be a smaller image size that is only a fraction of the size, without sacrificing message clarity. There are multiple options available when choosing a responsive image solution. Rather than repeating code that is available elsewhere on the web, before choosing a solution for your service, It’s recommended you read the following articles:
+
+* [Responsive Images in Practice](https://alistapart.com/article/responsive-images-in-practice/) - A List Apart by Eric Portis.
+* [Responsive Images 101 (10-part series)](https://cloudfour.com/thinks/responsive-images-101-definitions/) - by Jason Grigsby.
+* [A Guide to the Responsive Images Syntax in HTML](https://css-tricks.com/a-guide-to-the-responsive-images-syntax-in-html/) by CSS-Tricks.
+* [Native Responsive Images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) by MDN Web Docs
+
+
+## Ensure asset caching is set correctly
+
+Proper asset caching is crucial for repeat visitors and website navigation. By storing assets locally, browsers can avoid redundant downloads, saving bandwidth and reducing HTTP requests.
+
+An example that is very common on the web and a prime example of where caching is important is for images that persist across a whole website journey for users, for example, a company logo is a excellent candidate for efficient caching. A user's browser downloads it once on the entry page to the site, it is then reused for every subsequent page that the user visits. Once the logo asset is cached, the user's browser navigating between pages shouldn't need to make an additional HTTP request for it, as the browser can simply load it from the cache.
+
+The frontend performance monitoring tool [WebPageTest (WPT)](https://www.webpagetest.org/) is an excellent tool to use if you are looking to optimise asset caching across user journeys. It is possible to programmatically give WPT a set of pages to navigate across, with each page load a new waterfall chart will be visualised. The aim of the task is to ensure subsequent visits across the user journey have a minimal [waterfall visualisation](https://nooshu.com/blog/2019/10/02/how-to-read-a-wpt-waterfall-chart/#basic-layout) chart, as this then shows most assets required to load the later pages in the users' journey have already been cached, and the asset can be retrieved from the cache without having to make a HTTP request at all.
+
+Reading the following articles will help you improve your asset caching across services:
+
+* [Cache-Control for Civilians](https://csswizardry.com/2019/03/cache-control-for-civilians/) by Harry Roberts
+* [HTTP Caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching) on MDN Web Docs
+* [Caching Best Practices & Max-Age Gotchas](https://jakearchibald.com/2016/caching-best-practices/) by Jake Archibald
+* [Cache Definition and Explanation](https://www.keycdn.com/support/cache-definition-explanation) by KeyCDN
+
+
+## Preload / prefetch resources
+
+The preload and prefetch directives allow a developer to give the browser hints about what they may require in a future user interaction:
+
+
+## Preload
+
+This [Preload directive](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload) allows the developer to tell a browser that you are going to need this asset in the future (e.g. CSS or JS file). Therefore, download it straight away so it will be immediately available in the browsers cache when it is requested by the page. An example of a simple preload is seen below: 
+
+```html
+<link rel="preload" href="style.css" as="style">
+```
+
+## Prefetch
+
+This [Prefetch directive](https://developer.mozilla.org/en-US/docs/Glossary/Prefetch) allows the developer to start to prefetch a user's next page navigation. So when the user clicks the link, the page has already been requested and parsed. The browser decides to initiate a prefetch depending on the current network conditions and resource usage, so as not to slow down the initial page load. An example of a simple prefetch is seen below:
+
+```html
+<link rel="prefetch" href="page2.html">
+```
+
+When used correctly, the preload and prefetch directives can improve the perceived performance of a webpage for a user. It is also important to understand that overuse of either of these directives can harm performance for users. Make sure to test a page's performance before and after these directives are used. If performance is worse, it is advised to remove them and simply allow the browser to decide on the page load prioritisation process. 
+
+## Ensure HTTP requests are minimised by using modern HTTP protocols
+
+Individual HTTP requests are expensive in terms of page performance. Each HTTP request has three stages:
+
+1. DNS lookup
+2. Initial connection
+3. SSL Negotiation
+
+Depending on a user's connection speed and its stability, this process can range from 100’s of milliseconds to many seconds in some of the worst cases.
+
+It’s important to understand that while this connection is being established, a user will see nothing on their device's screen. As was mentioned earlier in the CDN section, minimising Time to first Byte (TTFB) is essential for fast page loads. The longer it takes for a HTTP connection to be established, the slower the TTFB and it doesn’t matter how optimised a webpage is in terms of asset filesize, if the TTFB is slow, the [whole webpage will be slow](https://csswizardry.com/2019/08/time-to-first-byte-what-it-is-and-why-it-matters/).
+
+### HTTP/2
+
+Thankfully, modern HTTP protocols like HTTP/2 have been specifically designed to minimise the number of HTTP requests required to load a page. HTTP/2 also introduced a technology called [HTTP/2 connection coalescing](https://daniel.haxx.se/blog/2016/08/18/http2-connection-coalescing/). This allows a browser to download assets on an already established HTTP connection as long as the asset comes from the same server, e.g. on the same IP address and served using the same SSL Certificate. Connection coalescing is an excellent intermediate change that can be used if a service has used [Domain Sharding](https://developer.mozilla.org/en-US/docs/Glossary/Domain_sharding) to circumvent a browsers [limited number of connections to a domain in HTTP 1.x](https://developer.mozilla.org/en-US/docs/Web/HTTP/Connection_management_in_HTTP_1.x). 
+
+### HTTP/3 + QUIC (If available)
+
+HTTP/3, built on [QUIC](https://en.wikipedia.org/wiki/QUIC), offers several performance advantages over HTTP/2. It reduces latency due to faster connection establishment and eliminates [head-of-line blocking](https://en.wikipedia.org/wiki/Head-of-line_blocking), ensuring packet loss doesn't stall all data streams. This results in faster page loads and smoother user experiences, especially on unreliable networks or mobile devices. Should you be interested in reading more about HTTP/3 Smashing Magazine has an extremely in-depth [3-part article](https://www.smashingmagazine.com/2021/08/http3-core-concepts-part1/) written by Robin Marx. It’s also worth noting that as of January 2024, [GOV.UK uses HTTP/3 + QUIC](https://github.com/alphagov/govuk-rfcs/blob/4d28064a477ab225864651f7c912c5aeae6c2fc1/rfc-139-enable-http3.md).
+
+**Important Note**: Enable HTTP/3 + QUIC only if available on the platform hosting the service.
+
+## Use HTTP range requests
+
+HTTP range requests allow clients to fetch only specific parts of a resource, rather than the entire file. This is useful for:
+
+ * **Resuming interrupted downloads**: If a download fails, the client can request the remaining portion instead of restarting. e.g. PDF's
+ * **Large file downloads**: Clients can download parts in parallel for faster speeds.
+
+ Once implimented range requests optimize bandwidth usage and improve user experience in various scenarios. For more information on range requests see the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests).
+
+## Frontdoor Caching
+
+By default, the HMCTS frontdoor module, [terraform-module-frontdoor](https://github.com/hmcts/terraform-module-frontdoor), sets the Azure frontdoor to automatically cache static files like images (jpg, png), stylesheets (css), icons (ico), and Javascript files (js). However, for applications behind the frontdoor to benefit from this caching, they need to set the correct headers in their responses.
+
+Here's an example: The Toffee application (see [pull request #431](https://github.com/hmcts/sds-toffee-frontend/pull/431/files#diff-318a36d55c848c97aa1adea654c62dd6551bf887c6b6db655364ab6879e11fa4R37) ) configures its headers to allow the frontdoor to cache static files for 60 seconds. This improves performance by reducing the number of times the application needs to send the same static content to users.
+
+If you like to overwrite the default caching rule to include more static file type, please see below example for Toffee app.
+
+[Example](https://github.com/hmcts/sds-azure-platform/blob/74d7fe1c3c645bfaa6c00bd46b2a8c4a734a3a12/environments/sbox/sbox.tfvars#L38-L51)
+
+If you like to completely turn off caching, please see below example.
+
+[Example](https://github.com/hmcts/sds-azure-platform/blob/master/environments/stg/stg.tfvars#L427)

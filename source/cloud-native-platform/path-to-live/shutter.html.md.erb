@@ -148,11 +148,39 @@ As long as there is a matching shutter config for the DNS record you can update 
 
 ## Shuttering all CFT services
 
-To shutter all CFT services refer to these PRs as an example to use: [Shutter](https://github.com/hmcts/azure-public-dns/pull/1674) and [Unshutter](https://github.com/hmcts/azure-public-dns/pull/1677)
+To shutter all CFT services refer to these PRs as an example to use: [Shutter](https://github.com/hmcts/azure-public-dns/pull/1745).
 
-**Note:** You can use the `Revert` button in the GitHub UI to create your unshutter PR for you.
+**Note:** You can use the `Revert` button in the GitHub UI to create your unshutter PR for you, which will also require PR approval.
 
 ![GitHub Revert Button](../images/gh-revert.png)
+
+To ensure you have an updated list of all applicable CFT services - connect to the CFT AKS production cluster and run the following command:
+
+```
+kubectl get ingress -A | grep -v '.internal'
+```
+
+## How to access your application when it is shuttered (For testing purposes only)
+
+When an application's shutter page is active, it's possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active. 
+
+You will need the IP address of the associated Azure FrontDoor Endpoint. You can run a `dig` or `nslookup` on the endpoint to retrieve the IP. Multiple IPs may be returned due to HA but either should work. 
+
+e.g.
+
+```bash
+dig hmcts-prod-hdgpbqdkafhmcse9.z01.azurefd.net
+```
+
+This example hosts entry is for Probate, but the same process can be applied for your service:
+
+```
+13.107.246.64 www.apply-for-probate.service.gov.uk
+```
+
+Once your testing is complete, remove the entry and you should now see the shutter page again when trying to access the service.
+
+**Note:** You may need to clear your DNS cache for changes to take effect. This can be done on Linux/Mac by running `sudo killall -HUP mDNSResponder` and on Windows by running `ipconfig /flushdns`.
 
 ## Shuttering Errors
 

@@ -9,12 +9,14 @@ task :check_urls do
         {
             :check_external_hash => false,
             :ignore_missing_alt => true,
-            :ignore_status_codes => [0, 401, 403],
+            :ignore_status_codes => [0, 401, 403, 429],
             :ignore_urls =>  [
                 # Ignore pulls/branches as these do not translate to raw content
                 %r{github\.com/hmcts/(?=.*(?:pull|tree|commit))},
                 # This is a url that's generated each time we build the html by tech-docs-gem but does not exist
-                %r{https://github.com/hmcts/hmcts.github.io/blob/source/source/search/index.html}
+                %r{https://github.com/hmcts/hmcts.github.io/blob/source/source/search/index.html},
+                # This handles new files that haven't been merged to master branch yet for this repo in a PR
+                %r{(?=.*hmcts.github.io)(?=.*github)}
             ]
         })
 
