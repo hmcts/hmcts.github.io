@@ -154,6 +154,12 @@ To shutter all CFT services, you can use the `shutter_all_cft` option in `shutte
 
 To unshutter, simply set `shutter_all_cft = false`.
 
+Service teams should be tagging any new services with the appropriate area tag to ensure they can be shuttered/unshuttered with this option. However, an up-to-date list of CFT services can be retrieved by connecting to the CFT Production AKS cluster and running the following command:
+
+```
+kubectl get ingress -A | grep -v '.internal'
+```
+
 ## How to access your application when it is shuttered (For testing purposes only)
 
 When an application's shutter page is active, it's possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active. 
