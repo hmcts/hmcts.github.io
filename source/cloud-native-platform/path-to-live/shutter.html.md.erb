@@ -59,6 +59,8 @@ With everything setup to render a shutter page you can now swap the DNS from Azu
       </details>
 8. Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.
 
+**Note:** Any new CFT services should be tagged with `area: "cft"` in the environment file. This will allow the service to be shuttered/unshuttered with the `shutter_all_cft` option in `shuttering/shutter_by_area.yml`. Example [here](https://github.com/hmcts/azure-public-dns/blob/728060d0bd34aec0c5c654e1fc50708745023b9e/environments/prod/appeal-benefit-decision-service-gov-uk.yml#L1)
+
 #### All Records in a single DNS Zone
 
 Shuttering all records in a single DNS zone follows a similar process to individual records.
@@ -148,17 +150,9 @@ As long as there is a matching shutter config for the DNS record you can update 
 
 ## Shuttering all CFT services
 
-To shutter all CFT services refer to these PRs as an example to use: [Shutter](https://github.com/hmcts/azure-public-dns/pull/1745).
+To shutter all CFT services, you can use the `shutter_all_cft` option in `shuttering/shutter_by_area.yml`. This will shutter any zone/record that has been tagged with `area: "cft"`. You can see an example PR [here](https://github.com/hmcts/azure-public-dns/pull/1784)
 
-**Note:** You can use the `Revert` button in the GitHub UI to create your unshutter PR for you, which will also require PR approval.
-
-![GitHub Revert Button](../images/gh-revert.png)
-
-To ensure you have an updated list of all applicable CFT services - connect to the CFT AKS production cluster and run the following command:
-
-```
-kubectl get ingress -A | grep -v '.internal'
-```
+To unshutter, simply set `shutter_all_cft = false`.
 
 ## How to access your application when it is shuttered (For testing purposes only)
 
