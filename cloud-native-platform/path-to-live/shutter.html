@@ -437,7 +437,8 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p>To shutter all CFT services, you can use the <code>shutter_all_cft</code> option <a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2">here</a>. This will shutter any zone/record that has been tagged with <code>area: &quot;cft&quot;</code>. Examples below:</p>
 
 <ul>
-<li><a href="https://github.com/hmcts/azure-public-dns/pull/1784">Tagging at zone level</a></li>
+<li><a href="https://github.com/hmcts/azure-public-dns/pull/1784">PR to shutter all CFT</a></li>
+<li><a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/appeal-benefit-decision-service-gov-uk.yml#L1">Tagging at zone level</a></li>
 <li><a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/platform-hmcts-net.yml#L232">Tagging at record level</a></li>
 </ul>
 <p>To unshutter, simply set <code>shutter_all_cft = false</code>.</p>
