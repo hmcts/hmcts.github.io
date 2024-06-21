@@ -152,6 +152,7 @@ As long as there is a matching shutter config for the DNS record you can update 
 
 To shutter all CFT services, you can use the `shutter_all_cft` option [here](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2). This will shutter any zone/record that has been tagged with `area: "cft"`. Examples below: 
 
+- [PR to shutter all CFT](https://github.com/hmcts/azure-public-dns/pull/1784)
 - [Tagging at zone level](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/appeal-benefit-decision-service-gov-uk.yml#L1)
 - [Tagging at record level](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/platform-hmcts-net.yml#L232)
 
