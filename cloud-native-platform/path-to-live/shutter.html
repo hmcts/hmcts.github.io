@@ -434,7 +434,12 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p>CNAME records are much easier to shutter, for each record an equivalent shutter config must exist, as detailed in the <em><a href="#individual-records">Individual Records</a></em> section.</p>
 <p>As long as there is a matching shutter config for the DNS record you can update the shutter value to true to enable a shutter.</p>
 <h2 id="shuttering-all-cft-services">Shuttering all CFT services</h2>
-<p>To shutter all CFT services, you can use the <code>shutter_all_cft</code> option in <code>shuttering/shutter_by_area.yml</code>. This will shutter any zone/record that has been tagged with <code>area: &quot;cft&quot;</code>. You can see an example PR <a href="https://github.com/hmcts/azure-public-dns/pull/1784">here</a></p>
+<p>To shutter all CFT services, you can use the <code>shutter_all_cft</code> option <a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2">here</a>. This will shutter any zone/record that has been tagged with <code>area: &quot;cft&quot;</code>. Examples below:</p>
+
+<ul>
+<li><a href="https://github.com/hmcts/azure-public-dns/pull/1784">Tagging at zone level</a></li>
+<li><a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/platform-hmcts-net.yml#L232">Tagging at record level</a></li>
+</ul>
 <p>To unshutter, simply set <code>shutter_all_cft = false</code>.</p>
 <p>Service teams should be tagging any new services with the appropriate area tag to ensure they can be shuttered/unshuttered with this option. However, an up-to-date list of CFT services can be retrieved by connecting to the CFT Production AKS cluster and running the following command:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get ingress -A | grep -v '.internal'
