@@ -434,7 +434,7 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p>CNAME records are much easier to shutter, for each record an equivalent shutter config must exist, as detailed in the <em><a href="#individual-records">Individual Records</a></em> section.</p>
 <p>As long as there is a matching shutter config for the DNS record you can update the shutter value to true to enable a shutter.</p>
 <h2 id="shuttering-all-cft-services">Shuttering all CFT services</h2>
-<p>To shutter all CFT services, you can use the <code>shutter_all_cft</code> option <a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2">here</a>. This will shutter <strong>any A or CNAME record</strong> that has been tagged with <code>platform: &quot;cft&quot;</code>. Examples below:</p>
+<p>To shutter all CFT services, you can use the <code>shutter_all_cft</code> option <a href="https://github.com/hmcts/azure-public-dns/blob/8aa9506a97518a951e6f7c732d88ab4bd0ac91a0/shuttering/prod/shutter_by_platform.yml#L2">here</a>. This will shutter <strong>any A or CNAME record</strong> that has been tagged with <code>platform: &quot;cft&quot;</code>. Examples below:</p>
 
 <ul>
 <li><a href="https://github.com/hmcts/azure-public-dns/pull/1789">PR to shutter all CFT</a></li>
