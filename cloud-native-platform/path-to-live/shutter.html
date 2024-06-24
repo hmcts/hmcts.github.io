@@ -338,7 +338,6 @@ Setting <code>shutter: false</code> will disable the shutter page and redirect a
 </ul></li>
 <li>Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.</li>
 </ol>
-<p><strong>Note:</strong> Any new CFT services should be tagged with <code>area: &quot;cft&quot;</code> in the environment file. This will allow the service to be shuttered/unshuttered with the <code>shutter_all_cft</code> option in <code>shuttering/shutter_by_area.yml</code>. Example <a href="https://github.com/hmcts/azure-public-dns/blob/728060d0bd34aec0c5c654e1fc50708745023b9e/environments/prod/appeal-benefit-decision-service-gov-uk.yml#L1">here</a></p>
 <h4 id="all-records-in-a-single-dns-zone">All Records in a single DNS Zone</h4>
 <p>Shuttering all records in a single DNS zone follows a similar process to individual records.</p>
 <p>The ability to shutter all records in a single DNS zone allows for a complete service to be placed into shuttering for maintenance or upgrade purposes without needing to change every single record configuration.</p>
@@ -397,6 +396,7 @@ Setting <code>shutter_all_cname: false</code> will enable the shutter pages and 
 <li>Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.</li>
 </ol>
 <p>This is a self service request and <strong>does not</strong> require Platform Operations to create, approve or merge. Therefore this can be done out of hours without having Platform Operations around for shuttering only.</p>
+<p><strong>Note:</strong> Any new A or CNAME records should be tagged with the appropriate platform in order for them to be included in the <code>shutter_all_cft</code> and <code>shutter_all_sds</code> options. Explained further in the <a href="#shuttering-all-cft-services">Shuttering all CFT services</a> section.</p>
 <h2 id="record-types">Record Types</h2>
 <p>There are two record types that allow shuttering to be enabled.
 These are:</p>
@@ -434,15 +434,14 @@ This means we can direct A record types to Azure services such as Azure Front Do
 <p>CNAME records are much easier to shutter, for each record an equivalent shutter config must exist, as detailed in the <em><a href="#individual-records">Individual Records</a></em> section.</p>
 <p>As long as there is a matching shutter config for the DNS record you can update the shutter value to true to enable a shutter.</p>
 <h2 id="shuttering-all-cft-services">Shuttering all CFT services</h2>
-<p>To shutter all CFT services, you can use the <code>shutter_all_cft</code> option <a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2">here</a>. This will shutter any zone/record that has been tagged with <code>area: &quot;cft&quot;</code>. Examples below:</p>
+<p>To shutter all CFT services, you can use the <code>shutter_all_cft</code> option <a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2">here</a>. This will shutter <strong>any A or CNAME record</strong> that has been tagged with <code>platform: &quot;cft&quot;</code>. Examples below:</p>
 
 <ul>
-<li><a href="https://github.com/hmcts/azure-public-dns/pull/1784">PR to shutter all CFT</a></li>
-<li><a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/appeal-benefit-decision-service-gov-uk.yml#L1">Tagging at zone level</a></li>
-<li><a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/platform-hmcts-net.yml#L232">Tagging at record level</a></li>
+<li><a href="https://github.com/hmcts/azure-public-dns/pull/1789">PR to shutter all CFT</a></li>
+<li><a href="https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/platform-hmcts-net.yml#L232">Tagging a record</a></li>
 </ul>
 <p>To unshutter, simply set <code>shutter_all_cft = false</code>.</p>
-<p>Service teams should be tagging any new services with the appropriate area tag to ensure they can be shuttered/unshuttered with this option. However, an up-to-date list of CFT services can be retrieved by connecting to the CFT Production AKS cluster and running the following command:</p>
+<p>Service teams should be tagging any new records with the appropriate platform tag to ensure they can be shuttered/unshuttered with this option. However, an up-to-date list of CFT services can be retrieved by connecting to the CFT Production AKS cluster and running the following command:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get ingress -A | grep -v '.internal'
 </code></pre></div><h2 id="how-to-access-your-application-when-it-is-shuttered-for-testing-purposes-only">How to access your application when it is shuttered (For testing purposes only)</h2>
 <p>When an application&rsquo;s shutter page is active, it&rsquo;s possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active.</p>
