@@ -59,8 +59,6 @@ With everything setup to render a shutter page you can now swap the DNS from Azu
       </details>
 8. Create a PR with the changes and have it reviewed. Once merged this will update the exist record to point to the Azure Static Web App endpoint.
 
-**Note:** Any new CFT services should be tagged with `area: "cft"` in the environment file. This will allow the service to be shuttered/unshuttered with the `shutter_all_cft` option in `shuttering/shutter_by_area.yml`. Example [here](https://github.com/hmcts/azure-public-dns/blob/728060d0bd34aec0c5c654e1fc50708745023b9e/environments/prod/appeal-benefit-decision-service-gov-uk.yml#L1)
-
 #### All Records in a single DNS Zone
 
 Shuttering all records in a single DNS zone follows a similar process to individual records.
@@ -114,6 +112,8 @@ This is a quality of life change, the functionality of the shuttering remains th
 
 This is a self service request and **does not** require Platform Operations to create, approve or merge. Therefore this can be done out of hours without having Platform Operations around for shuttering only.
 
+**Note:** Any new A or CNAME records should be tagged with the appropriate platform in order for them to be included in the `shutter_all_cft` and `shutter_all_sds` options. Explained further in the [Shuttering all CFT services](#shuttering-all-cft-services) section.
+
 ## Record Types
 
 There are two record types that allow shuttering to be enabled.
@@ -150,15 +150,14 @@ As long as there is a matching shutter config for the DNS record you can update 
 
 ## Shuttering all CFT services
 
-To shutter all CFT services, you can use the `shutter_all_cft` option [here](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2). This will shutter any zone/record that has been tagged with `area: "cft"`. Examples below: 
+To shutter all CFT services, you can use the `shutter_all_cft` option [here](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/shuttering/prod/shutter_by_area.yml#L2). This will shutter **any A or CNAME record** that has been tagged with `platform: "cft"`. Examples below: 
 
-- [PR to shutter all CFT](https://github.com/hmcts/azure-public-dns/pull/1784)
-- [Tagging at zone level](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/appeal-benefit-decision-service-gov-uk.yml#L1)
-- [Tagging at record level](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/platform-hmcts-net.yml#L232)
+- [PR to shutter all CFT](https://github.com/hmcts/azure-public-dns/pull/1789)
+- [Tagging a record](https://github.com/hmcts/azure-public-dns/blob/df76e9114484eb7cdec6e2ca75ff8a706efadf59/environments/prod/platform-hmcts-net.yml#L232)
 
 To unshutter, simply set `shutter_all_cft = false`.
 
-Service teams should be tagging any new services with the appropriate area tag to ensure they can be shuttered/unshuttered with this option. However, an up-to-date list of CFT services can be retrieved by connecting to the CFT Production AKS cluster and running the following command:
+Service teams should be tagging any new records with the appropriate platform tag to ensure they can be shuttered/unshuttered with this option. However, an up-to-date list of CFT services can be retrieved by connecting to the CFT Production AKS cluster and running the following command:
 
 ```
 kubectl get ingress -A | grep -v '.internal'
