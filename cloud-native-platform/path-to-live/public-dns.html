@@ -383,8 +383,6 @@ for a new service.</p>
 <li>Clone the <a href="https://github.com/hmcts/azure-public-dns">Azure Public DNS</a> repository.</li>
 <li>Under environments directory there are yaml files depicting environments that represents zones corresponding to each environment.
 There can be multiple zones in one environment,</li>
-<li>Create afdverify CNAME records in the appropriate zone file for environments.
-Here is an example <a href="https://github.com/hmcts/azure-public-dns/pull/1387/files">Pull Request</a>,</li>
 <li>Create a PR with records as per the below convention
 (make sure you replace the variables with the correct values).</li>
 </ul>
@@ -401,17 +399,17 @@ This should be the <code>name</code> attribute from env.tfvars file e.g. <a href
 <p>If you like to set different record for private dns zone, you can always update the  <a href="https://github.com/hmcts/azure-private-dns">azure-private-dns</a> repo, the sync pipeline will neither overwrite nor delete any records on private dns zones.</p>
 <p><a href="https://github.com/hmcts/azure-public-dns/blob/0295fff5f4e498b9f2acf564e9f656cf4f1dbb34/environments/sandbox.yml#L259">Refer to this example</a> for guidance on excluding records from synchronisation.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-11-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-12-26">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 May 2024.
+      This page was last reviewed on 26 June 2024.
 
-        It needs to be reviewed again on 16 November 2024
+        It needs to be reviewed again on 26 December 2024
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 November 2024
+      This page was set to be reviewed before 26 December 2024
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
