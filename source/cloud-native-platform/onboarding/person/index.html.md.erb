@@ -7,6 +7,16 @@ weight: 2
 
 # <%= current_page.data.title %>
 
+## Microsoft Entra ID Guest User Invite
+
+In order to give access to HMCTS resources, an account need to exist on the HMCTS Azure tenant.  If user have `@hmcts.net` account, this section could be skipped but for `@justice.gov.uk` account holder, they will need to be invited as guest user first to be able to add groups to their account otherwise the pipeline will throw error that User account does not exist.
+
+An existing teammate should create a pull request to [devops-azure-ad](https://github.com/hmcts/devops-azure-ad/blob/master/users/guest_user_invite.yml) and get it approved by Platform Operations.
+
+Once PR approved and merged, an automated email from the Microsoft will be sent out to the user to accept the invitation.
+
+[Example PR](https://github.com/hmcts/devops-azure-ad/pull/4439/files)
+
 ## Microsoft Entra ID groups
 
 Microsoft Entra ID is used to give you and your team-mates access to specific subscriptions and resources in Azure.
