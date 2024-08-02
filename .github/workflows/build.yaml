@@ -1,0 +1,40 @@
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  spellcheck:
+    runs-on: ubuntu-latest
+    name: Check spelling
+    steps:
+      - name: Spell-Check
+        uses: check-spelling/check-spelling@v0.0.22
+        with:
+          checkout: true
+          # don't check extra dictionaries
+          check_extra_dictionaries: ''
+          extra_dictionaries:
+            cspell:software-terms/dict/softwareTerms.txt
+            cspell:npm/dict/npm.txt
+            cspell:node/dict/node.txt
+            cspell:en_GB/src/hunspell/en_GB.dic
+  build:
+    runs-on: ubuntu-latest
+    name: 'Build and Test'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          architecture: 'x64'
+          bundler-cache: true
+      - name: Build
+        run: bundle exec middleman build
+      - name: 'Check for broken links'
+        run: bundle exec rake check_urls
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
