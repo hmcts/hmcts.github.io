@@ -9,7 +9,7 @@ azcopy sync --compare-hash=md5 \
 function setTitle() {
     local path=$1
 
-    TITLE=$(cat ../$path | htmlq 'h1' --text)
+    TITLE=$(cat $path.title)
 
     echo "Setting title to $TITLE for $path"
 

@@ -36,7 +36,6 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          architecture: 'x64'
           bundler-cache: true
       - name: Build site
         run: bundle exec rake build
@@ -64,8 +63,6 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            # duplicating install as for some reason in the container htmlq blows up with large memory allocation
-            # when extracting the main element
-            ./.ci/install-htmlq.sh
+            ./.ci/install-azcopy.sh
             ./.ci/upload.sh
             ./.ci/trigger-index.sh

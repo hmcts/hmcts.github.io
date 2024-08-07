@@ -13,6 +13,11 @@ function extractMain () {
     mkdir -p dist/$DIRECTORY
 
     cat $path | htmlq --text 'main' --remove-nodes '[data-module="page-expiry"]' > dist/$path
+
+    TITLE=$(cat ../$path | htmlq 'h1' --text)
+
+    echo "Setting title to $TITLE for $path"
+    echo "${TITLE}" > dist/$path.title
 }
 
 export -f extractMain
