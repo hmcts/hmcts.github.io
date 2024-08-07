@@ -9,13 +9,13 @@ weight: 98
 
 ## Table of Contents
 
-- [GitHub](/cloud-native-platform/troubleshooting/index.html#github)
-- [Receiving an email regarding inactive account](/cloud-native-platform/troubleshooting/index.html#receiving-an-email-regarding-inactive-account)
-- [Jenkins](/cloud-native-platform/troubleshooting/index.html#jenkins)
-- [Debug Application Startup issues in AKS](</cloud-native-platform/troubleshooting/index.html#debug-application-startup-issues-in-aks>)
-- [Flux and Gitops](/cloud-native-platform/troubleshooting/index.html#flux-and-gitops)
-- [Connecting to AKS Clusters](/cloud-native-platform/troubleshooting/index.html#connecting-to-aks-clusters)
-- [Trouble accessing Services via F5 VPN](/cloud-native-platform/troubleshooting/index.html#trouble-accessing-services-via-f5-vpn)
+- [GitHub](#github)
+- [Receiving an email regarding inactive account](#receiving-an-email-regarding-inactive-account)
+- [Jenkins](#jenkins)
+- [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks)
+- [F5 VPN not connecting or services not available over VPN that should be](#f5-vpn-not-connecting-or-services-not-available-over-vpn-that-should-be)
+- [Flux and Gitops](#flux-and-gitops)
+- [Connecting to AKS Clusters](#connecting-to-aks-clusters)
 
 ## GitHub
 
@@ -209,6 +209,23 @@ Update your github to slack user mapping in [this file](https://github.com/hmcts
 
      ```
 
+## F5 VPN not connecting or services not available over VPN that should be
+
+Normally connecting to the VPN at [portal.platform.hmcts.net](https://portal.platform.hmcts.net) should work without issues.
+
+Occasionally there are issues where the VPN will hang on connecting or will connect but certain services will not be available over the VPN.
+
+The most common solution is to disable IPv6 on your device. This is because the F5 VPN has not been configured properly for IPv6 but services behind Azure Front Door
+are available over IPv6.
+
+The process to disable IPv6 will depend on your operating system, please choose the correct link below based on what your device uses:
+
+- [Windows](https://www.windowscentral.com/software-apps/windows-11/how-to-disable-tcpipv6-ipv6-on-windows-11)
+- [Mac OSX](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-macos)
+
+If that doesn’t work then make sure you’ve applied the latest operating system updates and tried restarting your device.
+If you’re still having issues then please raise a ticket in the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) channel.
+
 ## Flux and Gitops
 
    > Always check __why__ your release or pod has failed in the first instance.
@@ -285,7 +302,7 @@ Update your github to slack user mapping in [this file](https://github.com/hmcts
 
    - If your old pods are still running when you check, follow [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks) to troubleshoot further.
 
-###  Change in git is not applied to cluster
+### Change in git is not applied to cluster
 
    - To check if latest github commit has been downloaded by checking status
 
@@ -323,18 +340,3 @@ Once you have logged in, you can switch between clusters using [kubectx](https:/
 kubectl config use-context cft-perftest-00-aks
 kubectl config use-context cft-aat-00-aks
 ```
-
-## Trouble accessing Services via F5 VPN
-
-Accessing services via the F5 VPN should just require you to connect to the VPN and then the service becomes available.
-
-However there have been issues in the past where this was not the case. 
-
-The problem in these cases has been that traffic for those services was not being redirected via the VPN and instead via the normal device internet access which resulted in a request denied or no response from the service.
-
-The solution was to disable IPv6 on the local device and reconnect to the F5 VPN, its not yet known why this happens but the solution should allow you to get up and running quickly.
-
-The process to disable IPv6 will depend on your operating system, please choose the correct link below based on what your device uses:
-
-- [Windows](https://www.windowscentral.com/software-apps/windows-11/how-to-disable-tcpipv6-ipv6-on-windows-11)
-- [Mac OSX](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-macos)
