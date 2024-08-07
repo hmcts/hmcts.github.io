@@ -64,5 +64,8 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
+            # duplicating install as for some reason in the container htmlq blows up with large memory allocation
+            # when extracting the main element
+            ./.ci/install-htmlq.sh
             ./.ci/upload.sh
             ./.ci/trigger-index.sh
