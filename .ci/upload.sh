@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+export STORAGE_ACCOUNT_NAME=platopslackhelpbotai
+export CONTAINER_NAME=the-hmcts-way
+
 # we use sync here so that deleted files get removed
 azcopy sync --compare-hash=md5 \
   --delete-destination=true \

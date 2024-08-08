@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+
 rm -rf dist
 mkdir dist/
-
-export STORAGE_ACCOUNT_NAME=platopslackhelpbotai
-export CONTAINER_NAME=the-hmcts-way
 
 function extractMain () {
     local path=$1
