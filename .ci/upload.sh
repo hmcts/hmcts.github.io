@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+set -e
+
+rm -rf dist
+mkdir dist/
+
+function extractMain () {
+    local path=$1
+
+    DIRECTORY=$(dirname "$path")
+    mkdir -p dist/$DIRECTORY
+
+    cat $path | htmlq --text 'main' --remove-nodes '[data-module="page-expiry"]' > dist/$path
+}
+
+export -f extractMain
+
+find build -name "*.html" -not -path "build/search/*" -exec bash -c "extractMain \"{}\"" \;
+
 export STORAGE_ACCOUNT_NAME=platopslackhelpbotai
 export CONTAINER_NAME=the-hmcts-way
 
@@ -12,7 +30,7 @@ azcopy sync --compare-hash=md5 \
 function setTitle() {
     local path=$1
 
-    TITLE=$(cat $path.title)
+    TITLE=$(cat ../$path | htmlq 'h1' --text)
 
     echo "Setting title to $TITLE for $path"
 
