@@ -16,6 +16,7 @@ weight: 98
 - [F5 VPN not connecting or services not available over VPN that should be](#f5-vpn-not-connecting-or-services-not-available-over-vpn-that-should-be)
 - [Flux and Gitops](#flux-and-gitops)
 - [Connecting to AKS Clusters](#connecting-to-aks-clusters)
+- [Golden Path](#golden-path)
 
 ## GitHub
 
@@ -340,3 +341,160 @@ Once you have logged in, you can switch between clusters using [kubectx](https:/
 kubectl config use-context cft-perftest-00-aks
 kubectl config use-context cft-aat-00-aks
 ```
+
+## Golden Path
+
+### Nodejs Type Error
+
+#### Error
+```
+TypeError: URL.canParse is not a function
+  at parseSpec (/usr/lib/node_modules/corepack/dist/lib/corepack.cjs:23025:21)
+  at loadSpec (/usr/lib/node_modules/corepack/dist/lib/corepack.cjs:23088:11)
+  at async Engine.findProjectSpec (/usr/lib/node_modules/corepack/dist/lib/corepack.cjs:23262:22)
+  at async Engine.executePackageManagerRequest (/usr/lib/node_modules/corepack/dist/lib/corepack.cjs:23314:24)
+  at async Object.runMain (/usr/lib/node_modules/corepack/dist/lib/corepack.cjs:24007:5)
+
+Node.js v18.16.0
+```
+
+#### Solution
+
+Bump the node version in `.nvmrc` to `18.17`
+
+### after(build) is deprecated
+
+```
+after(build) is deprecated, consider using 'afterSuccess', 'afterFailure', 'afterAlways' instead This change is enforced from 30/01/2023
+```
+
+#### Solution
+
+Update references in any Jenkinsfiles in your repo to `afterSuccess(build)`
+
+### Yarn security vulnerabilities
+
+#### Error
+
+```
+Security vulnerabilities were found that were not ignored.
+```
+
+#### Solution
+
+In your local git repo, run `yarn install` to install the packages contained in your package.json.
+
+Yarn v3 stores the packages within the repo in the `.yarn/cache` folder.
+
+You can run `yarn info` to get a flow diagram output showing the packages and the dependencies they contain.
+
+This should help you determine which packages contain vulnerable dependencies.
+
+You can send the output of this command to a file for easier reading in your IDE: `yarn info > /tmp/yarn-deps.txt`.
+
+To upgrade the dependencies, you can update the version in the package.json file manually.
+
+Search [npmjs](https://npmjs.com) for the package name to find the latest version.
+
+You can also run `yarn upgrade-interactive` and select the package that needs updated with the arrow keys on your keyboard and hit Enter.
+
+This will update the package.json file too.
+
+Because the packages are stored within the repo, you need to run `yarn install` again before committing the changes to GitHub.
+
+If you don't run `yarn install` after updating the package.json file, you will receive an error in the pipeline about `yarn install` changing the lockfile, which is forbidden.
+
+If a new version of the affected package has not yet been released, you can temporarily ignore the issue by running:
+
+```
+yarn npm audit --recursive --environment production --json > yarn-audit-known-issues
+```
+
+This is a **temporary** measure and all packages **must** be updated when new versions are released to ensure security vulnerabilities are mitigated.
+
+The Renovate tool should raise pull requests automatically when a new package version is released. You can simply approve this change and merge the PR to mitigate the vulnerabilities.
+
+### Sandbox Jenkins is not automatically picking up my changes
+
+Because we have a prod and sandbox Jenkins instance, sometimes your pushes to master may be picked up by prod Jenkins instead.
+
+If this happens, simply run the master build manually on sandbox jenkins.
+
+### Helm chart is deprecated
+
+#### Error
+
+```
+Version of nodejs helm chart below 3.1.0 is deprecated, please upgrade to latest release https://github.com/hmcts/chart-nodejs/releases This change is enforced from 30/06/2024
+```
+
+In your git repo, open `charts/labs-YourGithubUsername-nodejs/Chart.yaml` and update the nodejs dependency to the minimum version from the error message:
+
+```
+apiVersion: v2
+appVersion: '1.0'
+description: A Helm chart for labs-YourGithubUsername-nodejs App
+name: labs-YourGithubUsername-nodejs
+home: https://github.com/hmcts/labs-YourGithubUsername-nodejs
+version: 0.0.6
+dependencies:
+  - name: nodejs
+    version: 3.1.1
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+```
+
+### Non-whitelisted pattern found in HelmRelease
+
+#### Error
+
+```
+!! Non whitelisted pattern found in HelmRelease: apps/labs/labs-YourGithubUsername-nodejs/labs-YourGithubUsername-nodejs.yaml it should be prod-[a-f0-9]+-(?P<ts>[0-9]+)
+```
+
+#### Solution
+
+In the flux config repo, after running the `create-lab-flux-config.sh` script, you should have the following files under `apps/labs/labs-YourGithubusername-nodejs`:
+
+- labs-YourGitbubUsername-nodejs.yaml
+- image-policy.yaml
+- image-repo.yaml
+
+In the `labs-YourGithubusername-nodejs.yaml` file, you will see a value for `image` under `values/nodejs`.
+
+This will be pointing to the docker image stored in Azure Container Registry (ACR).
+
+If all the previous steps of the tutorial worked as expected, the tag on this image should be something like `prod-[a-f0-9]+-(?P<ts>[0-9]+)`.
+
+If the tag does not match this pattern, you will receive the above error when you submit your PR to the flux config repo.
+
+Check the ACR via the Azure Portal or via `az acr` commands in your terminal to see if an image with the right tag exists:
+
+```
+az acr manifest list-metadata hmctssandbox.azurecr.io/labs/YourGithubusername-nodejs
+```
+
+If a tag with the right pattern does not exist, make sure your Jenkins pipeline has passed as it should create an image with the right tag.
+
+You can enter the tag manually in the `labs-YourGithubusername-nodejs.yaml` file and push it to your branch.
+
+As long as the pattern matches, the tests should pass and you can merge your PR after approval.
+
+### Azure Front Door - Our Services are Unavailable - 502 Error
+
+#### Error
+
+On browsing to your application you receive:
+
+```
+Our services aren't available right now. We're working to restore all services as soon as possible. Please check back soon. 0tEdHXAAAAAADUxvBayGtQLDTjRthnz9XTE9OMjFFREdFMDMyMQBFZGdl
+```
+
+#### Solution
+
+This is likely the result of missing or incorrect DNAT rules on Azure Firewall. Review the tutorial guide to make sure you've submitted and merged a PR to add this in code.
+
+Check the pipeline passed after merging. If the pipeline failed, it's possible the rules were not created.
+
+Check the IP your rule is forwarding to. It should be the private IP of the frontend Application Gateway.
+
+You can find this [here](https://github.com/hmcts/azure-platform-terraform/blob/6f0b867e75b7e9cee9e7adc87084f6911eb5373d/environments/sbox/sbox.tfvars#L20).
