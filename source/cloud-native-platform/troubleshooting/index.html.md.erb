@@ -103,6 +103,16 @@ When you run it on the master/main branch it will setup the default branch and t
   - Please see [sonarcloud status](https://sonarcloud.statuspage.io/) for any known issues with sonar cloud.
   - Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.
 
+### Sonar scan quality gate failure
+
+If you receive this error: `Pipeline aborted due to quality gate failure: NONE` on master, try a re-run of the pipeline. This may simply be an intermittent issue caused by sonarcloud or because the GitHub repo has only just been created and this is the first time you're running the pipeline.
+
+### Sonar scan default branch
+
+If you receive this error `Execution failed for task ':sonarqube'. Could not find a default branch to fall back on.` on a pull request, check to make sure the master pipeline has been ran before. This error usually occurs when the master pipeline has not passed the point at which a sonar scan is successfully completed.
+
+Once you get a successful sonar scan on master, your PR pipeline should pass the sonar scan step.
+
 ### Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure
 
   - See [Connecting to AKS Clusters](#connecting-to-aks-clusters) and connect to the relevant cluster.
