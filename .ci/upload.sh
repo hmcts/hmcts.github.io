@@ -20,6 +20,7 @@ find build -name "*.html" -not -path "build/search/*" -exec bash -c "extractMain
 
 export STORAGE_ACCOUNT_NAME=platopslackhelpbotai
 export CONTAINER_NAME=the-hmcts-way
+export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 
 # we use sync here so that deleted files get removed
 azcopy sync --compare-hash=md5 \
