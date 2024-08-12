@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting issues
-last_reviewed_on: 2024-04-22
+last_reviewed_on: 2024-08-12
 review_in: 6 months
 weight: 98
 ---
@@ -78,7 +78,12 @@ Once that is done you will then be able to get your GitHub access back by asking
 
   - See [Jenkins Onboarding section](/cloud-native-platform/onboarding/team/jenkins.html#jenkins) to add your app to Jenkins Org / Dashboard
 
-### Cannot find default branch
+### Cannot see my branch/PR or This project is currently disabled in Jenkins
+
+- Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.
+- Branch/ PR is not listed if its last commit creation date is older than 30 days.
+
+### Sonar scan cannot find default branch
 
 You may get the error below, when the pipeline has not ran on the master/main branch first.
 
@@ -88,30 +93,20 @@ When you run it on the master/main branch it will setup the default branch and t
 [2021-09-16T10:59:54.154Z] Execution failed for task ':sonarqube'.
 [2021-09-16T10:59:54.154Z] > Could not find a default branch to fall back on.
 ```
-### Cannot see my branch/PR or This project is currently disabled in Jenkins
-
-  - Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.
-  - Branch/ PR is not listed if its last commit creation date is older than 30 days.
-
-### Build / Docker Build / Unit Test failure
-
-  - If your build is failing in these stages, it's most likely to fail in your local as well. Look at the first line of the Jenkins step that fails and try run the same command Jenkins is running.
-  - Try on a colleague's machine as you might have cached something locally.
 
 ### Sonar scan timeout
 
-  - Please see [sonarcloud status](https://sonarcloud.statuspage.io/) for any known issues with sonar cloud.
-  - Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.
+- Please see [sonarcloud status](https://sonarcloud.statuspage.io/) for any known issues with sonar cloud.
+- Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.
 
 ### Sonar scan quality gate failure
 
 If you receive this error: `Pipeline aborted due to quality gate failure: NONE` on master, try a re-run of the pipeline. This may simply be an intermittent issue caused by sonarcloud or because the GitHub repo has only just been created and this is the first time you're running the pipeline.
 
-### Sonar scan default branch
+### Build / Docker Build / Unit Test failure
 
-If you receive this error `Execution failed for task ':sonarqube'. Could not find a default branch to fall back on.` on a pull request, check to make sure the master pipeline has been ran before. This error usually occurs when the master pipeline has not passed the point at which a sonar scan is successfully completed.
-
-Once you get a successful sonar scan on master, your PR pipeline should pass the sonar scan step.
+  - If your build is failing in these stages, it's most likely to fail in your local as well. Look at the first line of the Jenkins step that fails and try run the same command Jenkins is running.
+  - Try on a colleague's machine as you might have cached something locally.
 
 ### Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure
 
