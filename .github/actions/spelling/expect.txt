@@ -5,6 +5,7 @@ aqda
 ard
 aso
 automerge
+AZCLI
 azcopy
 bpdq
 brfxgseqf

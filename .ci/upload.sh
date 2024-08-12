@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+
 rm -rf dist
 mkdir dist/
-
-export STORAGE_ACCOUNT_NAME=platopslackhelpbotai
-export CONTAINER_NAME=the-hmcts-way
 
 function extractMain () {
     local path=$1
@@ -18,6 +17,11 @@ function extractMain () {
 export -f extractMain
 
 find build -name "*.html" -not -path "build/search/*" -exec bash -c "extractMain \"{}\"" \;
+
+export STORAGE_ACCOUNT_NAME=platopslackhelpbotai
+export CONTAINER_NAME=the-hmcts-way
+export AZCOPY_AUTO_LOGIN_TYPE=AZCLI
+export AZCOPY_TENANT_ID=531ff96d-0ae9-462a-8d2d-bec7c0b42082
 
 # we use sync here so that deleted files get removed
 azcopy sync --compare-hash=md5 \
