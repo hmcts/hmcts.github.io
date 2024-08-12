@@ -61,4 +61,7 @@ jobs:
       - name: Process content
         run: |
           ./.ci/upload.sh
+      - name: Trigger index
+        run: |
           ./.ci/trigger-index.sh
+      # end of Azure AI Search
