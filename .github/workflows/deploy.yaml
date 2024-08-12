@@ -59,8 +59,6 @@ jobs:
           ./.ci/install-htmlq.sh
           ./.ci/install-azcopy.sh
       - name: Process content
-        env:
-          AZCOPY_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         run: |
           ./.ci/upload.sh
           ./.ci/trigger-index.sh
