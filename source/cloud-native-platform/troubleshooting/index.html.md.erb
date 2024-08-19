@@ -19,6 +19,7 @@ weight: 98
 - [Golden Path](#golden-path)
 
 ## GitHub
+---
 
 ### Adding a new user on GitHub
 
@@ -36,6 +37,7 @@ See [create a GitHub repository](../new-component/github-repo.html#)
 - If no one from your team have access, follow [asking for help](/cloud-native-platform/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
 
 ## Receiving an email regarding inactive account
+---
 
 You may have received an email from our scheduled pipeline which deletes guest user accounts if they're inactive for longer than 31 days.
 
@@ -508,10 +510,69 @@ You can find this [here](https://github.com/hmcts/azure-platform-terraform/blob/
 
 ### Java (Spring Boot) Golden Path Errors
 
+#### - Dependencies security vulnerabilities can be resolved by updating the version
+
+We recommend to use the [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html).
+The checker provides monitoring of the project's dependencies and creates a report of known vulnerable components that are included in the build.
+
+#### Solution
+
+To resolve security vulnerabilities flagged by the OWASP Dependency Check plugin that can be resolved by upgrading dependencies,
+you can follow this chain of commands. The goal here is to update the flagged dependencies to their latest safe versions:
+
+Step 1: Run Dependency Check to Identify Vulnerabilities
+
+```shell
+./gradlew dependencyCheckAnalyze --info
+```
+
+Step 2: Review the Report
+After running the dependency check, open the generated report (e.g., build/reports/dependency-check-report.html) to
+identify the vulnerable dependencies and note their current versions.
+
+Step 3: Upgrade Vulnerable Dependencies
+Once you've identified the dependencies that need upgrading, use the following steps:
+
+- Check for Latest Versions:
+
+Use the Gradle command to check for the latest versions of the dependencies that have vulnerabilities:
+
+```shell
+./gradlew dependencyUpdates -Drevision=release
+```
+- Update Dependencies in build.gradle:
+
+Manually update the version numbers of the flagged dependencies in your build.gradle file to the latest versions identified.
+
+For example, if a vulnerable dependency was:
+```groovy
+implementation 'com.example:some-dependency:1.0.0'
+```
+And the latest safe version is 1.2.0, update it to:
+
+```groovy
+implementation 'com.example:some-dependency:1.2.0'
+```
+Repeat this for all vulnerable dependencies flagged by the report.
+
+- Re-sync Gradle Dependencies:
+
+After updating the build.gradle file, re-sync the Gradle project to apply the changes:
+
+```shell
+./gradlew build --refresh-dependencies
+```
+
+Step 4: Re-run the Dependency Check
+After upgrading the dependencies, run the dependency check again to ensure that the vulnerabilities have been resolved:
+
+```shell
+./gradlew dependencyCheckAnalyze --info
+```
+
 #### - Suppress false positives in the OWASP Dependency Checker
 
-The [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html) provides monitoring of the project's dependencies and creates a report of known
-vulnerable components that are included in the build. The checker plugin is declared in the Golden path for Java apps. Because of the way the dependency checker works, false positives and false negatives may exist. We can surepress these false positives by providing
+Because of the way the dependency checker works, false positives and false negatives may exist. We can suppress these false positives by providing
 the dependency checker with the path to a suppression file in the `build.gradle` file.
 
 ```
@@ -519,6 +580,11 @@ dependencyCheck {
   suppressionFile = 'path/to/supression.xml'
 }
 ```
+
+Here is an example of how to configure the suppression file [build.gradle](https://github.com/hmcts/template-spring-boot/blob/2b93593d233b4e3590e5a6d01054b1dd79bfd7c6/skeleton/build.gradle#L153)
+Here is the aforementioned [suppression file](https://github.com/hmcts/template-spring-boot/blob/master/skeleton/config/owasp/suppressions.xml)
+
+
 #### - "NoSuchMethodError" when running the OWASP Dependency Checker
 
 With the Dependency-Check v9.0.0 users may encounter issues with  `NoSuchMethodError` exceptions due to dependency resolution.
