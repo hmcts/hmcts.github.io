@@ -35,5 +35,9 @@ jobs:
           AZURE_STORAGE_ACCOUNT: asdsajkldhsahdhljkasdcc # your-storage-account-name
           AZURE_CONTAINER_NAME: example
           AZCOPY_AUTO_LOGIN_TYPE: AZCLI
+          AZCOPY_TENANT_ID: 531ff96d-0ae9-462a-8d2d-bec7c0b42082
+
         run: |
+          echo $AZCOPY_TENANT_ID
+          
           azcopy copy 'hello.txt' 'https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZURE_CONTAINER_NAME/hello.txt'
