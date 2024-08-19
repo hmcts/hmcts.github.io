@@ -40,4 +40,7 @@ jobs:
         run: |
           echo $AZCOPY_TENANT_ID
           
-          azcopy copy 'hello.txt' 'https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZURE_CONTAINER_NAME/hello.txt'
+          azcopy sync --compare-hash=md5 \
+            --delete-destination=true \
+            --include-pattern="*.txt"  \
+            "." "https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZURE_CONTAINER_NAME/"
