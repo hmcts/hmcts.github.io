@@ -36,7 +36,6 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          architecture: 'x64'
           bundler-cache: true
       - name: Build site
         run: bundle exec rake build
@@ -47,3 +46,22 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # For Azure AI Search used in hmcts/slack-help-bot
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Install dependencies
+        run: | 
+          ./.ci/install-htmlq.sh
+          ./.ci/install-azcopy.sh
+      - name: Process content
+        run: |
+          ./.ci/upload.sh
+      - name: Trigger index
+        run: |
+          ./.ci/trigger-index.sh
+      # end of Azure AI Search
