@@ -1,6 +1,6 @@
 ---
 title: TLS certificates
-last_reviewed_on: 2024-04-22
+last_reviewed_on: 2024-10-10
 review_in: 6 months
 weight: 2
 ---
@@ -44,7 +44,7 @@ We are using [Key Vault Acmebot](https://github.com/shibayan/keyvault-acmebot) f
 
 Key Vault Acmebot is deployed from this repository [azure-enterprise-acme](https://github.com/hmcts/azure-enterprise-acme/tree/main) via this [azure-devops pipeline](https://dev.azure.com/hmcts/PlatformOperations/_build?definitionId=656&_a=summary), there is one instance per subscription.
 
-The naming convention for keyvaults and function App are acme<subscription name without hyphen, `sharedservices` is replaced with `sds` because of length limits. E.g. `acmedtssdstest`.
+The naming convention for keyvaults and function App are `acme<subscription name without hyphens>`, `sharedservices` is replaced with `sds` because of length limits. e.g. `acmedtssdstest`.
 
 The naming convention for certificate name in Key Vault is `<DNS Name/wildcard>-<DNSZone>` separated by hyphen.  E.g. `hmi-apim-test-platform-hmcts-net`, `wildcard-test-platform-hmcts-net`.
 
