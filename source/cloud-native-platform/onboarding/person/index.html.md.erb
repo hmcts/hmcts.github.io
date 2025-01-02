@@ -11,11 +11,11 @@ weight: 2
 
 In order to give access to HMCTS resources, an account need to exist on the HMCTS Azure tenant.  If user have `@hmcts.net` account, this section could be skipped but for `@justice.gov.uk` account holder, they will need to be invited as guest user first to be able to add groups to their account otherwise the pipeline will throw error that User account does not exist.
 
-An existing teammate should create a pull request to [devops-azure-ad](https://github.com/hmcts/devops-azure-ad/blob/master/users/guest_user_invite.yml) and get it approved by Platform Operations.
+An existing teammate should create a pull request to [azure-access](https://github.com/hmcts/azure-access/blob/master/users/guest_user_invite.yml) and get it approved by Platform Operations.
 
 Once PR approved and merged, an automated email from the Microsoft will be sent out to the user to accept the invitation.
 
-[Example PR](https://github.com/hmcts/devops-azure-ad/pull/4439/files)
+[Example PR](https://github.com/hmcts/azure-access/pull/4439/files)
 
 ## Microsoft Entra ID groups
 
@@ -23,7 +23,7 @@ Microsoft Entra ID is used to give you and your team-mates access to specific su
 When your Microsoft Entra ID user has access to a subscription, you will be able to view, create and modify Azure resources for your team.
 
 As GitHub access is also provided by adding an Microsoft Entra ID Group, an existing teammate should create a pull request
-to [devops-azure-ad](https://github.com/hmcts/devops-azure-ad/blob/master/users/prod_users.yml) and get it approved by Platform Operations.
+to [azure-access](https://github.com/hmcts/azure-access/blob/master/users/prod_users.yml) and get it approved by Platform Operations.
 
 The first user in a team should raise a [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) request with the required groups.
 
@@ -55,7 +55,7 @@ Being a member of the group that indicates you are security cleared is a pre-req
 
 The access package expires after one year, so you will have to re-request it after one year by clicking the link above.
 
-There are checks in place on our [devops-azure-ad](https://github.com/hmcts/devops-azure-ad) pipeline to ensure certain groups require security clearance. If you have not requested the package and been approved, you will not be able to be added to groups that grant access to sensitive resources such as production environments.
+There are checks in place on our [azure-access](https://github.com/hmcts/azure-access) pipeline to ensure certain groups require security clearance. If you have not requested the package and been approved, you will not be able to be added to groups that grant access to sensitive resources such as production environments.
 
 ## GitHub
 
