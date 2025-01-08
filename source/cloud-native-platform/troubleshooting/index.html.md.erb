@@ -531,9 +531,9 @@ To fix this the lock has to be released manually.
 
 #### Solution
 
-1. Identify the storage account used by the Terraform pipeline, this is usally contained within **Terraform Init phase** like so: 
+1. Identify the storage account used by the Terraform pipeline, this is usually contained within **Terraform Init phase** like so: 
 	
-	```
+	```command
 	/home/vsts/.local/bin/terraform init -backend-config=storage_account_name=cea3a8c1ea7e2d267f49csa...
 	```
 2. Identify the **.tfstate** file path, this is usually given in the **Terraform error message** in the **Apply phase** like so:
