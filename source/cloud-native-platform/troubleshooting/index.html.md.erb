@@ -534,14 +534,14 @@ To fix this the lock has to be released manually.
 1. Identify the storage account used by the Terraform pipeline, this is usually contained within **Terraform Init phase** like so: 
 	
 	```command
-	/home/vsts/.local/bin/terraform init -backend-config=storage_account_name=cea3a8c1ea7e2d267f49csa...
+	/home/vsts/.local/bin/terraform init -backend-config=storage_account_name=<account-name>
 	```
 2. Identify the **.tfstate** file path, this is usually given in the **Terraform error message** in the **Apply phase** like so:
 	
 	```
 	│ Error message: state blob is already locked
 	│ Lock Info:
-	│ ID:        b888472e-cf44-77d7-c64a-536ba00daa25
+	│ ID:        <lock-id>
 	│ Path:      subscription-tfstate/UK South/hub/hub-terraform-infra/sbox/hub_infra/terraform.tfstate
 	```
 3. In Azure Portal find the Storage Account by searching for all resources using the name identified in **Step 1**
