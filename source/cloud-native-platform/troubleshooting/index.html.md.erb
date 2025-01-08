@@ -526,27 +526,27 @@ Sometimes when Terraform apply runs in one of the Azure Devops pipelines, it may
 │   Info:   
 ```
 
-This issue usually occurs when the pipeline has failed or has been cancelled after the plan phase and before the lock release step has been run. 
+This issue usually occurs when the pipeline has failed or has been cancelled after the plan phase and before the lock release phase has been run. 
 To fix this the lock has to be released manually. 
 
 #### Solution
 
-1. Identify the storage account used by the Terraform pipeline, this is usally contained within Terraform Init step like so: 
+1. Identify the storage account used by the Terraform pipeline, this is usally contained within **Terraform Init phase** like so: 
 	
 	```
 	/home/vsts/.local/bin/terraform init -backend-config=storage_account_name=cea3a8c1ea7e2d267f49csa...
 	```
-2. Identify the TFState file path, this is usually given in the Terraform apply failure like so:
+2. Identify the **.tfstate** file path, this is usually given in the **Terraform error message** in the **Apply phase** like so:
 	
 	```
 	│ Error message: state blob is already locked
 	│ Lock Info:
-	│   ID:        b888472e-cf44-77d7-c64a-536ba00daa25
-	│   Path:      subscription-tfstate/UK South/hub/hub-terraform-infra/sbox/hub_infra/terraform.tfstate <-- this is the path
+	│ ID:        b888472e-cf44-77d7-c64a-536ba00daa25
+	│ Path:      subscription-tfstate/UK South/hub/hub-terraform-infra/sbox/hub_infra/terraform.tfstate
 	```
-3. In Azure Portal find the storage account in all resources by the name identified in **Step 1**
-4. Follow the path identified in **Step 2** until you find find the terraform.tfstate - it will have an active lease, right click and select **"Break Lease"** which will release the lock
-5. Given you have released the lock from the correct terraform state the next pipeline should now run successfully
+3. In Azure Portal find the Storage Account by searching for all resources using the name identified in **Step 1**
+4. Follow the path identified in **Step 2** until you find find the **terraform.tfstate** - it will have an active lease, right click and select **"Break Lease"** which will release the lock
+5. Given you have released the lock from the correct terraform state file the next pipeline run should now pass
 
 ### Java (Spring Boot) Golden Path Errors
 
