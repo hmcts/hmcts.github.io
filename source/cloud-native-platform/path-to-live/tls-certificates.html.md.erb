@@ -28,6 +28,8 @@ If your site is being hosted on:
 - [Azure CDN](https://docs.microsoft.com/en-us/azure/cdn/)
 
 Then you must use [Microsoft managed certificates](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain-https#option-1-default-use-a-certificate-managed-by-front-door)
+You can automatically generate/deploy an Azure-manged certificate by copying an existing site in [Azure Platform Terraform](https://github.com/hmcts/azure-platform-terraform/blob/0c7c958841da8ad226ca40102e0286f54a9326fe/environments/prod/prod.tfvars#L3162)
+Please note, we may need to manually validate the certificate by creating a CNAME record on [Azure-public-DNS](https://github.com/hmcts/azure-public-dns)
 
 ## Manual certificate requests
 
