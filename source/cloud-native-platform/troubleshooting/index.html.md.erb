@@ -398,36 +398,69 @@ Security vulnerabilities were found that were not ignored.
 
 In your local git repo,
 the following command will output the same vulnerabilities that caused your Jenkins run to error:
-	`yarn npm audit --recursive --environment production > /tmp/yarn-vulns.txt`
-The Audit command's findings will be piped to a newly created file in your working directory/tmp called `yarn-vulns.txt`. Remember to discard this file when you have resolved the vulnerabilities as it's not required by the repository.
-The audit output will notify you of the package with the vulnerability at the top of each entry e.g. in the picture 'axios: 1.7.2'
-![yarnlocalaudit.html](../images/yarnlocalaudit.png)
 
+`yarn npm audit --recursive --environment production > /tmp/yarn-vulns.txt`
+
+The Audit command's findings will be piped to a newly created file in your working directory/tmp called `yarn-vulns.txt`. 
+
+Remember to discard this file when you have resolved the vulnerabilities as it's not required by the repository.
+The audit output will notify you of the package with the vulnerability at the top of each entry i.e. in the following picturethe package name is on the line 'axios: 1.7.2'
+
+<details>
+  <summary>Click to display picture</summary>
+  ![yarnlocalaudit](../images/yarnlocalaudit.png)
+</details>
+
+The `yarn info <NAME OF PACKAGE>` command provides a flow diagram output showing the packages and the dependencies they contain. As above you can send the output of this command to a file for easier reading in your IDE: 
+
+`yarn info > /tmp/yarn-deps.txt` 
+
+Typical output of this is visible on the lower half of the picture above.
+
+<ins>If the package itself is listed by audit/info</ins>, updating the vulnerable package is all that's needed.
 Other packages may also rely on a vulnerable version of the package, this is visible in the 'Via' section of the vulnerability report.
+To upgrade the vulnerable package, you can update its version in the package.json file manually.
 
-The `yarn info` command provides a flow diagram output showing the packages and the dependencies they contain. As above you can send the output of this command to a file for easier reading in your IDE: `yarn info > /tmp/yarn-deps.txt`.
+> 📣 Search [npmjs](https://npmjs.com) for the package name to find the latest version.
 
-Yarn v3 stores the packages within the repo in the `.yarn/cache` folder.
+You can also run `yarn upgrade-interactive` and select the package that needs updated with the arrow keys on your keyboard and hit Enter. This will update the package.json file too.
 
-This should help you determine which packages contain vulnerable dependencies.
+<ins>If another package is named</ins>, the vulnerable package is a not directly used by your project, but is a dependency of the named package (a dependency of a dependency - a *transitive* dependency).
 
-W
+> 📣  *Although updating the package utilised in the project will cause more modern transitive dependencies to be utilised (potentially updating past the vulnerable package), it is likely changing so many packages at once will introduce too many breaking changes so this method is best avoided. Update only what is necessary.*
 
-run `yarn install` to install the packages contained in your package.json.
+Using Resolutions in yarn will force the project to utilise a specified version of a transitive dependency, this is done by adding a resolutions section to your package.json. This is illustrated below. Resolutions are equivalent to Overrides in NPM.
 
-To upgrade the dependencies, you can update the version in the package.json file manually.
+<details>
+  <summary>Click here for resolutions example </summary>
 
-Search [npmjs](https://npmjs.com) for the package name to find the latest version.
+  ```package.json
+{
 
-You can also run `yarn upgrade-interactive` and select the package that needs updated with the arrow keys on your keyboard and hit Enter.
+      "name": "example-project",
+      "version": "1.0.0",
+      "dependencies": {
+        "left-pad": "1.0.0",
+        "c": "file:../c-1",
+        "d2": "file:../d2-1"
+      },
+      "devdependencies": {
+        "devPackage": "1.0.0"
+      },
+      "resolutions": {
+        "force/this/transitive-dependency": "1.1.1",
+        "other/**/transitive-dep": "^1.1.2"
+      }
+ 
+}
+  ```
+</details>
 
-This will update the package.json file too.
+After specifying which packages to update to, running `yarn install` will install the dependencies listed in your package.json to your local project. Yarn v3 stores the packages within the repo in the `.yarn/cache` folder. After this is done, you can then commit your changes to Github
 
-Because the packages are stored within the repo, you need to run `yarn install` again before committing the changes to GitHub.
+> ❗️ If you don't run `yarn install` after updating the package.json file, you will receive an error in the pipeline about `yarn install` changing the lockfile, which is forbidden.
 
-If you don't run `yarn install` after updating the package.json file, you will receive an error in the pipeline about `yarn install` changing the lockfile, which is forbidden.
-
-If a new version of the affected package has not yet been released, you can temporarily ignore the issue by running:
+<ins>If a new version of the affected package has not yet been released</ins>, you can temporarily ignore the issue by running:
 
 ```
 yarn npm audit --recursive --environment production --json > yarn-audit-known-issues
