@@ -404,12 +404,13 @@ the following command will output the same vulnerabilities that caused your Jenk
 The Audit command's findings will be piped to a newly created file in your working directory/tmp called `yarn-vulns.txt`. 
 
 Remember to discard this file when you have resolved the vulnerabilities as it's not required by the repository.
-The audit output will notify you of the package with the vulnerability at the top of each entry i.e. in the following picturethe package name is on the line 'axios: 1.7.2'
+The audit output will notify you of the package with the vulnerability at the top of each entry i.e. in the following picture the package name is on the line 'axios: 1.7.2'
 
 <details>
-  <summary>Click to display picture</summary>
-  ![yarnlocalaudit](../images/yarnlocalaudit.png)
+    <summary>Click for image</summary>
+    ![picture of results](../images/yarnlocalaudit.png)
 </details>
+
 
 The `yarn info <NAME OF PACKAGE>` command provides a flow diagram output showing the packages and the dependencies they contain. As above you can send the output of this command to a file for easier reading in your IDE: 
 
@@ -431,30 +432,21 @@ You can also run `yarn upgrade-interactive` and select the package that needs up
 
 Using Resolutions in yarn will force the project to utilise a specified version of a transitive dependency, this is done by adding a resolutions section to your package.json. This is illustrated below. Resolutions are equivalent to Overrides in NPM.
 
-<details>
-  <summary>Click here for resolutions example </summary>
 
-  ```package.json
+```
 {
-
-      "name": "example-project",
-      "version": "1.0.0",
-      "dependencies": {
-        "left-pad": "1.0.0",
-        "c": "file:../c-1",
-        "d2": "file:../d2-1"
-      },
-      "devdependencies": {
-        "devPackage": "1.0.0"
-      },
-      "resolutions": {
-        "force/this/transitive-dependency": "1.1.1",
-        "other/**/transitive-dep": "^1.1.2"
-      }
- 
+"dependencies": {
+  "left-pad": "1.0.0",
+  "c": "file:../c-1",
+  "d2": "file:../d2-1"
+},
+"resolutions": {
+  "force/this/transitive-dependency": "1.1.1",
+  "other/**/transitive-dep": "^1.1.2"
 }
-  ```
-</details>
+}
+```
+
 
 After specifying which packages to update to, running `yarn install` will install the dependencies listed in your package.json to your local project. Yarn v3 stores the packages within the repo in the `.yarn/cache` folder. After this is done, you can then commit your changes to Github
 
