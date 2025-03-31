@@ -508,6 +508,46 @@ Check the IP your rule is forwarding to. It should be the private IP of the fron
 
 You can find this [here](https://github.com/hmcts/azure-platform-terraform/blob/6f0b867e75b7e9cee9e7adc87084f6911eb5373d/environments/sbox/sbox.tfvars#L20).
 
+### Terraform state lock
+
+#### Error
+
+Sometimes when Terraform apply runs in one of the Azure Devops pipelines, it may fail with following (or similar) error:
+
+```
+│ Error message: state blob is already locked
+│ Lock Info:
+│   ID:        <lock-id>
+│   Path:      subscription-tfstate/UK South/hub/hub-terraform-infra/sbox/hub_infra/terraform.tfstate
+│   Operation: OperationTypeApply
+│   Who:       vsts@fv-az635-78
+│   Version:   1.10.1
+│   Created:   2025-01-07 16:02:25.188636401 +0000 UTC
+│   Info:   
+```
+
+This issue usually occurs when the pipeline has failed or has been cancelled after the plan phase and before the lock release phase has been run. 
+To fix this the lock has to be released manually. 
+
+#### Solution
+
+1. Identify the storage account used by the Terraform pipeline, this is usually contained within **Terraform Init phase** like so: 
+	
+	```command
+	/home/vsts/.local/bin/terraform init -backend-config=storage_account_name=<account-name>
+	```
+2. Identify the **.tfstate** file path, this is usually given in the **Terraform error message** in the **Apply phase** like so:
+	
+	```
+	│ Error message: state blob is already locked
+	│ Lock Info:
+	│ ID:        <lock-id>
+	│ Path:      subscription-tfstate/UK South/hub/hub-terraform-infra/sbox/hub_infra/terraform.tfstate
+	```
+3. In Azure Portal find the Storage Account by searching for all resources using the name identified in **Step 1**
+4. Follow the path identified in **Step 2** until you find find the **terraform.tfstate** - it will have an active lease, right click and select **"Break Lease"** which will release the lock
+5. Given you have released the lock from the correct terraform state file the next pipeline run should now pass
+
 ### Java (Spring Boot) Golden Path Errors
 
 #### - Dependencies security vulnerabilities can be resolved by updating the version

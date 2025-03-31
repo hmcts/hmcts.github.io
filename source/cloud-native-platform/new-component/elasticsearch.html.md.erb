@@ -8,7 +8,7 @@ weight: 10
 # <%= current_page.data.title %>
 
 At the time of writing; Probate, CMC, SSCS, Employment, Divorce and FPLA are the only approved consumers of production ElasticSearch.
-We understand that this may change in the future as teams will want to utilise the enhanced functionality and performance that ElasticSearch provides. 
+We understand that this may change in the future as teams will want to utilise the enhanced functionality and performance that ElasticSearch provides.
 
 The following process must be adhered to for teams wanting to consume ElasticSearch in production:
 
@@ -17,3 +17,7 @@ The following process must be adhered to for teams wanting to consume ElasticSea
 3. Ensure the latest definition file you want to be used in prod is applied in the ccd-definition-store
 4. Once approval has been obtained from CCD that they are happy for you to go live please raise a DTSPO ticket on Jira with Platform Operations and attach your latest definition file to the ticket. You must include the jurisdiction you wish elasticsearch to pull in.
 5. After Platform Operations have confirmed that the work has been done on their end validate the results.
+
+## Elasticsearch service failed to start
+
+There have been cases where the elasticsearch service has failed to start when the vm is booted up. As a temporary workaround over the Christmas period, we have implemented a cron job that will check the status of the service and restart if required. This job will run every hour, on the hour during this period. You can check the status of runs [here.](https://dev.azure.com/hmcts/PlatformOperations/_build?definitionId=1035&_a=summary)
