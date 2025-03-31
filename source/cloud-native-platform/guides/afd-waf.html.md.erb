@@ -1,6 +1,6 @@
 ---
 title: Azure Frontdoor Web Application Firewall Debug
-last_reviewed_on: 2024-08-15
+last_reviewed_on: 2025-03-31
 review_in: 6 months
 weight: 10
 hide_in_navigation: true
@@ -21,7 +21,7 @@ You can find out what the blocked rule is by following these steps:
 3. Go to the query and add the query below, updating `{Tracking reference}` with the reference from the WAF error message.
 
 ```
-AzureDiagnostics 
+AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorWebApplicationFirewallLog"
 | where trackingReference_s == "{Tracking reference}"
 ```
