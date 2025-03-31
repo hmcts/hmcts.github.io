@@ -1,6 +1,6 @@
 ---
 title: Health Probes
-last_reviewed_on: 2024-06-19
+last_reviewed_on: 2025-03-31
 review_in: 6 months
 weight: 90
 ---
@@ -9,7 +9,7 @@ weight: 90
 
 ## Readiness Checks on Kubernetes
 
-Readiness probes are crucial in Kubernetes as they are called periodically, impacting container availability. 
+Readiness probes are crucial in Kubernetes as they are called periodically, impacting container availability.
 Failing readiness checks make containers temporarily unavailable, preventing incoming requests from reaching your application. It's essential to consider what checks to include in readiness probes to avoid unnecessary downtime.
 
 ### Considerations:
@@ -18,9 +18,11 @@ Failing readiness checks make containers temporarily unavailable, preventing inc
 - Avoid including soft dependencies; handle their unavailability in code for a better customer experience.
 
 **Good Example:**
+
 - A private cache/database (e.g., Redis or Postgres) exclusive to the application.
 
 **Bad Example:**
+
 - Shared components like IDAM, S2S, or CCD.
 - Another API that your team owns
 
