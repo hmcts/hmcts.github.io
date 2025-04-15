@@ -428,6 +428,68 @@ This is a **temporary** measure and all packages **must** be updated when new ve
 
 The Renovate tool should raise pull requests automatically when a new package version is released. You can simply approve this change and merge the PR to mitigate the vulnerabilities.
 
+### - Yarn test failures
+
+#### Error
+
+```
+Page / › should have no accessibility errors.
+```
+
+#### Solution
+
+This error means the accessibility test for the root page (/) is failing. This often happens if the govuk-frontend package is outdated or if its template files aren’t correctly set up in your project. To fix it, update govuk-frontend to the latest version and ensure the GOV.UK template is in your views directory.
+
+1) Update govuk-frontend to the latest Version
+
+```
+yarn add govuk-frontend@latest
+```
+
+2) Move the GOV.UK Template to the Views Directory
+
+```
+mkdir -p src/main/views/govuk
+mv node_modules/govuk-frontend/dist/govuk src/main/views/
+```
+
+3) Run the a11y test to check if the issue is resolved:
+
+```
+yarn test:a11y
+```
+
+### - Linting and Prettier Issues
+
+#### Error: Code Style Violations or Formatting Issues
+
+```
+ESLint: Unexpected token (error)
+Prettier: Code style issues found in the following file(s)
+```
+
+#### Solution
+
+1) Run ESLint to Fix Linting Errors
+
+```
+yarn lint --fix
+```
+
+This will attempt to resolve common issues like incorrect syntax, unused variables, or improper indentation based on your ESLint configuration.
+
+2) Use Prettier to reformat all files in the src/ directory to match the project’s style guide:
+
+```
+yarn prettier --write src/
+```
+
+3) Verify fixes
+
+```
+yarn lint
+```
+
 ### Helm chart is deprecated
 #### Error
 
