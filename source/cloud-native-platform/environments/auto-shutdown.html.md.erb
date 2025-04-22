@@ -1,6 +1,6 @@
 ---
 title: Environment schedule
-last_reviewed_on: 2024-07-15
+last_reviewed_on: 2025-03-31
 review_in: 6 months
 weight: 10
 ---
@@ -27,13 +27,18 @@ See below the list of environments that are shut down outside of working hours o
 
 Currently we start and stop the AKS Clusters, Application Gateways and Postgres Flexible Servers for the abovementioned environments. If required, the resources in an environment can be started outside of these hours using a GitHub action on the [auto-shutdown](https://github.com/hmcts/auto-shutdown) repository.
 
-#### Start a specific environment
-1. Navigate to [Manual Start](https://github.com/hmcts/auto-shutdown/actions/workflows/manual-start.yaml) action on the auto-shutdown repository.
+#### Start or Stop a specific environment
+
+This manual job will start or stop the below resources for a specific environment:
+- AKS Cluster
+- Application Gateway
+- Postgres Flexible Server
+- Virtual Machines (this includes jumpboxes and bastions)
+
+1. Navigate to [Manual Start / Stop](https://github.com/hmcts/auto-shutdown/actions/workflows/manual-start-stop.yaml) action on the auto-shutdown repository.
 2. Select 'Run Workflow'
-3. Ensure the 'master' branch and the correct Business Area, Environment and Cluster option are selected. Then select 'Run Workflow'
+3. Ensure the 'master' branch and the correct Mode, Business Area and Environment options are selected. Then select 'Run Workflow'
 4. Select the new build which will appear at the top under Workflow Runs and will be identifiable by an orange dot which means the build is currently running.
-5. Select 'build' under 'Jobs'
-6. Expand the 'Manual Start' dropdown to view the job output.
 
 ### Skip shutdown functionality
 In the event that an environment or environments are needed outside of the default hours, you can raise a request to automatically exclude it from the shutdown schedule.

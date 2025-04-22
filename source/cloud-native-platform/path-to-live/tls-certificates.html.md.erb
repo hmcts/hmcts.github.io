@@ -1,6 +1,6 @@
 ---
 title: TLS certificates
-last_reviewed_on: 2024-04-22
+last_reviewed_on: 2024-10-10
 review_in: 6 months
 weight: 2
 ---
@@ -29,6 +29,14 @@ If your site is being hosted on:
 
 Then you must use [Microsoft managed certificates](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain-https#option-1-default-use-a-certificate-managed-by-front-door)
 
+You can automatically generate/deploy an Azure-manged certificate by copying an existing site in [Azure Platform Terraform](https://github.com/hmcts/azure-platform-terraform/commit/f6655ecb98de678647e0adae1aeb7dc693a01cb4)
+
+Please note, if the certificate status on 'domains' under Frontdoor in Azure portal does not show as 'deployed', you will need to manually validate the certificate by creating a TXT record on Azure-public-DNS like in this [example PR](https://github.com/hmcts/azure-public-dns/pull/1963)
+
+You can view the TXT record that needs created by clicking on the status under 'validation state'
+
+<img src="../../images/validate-dns.png" alt="Domain validation TXT record" width="500"/>
+
 ## Manual certificate requests
 
 If you cannot use a managed certificate then please raise a request in [#platops-help](https://app.slack.com/client/T1L0WSW9F/C8SR5CAMU),
@@ -44,7 +52,7 @@ We are using [Key Vault Acmebot](https://github.com/shibayan/keyvault-acmebot) f
 
 Key Vault Acmebot is deployed from this repository [azure-enterprise-acme](https://github.com/hmcts/azure-enterprise-acme/tree/main) via this [azure-devops pipeline](https://dev.azure.com/hmcts/PlatformOperations/_build?definitionId=656&_a=summary), there is one instance per subscription.
 
-The naming convention for keyvaults and function App are acme<subscription name without hyphen, `sharedservices` is replaced with `sds` because of length limits. E.g. `acmedtssdstest`.
+The naming convention for keyvaults and function App are `acme<subscription name without hyphens>`, `sharedservices` is replaced with `sds` because of length limits. e.g. `acmedtssdstest`.
 
 The naming convention for certificate name in Key Vault is `<DNS Name/wildcard>-<DNSZone>` separated by hyphen.  E.g. `hmi-apim-test-platform-hmcts-net`, `wildcard-test-platform-hmcts-net`.
 

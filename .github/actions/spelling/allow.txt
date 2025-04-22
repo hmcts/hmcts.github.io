@@ -308,7 +308,11 @@ CDNs
 Grigsby
 Portis
 TTFB
+jumpboxes
+tfstate
+vsts
 optimisation
+optimisations
 prioritisation
 roadmap
 vsts

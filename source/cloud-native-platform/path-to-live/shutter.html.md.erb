@@ -1,6 +1,6 @@
 ---
 title: Shutter Implementation and Design
-last_reviewed_on: 2024-03-18
+last_reviewed_on: 2025-03-24
 review_in: 6 months
 weight: 5
 ---
@@ -63,7 +63,7 @@ With everything setup to render a shutter page you can now swap the DNS from Azu
 
 Shuttering all records in a single DNS zone follows a similar process to individual records.
 
-The ability to shutter all records in a single DNS zone allows for a complete service to be placed into shuttering for maintenance or upgrade purposes without needing to change every single record configuration. 
+The ability to shutter all records in a single DNS zone allows for a complete service to be placed into shuttering for maintenance or upgrade purposes without needing to change every single record configuration.
 
 This is a quality of life change, the functionality of the shuttering remains the same.
 
@@ -150,7 +150,7 @@ As long as there is a matching shutter config for the DNS record you can update 
 
 ## Shuttering all CFT services
 
-To shutter all CFT services, you can use the `shutter_all_cft` option [here](https://github.com/hmcts/azure-public-dns/blob/8aa9506a97518a951e6f7c732d88ab4bd0ac91a0/shuttering/prod/shutter_by_platform.yml#L2). This will shutter **any A or CNAME record** that has been tagged with `platform: "cft"`. Examples below: 
+To shutter all CFT services, you can use the `shutter_all_cft` option [here](https://github.com/hmcts/azure-public-dns/blob/8aa9506a97518a951e6f7c732d88ab4bd0ac91a0/shuttering/prod/shutter_by_platform.yml#L2). This will shutter **any A or CNAME record** that has been tagged with `platform: "cft"`. Examples below:
 
 - [PR to shutter all CFT](https://github.com/hmcts/azure-public-dns/pull/1789)
 - [Tagging a record](https://github.com/hmcts/azure-public-dns/blob/8aa9506a97518a951e6f7c732d88ab4bd0ac91a0/environments/prod/platform-hmcts-net.yml#L232)
@@ -165,9 +165,9 @@ kubectl get ingress -A | grep -v '.internal'
 
 ## How to access your application when it is shuttered (For testing purposes only)
 
-When an application's shutter page is active, it's possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active. 
+When an application's shutter page is active, it's possible to access the application by adding an entry to your hosts file. This should only be used in situations where you need to test changes etc with the shutter page still active.
 
-You will need the IP address of the associated Azure FrontDoor Endpoint. You can run a `dig` or `nslookup` on the endpoint to retrieve the IP. Multiple IPs may be returned due to HA but either should work. 
+You will need the IP address of the associated Azure FrontDoor Endpoint. You can run a `dig` or `nslookup` on the endpoint to retrieve the IP. Multiple IPs may be returned due to HA but either should work.
 
 e.g.
 
@@ -189,7 +189,7 @@ Once your testing is complete, remove the entry and you should now see the shutt
 
 ### 404 Not Found
 
-Shuttering error message - 404 Not Found - we couldn't find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.  
+Shuttering error message - 404 Not Found - we couldn't find the page, please check the URL and try again - this occurs when browsing to folders after the main URL, which have not been set up for shuttering. Therefore teams need to update their custom shutter page.
 
 See [azure-shutter-pages](https://github.com/hmcts/azure-shutter-pages) repository for examples, where there is shutter pages for further directories beyond the main URL. For example: [et-pet](https://github.com/hmcts/azure-shutter-pages/tree/master/et-pet)
 

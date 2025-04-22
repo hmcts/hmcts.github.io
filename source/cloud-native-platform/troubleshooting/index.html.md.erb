@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting issues
-last_reviewed_on: 2024-08-12
+last_reviewed_on: 2025-04-15
 review_in: 6 months
 weight: 98
 ---
@@ -19,6 +19,7 @@ weight: 98
 - [Golden Path](#golden-path)
 
 ## GitHub
+---
 
 ### Adding a new user on GitHub
 
@@ -36,6 +37,7 @@ See [create a GitHub repository](../new-component/github-repo.html#)
 - If no one from your team have access, follow [asking for help](/cloud-native-platform/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
 
 ## Receiving an email regarding inactive account
+---
 
 You may have received an email from our scheduled pipeline which deletes guest user accounts if they're inactive for longer than 31 days.
 
@@ -60,7 +62,7 @@ If your account has been deleted and you need it re-enabled, you need to create 
 Once that is done you will then be able to get your GitHub access back by asking one of your team members to re-add you following [person onboarding](/cloud-native-platform/onboarding/person).
 
 ## Jenkins
-
+---
 ### Jenkins is unavailable
 
   - Check if there is a planned outage in [#cloud-native-announce](https://hmcts-reform.slack.com/archives/CA4F2MAFR).
@@ -169,8 +171,14 @@ Find your slack id by clicking on `View profile` within the slack app, then clic
 
 Update your github to slack user mapping in [this file](https://github.com/hmcts/github-slack-user-mappings/blob/master/slack.json) and try running the pipeline again.
 
-## Debug Application Startup issues in AKS
+### Sandbox Jenkins is not automatically picking up my changes
 
+Because we have a prod and sandbox Jenkins instance, sometimes your pushes to master may be picked up by prod Jenkins instead.
+
+If this happens, simply run the master build manually on sandbox jenkins.
+
+## Debug Application Startup issues in AKS
+---
 - There could be many reasons why applications could fail to startup like :
     - A secret referred in helm chart is missing in keyvaults
     - Pod identity is not able to pull keyvault secrets due to missing permissions
@@ -216,7 +224,7 @@ Update your github to slack user mapping in [this file](https://github.com/hmcts
      ```
 
 ## F5 VPN not connecting or services not available over VPN that should be
-
+---
 Normally connecting to the VPN at [portal.platform.hmcts.net](https://portal.platform.hmcts.net) should work without issues.
 
 Occasionally there are issues where the VPN will hang on connecting or will connect but certain services will not be available over the VPN.
@@ -233,6 +241,7 @@ If that doesn’t work then make sure you’ve applied the latest operating syst
 If you’re still having issues then please raise a ticket in the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) channel.
 
 ## Flux and Gitops
+---
 
    > Always check __why__ your release or pod has failed in the first instance.
    > Although you may have permissions to delete a helm release or pod in a non-production environment, use this privilege wisely as you could be _hiding a potential bug_ which could also _occur in production_.
@@ -334,7 +343,7 @@ If you’re still having issues then please raise a ticket in the [#platops-help
    ```
 
 ## Connecting to AKS Clusters
-
+---
 - By Default, all developers have read access to non-prod AKS clusters and slightly higher privileges to their namespaces.
 - You can connect to AKS clusters using `az aks get-credentials`. Below are some handy commands:
 
@@ -348,10 +357,10 @@ kubectl config use-context cft-aat-00-aks
 ```
 
 ## Golden Path
+---
+### NodeJS Errors
 
-### Nodejs Type Error
-
-#### Error
+#### - URL.canParse is not a function
 ```
 TypeError: URL.canParse is not a function
   at parseSpec (/usr/lib/node_modules/corepack/dist/lib/corepack.cjs:23025:21)
@@ -367,7 +376,7 @@ Node.js v18.16.0
 
 Bump the node version in `.nvmrc` to `18.17`
 
-### after(build) is deprecated
+### - After(build) is deprecated
 
 ```
 after(build) is deprecated, consider using 'afterSuccess', 'afterFailure', 'afterAlways' instead This change is enforced from 30/01/2023
@@ -377,7 +386,7 @@ after(build) is deprecated, consider using 'afterSuccess', 'afterFailure', 'afte
 
 Update references in any Jenkinsfiles in your repo to `afterSuccess(build)`
 
-### Yarn security vulnerabilities
+### - Yarn security vulnerabilities
 
 #### Error
 
@@ -419,14 +428,69 @@ This is a **temporary** measure and all packages **must** be updated when new ve
 
 The Renovate tool should raise pull requests automatically when a new package version is released. You can simply approve this change and merge the PR to mitigate the vulnerabilities.
 
-### Sandbox Jenkins is not automatically picking up my changes
+### - Yarn test failures
 
-Because we have a prod and sandbox Jenkins instance, sometimes your pushes to master may be picked up by prod Jenkins instead.
+#### Error
 
-If this happens, simply run the master build manually on sandbox jenkins.
+```
+Page / › should have no accessibility errors.
+```
+
+#### Solution
+
+This error means the accessibility test for the root page (/) is failing. This often happens if the govuk-frontend package is outdated or if its template files aren’t correctly set up in your project. To fix it, update govuk-frontend to the latest version and ensure the GOV.UK template is in your views directory.
+
+1) Update govuk-frontend to the latest Version
+
+```
+yarn add govuk-frontend@latest
+```
+
+2) Move the GOV.UK Template to the Views Directory
+
+```
+mkdir -p src/main/views/govuk
+mv node_modules/govuk-frontend/dist/govuk src/main/views/
+```
+
+3) Run the a11y test to check if the issue is resolved:
+
+```
+yarn test:a11y
+```
+
+### - Linting and Prettier Issues
+
+#### Error: Code Style Violations or Formatting Issues
+
+```
+ESLint: Unexpected token (error)
+Prettier: Code style issues found in the following file(s)
+```
+
+#### Solution
+
+1) Run ESLint to Fix Linting Errors
+
+```
+yarn lint --fix
+```
+
+This will attempt to resolve common issues like incorrect syntax, unused variables, or improper indentation based on your ESLint configuration.
+
+2) Use Prettier to reformat all files in the src/ directory to match the project’s style guide:
+
+```
+yarn prettier --write src/
+```
+
+3) Verify fixes
+
+```
+yarn lint
+```
 
 ### Helm chart is deprecated
-
 #### Error
 
 ```
@@ -505,3 +569,149 @@ Check the pipeline passed after merging. If the pipeline failed, it's possible t
 Check the IP your rule is forwarding to. It should be the private IP of the frontend Application Gateway.
 
 You can find this [here](https://github.com/hmcts/azure-platform-terraform/blob/6f0b867e75b7e9cee9e7adc87084f6911eb5373d/environments/sbox/sbox.tfvars#L20).
+
+### Terraform state lock
+
+#### Error
+
+Sometimes when Terraform apply runs in one of the Azure Devops pipelines, it may fail with following (or similar) error:
+
+```
+│ Error message: state blob is already locked
+│ Lock Info:
+│   ID:        <lock-id>
+│   Path:      subscription-tfstate/UK South/hub/hub-terraform-infra/sbox/hub_infra/terraform.tfstate
+│   Operation: OperationTypeApply
+│   Who:       vsts@fv-az635-78
+│   Version:   1.10.1
+│   Created:   2025-01-07 16:02:25.188636401 +0000 UTC
+│   Info:   
+```
+
+This issue usually occurs when the pipeline has failed or has been cancelled after the plan phase and before the lock release phase has been run. 
+To fix this the lock has to be released manually. 
+
+#### Solution
+
+1. Identify the storage account used by the Terraform pipeline, this is usually contained within **Terraform Init phase** like so: 
+	
+	```command
+	/home/vsts/.local/bin/terraform init -backend-config=storage_account_name=<account-name>
+	```
+2. Identify the **.tfstate** file path, this is usually given in the **Terraform error message** in the **Apply phase** like so:
+	
+	```
+	│ Error message: state blob is already locked
+	│ Lock Info:
+	│ ID:        <lock-id>
+	│ Path:      subscription-tfstate/UK South/hub/hub-terraform-infra/sbox/hub_infra/terraform.tfstate
+	```
+3. In Azure Portal find the Storage Account by searching for all resources using the name identified in **Step 1**
+4. Follow the path identified in **Step 2** until you find find the **terraform.tfstate** - it will have an active lease, right click and select **"Break Lease"** which will release the lock
+5. Given you have released the lock from the correct terraform state file the next pipeline run should now pass
+
+### Java (Spring Boot) Golden Path Errors
+
+#### - Dependencies security vulnerabilities can be resolved by updating the version
+
+We recommend to use the [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html).
+The checker provides monitoring of the project's dependencies and creates a report of known vulnerable components that are included in the build.
+
+#### Solution
+
+To resolve security vulnerabilities flagged by the OWASP Dependency Check plugin that can be resolved by upgrading dependencies,
+you can follow this chain of commands. The goal here is to update the flagged dependencies to their latest safe versions:
+
+Step 1: Run Dependency Check to Identify Vulnerabilities
+
+```shell
+./gradlew dependencyCheckAnalyze --info
+```
+If your project already has the Jenkins CI pipeline set up, you can run the dependency check by triggering the pipeline.
+
+Step 2: Review the Report
+After running the dependency check, open the generated report (e.g., build/reports/dependency-check-report.html) to
+identify the vulnerable dependencies and note their current versions. To access the generated report in Jenkins,
+you can find it in the Build Artifacts.
+
+![dependency-check-report.html](../images/dependencyCheckReportInJenkins.png)
+
+Step 3: Upgrade Vulnerable Dependencies
+Once you've identified the dependencies that need upgrading, use the following steps:
+
+- Check for Latest Versions:
+
+Use the Gradle command to check for the latest versions of the dependencies that have vulnerabilities:
+
+```shell
+./gradlew dependencyUpdates -Drevision=release
+```
+Alternatively you can go to the [Maven Repository](https://mvnrepository.com/) and search for the dependency to find the latest version.
+
+- Update Dependencies in build.gradle:
+
+Manually update the version numbers of the flagged dependencies in your build.gradle file to the latest versions identified.
+
+For example, if a vulnerable dependency was:
+```groovy
+implementation 'com.example:some-dependency:1.0.0'
+```
+And the latest safe version is 1.2.0, update it to:
+
+```groovy
+implementation 'com.example:some-dependency:1.2.0'
+```
+Repeat this for all vulnerable dependencies flagged by the report.
+
+- Re-sync Gradle Dependencies:
+
+After updating the build.gradle file, re-sync the Gradle project to apply the changes:
+
+```shell
+./gradlew build --refresh-dependencies
+```
+
+Step 4: Re-run the Dependency Check
+After upgrading the dependencies, run the dependency check again to ensure that the vulnerabilities have been resolved:
+
+```shell
+./gradlew dependencyCheckAnalyze --info
+```
+
+#### - Suppress false positives in the OWASP Dependency Checker
+
+Because of the way the dependency checker works, false positives and false negatives may exist. We can suppress these false positives by providing
+the dependency checker with the path to a suppression file in the `build.gradle` file.
+
+```
+dependencyCheck {
+  suppressionFile = 'path/to/suppression.xml'
+}
+```
+
+Here is an example of how to configure the suppression file [build.gradle](https://github.com/hmcts/template-spring-boot/blob/2b93593d233b4e3590e5a6d01054b1dd79bfd7c6/skeleton/build.gradle#L153)
+Here is the aforementioned [suppression file](https://github.com/hmcts/template-spring-boot/blob/master/skeleton/config/owasp/suppressions.xml)
+
+
+#### - "NoSuchMethodError" when running the OWASP Dependency Checker
+
+With the Dependency-Check v9.0.0 users may encounter issues with  `NoSuchMethodError` exceptions due to dependency resolution.
+
+#### Solution
+
+You will need to pin some of the transitive dependencies to the versions that are compatible with the Dependency-Check. e.g.
+
+``` groovy
+dependencies {
+    constraints {
+        // org.owasp.dependencycheck needs at least this version of jackson. Other plugins pull in older versions..
+        add("implementation", "com.fasterxml.jackson:jackson-bom:2.16.1")
+
+        // org.owasp.dependencycheck needs these versions. Other plugins pull in older versions..
+        add("implementation", "org.apache.commons:commons-lang3:3.14.0")
+        add("implementation", "org.apache.commons:commons-text:1.11.0")
+    }
+}
+```
+
+
