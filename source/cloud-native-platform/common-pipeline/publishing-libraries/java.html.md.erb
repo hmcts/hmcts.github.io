@@ -12,43 +12,21 @@ For publishing Java libraries, we now use Azure Artifacts (preferred platform de
 
 
 ## Publishing with Azure DevOps Artifacts
-You will need to set up an ADO pipeline in your repo, using a template provided in cnp-azuredevops-libraries. 
+You will need to set up a Github Action in your repo, using a template as below as a starting point.
 This template will watch for new tags, and upon a new tag being available, will package and publish your project to our Azure DevOps Artifacts feed [hmcts-lib](https://dev.azure.com/hmcts/Artifacts/_artifacts/feed/hmcts-lib).
-Add the following YAML file to your repository:
 
-```yaml
-trigger:
-  tags:
-    include:
-    - '*'
+## Using the Github Action
 
-pr: none
+1. Go to your repository within GitHub
+2. Select the Actions tab at the top
+3. Select 'New workflow'
+4. Scroll down and select 'Trigger ADO Artifact Build' pressing the 'Set up this workflow' button
+5. On the far right select 'Start commit'
+6. Update the PR name, then select 'Commit new file'
+7. Setup the PR as a draft so we can add the remaining file.
+8. Pull your feature branch
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-variables:
-  artifactVersion: $[replace(variables['Build.SourceBranch'], 'refs/tags/', '')]
-
-resources:
-  repositories:
-  - repository: cnp-azuredevops-libraries
-    type: github
-    ref: refs/heads/azure-artifact-stage
-    name: hmcts/cnp-azuredevops-libraries
-    endpoint: 'hmcts'
-
-jobs:
-  - job: PublishToAzureArtifacts
-    displayName: 'Publish to Azure Artifacts'
-    steps:
-      - template: steps/publish-ado-artifact.yaml@cnp-azuredevops-libraries
-```
-
-Head over to [Azure DevOps Pipelines](https://dev.azure.com/hmcts/PlatformOperations/_build) and hit "New Pipeline", select your source as "GitHub", select your intended Repository to Publish from, configure using "Existing Azure Pipelines YAML File" and select the YAML file you added above. 
-If you do not have access to create this pipeline, reach out to Platform Operations in "#platops-help" on Slack.
-
-
+## Gradle setup
 You will also need to add the following `repositories` block to the publishing section of your `build.gradle` file:
 
 ```yaml
@@ -94,8 +72,7 @@ dependencies {
 
 
 
-
-## Publishing with JitPack
+## Publishing with JitPack (retired)
 
 JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: `com.github.hmcts:Repo:Version`.
 
