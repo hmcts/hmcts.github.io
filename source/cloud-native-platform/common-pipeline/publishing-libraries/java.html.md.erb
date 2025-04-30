@@ -8,7 +8,7 @@ hide_in_navigation: true
 
 # <%= current_page.data.title %>
 
-For publishing Java libraries, we now use Azure Artifacts (preferred platform default). Previously, we used Jitpack as our artifact repository to publish the libraries, which is still available as a fallback but not preferred.
+For publishing Java libraries, we now use Azure Artifacts (preferred platform default). Previously, we used JitPack as our artifact repository to publish the libraries, which is still available as a fallback but not preferred.
 
 
 ## Publishing with Azure DevOps Artifacts
@@ -48,7 +48,7 @@ publishing {
 Now, when you produce a new tag a build will be triggered in Azure DevOps, and make your artifact available for download
 
 ## Downloading packages from Azure DevOps Artifacts
-To download from ADO Artfiacts you will need to add the feed to your list of repositories in your build.gradle files.
+To download from ADO Artifacts you will need to add the feed to your list of repositories in your build.gradle files.
 
 ```yaml
 maven {
