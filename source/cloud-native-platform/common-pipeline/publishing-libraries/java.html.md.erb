@@ -8,9 +8,73 @@ hide_in_navigation: true
 
 # <%= current_page.data.title %>
 
-For publishing Java libraries, we use JitPack as our artifact repository and GitHub Actions to publish the libraries.
+For publishing Java libraries, we now use Azure Artifacts (preferred platform default). Previously, we used JitPack as our artifact repository to publish the libraries, which is now deprecated and scheduled for removal from the platform by July 2025.
 
-## Publishing with JitPack
+
+## Publishing with Azure DevOps Artifacts
+You will need to set up a Github Action in your repo, using the centralised GitHub Action template below as a starting point.
+This template will watch for new tags, and upon a new tag being available, will package and publish your project to our Azure DevOps Artifacts feed [hmcts-lib](https://dev.azure.com/hmcts/Artifacts/_artifacts/feed/hmcts-lib).
+
+## Using the Github Action
+
+1. Go to your repository within GitHub
+2. Select the Actions tab at the top
+3. Select 'New workflow'
+4. Scroll down and select 'Trigger ADO Artifact Build' pressing the 'Set up this workflow' button
+5. On the far right select 'Start commit'
+6. Update the PR name, then select 'Commit new file'
+7. Setup the PR as a draft so we can add the remaining file.
+8. Pull your feature branch
+
+## Gradle setup
+You will also need to add the following `repositories` block to the publishing section of your `build.gradle` file:
+
+```yaml
+publishing {
+  repositories {
+    maven {
+      name = "AzureArtifacts"
+      url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+      credentials {
+        username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+        password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+      }
+    }
+  }
+}
+```
+
+For example, see [rse-cft-lib](https://github.com/hmcts/rse-cft-lib/compare/main...artifacts)
+
+
+Now, when you produce a new tag a build will be triggered in Azure DevOps, and make your artifact available for download
+
+## Downloading packages from Azure DevOps Artifacts
+To download from ADO Artifacts you will need to add the feed to your list of repositories in your build.gradle files.
+
+```yaml
+maven {
+  url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+}
+```
+
+The dependency information follows the following format:
+
+Group: com.github.hmcts
+Artifact: Repository Name
+Version: Release tag, commit hash or master-SNAPSHOT
+You will end up with something similar to the example below in your build.gradle files.
+
+```yaml
+dependencies {
+  ...
+  implementation 'com.github.hmcts.java-logging:logging:test-6.1.8'
+}
+```
+
+
+
+## Publishing with JitPack (deprecated and to be removed)
 
 JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: `com.github.hmcts:Repo:Version`.
 
