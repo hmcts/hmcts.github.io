@@ -8,7 +8,7 @@ hide_in_navigation: true
 
 # <%= current_page.data.title %>
 
-For publishing Java libraries, we now use Azure Artifacts (preferred platform default). Previously, we used JitPack as our artifact repository to publish the libraries, which is still available as a fallback but not preferred.
+For publishing Java libraries, we now use Azure Artifacts (preferred platform default). Previously, we used JitPack as our artifact repository to publish the libraries, which is now deprecated and scheduled for removal from the platform.
 
 
 ## Publishing with Azure DevOps Artifacts
@@ -72,7 +72,7 @@ dependencies {
 
 
 
-## Publishing with JitPack (retired)
+## Publishing with JitPack (deprecated and to be removed)
 
 JitPack reads all the public HMCTS repositories and watches for new releases and tags. As soon as a new tag is found it will be available for download using the following format: `com.github.hmcts:Repo:Version`.
 
