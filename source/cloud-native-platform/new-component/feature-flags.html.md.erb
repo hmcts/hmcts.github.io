@@ -7,11 +7,34 @@ weight: 99
 
 # <%= current_page.data.title %>
 
-### What is a feature flag?
+## What is a feature flag?
 
-Feature flags are a software development and delivery technique that allows software teams to enable and disable parts of a codebase at the flip of a switch.
-Feature flags enable a team to deliver new features to use rapidly but safely.
-Feature flags also allow you to decouple code deployments from feature releases. You can make code changes in production while hiding those changes from users.
+The term "flag" dates back to the early days of computer architecture, in particular CPU registers.  Various registers have "flag bits" to control certain behaviour (e.g. the Z or zero-flag).  So "feature flags" are, quite literally, flags that control features; in other words, binary (Boolean) values that toggle certain features on or off when used as the condition in an `if` statement.  These days they have been expanded from just Booleans to cover any relatively small, finite set of values of any type, including strings, arrays and full JSON objects, although the precise range of types and values depends on the [feature-flag platform](#what-is-a-feature-flag-platform) in use.
+
+## What is a feature-flag platform?
+
+A feature-flag platform is a piece of software that allows you to manage the feature flags in your code.  It provides a user interface for creating, updating and deleting flags, as well as applying *targeting rules* governing which value (of the small, finite set) should be served when the flag is evaluated at runtime and monitoring those values served.  Feature-flag platforms usually provide SDKs for various programming languages, making it easy to integrate feature flags into your application code.
+
+Through the SDKs, updates to feature-flag values take effect immediately, without requiring a redeployment of the application code.  Therefore a feature-flag platform enables real-time changes to live applications from a single centralised dashboard, which is much more convenient than having to create an admin dashboard (and corresponding logic in the code) for each application individually.
+
+## Common uses of feature flags
+
+The table below lists some of the possible uses of feature flags:
+
+| Use case | Description |
+|----------|-------------|
+| **Dark deployments** | Separate deployments from releases by continually deploying code changes to Production while the feature is under development but hiding it from view behind a feature flag.  When the feature is judged to be ready for release, remove the feature flag; all users will then see the entire feature at the same time.
+| **Gradual roll-outs** | Safeguard releases by exposing a new feature to a select group of users initially by placing it behind a conditional feature flag that controls who can see it.  When the select group have verified that the feature works well, gradually include more users until it is available to everyone, at which point the feature flag can be removed.
+| **Feature experimentation** (AKA **Beta testing**)| Test emerging new features or changes in a controlled manner by enabling them for a subset of users.  This is the same process as **gradual roll-outs*, only this time the aim is to guide the development of a feature rather than to assure its safe release.  A reasonable outcome would be that the feature is withdrawn. |
+| **A/B testing** | Compare the relative effectiveness of two (or more) variations of a completed feature by showing different variations to different subsets of users, generally without their knowledge.  The targeting rules and defined set of values for the feature flag determine which users see which variation of the feature.  This can happen in test and production environments (where the feature has already been released).  The feature flags will be removed once the optimal version of the feature has been established. |
+| **User segmentation** (AKA **Feature toggling**) | Target specific user segments with different features or configurations.  This is the same process as **A/B testing**, only here the aim is to provide a customised experience for different users according to their preferences.  The feature flags are usually permanent. |
+| **User permissions** | Control access to certain features based on user roles or permissions.  This is the same process as **user segmentation**, only here the differences in user experience are based on privileges rather than preferences. |
+| **Operational toggles** (AKA  **Kill switches**) | Control operational aspects of the application, such as enabling or disabling certain features based on system load or the emergence of bugs to ensure stability and availability.  The feature flags are usually permanent. |
+| **Monitoring and logging** | Activate or deactivate performance monitoring, increase or decrease error logging etc. in response to current conditions; e.g. the emergence of a bug.  The feature flags are usually permanent. |
+| **Live debugging** | Enable or disable debugging features in Production to trouble-shoot bugs that cannot be reproduced in lower environments.  The feature flags are usually permanent. |
+| **Short-cuts in testing** | Enable or disable certain features in test environments to speed up testing; e.g., removing authentication and other validation steps.  The feature flags are usually permanent. |
+| **Feature deprecation** | Gradually phase out old features by disabling them for selected users while still keeping the code in place.  This is the inverse process of **gradual roll-outs**. |
+
 
 ### Trunk Based Development
 Trunk Based Development is a branching model in which developers create short-lived feature branches and merge back into the “trunk” branch, often called as the master/main branch.
