@@ -13,9 +13,9 @@ To preview or build the website, there are two options.
 
 ### Gitpod
 
-Gitpod is the easiest way to develop on this repository, you will get a fresh automated dev environment without having to set anything up on your machine.
+Gitpod is the easiest way to develop on this repository; you will get a fresh automated dev environment without having to set anything up on your machine.
 
-Click the below button to get started:
+Click the button below to get started:
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/hmcts/hmcts.github.io)
 
@@ -24,7 +24,7 @@ Click the below button to get started:
 Install Ruby with Rubygems, preferably with a [Ruby version manager][rvm],
 and the [Bundler gem][bundler].
 
-In the application folder type the following to install the required gems:
+In the application folder, type the following to install the required gems:
 
 ```
 bundle install
