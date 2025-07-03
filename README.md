@@ -9,11 +9,11 @@
 
 ## Getting started
 
-To preview or build the website, there is two options.
+To preview or build the website, there are two options.
 
 ### Gitpod
 
-Gitpod is the easiest way to develop on this repository, you will get a fresh automated dev environment without having to setup anything on your machine.
+Gitpod is the easiest way to develop on this repository, you will get a fresh automated dev environment without having to set anything up on your machine.
 
 Click the below button to get started:
 
@@ -32,17 +32,17 @@ bundle install
 
 ## Making changes
 
-To make changes edit the source files in the `source` folder.
+To make changes, edit the source files in the `source` folder.
 
 ### Single page output
 
-Although a single page of HTML is generated the markdown is spread across
+Although a single page of HTML is generated, the markdown is spread across
 multiple files to make it easier to manage. They can be found in
 `source/documentation`.
 
 A new markdown file isn't automatically included in the generated output. If we
 add a new markdown file at the location `source/documentation/agile/scrum.md`,
-the following snippet in `source/index.html.md.erb`, includes it in the
+the following snippet in `source/index.html.md.erb` includes it in the
 generated output.
 
 ```
@@ -61,8 +61,8 @@ For example, `source/about.html.md` will be accessible on <http://localhost:4567
 ## Preview
 
 Whilst writing documentation we can run a middleman server to preview how the
-published version will look in the browser. After saving a change the preview in
-the browser will automatically refresh.
+published version will look in the browser. After saving a change, the preview in
+the browser will be refreshed automatically.
 
 The preview is only available on our own computer. Others won't be able to
 access it if they are given the link.
@@ -73,7 +73,7 @@ Type the following to start the server:
 bundle exec middleman server
 ```
 
-If all goes well something like the following output will be displayed:
+If all goes well, something like the following output will be displayed:
 
 ```
 == The Middleman is loading
@@ -86,7 +86,7 @@ You should now be able to view a live preview at http://localhost:4567.
 
 ## Build
 
-If you want to publish the website without using a build script you may need to
+If you want to publish the website without using a build script, you may need to
 build the static HTML files.
 
 Type the following to build the HTML:
