@@ -1,0 +1,30 @@
+---
+title: Trunk-based development
+last_reviewed_on: 2025-07-02
+review_in: 3 months
+weight: 98
+---
+
+# <%= current_page.data.title %>
+
+**Trunk-based development** is a development style where developers, as much as possible, work *directly* in the main or "trunk" branch of the code (usually named `master`, `main` or `trunk`).  If separate branches are needed for any reason, they do not usually exist for more than a day or so before being merged back into the trunk branch.  This is in contrast to **feature-based development**, where developers routinely create separate branches for each feature or task, which can exist for weeks or even months before being merged back into the trunk branch.
+
+Feature-based development encourages long-lived feature branches, which generally lead to more complex merge conflicts that take longer to resolve.  It can also lead to situations where the trunk branch is not stable or deployable for a period of time, as newly merged branches may have introduced errors (identified during automated or manual testing) that are not trivial to fix.  In contrast, trunk-based development ensures that merge conflicts are kept to a minimum by encouraging developers to merge their changes back into the trunk branch frequently, ideally several times a day.  It also means the code is tested continuously, and hence any errors found are likely to be fixed fairly easily, helping to maintain a stable and deployable codebase at all times.
+
+The renowned software methodology book "Accelerate: The Science of Lean Software and DevOps" by Nicole Forsgren, Jez Humble, and Gene Kim highlights trunk-based development as a key practice for high-performing software teams. The book emphasises that trunk-based development leads to faster delivery of features, reduced lead time for changes, and improved collaboration among team members, and is a key component of successful continuous integration and continuous delivery (CI/CD) practices.  However, it is not easy to practise trunk-based development in large teams or on projects with real-world budgetary constraints and delivery pressures.  It requires a high level of discipline and coordination among developers, a robust set of automated tests and a finely tuned CI/CD pipeline with immediate notification of failures to ensure that the codebase remains stable and deployable at all times.
+
+Trunk-based development is suitable for teams with the following characteristics:
+ - small, intimate, experienced and highly able teams who communicate frequently and well; code reviews, common coding styles and conventions etc. and as good understanding of each other are essential
+ - products with continuous releases (like a browser) rather than feature-drops every quarter etc. (although this can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags.html/))
+ - projects with comprehensive automated tests (since that is the only protection against deploying bad code straight into live)
+ - teams with the autonomy to deploy and release frequently (ideally several times per day) with full control over the release schedule, with no need to seek external approval (although this can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags.html/#dark-deployments))
+ - teams who have regular contact with their users and can get fast, constructive feedback from them
+ - teams who practise pair programming or mobbing
+
+Feature-based development may be more suitable for teams with the following characteristics:
+ - larger teams, or those where not everybody knows each other, where it is harder to coordinate and communicate frequently
+ - products with feature-based releases, especially those where there is more than one supported version
+ - teams that do not have a robust set of automated tests or a finely tuned CI/CD pipeline
+ - teams that do not have the autonomy to deploy and release frequently
+ - teams that do not have regular contact with their users
+ - teams with members who prefer to work independently rather than collaboratively

@@ -29,20 +29,99 @@ The table below lists some of the possible uses of feature flags:
 | **A/B testing** | Compare the relative effectiveness of two (or more) variations of a completed feature by showing different variations to different subsets of users, generally without their knowledge.  The targeting rules and defined set of values for the feature flag determine which users see which variation of the feature.  This can happen in test and production environments (where the feature has already been released).  The feature flags will be removed once the optimal version of the feature has been established. |
 | **User segmentation** (AKA **Feature toggling**) | Target specific user segments with different features or configurations.  This is the same process as **A/B testing**, only here the aim is to provide a customised experience for different users according to their preferences.  The feature flags are usually permanent. |
 | **User permissions** | Control access to certain features based on user roles or permissions.  This is the same process as **user segmentation**, only here the differences in user experience are based on privileges rather than preferences. |
-| **Operational toggles** (AKA  **Kill switches**) | Control operational aspects of the application, such as enabling or disabling certain features based on system load or the emergence of bugs to ensure stability and availability.  The feature flags are usually permanent. |
+| **Operational toggles** (AKA **Kill switches**) | Control operational aspects of the application, such as enabling or disabling certain features based on system load or the emergence of bugs to ensure stability and availability.  The feature flags are usually permanent. |
 | **Monitoring and logging** | Activate or deactivate performance monitoring, increase or decrease error logging etc. in response to current conditions; e.g. the emergence of a bug.  The feature flags are usually permanent. |
 | **Live debugging** | Enable or disable debugging features in Production to trouble-shoot bugs that cannot be reproduced in lower environments.  The feature flags are usually permanent. |
 | **Short-cuts in testing** | Enable or disable certain features in test environments to speed up testing; e.g., removing authentication and other validation steps.  The feature flags are usually permanent. |
 | **Feature deprecation** | Gradually phase out old features by disabling them for selected users while still keeping the code in place.  This is the inverse process of **gradual roll-outs**. |
 
 
+## Recommendations for using feature flags
+
+Each of the uses listed above comes with its own set of recommendations, as described below.
+
+### Dark deployments
+
+#### Pros
+
+#### Cons
+
+#### Recommendation
+
+Dark deployments are a great way to separate deployments from releases, but they can lead to technical debt if the feature flag is not removed after the feature is released.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+
+
+
+
 ### Trunk Based Development
-Trunk Based Development is a branching model in which developers create short-lived feature branches and merge back into the “trunk” branch, often called as the master/main branch.
 It reduces the complexity of merging events and keeps code current by having fewer development lines and by doing small and frequent merges.
 Trunk based Development and Feature Flags together can be used for continuous delivery, delivering the features faster to market.
 Trunk Based Development uses Feature Flags as a mechanism to manage new feature releases. Feature flags allow developers to deploy incomplete features to production without releasing them to end-users.
 
+
 ![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
+
+
+
+
+
+### Gradual roll-outs
+
+Gradual roll-outs are a great way to safeguard releases, but they can lead to confusion if the feature flag is not removed after the feature is released.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### Feature experimentation
+
+Feature experimentation is a great way to test emerging new features or changes in a controlled manner, but it can lead to confusion if the feature flag is not removed after the feature is withdrawn.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### A/B testing
+
+A/B testing is a great way to compare the relative effectiveness of two (or more) variations of a completed feature, but it can lead to confusion if the feature flag is not removed after the optimal version of the feature has been established.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### User segmentation
+
+User segmentation is a great way to provide a customised experience for different users according to their preferences, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### User permissions
+
+User permissions are a great way to control access to certain features based on user roles or permissions, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### Operational toggles
+
+Operational toggles are a great way to control operational aspects of the application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### Monitoring and logging
+
+Monitoring and logging are important aspects of any application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### Live debugging
+
+Live debugging is a great way to trouble-shoot bugs that cannot be reproduced in lower environments, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### Short-cuts in testing
+
+Short-cuts in testing are a great way to speed up testing, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+### Feature deprecation
+
+Feature deprecation is a great way to gradually phase out old features, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
+## Feature-flag platforms at HMCTS
+
+The following feature-flag platforms are currently in use at HMCTS:
+
+### [LaunchDarkly](https://launchdarkly.com/)
+
+A commercial feature-flag platform that provides a user interface for managing feature flags, as well as SDKs for various programming languages.  It is the recommended feature-flag platform for HMCTS projects.
+
+### [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/)
+
+A Microsoft Azure service that provides a centralised configuration store for applications, including feature flags.  It is suitable for projects that are already using Azure services and want to keep their feature flags within the Azure ecosystem.
+
+### Environment variables
+
+A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.  This is suitable for small projects or projects that do not require a full-featured feature-flag platform.
+
 
 End to end Process:
 
