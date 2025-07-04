@@ -19,13 +19,13 @@ Through the SDKs, updates to feature-flag values take effect immediately, withou
 
 ## Common uses of feature flags
 
-The table below lists some of the possible uses of feature flags:
+The table below lists some of the more common uses of feature flags:
 
 | Use case | Description |
 |----------|-------------|
 | **Dark deployments** | Separate deployments from releases by continually deploying code changes to Production while the feature is under development but hiding it from view behind a feature flag.  When the feature is judged to be ready for release, remove the feature flag; all users will then see the entire feature at the same time.
 | **Gradual roll-outs** | Safeguard releases by exposing a new feature to a select group of users initially by placing it behind a conditional feature flag that controls who can see it.  When the select group have verified that the feature works well, gradually include more users until it is available to everyone, at which point the feature flag can be removed.
-| **Feature experimentation** (AKA **Beta testing**)| Test emerging new features or changes in a controlled manner by enabling them for a subset of users.  This is the same process as **gradual roll-outs*, only this time the aim is to guide the development of a feature rather than to assure its safe release.  A reasonable outcome would be that the feature is withdrawn. |
+| **Feature experimentation** (AKA **Beta testing**)| Test emerging new features or changes in a controlled manner by enabling them for a subset of users.  This is the same process as **gradual roll-outs**, only this time the aim is to guide the development of a feature rather than to assure its safe release.  A reasonable outcome would be that the feature is withdrawn. |
 | **A/B testing** | Compare the relative effectiveness of two (or more) variations of a completed feature by showing different variations to different subsets of users, generally without their knowledge.  The targeting rules and defined set of values for the feature flag determine which users see which variation of the feature.  This can happen in test and production environments (where the feature has already been released).  The feature flags will be removed once the optimal version of the feature has been established. |
 | **User segmentation** (AKA **Feature toggling**) | Target specific user segments with different features or configurations.  This is the same process as **A/B testing**, only here the aim is to provide a customised experience for different users according to their preferences.  The feature flags are usually permanent. |
 | **User permissions** | Control access to certain features based on user roles or permissions.  This is the same process as **user segmentation**, only here the differences in user experience are based on privileges rather than preferences. |
@@ -46,6 +46,8 @@ Each of the uses listed above comes with its own set of recommendations, as desc
 
 Dark deployments help facilitate CI/CD and [trunk-based development](/cloud-native-platform/new-component/trunk-based-development.html), which are key practices of high-performing software teams.  Teams that would ordinarily practise feature-based development can merge their code frequently, thereby reducing the impact of merge conflicts and helping to keep the main branch stable and deployable.
 
+![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
+
 #### Cons
 
 Dark deployments discourage teams from breaking features down into their smallest releasable components, because there is no longer a need to do so in order to merge code back into `master` (since the code will never be executed by a user).  They also discourage regular and comprehensive testing before code is deployed to production, because the feature flag allows teams to deploy incomplete or broken features without releasing them to end-users.  This effectively defers the work of comprehensive testing and user feedback until the service is fully released to all users; hence any serious problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found before the feature was fully complete.
@@ -57,17 +59,15 @@ Furthermore, dark deployments allow team members to work in isolation for longer
 
 **Breaking features down into their smallest releasable components is always a good idea**; but it's hard and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
 
-    **Dark deployments should only be used by teams that are happy to practise trunk-based development, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.**
+1. **Dark deployments should only be used by teams that are happy to practise trunk-based development, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.**
 
 If you find them irresistible, then a golden rule should be:
 
-    **Do not use dark deployments to hide features in Production that do not work; instead, test fully in a lower environment before merging the (partially complete, fully working) code to `master`.**
+2. **Do not use dark deployments to hide features in Production that do not work; instead, test fully in a lower environment before merging the (partially complete, fully working) code to `master`.**
 
 Finally:
     
-    **Feature flags should be removed as soon as the feature is fully released to all users.  This should be enforced in the CI/CD pipeline.**
-
-![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
+3. **Feature flags should be removed as soon as the feature is fully released to all users.  This should be enforced in the CI/CD pipeline.**
 
 
 
