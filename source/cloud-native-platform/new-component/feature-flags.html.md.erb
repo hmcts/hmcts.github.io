@@ -59,15 +59,15 @@ Furthermore, dark deployments allow team members to work in isolation for longer
 
 **Breaking features down into their smallest releasable components is always a good idea**; but it's hard and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
 
-1. **Dark deployments should only be used by teams that are happy to practise trunk-based development, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.**
+- **Dark deployments should only be used by teams that are happy to practise trunk-based development, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.**
 
 If you find them irresistible, then a golden rule should be:
 
-2. **Do not use dark deployments to hide features in Production that do not work; instead, test fully in a lower environment before merging the (partially complete, fully working) code to `master`.**
+- **Do not use dark deployments to hide features in Production that do not work; instead, test fully in a lower environment before merging the (partially complete, fully working) code to `master`.**
 
 Finally:
     
-3. **Feature flags should be removed as soon as the feature is fully released to all users.  This should be enforced in the CI/CD pipeline.**
+- **Feature flags should be removed as soon as the feature is fully released to all users.  This should be enforced in the CI/CD pipeline.**
 
 
 
