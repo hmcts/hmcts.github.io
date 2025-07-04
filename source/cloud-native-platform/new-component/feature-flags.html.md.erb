@@ -44,25 +44,39 @@ Each of the uses listed above comes with its own set of recommendations, as desc
 
 #### Pros
 
+Dark deployments help facilitate CI/CD and [trunk-based development](/cloud-native-platform/new-component/trunk-based-development.html), which are key practices of high-performing software teams.  Teams that would ordinarily practise feature-based development can merge their code frequently, thereby reducing the impact of merge conflicts and helping to keep the main branch stable and deployable.
+
 #### Cons
+
+Dark deployments discourage teams from breaking features down into their smallest releasable components, because there is no longer a need to do so in order to merge code back into `master` (since the code will never be executed by a user).  They also discourage regular and comprehensive testing before code is deployed to production, because the feature flag allows teams to deploy incomplete or broken features without releasing them to end-users.  This effectively defers the work of comprehensive testing and user feedback until the service is fully released to all users; hence any serious problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found before the feature was fully complete.
+
+Furthermore, dark deployments allow team members to work in isolation for longer, where they don't know what others are working on; code hidden behind a feature flag may or may not make the final cut for a release and hence cannot be reused or relied upon.  This increases the likelihood of unintended duplication or redundancy between the work of two different developers who have done the same thing in two different ways.  Comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
+
 
 #### Recommendation
 
-Dark deployments are a great way to separate deployments from releases, but they can lead to technical debt if the feature flag is not removed after the feature is released.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+**Breaking features down into their smallest releasable components is always a good idea**; but it's hard and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
 
+    **Dark deployments should only be used by teams that are happy to practise trunk-based development, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.**
 
+If you find them irresistible, then a golden rule should be:
 
+    **Do not use dark deployments to hide features in Production that do not work; instead, test fully in a lower environment before merging the (partially complete, fully working) code to `master`.**
 
-
-### Trunk Based Development
-It reduces the complexity of merging events and keeps code current by having fewer development lines and by doing small and frequent merges.
-Trunk based Development and Feature Flags together can be used for continuous delivery, delivering the features faster to market.
-Trunk Based Development uses Feature Flags as a mechanism to manage new feature releases. Feature flags allow developers to deploy incomplete features to production without releasing them to end-users.
-
+Finally:
+    
+    **Feature flags should be removed as soon as the feature is fully released to all users.  This should be enforced in the CI/CD pipeline.**
 
 ![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
 
 
+
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
 
 
 

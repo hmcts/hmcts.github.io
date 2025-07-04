@@ -17,18 +17,18 @@ The renowned software methodology book [Accelerate: The Science of Lean Software
 
 Trunk-based development is suitable for teams with the following characteristics:
 
-- small, intimate, experienced and highly able teams who communicate frequently and well; code reviews, common coding styles and conventions etc. and as good understanding of each other are essential
-- products with continuous releases (like a browser) rather than feature-drops every quarter etc. (although this can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags.html#dark-deployments))
+- small, intimate, experienced and highly able teams who communicate frequently and well; code reviews, common coding styles and conventions etc. and a good understanding of each other are essential
+- products with continuous releases (like a browser) rather than feature-drops every quarter etc. (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags.html#dark-deployments))
 - projects with comprehensive automated tests (since that is the only protection against deploying bad code straight into live)
-- teams with the autonomy to deploy and release frequently (ideally several times per day) with full control over the release schedule, with no need to seek external approval (although this can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags.html#dark-deployments))
+- teams with the autonomy to deploy and release frequently (ideally several times per day) with full control over the release schedule, with no need to seek external approval (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags.html#dark-deployments))
 - teams who have regular contact with their users and can get fast, constructive feedback from them
 - teams who practise pair programming or mobbing
 
 Feature-based development may be more suitable for teams with the following characteristics:
 
 - larger teams, or those where not everybody knows each other, where it is harder to coordinate and communicate frequently
-- products with feature-based releases, especially those where there is more than one supported version
+- products with feature-based releases, especially those where there is more than one supported version; the feature branches give a record of what went into each release
+- products where approval is needed for releases and users need to be told in advance
 - teams that do not have a robust set of automated tests or a finely tuned CI/CD pipeline
-- teams that do not have the autonomy to deploy and release frequently
 - teams that do not have regular contact with their users
 - teams with members who prefer to work independently rather than collaboratively
