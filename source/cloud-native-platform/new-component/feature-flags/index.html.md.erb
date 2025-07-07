@@ -7,134 +7,22 @@ weight: 97
 
 # <%= current_page.data.title %>
 
-## What is a feature flag?
+Feature flags are a powerful tool that can enhance a team's productivity; but they should be used sparingly, as described below.  For further information and background regarding these guidelines, [click here](background-information.html).
 
-The term "flag" dates back to the early days of computer architecture, in particular CPU registers.  Various registers have "flag bits" to control certain behaviour (e.g. the Z or zero-flag).  So "feature flags" are, quite literally, flags that control features; in other words, binary (Boolean) values that toggle certain features on or off when used as the condition in an `if` statement.  These days they have been expanded from just Booleans to cover any relatively small, finite set of values of any type, including strings, arrays and full JSON objects, although the precise range of types and values depends on the [feature-flag platform](#what-is-a-feature-flag-platform) in use.
+## When to use feature flags
 
-## What is a feature-flag platform?
-
-A feature-flag platform is a piece of software that allows you to manage the feature flags in your code.  It provides a user interface for creating, updating and deleting flags, as well as applying *targeting rules* governing which value (of the small, finite set) should be served when the flag is evaluated at runtime and monitoring those values served.  Feature-flag platforms usually provide SDKs for various programming languages, making it easy to integrate feature flags into your application code.
-
-Through the SDKs, updates to feature-flag values take effect immediately, without requiring a redeployment of the application code.  Therefore a feature-flag platform enables real-time changes to live applications from a single centralised dashboard, which is much more convenient than having to create an admin dashboard (and corresponding logic in the code) for each application individually.
-
-## Common uses of feature flags
-
-The table below lists some of the more common uses of feature flags:
-
-| Use case | Description |
+| Use case | Guidelines |
 |----------|-------------|
-| **Dark deployments** | Separate deployments from releases by continually deploying code changes to Production while the feature is under development by hiding it from view behind a feature flag.  When the feature is judged to be ready for release, remove the feature flag; all users will then see the entire feature at the same time.
-| **Gradual roll-outs** | Safeguard releases by exposing a new feature to a select group of users initially by placing it behind a conditional feature flag that controls who can see it.  When the select group have verified that the feature works well, gradually include more users until it is available to everyone, at which point the feature flag can be removed.
-| **Feature experimentation** (AKA **Beta testing**)| Test emerging new features or changes in a controlled manner by enabling them for a subset of users.  This is the same process as **gradual roll-outs**, only this time the aim is to guide the development of a feature rather than to assure its safe release after it has been fully developed.  A reasonable outcome would be that the feature is withdrawn. |
-| **A/B testing** | Compare the relative effectiveness of two (or more) variations of a completed feature by showing different variations to different subsets of users, often without their knowledge.  The targeting rules and defined set of values for the feature flag determine which users see which variation of the feature.  This can happen in test and production environments (where the feature has already been released).  The feature flags will be removed once the optimal version of the feature has been established. |
-| **User segmentation** (AKA **Feature toggling**) | Target specific user segments with different features or configurations.  This is the same process as **A/B testing**, only here the aim is to provide a customised experience for different users according to their preferences.  The feature flags are usually permanent. |
-| **User permissions** | Control access to certain features based on user roles or permissions.  This is the same process as **user segmentation**, only here the differences in user experience are based on privileges rather than preferences. |
-| **Operational toggles** (AKA **Kill switches**) | Control operational aspects of the application, such as enabling or disabling certain features based on system load or the emergence of bugs to ensure stability and availability.  The feature flags are usually permanent. |
-| **Monitoring and logging** | Activate or deactivate performance monitoring, increase or decrease error logging etc. in response to current conditions; e.g. the emergence of a bug.  The feature flags are usually permanent. |
-| **Live debugging** | Enable or disable debugging features in Production to trouble-shoot bugs that cannot be reproduced in lower environments.  The feature flags are usually permanent. |
-| **Short-cuts in testing** | Enable or disable certain features in test environments to speed up testing; e.g., removing authentication and other validation steps.  The feature flags are usually permanent. |
-| **Feature deprecation** | Gradually phase out old features by disabling them for selected users while still keeping the code in place.  This is the inverse process of **gradual roll-outs**. The feature flag will be removed when the feature has been removed from the last set of users. |
+| **Dark deployments** | If you absolutely *must*.
+
+## Feature-flag platforms
 
 
-## Recommendations for using feature flags
-
-Each of the uses listed above comes with its own set of recommendations, as described below.
-
-### Dark deployments
-
-#### Pros
-
-Dark deployments help facilitate CI/CD and [trunk-based development](/cloud-native-platform/new-component/trunk-based-development.html), which are key practices of high-performing software teams.  Teams that would ordinarily practise feature-based development can merge their code frequently, thereby reducing the impact of merge conflicts and helping to keep the main branch stable and deployable.
-
-![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
-
-#### Cons
-
-Dark deployments discourage teams from breaking features down into their smallest releasable components, because there is no longer a need to do so in order to merge code back into `master` (since the code will never be executed by a user).  They also discourage regular and comprehensive testing before code is deployed to production, because the feature flag allows teams to deploy incomplete or broken features without releasing them to end-users.  This effectively defers the work of comprehensive testing and user feedback until the service is fully released to all users; hence any problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found before the feature was fully complete.
-
-Furthermore, dark deployments allow team members to work in isolation for longer, where they don't know what others are working on; code hidden behind a feature flag may or may not make the final cut for a release and hence cannot be reused or relied upon.  This increases the likelihood of unintended duplication or redundancy between the work of two different developers who have done the same thing in two different ways.  Comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
-
-
-#### Recommendation
-
-**Breaking features down into their smallest releasable components is *always* a good idea**; but it's hard and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
-
-- **Dark deployments should only be used by teams that are happy to practise trunk-based development**, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.
-
-If you find them irresistible, then a golden rule should be:
-
-- **Do not use dark deployments to hide features in Production that do not work**; instead, test fully in a lower environment before merging the (partially complete, fully working) code to `master`.
-
-Finally:
-    
-- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline
-
-
-
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-
-
-
-### Gradual roll-outs
-
-Gradual roll-outs are a great way to safeguard releases, but they can lead to confusion if the feature flag is not removed after the feature is released.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### Feature experimentation
-
-Feature experimentation is a great way to test emerging new features or changes in a controlled manner, but it can lead to confusion if the feature flag is not removed after the feature is withdrawn.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### A/B testing
-
-A/B testing is a great way to compare the relative effectiveness of two (or more) variations of a completed feature, but it can lead to confusion if the feature flag is not removed after the optimal version of the feature has been established.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### User segmentation
-
-User segmentation is a great way to provide a customised experience for different users according to their preferences, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### User permissions
-
-User permissions are a great way to control access to certain features based on user roles or permissions, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### Operational toggles
-
-Operational toggles are a great way to control operational aspects of the application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### Monitoring and logging
-
-Monitoring and logging are important aspects of any application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### Live debugging
-
-Live debugging is a great way to trouble-shoot bugs that cannot be reproduced in lower environments, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### Short-cuts in testing
-
-Short-cuts in testing are a great way to speed up testing, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-### Feature deprecation
-
-Feature deprecation is a great way to gradually phase out old features, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
-
-## Feature-flag platforms at HMCTS
-
-The following feature-flag platforms are currently in use at HMCTS:
-
-### [LaunchDarkly](https://launchdarkly.com/)
-
-A commercial feature-flag platform that provides a user interface for managing feature flags, as well as SDKs for various programming languages.  It is the recommended feature-flag platform for HMCTS projects.
-
-### [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/)
-
-A Microsoft Azure service that provides a centralised configuration store for applications, including feature flags.  It is suitable for projects that are already using Azure services and want to keep their feature flags within the Azure ecosystem.
-
-### Environment variables
-
-A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.  This is suitable for small projects or projects that do not require a full-featured feature-flag platform.
+| Platform | Guidelines |
+|----------|-------------|
+| **LaunchDarkly** | The incumbent choice.
+| **Azure App Configuration** | The strategic choice.
+| **Environment variables** | The simplest choice.
 
 
 End to end Process:
