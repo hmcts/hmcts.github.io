@@ -54,12 +54,11 @@ Dark deployments discourage teams from breaking features down into their smalles
 
 Furthermore, dark deployments allow team members to work in isolation for longer, where they don't know what others are working on; code hidden behind a feature flag may or may not make the final cut for a release and hence cannot be reused or relied upon.  This increases the likelihood of unintended duplication or redundancy between the work of two different developers who have done the same thing in two different ways.  Comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
 
-
 #### Recommendation
 
 **Breaking features down into their smallest releasable components is *always* a good idea**; but it's hard and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
 
-- **Dark deployments should only be used by teams that are happy to practise trunk-based development**, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.
+- **Dark deployments should only be done by teams that are happy to practise trunk-based development**, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.
 
 If you find them irresistible, then a golden rule should be:
 
@@ -67,22 +66,39 @@ If you find them irresistible, then a golden rule should be:
 
 Finally:
     
-- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline
-
-
-
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-
-
+- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
 
 ### Gradual roll-outs
 
-Gradual roll-outs are a great way to safeguard releases, but they can lead to confusion if the feature flag is not removed after the feature is released.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+#### Pros
+
+Gradual roll-outs support safer releases when the team are releasing large, complex features all at once where there is a significant chance that something might not work for one or more sets of users.
+
+#### Cons
+
+Gradual roll-outs may encourage teams to release features in full before they are ready rather than releasing a steady stream of small, beneficial changes that are easy to test and roll back if necessary.  It also shifts the emphasis of user testing to Production where it may be better to focus more on testing in a lower environment to ensure that the feature is fit for purpose when it is released in Production.  Finally, there is a danger that the user segments chosen to test the feature early may not be representative of the wider user base, leading to a false sense of security that the feature is working well when it may not be.
+
+#### Recommendation
+
+As stated above, **breaking features down into their smallest releasable components is the best option**.  Therefore:
+
+- **Gradual roll-outs should only be done when some of the *users* are not ready for the new feature.**  In other words, gradual roll-outs should protect against incomplete or uncertain *business processes* rather than features that may contain bugs.
+
+In some circumstances, it may be very difficult to break a large feature down into small, releasable units that add value; under these conditions, the business owners may feel more comfortable with a gradual roll-out.  If so, a golden rule should be:
+
+- **Do not use raw IDs in the feature-flag platform for the purpose of segmenting users** as they could easily be mistyped and cannot be verified in the code.  Instead, use a descriptive name for the user segment that is easy to understand and verify in the code; in other words, the code should ultimately control the logic of who sees the feature, not the feature-flag platform.
+
+Finally:
+    
+- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
+
+
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
+[GOT TO HERE]
 
 ### Feature experimentation
 
