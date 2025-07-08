@@ -40,6 +40,7 @@ The table below lists some of the more common uses of feature flags:
 
 Each of the uses listed above comes with its own set of recommendations, as described below.
 
+
 ### Dark deployments
 
 #### Pros
@@ -68,6 +69,7 @@ Finally:
     
 - **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
 
+
 ### Gradual roll-outs
 
 #### Pros
@@ -93,48 +95,124 @@ Finally:
 - **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
 
 
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
-[GOT TO HERE]
+### Feature experimentation / Beta testing
 
-### Feature experimentation
+#### Pros
 
-Feature experimentation is a great way to test emerging new features or changes in a controlled manner, but it can lead to confusion if the feature flag is not removed after the feature is withdrawn.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+Beta testing can assist the development of a feature and provide timely feedback from users as to which aspects of the feature will actually prove to be useful in the real world.
+
+#### Cons
+
+As with gradual roll-outs, there is a danger that the users volunteering to test the feature may not be representative of overall user community, with selection bias likely to be significant.
+
+#### Recommendation
+
+The use of feature flags to accomplish beta testing is acceptable as there are few convenient alternatives.  As with gradual roll-outs, the features should always be working (albeit incomplete) before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
+
 
 ### A/B testing
 
-A/B testing is a great way to compare the relative effectiveness of two (or more) variations of a completed feature, but it can lead to confusion if the feature flag is not removed after the optimal version of the feature has been established.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+#### Pros
+
+This is a tried and tested method of improving an application by comparing the relative effectiveness of two (or more) variations of a completed feature and then retaining the best one.
+
+#### Cons
+
+None.  (There should be little danger of selection bias or lack of representation since the users are unaware that they are part of an A/B test and hence will not be biased towards one variation or the other.)
+
+#### Recommendation
+
+This use of feature flags is acceptable.  As with gradual roll-outs, the features should always be working before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
 
 ### User segmentation
+
+3. A/B testing: very useful during live testing (the clue is in the name) but not for situations where one user (court etc.) wants to be permanently differentiated from the others.  In such cases, these differences should be built into the code (new derived class/configuration etc.) so that *the code* recognises the differences, not just LD (where the differences are invisible to the code; LD sends in a string of arbitrary IDs that the code doesn't understand represent codes that have special characteristics).
+
+My recommendation: A/B testing for beta-testing of prospective features that are either very small or have not yet been fully developed; so they may be trialled with one or more willing users (courts etc.) and then either rolled out to everyone or not released at all.  They shouldn't be used to govern long-term (or permanent) differences in functionality between users (courts).
+
+
+#### Pros
+
+
+#### Cons
+
+
+#### Recommendation
 
 User segmentation is a great way to provide a customised experience for different users according to their preferences, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
 
 ### User permissions
 
+#### Pros
+
+
+#### Cons
+
+
+#### Recommendation
+
 User permissions are a great way to control access to certain features based on user roles or permissions, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
 
 ### Operational toggles
+
+#### Pros
+
+
+#### Cons
+
+
+#### Recommendation
 
 Operational toggles are a great way to control operational aspects of the application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
 
 ### Monitoring and logging
 
+#### Pros
+
+
+#### Cons
+
+
+#### Recommendation
+
 Monitoring and logging are important aspects of any application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
 
 ### Live debugging
+
+#### Pros
+
+
+#### Cons
+
+
+#### Recommendation
 
 Live debugging is a great way to trouble-shoot bugs that cannot be reproduced in lower environments, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
 
 ### Short-cuts in testing
 
+#### Pros
+
+
+#### Cons
+
+
+#### Recommendation
+
 Short-cuts in testing are a great way to speed up testing, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
 
 ### Feature deprecation
 
+#### Pros
+
+
+#### Cons
+
+
+#### Recommendation
+
 Feature deprecation is a great way to gradually phase out old features, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+
 
 ## Feature-flag platforms at HMCTS
 
