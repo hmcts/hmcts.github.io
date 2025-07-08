@@ -159,7 +159,7 @@ None.
 
 #### Pros
 
-Enables administrators to prevent or limit the impact of high or unstable loads, unexpected errors, lack of availability of essential resources and so on.
+Enables administrators to prevent or limit the impact of high or unstable loads, unexpected errors, lack of availability of essential resources and so on by disabling certain features or changing their behaviour.
 
 #### Cons
 
@@ -174,25 +174,31 @@ The use of feature flags to control or optimise the operation of the application
 
 #### Pros
 
+Enables administrators to increase diagnostic tools and gain extra insights regarding the performance of the application when necessary (e.g., to explain unexpected behaviour).
 
 #### Cons
 
+None.
 
 #### Recommendation
 
-Monitoring and logging are important aspects of any application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+This use of feature flags is acceptable.
+
 
 ### Live debugging
 
 #### Pros
 
+Gives developers some tools to troubleshoot bugs in Production that cannot be reproduced in lower environments.
 
 #### Cons
 
+Making experimental changes to a live application is always dangerous due to the possibility of causing other problems for customers from unintended side-effects of the developers' actions.  Furthermore, these have the potential to distort the regular usage metrics relied upon by business teams monitoring the performance and effectiveness of the application.
 
 #### Recommendation
 
-Live debugging is a great way to trouble-shoot bugs that cannot be reproduced in lower environments, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+This practice is acceptable but great care must be taken.  The developers carrying out the live debugging should be the most senior developers available in order to minimise the possibility of mistakes.
+
 
 ### Short-cuts in testing
 
