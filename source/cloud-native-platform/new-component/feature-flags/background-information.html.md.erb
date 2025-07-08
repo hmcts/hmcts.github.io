@@ -219,13 +219,15 @@ There is a danger that the short-cuts will be forgotten and left in place, and p
 
 #### Pros
 
+Enables gradual removal of features on a per-user (or per-user-segment) basis, to ensure that all users are prepared for the change.
 
 #### Cons
 
+None.
 
 #### Recommendation
 
-Feature deprecation is a great way to gradually phase out old features, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+This use of feature flags is acceptable.  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once the feature has been removed for all users.
 
 
 ## Feature-flag platforms at HMCTS
