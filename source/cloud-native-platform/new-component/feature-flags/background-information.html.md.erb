@@ -204,13 +204,16 @@ This practice is acceptable but great care must be taken.  The developers carryi
 
 #### Pros
 
+Enables faster testing through by-passing the usual application controls or assigning stock data and properties to a test user etc.
 
 #### Cons
 
+There is a danger that the short-cuts will be forgotten and left in place, and potentially exploited.  It is also more difficult to demonstrate what has been tested after the fact.
 
 #### Recommendation
 
-Short-cuts in testing are a great way to speed up testing, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+**This should *not* be done using feature flags.**  Traditional methods of creating test data are always available and are likely to be better suited to the task (e.g., creating entities in a test database rather than injecting them from the feature-flag platform).
+
 
 ### Feature deprecation
 
