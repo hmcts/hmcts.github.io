@@ -118,52 +118,57 @@ This is a tried and tested method of improving an application by comparing the r
 
 #### Cons
 
-None.  (There should be little danger of selection bias or lack of representation since the users are unaware that they are part of an A/B test and hence will not be biased towards one variation or the other.)
+None.  (There should be little danger of selection bias or lack of representation since the users are unaware that they are part of an A/B test and hence will not be biased towards one variation or the other, and they can be chosen at random.)
 
 #### Recommendation
 
 This use of feature flags is acceptable.  As with gradual roll-outs, the features should always be working before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
 
+
 ### User segmentation
-
-3. A/B testing: very useful during live testing (the clue is in the name) but not for situations where one user (court etc.) wants to be permanently differentiated from the others.  In such cases, these differences should be built into the code (new derived class/configuration etc.) so that *the code* recognises the differences, not just LD (where the differences are invisible to the code; LD sends in a string of arbitrary IDs that the code doesn't understand represent codes that have special characteristics).
-
-My recommendation: A/B testing for beta-testing of prospective features that are either very small or have not yet been fully developed; so they may be trialled with one or more willing users (courts etc.) and then either rolled out to everyone or not released at all.  They shouldn't be used to govern long-term (or permanent) differences in functionality between users (courts).
-
 
 #### Pros
 
+Provide a customised experience for different users according to their preferences.
 
 #### Cons
 
+None.
 
 #### Recommendation
 
-User segmentation is a great way to provide a customised experience for different users according to their preferences, but it can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+**This should *not* be done using feature flags.**  Instead, the code should be written to recognise the differences between groups of users and provide the appropriate experience for each user through polymorphism, inheritance and so on.  Preferences for individual uses should be stored in configuration files or an application database.  Using a feature-flag platform for this purpose complicates the architecture and increases the cost unnecessarily.
+
 
 ### User permissions
 
 #### Pros
 
+Provide a regulated experience for different users according to their privileges.
 
 #### Cons
 
+None.
 
 #### Recommendation
 
-User permissions are a great way to control access to certain features based on user roles or permissions, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+**This should *not* be done using feature flags.**  It should be enforced through the usual mechanisms for implementing roles and permissions within an application.
+
 
 ### Operational toggles
 
 #### Pros
 
+Enables administrators to prevent or limit the impact of high or unstable loads, unexpected errors, lack of availability of essential resources and so on.
 
 #### Cons
 
+None.
 
 #### Recommendation
 
-Operational toggles are a great way to control operational aspects of the application, but they can lead to confusion if the feature flag is not removed after the feature is no longer needed.  Therefore, it is important to have a process in place for retiring feature flags once they are no longer needed.  This can be done by regularly reviewing the list of feature flags and removing any that are no longer in use.
+The use of feature flags to control or optimise the operation of the application during difficult periods is encouraged.  However, a formal procedure for deciding when such changes are necessary, who should do them and how they should be recorded must be in place and reviewed on a regular basis.
+
 
 ### Monitoring and logging
 
