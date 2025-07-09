@@ -15,7 +15,8 @@ task :check_urls do
                 # This handles new files that haven't been merged to master branch yet for this repo in a PR
                 %r{(?=.*hmcts.github.io)(?=.*github)}
             ],
-            :directory_index_file => "NOTindex.html"
+            :directory_index_file => "ABCDE",
+            :assume_extension => false,
         })
 
     token = ENV.fetch('GH_TOKEN', nil)
