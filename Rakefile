@@ -2,7 +2,7 @@ require 'middleman-gh-pages'
 require 'html-proofer'
 
 task :check_urls do
-    proofer = HTMLProofer.check_directory("./build",
+    proofer = HTMLProofer.check_directoryABCDE("./build",
         {
             :check_external_hash => false,
             :ignore_missing_alt => true,
