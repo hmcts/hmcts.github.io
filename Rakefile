@@ -2,7 +2,7 @@ require 'middleman-gh-pages'
 require 'html-proofer'
 
 task :check_urls do
-    proofer = HTMLProofer.check_directoryABCDE("./build",
+    proofer = HTMLProofer.check_directory("./build",
         {
             :check_external_hash => false,
             :ignore_missing_alt => true,
@@ -14,14 +14,7 @@ task :check_urls do
                 %r{https://github.com/hmcts/hmcts.github.io/blob/main/source/search/index.html},
                 # This handles new files that haven't been merged to master branch yet for this repo in a PR
                 %r{(?=.*hmcts.github.io)(?=.*github)}
-            ],
-            :swap_urls => {
-                %r{index.html} => "SWAPPEDindex.html",
-                %r{index.md} => "SWAPPEDindex.md",
-                %r{index.html.md} => "SWAPPEDindex.html.md",
-                %r{index.md.html} => "SWAPPEDindex.md.html",
-                %r{index} => "SWAPPEDindex"
-            }
+            ]
         })
 
     token = ENV.fetch('GH_TOKEN', nil)
