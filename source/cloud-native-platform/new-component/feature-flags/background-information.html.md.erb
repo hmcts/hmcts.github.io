@@ -68,6 +68,7 @@ If you find them irresistible, then a golden rule should be:
 Finally:
     
 - **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
+- **Changes to feature flags that influence the user experience in a live environment must be approved by the business owners beforehand**; this approval must be recorded by the feature-flag platform and be visible when required.
 
 
 ### Gradual roll-outs
@@ -93,6 +94,7 @@ In some circumstances, it may be very difficult to break a large feature down in
 Finally:
     
 - **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
+- **Changes to feature flags that influence the user experience in a live environment must be approved by the business owners beforehand**; this approval must be recorded by the feature-flag platform and be visible when required.
 
 
 ### Feature experimentation / Beta testing
@@ -107,7 +109,7 @@ As with gradual roll-outs, there is a danger that the users volunteering to test
 
 #### Recommendation
 
-**The use of feature flags to accomplish beta testing is acceptable** as there are few convenient alternatives.  As with gradual roll-outs, the features should always be working (albeit incomplete) before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
+**The use of feature flags to accomplish beta testing is acceptable** as there are few convenient alternatives.  As with gradual roll-outs, the features should always be working (albeit incomplete) before they are released to users, raw IDs should not be used in the feature-flag platform, feature flags should be removed once testing has been concluded, and business approval must be gained beforehand.
 
 
 ### A/B testing
@@ -122,7 +124,7 @@ None.  (There should be little danger of selection bias or lack of representatio
 
 #### Recommendation
 
-**The use of feature flags to accomplish A/B testing is acceptable.**  As with gradual roll-outs, the features should always be working before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
+**The use of feature flags to accomplish A/B testing is acceptable.**  As with gradual roll-outs, the features should always be working before they are released to users, raw IDs should not be used in the feature-flag platform, feature flags should be removed once testing has been concluded, and business approval must be gained beforehand.
 
 
 ### User segmentation
@@ -167,7 +169,7 @@ None.
 
 #### Recommendation
 
-**The use of feature flags to control or optimise the operation of the application during difficult periods is encouraged.**  However, a formal procedure for deciding when such changes are necessary, who should do them and how they should be recorded must be in place and reviewed on a regular basis.
+**The use of feature flags to control or optimise the operation of the application during difficult periods is encouraged.**  However, a formal procedure for deciding when such changes are necessary, who should do them and how they should be recorded must be in place and reviewed on a regular basis.  Business approval must be gained before any changes are made.
 
 
 ### Monitoring and logging
@@ -197,7 +199,7 @@ Making experimental changes to a live application is always dangerous due to the
 
 #### Recommendation
 
-**The use of feature flags to enable live debugging is acceptable *only as a last resort*, and great care must be taken.**  The developers carrying out the live debugging should be the most senior developers available in order to minimise the possibility of mistakes.
+**The use of feature flags to enable live debugging is acceptable *only as a last resort*, and great care must be taken.**  The developers carrying out the live debugging should be the most senior developers available in order to minimise the possibility of mistakes.  Business approval *by the service owner* must be gained before any changes are made.
 
 
 ### Short-cuts in testing
@@ -227,7 +229,7 @@ None.
 
 #### Recommendation
 
-**The use of feature flags for gradual feature deprecation is acceptable.**  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once the feature has been removed for all users.
+**The use of feature flags for gradual feature deprecation is acceptable.**  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, feature flags should be removed once the feature has been removed for all users, and business approval must be gained before any changes are made.
 
 
 ## Feature-flag platforms at HMCTS
