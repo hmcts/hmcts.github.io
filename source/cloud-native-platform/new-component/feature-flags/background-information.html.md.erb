@@ -139,7 +139,7 @@ None.
 
 #### Recommendation
 
-**This should *not* be done using feature flags**; although it may provide a convenient short-cut to achieving customisation, it is not the right tool for the job.  Instead, the code should be written to recognise the differences between groups of users and provide the appropriate experience for each user through polymorphism, inheritance and so on.  Preferences for individual uses should be stored in configuration files or an application database.  Using a feature-flag platform for this purpose complicates the architecture and increases the cost unnecessarily: it creates a dependency on the feature-flag platform that is wholly unnecessary and lowers the capability of the code itself.
+**This should *not* be done using feature flags**; although it may provide a convenient short-cut to achieving customisation, it is not the right tool for the job.  Instead, the code should be written to recognise the differences between groups of users and provide the appropriate experience for each user through polymorphism, inheritance and so on.  Preferences for individual users should be stored in configuration files or an application database.  Using a feature-flag platform for this purpose complicates the architecture and increases the cost unnecessarily: it creates a dependency on the feature-flag platform that is wholly unnecessary and lowers the capability of the code itself.
 
 
 ### User permissions
@@ -184,7 +184,7 @@ None.
 
 #### Recommendation
 
-**The use of feature flags to increase or decrease diagnostic information according to need is encouraged.**  This both provides a means of capturing extra information when it is needed and reducing unnecessary log capture and storage during normal operation.
+**The use of feature flags to increase or decrease diagnostic information according to need is encouraged.**  This both provides a means of capturing extra information when it is needed and reducing unnecessary log capture and storage during normal operation.  Care should be taken to ensure there is no adverse effect on application performance.
 
 
 ### Live debugging
@@ -199,7 +199,7 @@ Making experimental changes to a live application is always dangerous due to the
 
 #### Recommendation
 
-**The use of feature flags to enable live debugging is acceptable *only as a last resort*, and great care must be taken.**  The developers carrying out the live debugging should be the most senior developers available in order to minimise the possibility of mistakes.  Business approval *by the service owner* must be gained before any changes are made.
+**The use of feature flags to enable live debugging is acceptable *only as a last resort*, and great care must be taken.**  The developers carrying out the live debugging should be the most senior developers available in order to minimise the possibility of mistakes.  Approval *by the service owner* must be gained before any changes are made.
 
 
 ### Short-cuts in testing
@@ -229,8 +229,16 @@ None.
 
 #### Recommendation
 
-**The use of feature flags for gradual feature deprecation is acceptable.**  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, feature flags should be removed once the feature has been removed for all users, and business approval must be gained before any changes are made.
+**The use of feature flags for gradual feature deprecation is acceptable.**  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, feature flags should be removed once the feature has been removed for all users, and business approval must be gained beforehand.
 
+
+[GOT TO HERE]<br />
+[GOT TO HERE]<br />
+[GOT TO HERE]<br />
+[GOT TO HERE]<br />
+[GOT TO HERE]<br />
+[GOT TO HERE]<br />
+[GOT TO HERE]<br />
 
 ## Feature-flag platforms at HMCTS
 
