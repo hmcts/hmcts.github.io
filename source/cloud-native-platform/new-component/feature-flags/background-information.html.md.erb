@@ -118,18 +118,18 @@ This is a tried and tested method of improving an application by comparing the r
 
 #### Cons
 
-None.  (There should be little danger of selection bias or lack of representation since the users are unaware that they are part of an A/B test and hence will not be biased towards one variation or the other, and they can be chosen at random.)
+None.  (There should be little danger of selection bias or lack of representation since the users are generally unaware that they are part of an A/B test and hence will not be biased towards one variation or the other, and they can be chosen at random.)
 
 #### Recommendation
 
-This use of feature flags is acceptable.  As with gradual roll-outs, the features should always be working before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
+**The use of feature flags to accomplish A/B testing is acceptable.**  As with gradual roll-outs, the features should always be working before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
 
 
 ### User segmentation
 
 #### Pros
 
-Provide a customised experience for different users according to their preferences.
+This is the act of providing a customised experience for different users (or groups of users) according to their needs or preferences.
 
 #### Cons
 
@@ -137,14 +137,14 @@ None.
 
 #### Recommendation
 
-**This should *not* be done using feature flags.**  Instead, the code should be written to recognise the differences between groups of users and provide the appropriate experience for each user through polymorphism, inheritance and so on.  Preferences for individual uses should be stored in configuration files or an application database.  Using a feature-flag platform for this purpose complicates the architecture and increases the cost unnecessarily.
+**This should *not* be done using feature flags**; although it may provide a convenient short-cut to achieving customisation, it is not the right tool for the job.  Instead, the code should be written to recognise the differences between groups of users and provide the appropriate experience for each user through polymorphism, inheritance and so on.  Preferences for individual uses should be stored in configuration files or an application database.  Using a feature-flag platform for this purpose complicates the architecture and increases the cost unnecessarily: it creates a dependency on the feature-flag platform that is wholly unnecessary and lowers the capability of the code.
 
 
 ### User permissions
 
 #### Pros
 
-Provide a regulated experience for different users according to their privileges.
+This is the act of providing a regulated experience for different groups of users according to their privileges.
 
 #### Cons
 
@@ -152,14 +152,14 @@ None.
 
 #### Recommendation
 
-**This should *not* be done using feature flags.**  It should be enforced through the usual mechanisms for implementing roles and permissions within an application.
+**This should *not* be done using feature flags**; there are many better alternatives for implementing roles and permissions within an application, such as using a common IdAM component created specifically for this purpose.
 
 
 ### Operational toggles
 
 #### Pros
 
-Enables administrators to prevent or limit the impact of high or unstable loads, unexpected errors, lack of availability of essential resources and so on by disabling certain features or changing their behaviour.
+The use of toggles to change the behaviour of certain features (or even disable them altogether) at runtime can help application administrators to prevent or limit the impact of high or unstable loads, unexpected responses from dependent services, lack of availability of essential resources and other unusual conditions or occurrences.
 
 #### Cons
 
@@ -167,14 +167,14 @@ None.
 
 #### Recommendation
 
-The use of feature flags to control or optimise the operation of the application during difficult periods is encouraged.  However, a formal procedure for deciding when such changes are necessary, who should do them and how they should be recorded must be in place and reviewed on a regular basis.
+**The use of feature flags to control or optimise the operation of the application during difficult periods is encouraged.**  However, a formal procedure for deciding when such changes are necessary, who should do them and how they should be recorded must be in place and reviewed on a regular basis.
 
 
 ### Monitoring and logging
 
 #### Pros
 
-Enables administrators to increase diagnostic tools and gain extra insights regarding the performance of the application when necessary (e.g., to explain unexpected behaviour).
+The use of feature flags to dynamically alter the level of diagnostic information emitted by an application can help administrators to gain extra insights regarding the performance of the application when necessary (e.g., to explain unexpected behaviour).
 
 #### Cons
 
@@ -182,7 +182,7 @@ None.
 
 #### Recommendation
 
-This use of feature flags is acceptable.
+**The use of feature flags to increase or decrease diagnostic information according to need is encouraged.**
 
 
 ### Live debugging
