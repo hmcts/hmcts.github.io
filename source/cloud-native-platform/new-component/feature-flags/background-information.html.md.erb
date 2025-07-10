@@ -53,7 +53,7 @@ Dark deployments help facilitate CI/CD and [trunk-based development](/cloud-nati
 
 Dark deployments discourage teams from breaking features down into their smallest releasable components, because there is no longer a need to do so in order to merge code back into `master` (since the code will never be executed by a user).  They also discourage regular and comprehensive testing before code is deployed to production, because the feature flag allows teams to deploy incomplete or broken features without releasing them to end-users.  This effectively defers the work of comprehensive testing and user feedback until the service is fully released to all users; hence any problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found before the feature was fully complete.
 
-Furthermore, dark deployments allow team members to work in isolation for longer, where they don't know what others are working on; code hidden behind a feature flag may or may not make the final cut for a release and hence cannot be reused or relied upon.  This increases the likelihood of unintended duplication or redundancy between the work of two different developers who have done the same thing in two different ways.  Comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
+Furthermore, dark deployments allow team members to work in isolation for longer, where they don't know what others are working on; code hidden behind a feature flag may or may not make the final cut for a release and hence cannot be relied upon.  This increases the likelihood of unintended duplication or redundancy between the work of two different developers who may have done the same thing in two different ways.  Finally, comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
 
 #### Recommendation
 
@@ -78,11 +78,11 @@ Gradual roll-outs support safer releases when the team are releasing large, comp
 
 #### Cons
 
-Gradual roll-outs may encourage teams to release features in full before they are ready rather than releasing a steady stream of small, beneficial changes that are easy to test and roll back if necessary.  It also shifts the emphasis of user testing to Production where it may be better to focus more on testing in a lower environment to ensure that the feature is fit for purpose when it is released in Production.  Finally, there is a danger that the user segments chosen to test the feature early may not be representative of the wider user base, leading to a false sense of security that the feature is working well when it may not be.
+Gradual roll-outs may encourage teams to release features in full before they are ready rather than releasing a steady stream of small, beneficial changes that are easy to test and roll back if necessary.  It also shifts the emphasis of user testing to a live environment where it may be better to focus more on testing in a lower environment to ensure that the feature is fit for purpose when it is released in Production.  Finally, there is a danger that the user segments chosen to test the feature early may not be representative of the wider user base, leading to a false sense of security that the feature is working well when it may not be.
 
 #### Recommendation
 
-As stated above, **breaking features down into their smallest releasable components is the best option**.  Therefore:
+As stated above, **breaking features down into their smallest releasable components is always the best option**.  Therefore:
 
 - **Gradual roll-outs should only be done when some of the *users* are not ready for the new feature.**  In other words, gradual roll-outs should protect against incomplete or uncertain *business processes* rather than features that may contain bugs.
 
@@ -107,7 +107,7 @@ As with gradual roll-outs, there is a danger that the users volunteering to test
 
 #### Recommendation
 
-The use of feature flags to accomplish beta testing is acceptable as there are few convenient alternatives.  As with gradual roll-outs, the features should always be working (albeit incomplete) before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
+**The use of feature flags to accomplish beta testing is acceptable** as there are few convenient alternatives.  As with gradual roll-outs, the features should always be working (albeit incomplete) before they are released to users, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once testing has been concluded.
 
 
 ### A/B testing
