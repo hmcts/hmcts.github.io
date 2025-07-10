@@ -129,7 +129,7 @@ None.  (There should be little danger of selection bias or lack of representatio
 
 #### Pros
 
-This is the act of providing a customised experience for different users (or groups of users) according to their needs or preferences.
+A standard feature of many applications, this is the act of providing a customised experience for different users (or groups of users) according to their needs or preferences.
 
 #### Cons
 
@@ -137,14 +137,14 @@ None.
 
 #### Recommendation
 
-**This should *not* be done using feature flags**; although it may provide a convenient short-cut to achieving customisation, it is not the right tool for the job.  Instead, the code should be written to recognise the differences between groups of users and provide the appropriate experience for each user through polymorphism, inheritance and so on.  Preferences for individual uses should be stored in configuration files or an application database.  Using a feature-flag platform for this purpose complicates the architecture and increases the cost unnecessarily: it creates a dependency on the feature-flag platform that is wholly unnecessary and lowers the capability of the code.
+**This should *not* be done using feature flags**; although it may provide a convenient short-cut to achieving customisation, it is not the right tool for the job.  Instead, the code should be written to recognise the differences between groups of users and provide the appropriate experience for each user through polymorphism, inheritance and so on.  Preferences for individual uses should be stored in configuration files or an application database.  Using a feature-flag platform for this purpose complicates the architecture and increases the cost unnecessarily: it creates a dependency on the feature-flag platform that is wholly unnecessary and lowers the capability of the code itself.
 
 
 ### User permissions
 
 #### Pros
 
-This is the act of providing a regulated experience for different groups of users according to their privileges.
+An essential feature of nearly all applications, this is the process of providing a regulated experience for different groups of users according to their privileges.
 
 #### Cons
 
@@ -182,44 +182,44 @@ None.
 
 #### Recommendation
 
-**The use of feature flags to increase or decrease diagnostic information according to need is encouraged.**
+**The use of feature flags to increase or decrease diagnostic information according to need is encouraged.**  This both provides a means of capturing extra information when it is needed and reducing unnecessary log capture and storage during normal operation.
 
 
 ### Live debugging
 
 #### Pros
 
-Gives developers some tools to troubleshoot bugs in Production that cannot be reproduced in lower environments.
+In addition to capturing more diagnostic information, feature flags can be used to control the behaviour of the application in order to troubleshoot bugs in Production that cannot be reproduced in lower environments.  For example, a particular user process exhibiting a bug could be dynamically modified to alter or even miss certain steps in order to isolate the problem and identify the cause.
 
 #### Cons
 
-Making experimental changes to a live application is always dangerous due to the possibility of causing other problems for customers from unintended side-effects of the developers' actions.  Furthermore, these have the potential to distort the regular usage metrics relied upon by business teams monitoring the performance and effectiveness of the application.
+Making experimental changes to a live application is always dangerous due to the possibility of causing other problems for logged-in customers from unintended side-effects of the developers' actions.  Furthermore, these have the potential to distort the regular usage metrics relied upon by business teams monitoring the performance and effectiveness of the application.
 
 #### Recommendation
 
-This practice is acceptable but great care must be taken.  The developers carrying out the live debugging should be the most senior developers available in order to minimise the possibility of mistakes.
+**The use of feature flags to enable live debugging is acceptable *only as a last resort*, and great care must be taken.**  The developers carrying out the live debugging should be the most senior developers available in order to minimise the possibility of mistakes.
 
 
 ### Short-cuts in testing
 
 #### Pros
 
-Enables faster testing through by-passing the usual application controls or assigning stock data and properties to a test user etc.
+Feature flags can be used in a test environment to speed up the testing process; for example, by-passing the need to authenticate through the use of a special privileged user account, or assigning stock data and properties to a test user.
 
 #### Cons
 
-There is a danger that the short-cuts will be forgotten and left in place, and potentially exploited.  It is also more difficult to demonstrate what has been tested after the fact.
+There is a danger that these short-cuts will be forgotten and left in place, and potentially exploited.  It is also more difficult to record exactly what testing took place when the tests are influenced by feature flags controlled in a separate piece of software.
 
 #### Recommendation
 
-**This should *not* be done using feature flags.**  Traditional methods of creating test data are always available and are likely to be better suited to the task (e.g., creating entities in a test database rather than injecting them from the feature-flag platform).
+**Feature flags should *not* be used for taking short-cuts in testing.**  Instead of simplifying an integration test (for example, by removing the need to authenticate), it is better to create smaller service- or contract-level tests lower down the [test pyramid](/standards/principles/test.html#types-of-testing) that verify the individual components of the code in isolation and have fewer but nonetheless complete integration tests for the end-to-end user journey.  Traditional methods of creating test data are always available and are likely to be better suited to the task (e.g., creating entities in a test database rather than injecting them from the feature-flag platform).
 
 
 ### Feature deprecation
 
 #### Pros
 
-Enables gradual removal of features on a per-user (or per-user-segment) basis, to ensure that all users are prepared for the change.
+Feature flags can be used to enable the gradual removal (or "gradual roll-in") of features on a per-user (or per-group) basis, to ensure that all users are prepared for the withdrawal of the feature in question.
 
 #### Cons
 
@@ -227,7 +227,7 @@ None.
 
 #### Recommendation
 
-This use of feature flags is acceptable.  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once the feature has been removed for all users.
+**The use of feature flags for gradual feature deprecation is acceptable.**  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, and the feature flags should be removed once the feature has been removed for all users.
 
 
 ## Feature-flag platforms at HMCTS
