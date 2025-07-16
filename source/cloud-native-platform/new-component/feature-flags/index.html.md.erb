@@ -9,6 +9,7 @@ weight: 97
 
 Feature flags are a powerful tool that can enhance a team's productivity; but they should be used sparingly, as described below.  For further information and background regarding these guidelines, [click here](background-information.html).
 
+
 ## When to use feature flags
 
 For an explanation of each of these use cases, see the [background information](background-information.html#common-uses-of-feature-flags).
@@ -28,39 +29,26 @@ For an explanation of each of these use cases, see the [background information](
 | **[Feature deprecation](background-information.html#feature-deprecation)** | - Acceptable in the absence of better alternatives. | - Do not use raw IDs in the feature-flag platform for the purpose of identifying users; use a descriptive name for the user segment and add controlling logic in the code.<br />- Flags must be removed once the feature has been deprecated for all users.<br />- Changes to feature-flag values must be approved by the business owners beforehand. |
 
 
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-
-
-## Feature-flag platforms
-
+## Feature-flag management
 
 | Platform | Guidelines |
 |----------|-------------|
-| **LaunchDarkly** | The incumbent choice.
-| **Azure App Configuration** | The strategic choice.
-| **Environment variables** | The simplest choice.
+| **Azure App Configuration** | For **new applications based on Azure services**, in particular MS Entra ID (Azure AD), that are managed by **teams with prior experience of Azure administration**.
+| **Environment variables** | For applications requiring simpler feature-flag use, where the **product teams do *not* require auditing of changes or approvals** within a feature-flag platform.
+| **LaunchDarkly** | For **all other cases**.
 
 
-End to end Process:
+### Accessing Azure App Configuration
 
-1. Developer creates and commits short lived feature branch with Feature flag off.
-2. Implements feature through iterations of small feature lifecycle.
-3. Code is continuously released.
-4. Retire feature toggle.
+[TO DO]
 
 
 ### Accessing LaunchDarkly
 
 Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non-developers can get access with the 'DTS LaunchDarkly' group.
-see [onboarding](../onboarding/person/index.html) process to request access. You will need to login from [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net).
+see [onboarding](../onboarding/person/index.html) process to request access. You will need to log in from [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net).
 
-After you've logged in once you will be able to login from [app.launchdarkly.com](https://app.launchdarkly.com/).
+After you've logged in once you will be able to log in from [app.launchdarkly.com](https://app.launchdarkly.com/).
 
 ### Documentation
 
@@ -69,11 +57,11 @@ Their [blog](https://launchdarkly.com/blog/) contains good information.
 
 ### Creating a new project
 
-See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terraform) for instructions on how to setup your new project.
+See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terraform) for instructions on how to set your new project up.
 
 ### Environments
 
-We currently provide 'Test' and 'Production' environments by default within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
+We currently provide 'Test' and 'Production' environments by default within LaunchDarkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
 
 If your team does require additional environments, you can do this by updating your teams [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61). 
 It is not recommended to do this as targeting rules should be simpler to manage and ensure consistency across environments.

@@ -11,11 +11,13 @@ weight: 98
 
 The term "flag" dates back to the early days of computer architecture, in particular CPU registers.  Various registers have "flag bits" to control certain behaviour (e.g. the Z or zero-flag).  So "feature flags" are, quite literally, flags that control features; in other words, binary (Boolean) values that toggle certain features on or off when used as the condition in an `if` statement.  These days they have been expanded from just Booleans to cover any relatively small, finite set of values of any type, including strings, arrays and full JSON objects, although the precise range of types and values depends on the [feature-flag platform](#what-is-a-feature-flag-platform) in use.
 
+
 ## What is a feature-flag platform?
 
 A feature-flag platform is a piece of software that allows you to manage the feature flags in your code.  It provides a user interface for creating, updating and deleting flags, as well as applying *targeting rules* governing which value (of the small, finite set) should be served when the flag is evaluated at runtime and monitoring those values served.  Feature-flag platforms usually provide SDKs for various programming languages, making it easy to integrate feature flags into your application code.
 
 Through the SDKs, updates to feature-flag values take effect immediately, without requiring a redeployment of the application code.  Therefore a feature-flag platform enables real-time changes to live applications from a single centralised dashboard, which is much more convenient than having to create an admin dashboard (and corresponding logic in the code) for each application individually.
+
 
 ## Common uses of feature flags
 
@@ -232,59 +234,72 @@ None.
 **The use of feature flags for gradual feature deprecation is acceptable.**  As with gradual roll-outs, raw IDs should not be used in the feature-flag platform, feature flags should be removed once the feature has been removed for all users, and business approval must be gained beforehand.
 
 
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
-[GOT TO HERE]<br />
+## Managing feature flags at HMCTS
 
-## Feature-flag platforms at HMCTS
-
-The following feature-flag platforms are currently in use at HMCTS:
+The following mechanisms for managing feature flags are currently used by HMCTS product teams:
 
 ### [LaunchDarkly](https://launchdarkly.com/)
 
-A commercial feature-flag platform that provides a user interface for managing feature flags, as well as SDKs for various programming languages.  It is the recommended feature-flag platform for HMCTS projects.
+A commercial feature-flag platform that provides a web dashboard for maintaining and editing feature flags, seeing their recent evaluations and an audit trail of past changes made, along special features for experimentation, use of AI etc. as well as SDKs for various programming languages.  It is currently the feature-flag platform of choice for HMCTS projects.
 
 ### [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/)
 
-A Microsoft Azure service that provides a centralised configuration store for applications, including feature flags.  It is suitable for projects that are already using Azure services and want to keep their feature flags within the Azure ecosystem.
+A Microsoft Azure service that provides a centralised configuration store for applications, including feature flags.
 
 ### Environment variables
 
-A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.  This is suitable for small projects or projects that do not require a full-featured feature-flag platform.
+A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.
 
 
-End to end Process:
+## Recommendations for managing feature flags
 
-1. Developer creates and commits short lived feature branch with Feature flag off.
-2. Implements feature through iterations of small feature lifecycle.
-3. Code is continuously released.
-4. Retire feature toggle.
+Assuming that the advice above has been followed regarding the use of feature flags, the following recommendations apply to the choice of tool for managing them:
+
+### Azure App Configuration
+
+#### Pros
+
+For teams already familiar with the Azure dashboard, the interface will be familiar and logical.  For applications that use Azure services, particularly Microsoft Entra ID (Azure AD), it will likely be fairly easy to introduce feature flags to the application.  For simple binary (on/off) feature toggles, Azure App Configuration provides some nice features such as targeting and time-window filters that could be very handy for A/B testing in particular and likely one or two others.
+
+#### Cons
+
+Azure App Configuration is primarily aimed at Boolean flags, and it seems that initially those were the only supported type of feature flag.  It is now possible, using "variant feature flags", to return other types of vaue (e.g., strings, arrays and JSON objects); but these are defined and managed separately and the overall interface feels more awkward than the UI for LaunchDarkly.  For teams less familiar with the Azure dashboard, the learning curve may be steep, particularly if they are not already using Azure services.
+
+The targeting rules appear less flexible than those provided by LaunchDarkly, focusing instead on randomising the user experience rather than targeting a specific set of users; this can be done but only through the use of Azure AD identities and groups, which may not be available in all applications.  It is not in widespread use at HMCTS and may not actually be used by any active product teams; as such, its facilities for feature-flag approvals, audit log of changes etc. are largely unknown.  (They are likely to exist somewhere; but they may be part of another Azure service rather than obviously connected to the feature flags themselves, which would be less convenient.)
+
+Finally, it's not clear whether Azure App Configuration provides a single centralised view of all feature flags in use in Azure across all applications.  Teams used to working with Azure may prefer to create a separate instance of Azure App Configuration for each application.  This not only results in the loss of the centralised view but could also end up being more expensive than using LaunchDarkly, which is currently charged per user rather than per instance.
+
+#### Recommendation
+
+Azure App Configuration is recommended for new applications based on Azure services, in particular **MS Entra ID (Azure AD)**, that are to be managed by teams already familiar with the Azure dashboard and who have a reasonable degree of competence with Azure services in general.
 
 
-### Accessing LaunchDarkly
+### Environment variables
 
-Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non-developers can get access with the 'DTS LaunchDarkly' group.
-see [onboarding](../onboarding/person/index.html) process to request access. You will need to login from [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net).
+#### Pros
 
-After you've logged in once you will be able to login from [app.launchdarkly.com](https://app.launchdarkly.com/).
+All product teams should be familiar with using environment variables in code; hence there should be little or no extra learning required.  Environment variables are also infinitely customisable (with reason), so whatever use of feature flags the team should have can be accommodated.  They are also free!
 
-### Documentation
+#### Cons
 
-Documentation can be accessed directly from the [LaunchDarkly](https://docs.launchdarkly.com/home) website.
-Their [blog](https://launchdarkly.com/blog/) contains good information.
+Environment variables are not a feature-flag platform; therefore the primary benefits of a feature-flag platform are not available, namely centralised management of feature flags across all applications via a dashboard, an audit trail of changes made, approvals and so on.  All of the targeting rules, handling of separate variations etc. has to be done in the code itself, which could rapidly lead to unnecessarily complexity and (subsequently) mounting tech debt.
 
-### Creating a new project
+Furthermore, applications have to be set up in a way that enables the environment variables to be changed dynamically at runtime, which is non-trivial.  For example, a containerised application that is triggered to restart when an environment variable has been changed, where the restart only occurs once all current user transactions (that started with the old value in place) have been completed.  (`ccd-data-store-api` is an example of an application that does this.)  Choosing this deployment set-up for an application may not always be desirable or convenient for other reasons.
 
-See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terraform) for instructions on how to setup your new project.
+#### Recommendation
 
-### Environments
+Environment variables will suffice when the actual uses of feature flags are relatively simple and don't require separate approval or logging; e.g. displaying or updating a service message during an outage. 
 
-We currently provide 'Test' and 'Production' environments by default within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
+### LaunchDarkly
 
-If your team does require additional environments, you can do this by updating your teams [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61). 
-It is not recommended to do this as targeting rules should be simpler to manage and ensure consistency across environments.
+#### Pros
 
+A full-featured feature-flag platform that provides every facility we need (and several more that we don't!).  It is comprehensive, powerful and easy to use, with a wealth of supporting materials in the form of SDKs, documentation and blog posts.
+
+#### Cons
+
+It is expensive.
+
+#### Recommendation
+
+LaunchDarkly is the tool of choice for all projects that would not be a good fit for Azure App Configuration and require more sophisticated use of feature flags than environment variables can provide.  However, just because you *can* use LaunchDarkly does not mean you *should*!  The most important decision to make is whether to use a feature flag **at all**; which feature-flag platform to use is secondary.
