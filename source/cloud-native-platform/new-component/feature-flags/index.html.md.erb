@@ -37,27 +37,25 @@ These three choices are summarised below.  Whichever one a team uses, care must 
 
 | Platform | Guidelines |
 |----------|-------------|
-| **Azure App Configuration** | For **new applications based on Azure services**, in particular MS Entra ID (Azure AD), that are managed by **teams with prior experience of Azure administration**.
-| **Environment variables** | For applications requiring simpler feature-flag use, where the **product teams do *not* require auditing of changes or approvals** within a feature-flag platform.
-| **LaunchDarkly** | For **all other cases**.
+| **Azure App Configuration** | For **new applications based on Azure services**, in particular MS Entra ID (Azure AD), that are managed by **teams with prior experience of Azure administration**. |
+| **Environment variables** | For applications requiring simpler feature-flag use, where the **product teams do *not* require auditing of changes or approvals** within a feature-flag platform. |
+| **LaunchDarkly** | For **all other cases**. |
 
 
 ### Accessing Azure App Configuration
 
-[TO DO]
+The process for gaining access to Azure App Configuration is under review; contact [Casey Attwell](mailto:casey.attwell@hmcts.net) for more information.  In the meantime, you can send a request to [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to get access for your application.
 
 
 ### Accessing LaunchDarkly
 
-Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non-developers can get access with the 'DTS LaunchDarkly' group.
-see [onboarding](../onboarding/person/index.html) process to request access. You will need to log in from [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net).
+Developers automatically get access by being part of the `DTS CFT Developers` or `DTS SDS Developers` group in the [prod_users.yml](https://github.com/hmcts/azure-access/blob/master/users/prod_users.yml) file in the `azure-access` repository.  Non-developers can get access through the `DTS LaunchDarkly` group.
 
 After you've logged in once you will be able to log in from [app.launchdarkly.com](https://app.launchdarkly.com/).
 
 ### Documentation
 
-Documentation can be accessed directly from the [LaunchDarkly](https://docs.launchdarkly.com/home) website.
-Their [blog](https://launchdarkly.com/blog/) contains good information.
+Documentation can be accessed directly from the [LaunchDarkly](https://docs.launchdarkly.com/home) website.  Their [blog](https://launchdarkly.com/blog/) also contains useful information.
 
 ### Creating a new project
 
@@ -65,8 +63,6 @@ See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terrafo
 
 ### Environments
 
-We currently provide 'Test' and 'Production' environments by default within LaunchDarkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to control rollout of flags to users across environments.
+We currently provide 'Test' and 'Production' environments by default within LaunchDarkly.  [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to roll flags out to users across the different environments.
 
-If your team does require additional environments, you can do this by updating your teams [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61). 
-It is not recommended to do this as targeting rules should be simpler to manage and ensure consistency across environments.
-
+If your team requires additional environments, you can do this by updating the appropriate lines in your team's [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61) file.  However,  this is not recommended as targeting rules should be simpler to manage and ensure consistency across environments.
