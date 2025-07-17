@@ -44,7 +44,7 @@ These three choices are summarised below.  Whichever one a team uses, care must 
 
 ### Accessing Azure App Configuration
 
-The process for gaining access to Azure App Configuration is under review; contact [Casey Attwell](mailto:casey.attwell@hmcts.net) for more information.  In the meantime, you can send a request to [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to get access for your application.
+The process for gaining access to Azure App Configuration is under review; contact [Casey Attwell](mailto:Casey.Attwell@justice.gov.uk) for more information.  In the meantime, you can send a request to [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to get access for your application.
 
 
 ### Accessing LaunchDarkly
@@ -63,6 +63,6 @@ See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terrafo
 
 ### Environments
 
-We currently provide `Test` and `Production` environments by default within LaunchDarkly.  [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to roll flags out to users across the different environments.
+We currently provide `Test` and `Production` environments by default within LaunchDarkly.  If your team requires additional environments, you can do this by updating the appropriate lines in your team's [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61) file.
 
-If your team requires additional environments, you can do this by updating the appropriate lines in your team's [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61) file.  However,  this is not recommended as targeting rules should be simpler to manage and ensure consistency across environments.
+For comprehensive documentation of environments in LaunchDarkly, see [here](https://launchdarkly.com/docs/home/account/environment).
