@@ -59,10 +59,10 @@ Documentation can be accessed directly from the [LaunchDarkly](https://docs.laun
 
 ### Creating a new project
 
-See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terraform) for instructions on how to set your new project up.
+See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terraform) for instructions on how to set your new project up in Terraform.
 
 ### Environments
 
-We currently provide 'Test' and 'Production' environments by default within LaunchDarkly.  [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to roll flags out to users across the different environments.
+We currently provide `Test` and `Production` environments by default within LaunchDarkly.  [flag targeting](https://docs.launchdarkly.com/guides/tutorials/rules-and-targeting) is used to roll flags out to users across the different environments.
 
 If your team requires additional environments, you can do this by updating the appropriate lines in your team's [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61) file.  However,  this is not recommended as targeting rules should be simpler to manage and ensure consistency across environments.
