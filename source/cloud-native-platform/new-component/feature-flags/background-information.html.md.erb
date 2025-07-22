@@ -98,22 +98,23 @@ Gradual roll-outs support safer releases when the team are releasing large, comp
 
 #### Cons
 
-Gradual roll-outs may encourage teams to release features in full before they are ready rather than releasing a steady stream of small, beneficial changes that are easy to test and roll back if necessary.  It also shifts the emphasis of user testing to a live environment where it may be better to focus more on testing in a lower environment to ensure that the feature is fit for purpose when it is released in Production.  Finally, there is a danger that the user segments chosen to test the feature early may not be representative of the wider user base, leading to a false sense of security that the feature is working well when it may not be.
+Gradual roll-outs may encourage teams to release features all at once rather than as a steady stream of small, beneficial changes that are easy to test and roll back if necessary.  There is also a danger that the user segments chosen to test the feature early may not be representative of the wider user base, leading to a false sense of security that the feature is working well when it may not be.
 
 #### Recommendation
 
 As stated above, **breaking features down into their smallest releasable components is always the best option**.  Therefore:
 
-- **Gradual roll-outs should only be done when some of the *users* are not ready for the new feature.**  In other words, gradual roll-outs should protect against incomplete or uncertain *business processes* rather than features that may contain bugs.
+- **Gradual roll-outs should only be done when some of the *users* are not ready for the new feature.**  In other words, gradual roll-outs should protect against incomplete or uncertain *business processes* rather than large features that may contain bugs.
 
 In some circumstances, it may be very difficult to break a large feature down into small, releasable units that add value; under these conditions, the business owners may feel more comfortable with a gradual roll-out.  If so, a golden rule should be:
 
 - **Do not use raw IDs in the feature-flag platform for the purpose of segmenting users** as they could easily be mistyped and cannot be verified in the code.  Instead, use a descriptive name for the user segment that is easy to understand and verify in the code; in other words, the code should ultimately control the logic of who sees the feature, not the feature-flag platform.
 
 Finally:
-    
-- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
+
+- **Feature flags should *always* be set to *enable* the new feature for all users in lower environments.**  This will help ensure that the feature is tested sufficiently during development.
 - **Changes to feature flags that influence the user experience in a live environment must be approved by the business owners beforehand**; where possible, this approval must be recorded by the feature-flag platform and be visible when required.
+- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
 
 
 ### Feature experimentation / Beta testing
