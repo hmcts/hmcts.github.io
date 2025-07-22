@@ -262,11 +262,11 @@ A commercial feature-flag platform that provides a web dashboard for maintaining
 
 ### [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/)
 
-A Microsoft Azure service that provides a centralised configuration store for applications, including facilities for feature flags.  At the time of writing, it is not known whether any teams are currently using this for feature-flag management; hence the extent of its capabilities is not well known.
+A Microsoft Azure service that provides a centralised configuration store for applications, including facilities for feature flags.  At the time of writing, it is uncertain whether any teams are currently using this for feature-flag management; hence the extent of its capabilities is not well known.
 
 ### [FluxCD and environment variables](https://fluxcd.io/)
 
-A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.  Configuration for each environment may be stored in a source-code management system (e.g., Git), which provides a full transaction log of all changes made to these environment variables including who changed them, what the changes were and when they were made.  For applications deployed to Kubernetes, these can be used in conjunction with FluxCD to enable the values of these variables to be dynamically updated without needing to rebuild and redeploy the application in full.
+A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.  Configuration for each environment may be stored in a source-code management system (e.g., Git), which then provides a full transaction log of all changes made to these environment variables including who changed them, what the changes were and when they were made.  For applications deployed to Kubernetes, these can be used in conjunction with FluxCD to enable the values of these variables to be dynamically updated without needing to rebuild and redeploy the application in full.
 
 
 ## Recommendations for managing feature flags
@@ -296,17 +296,15 @@ Azure App Configuration is recommended for new applications based on Azure servi
 
 #### Pros
 
-All product teams should be familiar with using environment variables in code; hence there should be little or no extra learning required.  Environment variables are also infinitely customisable (with reason), so whatever use of feature flags the team should have can be accommodated.  They are also free!
+All product teams should be familiar with using environment variables in code.  FluxCD is also widely used among HMCTS teams who deploy to Kubernetes; guidance on its use can be found [here](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux).  Environment variables are also infinitely customisable (with reason), so whatever use of feature flags the team should have can be accommodated.  They are also free!
 
 #### Cons
 
-Environment variables are not a feature-flag platform; therefore the primary benefits of a feature-flag platform are not available, namely centralised management of feature flags across all applications via a dashboard, an audit trail of changes made, approvals and so on.  All of the targeting rules, handling of separate variations etc. has to be done in the code itself, which could rapidly lead to unnecessarily complexity and (subsequently) mounting tech debt.
-
-Furthermore, applications have to be set up in a way that enables the environment variables to be changed dynamically at runtime, which is non-trivial.  For example, a containerised application that is triggered to restart when an environment variable has been changed, where the restart only occurs once all current user transactions (that started with the old value in place) have been completed.  (`ccd-data-store-api` is an example of an application that does this.)  Choosing this deployment set-up for an application may not always be desirable or convenient for other reasons.
+FluxCD is not a feature-flag platform; therefore the primary benefits of a feature-flag platform are not available, namely centralised management of feature flags across all applications via a dashboard, a written record of approvals and so on, although an audit trail of changes made is provided by the source-code management system (Git).  All of the targeting rules, handling of separate variations etc. has to be done in the code itself, which could rapidly lead to unnecessarily complexity and (subsequently) mounting tech debt.
 
 #### Recommendation
 
-Environment variables will suffice when the actual uses of feature flags are relatively simple and don't require separate approval or logging; e.g. displaying or updating a service message during an outage. 
+FluxCD and environment variables (only available to applications deployed to Kubernetes) will suffice when the actual uses of feature flags are relatively simple and don't require written approval to be visible within the feature-flag platform itself; e.g. displaying or updating a service message during an outage. 
 
 ### LaunchDarkly
 
