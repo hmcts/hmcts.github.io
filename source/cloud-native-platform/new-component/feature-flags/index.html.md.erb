@@ -38,7 +38,7 @@ These three choices are summarised below.  Whichever one a team uses, care must 
 | Platform | Guidelines |
 |----------|-------------|
 | **[Azure App Configuration](background-information.html#azure-app-configuration)** | For **new applications based on Azure services**, in particular MS Entra ID (Azure AD), that are managed by **teams with prior experience of Azure administration** and are satisfied with the feature-flag capabilities it offers. |
-| **[FluxCD and environment variables](background-information.html#fluxcd-and-environment-variables)** | For **Kubernetes applications** where the product teams do *not* require approvals of changes to be logged within a feature-flag platform. |
+| **[FluxCD and environment variables](background-information.html#fluxcd-and-environment-variables)** | For **Kubernetes applications** where the product teams make relatively simple changes that do *not* require approvals to be logged within a feature-flag platform. |
 | **[LaunchDarkly](background-information.html#launchdarkly)** | For **all other cases**. |
 
 
@@ -49,7 +49,7 @@ The process for gaining access to Azure App Configuration is under review; conta
 
 ### Accessing FluxCD
 
-Well?  _Well_?
+Guidance on how to set up and configure Flux can be found [here](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux) and [here](https://github.com/hmcts/cnp-flux-config/blob/master/docs/repo-setup.md)
 
 
 ### Accessing LaunchDarkly
