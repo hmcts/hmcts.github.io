@@ -16,7 +16,7 @@ The term "flag" dates back to the early days of computer architecture, in partic
 
 A feature-flag platform is a piece of software that allows you to manage the feature flags in your code.  It provides a user interface for creating, updating and deleting flags, as well as applying *targeting rules* governing which value (of the small, finite set) should be served when the flag is evaluated at runtime and monitoring those values served.  Feature-flag platforms usually provide SDKs for various programming languages, making it easy to integrate feature flags into your application code.
 
-Through the SDKs, updates to feature-flag values take effect immediately, without requiring a redeployment of the application code.  Therefore a feature-flag platform enables real-time changes to live applications from a single centralised dashboard, which is much more convenient than having to create an admin dashboard (and corresponding logic in the code) for each application individually.  Examples of feature-flag platforms include [LaunchDarkly](https://launchdarkly.com/) and [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview).  Tools such as [FluxCD](https://fluxcd.io/) and [ArgoCD](https://argo-cd.readthedocs.io/en/stable/) can also be used to manage feature flags in a Kubernetes environment, although they are not feature-flag platforms as described here.
+Through the SDKs, updates to feature-flag values take effect immediately, without requiring a redeployment of the application code.  Therefore a feature-flag platform enables real-time changes to live applications from a single centralised dashboard, which is much more convenient than having to create an admin dashboard (and corresponding logic in the code) for each application individually.  Examples of feature-flag platforms include [LaunchDarkly](https://launchdarkly.com/) and [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview).  Tools such as [FluxCD](https://fluxcd.io/) and [ArgoCD](https://argo-cd.readthedocs.io/en/stable/) can also be used to manage environment variables that function as feature flags in a Kubernetes environment, although they are not feature-flag platforms as described here.
 
 
 ## Common uses of feature flags
@@ -51,6 +51,13 @@ Dark deployments help facilitate CI/CD and [trunk-based development](/cloud-nati
 
 ![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
 
+A summary of the end-to-end process for trunk-based development with feature flags is as follows:
+
+1. Developer creates and commits a short-lived feature branch with the feature flag ON in lower environments yet OFF in Production.
+2. Feature is implemented iteratively in short development cycles.
+3. Code is continuously released with the feature flag ON in lower environments yet OFF in Production.
+4. The feature flag is turned ON in Production; then, once the feature is verified to be working correctly, the feature flag is removed altogether.
+
 #### Cons
 
 Dark deployments discourage teams from breaking features down into their smallest releasable components, because there is no longer a need to do so in order to merge code back into `master` (since the code will never be executed by a user).  They also discourage regular and comprehensive user testing before code is deployed to production, because the feature flag allows teams to deploy incomplete or broken features without releasing them to end-users.  This effectively defers the work of comprehensive testing and user feedback until the service is fully released to all users; hence any problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found before the feature was fully complete.
@@ -72,6 +79,11 @@ Finally:
 - **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
 - **Changes to feature flags that influence the user experience in a live environment must be approved by the business owners beforehand**; this approval must be recorded by the feature-flag platform and be visible when required.
 
+[Duncan]
+I would add to the documentation that the flag should be on by default in lower environments and turned off in Production until the feature launch. By doing this, as I am sure you know, you do not have to reiterate your testing cycle to turn on the feature in Production.
+
+####>>>>>>ADD DUNCAN'S PEARLS OF WISDOM HERE (e-mail)<<<<<< and work through the rest of Jack's comments as well (Slack) + Delyth + Richard + Mike
+####>>>>>>ADD DUNCAN'S PEARLS OF WISDOM HERE (e-mail)<<<<<< and work through the rest of Jack's comments as well (Slack) + Delyth + Richard + Mike
 
 ### Gradual roll-outs
 
