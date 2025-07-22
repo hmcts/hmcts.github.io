@@ -296,7 +296,7 @@ Azure App Configuration is recommended for new applications based on Azure servi
 
 #### Pros
 
-All product teams should be familiar with using environment variables in code.  FluxCD is also widely used among HMCTS teams who deploy to Kubernetes; guidance on its use can be found [here](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux).  Environment variables are also infinitely customisable (with reason), so whatever use of feature flags the team should have can be accommodated.  They are also free!
+All product teams should be familiar with using environment variables in code.  FluxCD is also widely used among HMCTS teams who deploy to Kubernetes; guidance on its use can be found [here](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux).  Environment variables are infinitely customisable (within reason), so whatever use of feature flags the team should have can be accommodated.  They are also free!
 
 #### Cons
 
@@ -304,7 +304,7 @@ FluxCD is not a feature-flag platform; therefore the primary benefits of a featu
 
 #### Recommendation
 
-FluxCD and environment variables (only available to applications deployed to Kubernetes) will suffice when the actual uses of feature flags are relatively simple and don't require written approval to be visible within the feature-flag platform itself; e.g. displaying or updating a service message during an outage. 
+FluxCD and environment variables (only available to applications deployed to Kubernetes) will suffice when changing the values feature flags does not require written approval to be visible within the feature-flag platform itself.  They are perhaps best suited to simpler uses; e.g., displaying or updating a service message during an outage. 
 
 ### LaunchDarkly
 
