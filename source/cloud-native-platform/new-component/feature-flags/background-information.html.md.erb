@@ -60,27 +60,29 @@ Summary of the end-to-end process for trunk-based development with feature flags
 
 #### Cons
 
-Dark deployments discourage teams from breaking features down into their smallest releasable components, because there is no longer a need to do so in order to merge code back into `master` (since the code will never be executed by a user).  They also discourage regular and comprehensive user testing before code is deployed to production, because the feature flag allows teams to deploy incomplete or broken features without releasing them to end-users.  This effectively defers the work of comprehensive testing and user feedback until the service is fully released to all users; hence any problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found before the feature was fully complete.
+Separating deployments from releases is not always a good thing!  The [Agile Manifesto](https://agilemanifesto.org/principles.html) emphasises the importance of *working software* rather than frequent deployments.  A new piece of functionality hidden behind a feature flag cannot be considered to be "working".  The essence of Agile is to deliver *new* working software to users frequently, so that they can provide feedback and the team can make adjustments as necessary to cater for changing or misunderstood requirements.  Dark deployments hide the work from users until it is fully complete; hence any problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found earlier on.
 
-Furthermore, dark deployments allow team members to work in isolation for longer, where they don't know what others are working on; code hidden behind a feature flag may or may not make the final cut for a release and hence cannot be relied upon.  This increases the likelihood of unintended duplication or redundancy between the work of two different developers who may have done the same thing in two different ways.  Finally, comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
+Dark deployments enable "work-in-progress" code to be merged into `master`, even when it is clearly unfinished or doesn't work properly, because it can be hidden behind a feature flag.  Whilst this may be helpful in order to avoid merge conflicts, it discourages the essential practice of breaking features down into their smallest *releasable* components, which is in line with Agile principles and the primary benefit of trunk-based development.  WIP code is also more likely to change or be removed, which could be problematic if another developer has started to rely on it in its current form.  Finally, comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
 
 #### Recommendation
 
-**Breaking features down into their smallest releasable components is *always* a good idea**; but it's hard and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
+Practising trunk-based development and minimising merge conflicts can be achieved in two ways: (1) by breaking features down into their smallest releasable components and continuously merging (without feature flags); or (2) by hiding WIP features behind feature flags (and continuously merging).
 
-- **Dark deployments should only be done by teams that are happy to practise trunk-based development**, whereby they will naturally break features down into small, releasable components and have a comprehensive and mature testing strategy in place before code reaches Production.
+**Breaking features down into their smallest releasable components is *always* the best approach**; but it's difficult and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
 
-If you find them irresistible, then a golden rule should be:
+- **Dark deployments should only be done when there is a *business reason* for doing so**; it should not be done as an alternative to breaking features down into their smallest releasable components.
 
-- **Do not use dark deployments to hide features in Production that do not work**; instead, test fully in a lower environment before merging the (partially complete, fully working) code to `master`.
+An example of a business reason might be that releases must happen according to a regular and preset schedule (e.g., once a quarter) rather than being allowed to take place continuously.  In an ideal world, this wouldn't be the case because it restricts the opportunities to receive valuable user feedback; but sometimes the users themselves are not ready for releases outside certain times.
+
+In such circumstances, a golden rule should be:
+
+- **Do not use dark deployments to release WIP code to Production unless it is fully working**; it can be functionally incomplete but those elements that have been implemented must be fully verified through testing in lower environments.
 
 Finally:
     
-- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
+- **Feature flags should *always* be set to *enable* the new feature in lower environments.**  This will help ensure that the feature is tested sufficiently during development.
 - **Changes to feature flags that influence the user experience in a live environment must be approved by the business owners beforehand**; this approval must be recorded by the feature-flag platform and be visible when required.
-
-[Duncan]
-I would add to the documentation that the flag should be on by default in lower environments and turned off in Production until the feature launch. By doing this, as I am sure you know, you do not have to reiterate your testing cycle to turn on the feature in Production.
+- **Feature flags should be removed as soon as the feature is fully released to all users.**  This should be enforced in the CI/CD pipeline.
 
 ####>>>>>>work through the rest of Jack's comments as well (Slack) + Delyth + Richard<<<
 ####>>>>>>work through the rest of Jack's comments as well (Slack) + Delyth + Richard<<<
