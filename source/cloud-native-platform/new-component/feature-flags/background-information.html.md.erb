@@ -264,7 +264,7 @@ A commercial feature-flag platform that provides a web dashboard for maintaining
 
 A Microsoft Azure service that provides a centralised configuration store for applications, including facilities for feature flags.  At the time of writing, it is uncertain whether any teams are currently using this for feature-flag management; hence the extent of its capabilities is not well known.
 
-### [FluxCD and environment variables](https://fluxcd.io/)
+### [FluxCD](https://fluxcd.io/) and environment variables
 
 A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.  Configuration for each environment may be stored in a source-code management system (e.g., Git), which then provides a full transaction log of all changes made to these environment variables including who changed them, what the changes were and when they were made.  For applications deployed to Kubernetes, these can be used in conjunction with FluxCD to enable the values of these variables to be dynamically updated without needing to rebuild and redeploy the application in full.
 
