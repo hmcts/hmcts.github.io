@@ -8,6 +8,8 @@ hide_in_navigation: true
 
 # <%= current_page.data.title %>
 
+There are many explanations of feature flags and their advantages and disadvantages available; however, most of them are either published by vendors of feature-flag platforms (such as LaunchDarkly) or written by hobby programmers on their personal blogs.  As a result, they tend to be quite subjective and heavily in favour of feature-flag use.  This guide was therefore written to present a disinterested view of feature flags and their respective merits and shortcomings.
+
 ## What is a feature flag?
 
 The term "flag" dates back to the early days of computer architecture, in particular CPU registers.  Various registers have "flag bits" to control certain behaviour (e.g. the Z or zero-flag).  So "feature flags" are, quite literally, flags that control features; in other words, binary (Boolean) values that toggle certain features on or off when used as the condition in an `if` statement.  These days they have been expanded from just Booleans to cover any relatively small, finite set of values of any type, including strings, arrays and full JSON objects, although the precise range of types and values depends on the [feature-flag platform](#what-is-a-feature-flag-platform) in use.
