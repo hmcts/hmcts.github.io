@@ -12,6 +12,10 @@ Feature flags are a powerful tool that can enhance a team's productivity; but th
 
 ## When to use feature flags
 
+The primary benefit of feature flags is to encourage [trunk-based development](https://trunkbaseddevelopment.com/) (TBD), where changes are made either directly in the `master` branch or in a short-lived feature branch (i.e. one that lasts a few days at most before being merged to `master`).  For teams that work mostly in a feature branch for weeks at a time, feature flags can help ease the transition to TBD, although care should be taken to ensure that all code paths are tested and the feature flags are promptly removed when no longer needed.
+
+
+
 For an explanation of each of these use cases, see the [background information](background-information.html#common-uses-of-feature-flags).
 
 | Use case | Guidelines | Golden rules |
