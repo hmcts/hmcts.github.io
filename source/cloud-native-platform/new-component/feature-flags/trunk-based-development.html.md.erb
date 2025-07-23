@@ -16,10 +16,10 @@ In contrast, trunk-based development ensures that merge conflicts are kept to a 
 
 The renowned software methodology book [Accelerate: The Science of Lean Software and DevOps](https://itrevolution.com/product/accelerate/) highlights trunk-based development as a key practice for high-performing software teams.  However, it is not always easy for larger teams to practise trunk-based development.  It requires a high level of discipline and coordination among developers, a robust set of automated tests and a finely tuned CI/CD pipeline with immediate notification of failures to ensure that the codebase remains stable and deployable at all times.
 
-Trunk-based development is the preferred method of software development at HMCTS and is suitable for teams with some or all of the following characteristics:
+Trunk-based development is the preferred method of software development at HMCTS and should work well for teams with some or all of the following characteristics:
 
 - small, intimate, experienced and highly able teams who communicate frequently and well; code reviews, common coding styles and conventions etc. and a good understanding of each other are essential
-- products with continuous releases (like a browser) rather than feature-drops every quarter etc. (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags/background-information.html#dark-deployments))
+- products with continuous releases rather than feature-drops every quarter etc. (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags/background-information.html#dark-deployments))
 - projects with comprehensive automated tests (since that is the only protection against deploying bad code straight into live)
 - teams with the autonomy to deploy and release frequently (ideally several times per day) with full control over the release schedule, with no need to seek external approval (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags/background-information.html#dark-deployments))
 - teams who have regular contact with their users and can get fast, constructive feedback from them
