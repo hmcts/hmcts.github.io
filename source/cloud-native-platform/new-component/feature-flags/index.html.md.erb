@@ -28,27 +28,26 @@ It is always preferable to break features down into their smallest releasable co
 It is also not recommended to use feature flags to implement user permissions or preferences, or to take short-cuts during testing in lower environments, as there are better ways to achieve the same results (see the [guidance](background-information.html) for details).
 
 
-## Feature-flag management
+## Feature-flag management tools
 
-In terms of management tools, [LaunchDarkly](https://launchdarkly.com/) is the commercial feature-flag platform currently used by most HMCTS product teams that employ feature flags.  Another possibility is [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview), which is rarely used in HMCTS but is aligned with the strategic decision to use Azure as the platform for HMCTS cloud-based applications.  Finally, teams can manage feature flags manually via environment variables, configuration files and so on, which is clearly simpler and cheaper than using a commercial product although more limited in scope and convenience.  (When deploying applications to a Kubernetes environment, teams may use [FluxCD](https://fluxcd.io/) to automatically update their applications whenever a new configuration file is committed to the release branch.)
+[LaunchDarkly](https://launchdarkly.com/) is the commercial feature-flag platform currently used by most HMCTS product teams that employ feature flags.  It is comprehensive, powerful and easy to use, with a wealth of supporting materials in the form of SDKs, documentation and blog posts.
+
+[Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview) can also be used to manage feature flags.  It is rarely used in HMCTS but is aligned with the strategic decision to use Azure as the platform for HMCTS cloud-based applications and offers most of the essential feature-flag functions provided by LaunchDarkly.
+
+Teams can also manage feature flags manually by using environment variables, configuration files and so on; these files are stored in the same repository as the rest of the code.  Changes to feature-flag values in these files will result in a new deployment and hence the application will be updated to reflect the new values.  This is clearly simpler and cheaper than using a commercial product although more limited in scope and convenience (e.g., no centralised administration dashboard); the changes also take effect more slowly, although tools such as [FluxCD](https://fluxcd.io/) for Kubernetes applications can minimise the deployment overhead.
 
 These three choices are summarised below.  Whichever one a team uses, care must be taken to **prevent the feature-flag platform from becoming a single point of failure** for the application, as the availability of these external services can never be guaranteed.
 
-| Platform | Guidelines |
+| Platform | Suitability |
 |----------|-------------|
+| **[LaunchDarkly](background-information.html#launchdarkly)** | For all cases. |
 | **[Azure App Configuration](background-information.html#azure-app-configuration)** | For **new applications based on Azure services**, in particular MS Entra ID (Azure AD), that are managed by **teams with prior experience of Azure administration** and are satisfied with the feature-flag capabilities it offers. |
-| **[FluxCD and environment variables](background-information.html#fluxcd-and-environment-variables)** | For **Kubernetes applications** where the product teams make relatively simple changes that do *not* require approvals to be logged within a feature-flag platform. |
-| **[LaunchDarkly](background-information.html#launchdarkly)** | For **all other cases**. |
+| **[Manual approach](background-information.html#manual-approach)** | For relatively simple feature-flag use where teams do not need the more advanced facilities offered by a feature-flag platform. |
 
 
 ### Accessing Azure App Configuration
 
 The process for gaining access to Azure App Configuration is under review; contact [Casey Attwell](mailto:Casey.Attwell@justice.gov.uk) for more information.  In the meantime, you can send a request to [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) to get access for your application.
-
-
-### Accessing FluxCD
-
-Guidance on how to set up and configure Flux can be found [here](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux) and [here](https://github.com/hmcts/cnp-flux-config/blob/master/docs/repo-setup.md).
 
 
 ### Accessing LaunchDarkly
