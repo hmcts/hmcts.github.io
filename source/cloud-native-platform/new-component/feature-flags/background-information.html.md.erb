@@ -264,20 +264,36 @@ The following mechanisms for managing feature flags are currently available to H
 
 ### [LaunchDarkly](https://launchdarkly.com/)
 
-A commercial feature-flag platform that provides a web dashboard for maintaining and editing feature flags, seeing their recent evaluations and an audit trail of past changes made and approvals given, along special features for experimentation, use of AI etc. as well as SDKs for various programming languages.  It is currently the feature-flag platform of choice for HMCTS projects.
+A commercial feature-flag platform that provides a web dashboard for maintaining and editing feature flags at run-time, seeing their recent evaluations and an audit trail of past changes made and approvals given, along special features for experimentation, use of AI etc. as well as SDKs for various programming languages.  It is currently the feature-flag platform of choice for HMCTS projects.
 
 ### [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/)
 
 A Microsoft Azure service that provides a centralised configuration store for applications, including facilities for feature flags.  At the time of writing, it is uncertain whether any teams are currently using this for feature-flag management; hence the extent of its capabilities is not well known.
 
-### [FluxCD](https://fluxcd.io/) and environment variables
+### Manual (environment variables, configuration files etc.)
 
-A simple way to manage feature flags by storing them as environment variables in the application's runtime environment.  Configuration for each environment may be stored in a source-code management system (e.g., Git), which then provides a full transaction log of all changes made to these environment variables including who changed them, what the changes were and when they were made.  For applications deployed to Kubernetes, these can be used in conjunction with FluxCD to enable the values of these variables to be dynamically updated without needing to rebuild and redeploy the application in full.
+A simple way to manage feature flags is to store them in environment variables or configuration files that are ready by the application when it is first started.  The configuration for each environment is stored alongside the rest of the code in a source-code management system (e.g., Git), which then provides a full transaction log of all changes made to these environment variables including who changed them, what the changes were and when they were made.  Changes to feature-flag values in these files will be picked up by the CI/CD pipeline and result in a new deployment (although the application will not need to be rebuilt - instead the new configuration will be tested for each environment in the pipeline).  Assuming all tests pass and the deployment is successful, the live application will be updated to reflect the new values.  This is slower than the run-time updates provided by LaunchDarkly and Azure App Configuration, although tools such as [FluxCD](https://fluxcd.io/) for Kubernetes applications can minimise the deployment overhead.  
 
 
 ## Recommendations for managing feature flags
 
-Assuming that the advice above has been followed regarding the use of feature flags in general, the following recommendations apply to the choice of tool for managing them:
+Assuming that the advice above has been followed regarding the use of feature flags in general, the following recommendations apply to the choice of approach for managing them:
+
+
+### LaunchDarkly
+
+#### Pros
+
+A full-featured feature-flag platform that provides every facility we need (and several more that we don't!).  It is comprehensive, powerful and easy to use, with a wealth of supporting materials in the form of SDKs, documentation and blog posts.
+
+#### Cons
+
+It is expensive.
+
+#### Recommendation
+
+LaunchDarkly is the tool of choice for all projects that would not be a good fit for Azure App Configuration and require more sophisticated use of feature flags than environment variables can provide.
+
 
 ### Azure App Configuration
 
@@ -311,17 +327,3 @@ FluxCD is not a feature-flag platform; therefore the primary benefits of a featu
 #### Recommendation
 
 FluxCD and environment variables (only available to applications deployed to Kubernetes) will suffice when changing the values feature flags does not require written approval to be visible within the feature-flag platform itself.  They are perhaps best suited to simpler uses; e.g., displaying or updating a service message during an outage. 
-
-### LaunchDarkly
-
-#### Pros
-
-A full-featured feature-flag platform that provides every facility we need (and several more that we don't!).  It is comprehensive, powerful and easy to use, with a wealth of supporting materials in the form of SDKs, documentation and blog posts.
-
-#### Cons
-
-It is expensive.
-
-#### Recommendation
-
-LaunchDarkly is the tool of choice for all projects that would not be a good fit for Azure App Configuration and require more sophisticated use of feature flags than environment variables can provide.  However, just because you *can* use LaunchDarkly does not mean you *should*!  The most important decision to make is whether to use a feature flag **at all**; which feature-flag platform to use is secondary.
