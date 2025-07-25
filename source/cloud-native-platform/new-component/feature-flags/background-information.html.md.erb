@@ -314,16 +314,16 @@ Finally, it's not clear whether Azure App Configuration provides a single centra
 Azure App Configuration is recommended for new applications based on Azure services, in particular **MS Entra ID (Azure AD)**, that are to be managed by teams already familiar with the Azure dashboard and who have a reasonable degree of competence with Azure services in general.
 
 
-### FluxCD and environment variables
+### Manual approach
 
 #### Pros
 
-All product teams should be familiar with using environment variables in code.  FluxCD is also widely used among HMCTS teams who deploy to Kubernetes; guidance on its use can be found [here](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux).  Environment variables are infinitely customisable (within reason), so whatever use of feature flags the team should have can be accommodated.  They are also free!
+All product teams should be familiar with using environment variables and configuration files.  They are infinitely customisable (within reason), so whatever use of feature flags the team should have can be accommodated.  They are also free!
 
 #### Cons
 
-FluxCD is not a feature-flag platform; therefore the primary benefits of a feature-flag platform are not available, namely centralised management of feature flags across all applications via a dashboard, a written record of approvals and so on, although an audit trail of changes made is provided by the source-code management system (Git).  All of the targeting rules, handling of separate variations etc. has to be done in the code itself, which could rapidly lead to unnecessarily complexity and (subsequently) mounting tech debt.
+The primary benefits of a feature-flag platform are not available, namely instant (run-time) updates to feature-flag values, centralised management of feature flags across all applications via a dashboard, a written record of approvals and so on, although an audit trail of changes made is provided by the source-code management system (Git).  All of the targeting rules, handling of separate variations and other management activities have to be done in the code itself, which could rapidly lead to unnecessarily complexity and (subsequently) mounting tech debt.
 
 #### Recommendation
 
-FluxCD and environment variables (only available to applications deployed to Kubernetes) will suffice when changing the values feature flags does not require written approval to be visible within the feature-flag platform itself.  They are perhaps best suited to simpler uses; e.g., displaying or updating a service message during an outage. 
+This approach will suffice when the feature flags are simple values (e.g., Booleans) and when changing the values does not require written approval to be visible within the feature-flag platform itself.  It is best suited to simpler uses when the advanced facilities of a feature-flag platform are not needed.
