@@ -52,6 +52,8 @@ Each of the uses listed above comes with its own set of recommendations, as desc
 
 Dark deployments help facilitate CI/CD and [trunk-based development](/cloud-native-platform/new-component/feature-flags/trunk-based-development.html), which are key practices of high-performing software teams.  Teams that would ordinarily practise feature-based development can merge their code frequently, thereby reducing the impact of merge conflicts and helping to keep the main branch stable and deployable.
 
+CI/CD pipelines can then deploy the artefacts built from the code all the way into Production without fear that features will be released before they are ready.  In this way, separate features can be released independently, without blocking each other (in contrast to the situation without feature flags, where all new features must be ready before the release can go ahead).
+
 ![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
 
 Summary of the end-to-end process for trunk-based development with feature flags:
@@ -65,9 +67,9 @@ Summary of the end-to-end process for trunk-based development with feature flags
 
 Separating deployments from releases is not always a good thing!  The [Agile Manifesto](https://agilemanifesto.org/principles.html) emphasises the importance of *working software* rather than frequent deployments.  A new piece of functionality hidden behind a feature flag cannot be considered to be "working".
 
-The essence of Agile is to deliver *new* working software to users frequently, so that they can provide feedback and the team can make adjustments as necessary to cater for changing or misunderstood requirements.  Dark deployments hide the work from users until it is fully complete; hence any problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found earlier on.
+The essence of Agile is to deliver *new* working software to users frequently, so that they can provide feedback and the team can make adjustments as necessary to cater for changing or misunderstood requirements.  Dark deployments can hide the work from users until it is fully complete; hence any problems with the feature in real-world use will go undetected until very late in the day, where they could have a much more serious impact than if they had been found earlier on.
 
-Dark deployments also allow "work-in-progress" code to be merged into `master`, even when it is clearly unfinished or doesn't work properly, because it can be hidden behind a feature flag.  Whilst this may be help to avoid merge conflicts, it discourages the essential practice of breaking features down into their smallest *releasable* components, which is in line with Agile principles and the primary benefit of trunk-based development.  WIP code is also more likely to change or be removed, which could be problematic if another developer has started to rely on it in its current form.  Finally, comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
+Dark deployments can also allow "work-in-progress" code to be merged into `master`, even when it is clearly unfinished or doesn't work properly, because it can be hidden behind a feature flag.  Whilst this may be help to avoid merge conflicts, it discourages the essential practice of breaking features down into their smallest *releasable* components, which is in line with Agile principles and the primary benefit of trunk-based development.  WIP code is also more likely to change or be removed, which could be problematic if another developer has started to rely on it in its current form.  Finally, comprehensive automated testing is more complicated as all combinations of feature-flag values need to be included, which is easily overlooked while a feature is still under construction.
 
 #### Recommendation
 
@@ -76,11 +78,12 @@ Practising trunk-based development and minimising merge conflicts can be achieve
 1. by breaking features down into their smallest releasable components and continuously merging (without feature flags); or
 2. by hiding WIP features behind feature flags (and continuously merging).
 
-**Breaking features down into their smallest releasable components is *always* the best approach**; but it's difficult and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore:
+**Breaking features down into their smallest releasable components is *always* the best approach**; but it's difficult and time-consuming and hence teams are disinclined to do it, particularly when they have an easier alternative courtesy of dark deployments.  Therefore dark deployments should only be done when it is not possible or practical to release small incremental changes frequently or there is no obvious gain in doing so.  Situations in which this may be the case include:
 
-- **Dark deployments should only be done when there is a *business reason* for doing so**; it should not be done as an alternative to breaking features down into their smallest releasable components.
-
-An example of a business reason might be that releases must happen according to a regular and preset schedule (e.g., once a quarter) rather than being allowed to take place continuously.  In an ideal world, this wouldn't be the case because it restricts the opportunities to receive valuable user feedback; but sometimes the users themselves are not ready for releases outside certain times.
+- Releases must happen according to a preset schedule (e.g., once a quarter) rather than being allowed to take place continuously (usually for business reasons)
+- The deployed artefact is a common component consumed by other services and applications, some of which may be ready for the new feature while others may not be
+- A new feature cannot be decomposed into small, releasable parts (e.g., an new user interface or skin for existing functionality)
+- It is not practical or appropriate for users to provide feedback on the new features
 
 In such circumstances, a golden rule should be:
 

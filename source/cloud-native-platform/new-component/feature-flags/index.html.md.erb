@@ -23,7 +23,7 @@ Other recommended uses of feature flags are:
 
 ## When not to use feature flags
 
-It is always preferable to break features down into their smallest releasable components, such that code can be deployed rapidly _without_ needing to hide parts of the application behind a feature flag.  This allows users to see and use features at the earliest opportunity, enabling rapid iterations based on their feedback.  Therefore dark deployments are not recommended unless the release schedule is fixed and infrequent (e.g. weeks or months between releases), which should not be the case for most teams.
+It is always preferable to break features down into their smallest releasable components, such that code can be deployed rapidly _without_ needing to hide parts of the application behind a feature flag.  This allows users to see and use features at the earliest opportunity, enabling rapid iterations based on their feedback.  Therefore dark deployments (which suppress releases) should only be used when it is not possible or practical to release small incremental changes frequently or there is no obvious gain in doing so.  (See the [guidance](background-information.html#dark-deployments) for examples of such situations.)
 
 It is also not recommended to use feature flags to implement user permissions or preferences, or to take short-cuts during testing in lower environments, as there are better ways to achieve the same results (see the [guidance](background-information.html) for details).
 
