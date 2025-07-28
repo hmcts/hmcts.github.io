@@ -12,7 +12,7 @@ jobs:
     name: Check spelling
     steps:
       - name: Spell-Check
-        uses: check-spelling/check-spelling@v0.0.23
+        uses: check-spelling/check-spelling@v0.0.25
         with:
           checkout: true
           # don't check extra dictionaries
