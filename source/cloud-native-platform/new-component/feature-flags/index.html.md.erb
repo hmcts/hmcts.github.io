@@ -30,14 +30,14 @@ It is also not recommended to use feature flags to implement user permissions or
 
 ## DORA metrics
 
-The table below shows some statistics for the [DORA throughput metrics](https://dora.dev/guides/dora-metrics-four-keys/#throughput) of deployment frequency (to Production) and change lead time for HMCTS code repositories measured in 2025.  Repos using LaunchDarkly are compared with those that don't.  The statistics only include repos that use Jenkins for CI/CD and that had at least one deployment from a protected branch in the previous 14 days from the date given.  For full details of how these statistics were measured and the caveats and assumptions made, see [the mining tool in GitHub](https://github.com/hmcts/hmcts-github-mining-tool/blob/master/RATIONALE.MD).
+The table below shows some statistics for the [DORA throughput metrics](https://dora.dev/guides/dora-metrics-four-keys/#throughput) of deployment frequency (to Production) and change lead time for HMCTS code repositories measured in 2025.  Repos using LaunchDarkly are compared with those that don't.  The statistics only include repos that use Jenkins for CI/CD and that had at least one deployment from a protected branch in the previous 14 days from the date given.  For full details of how these statistics were measured and the caveats and assumptions made, see the [documentation](https://github.com/hmcts/hmcts-github-mining-tool/blob/master/RATIONALE.MD) for the mining tool in GitHub.
 
 | Date | LaunchDarkly (Y/N) | Active repos | Ave. deployment frequency | Ave. change lead time | Min. change lead time | Max. change lead time | 
 |-|-|-|-|-|-|-|
-| 2nd April 2025 | Y | 55 | 0.51 deployments / day | 10.53 days | 0.012 days | 393.79 days |
-| 2nd April 2025 | N | 147 | 0.38 deployments / day | 6.92 days | 0.0026 days | 367.05 days |
-| 27th June 2025 | Y | 57 | 0.40 deployments / day | 11.12 days | 0.012 days | 312.30 days |
-| 27th June 2025 | N | 143 | 0.38 deployments / day | 10.27 days | 0.0017 days | 1134.84 days |
+| 2nd April 2025 | Y | 55 | 0.51 deployments per day | 10.53 days | 0.012 days | 393.79 days |
+| 2nd April 2025 | N | 147 | 0.38 deployments per day | 6.92 days | 0.0026 days | 367.05 days |
+| 27th June 2025 | Y | 57 | 0.40 deployments per day | 11.12 days | 0.012 days | 312.30 days |
+| 27th June 2025 | N | 143 | 0.38 deployments per day | 10.27 days | 0.0017 days | 1134.84 days |
 
 
 ## Feature-flag management tools
