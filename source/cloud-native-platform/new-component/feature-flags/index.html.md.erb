@@ -32,7 +32,7 @@ It is also not recommended to use feature flags to implement user permissions or
 
 [LaunchDarkly](https://launchdarkly.com/) is the commercial feature-flag platform currently used by most HMCTS product teams that employ feature flags.  It is comprehensive, powerful and easy to use, with a wealth of supporting materials in the form of SDKs, documentation and blog posts.
 
-[Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview) can also be used to manage feature flags.  It is rarely used in HMCTS but is aligned with the strategic decision to use Azure as the platform for HMCTS cloud-based applications and offers most of the essential feature-flag functions provided by LaunchDarkly.
+[Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview) can also be used to manage feature flags.  It is rarely used in HMCTS but is aligned with the strategic decision to use Azure as the platform for HMCTS cloud-based applications and offers all of the essential feature-flag functions provided by LaunchDarkly.
 
 Teams can also manage feature flags manually by using environment variables, configuration files and so on; these files may be stored in the same repository as the rest of the code.  Changes to feature-flag values in these files will result in a new deployment and hence the application will be updated to reflect the new values.  This is clearly simpler and cheaper than using a commercial product although more limited in scope and convenience (e.g., no centralised administration dashboard).  Changes also take effect more slowly, although tools such as [FluxCD](https://fluxcd.io/) for Kubernetes applications can minimise the deployment overhead.
 
