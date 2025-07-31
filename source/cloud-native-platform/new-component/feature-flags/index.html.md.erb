@@ -12,18 +12,20 @@ Feature flags are a powerful tool that can enhance a team's productivity; but th
 
 ## When to use feature flags
 
-The primary benefit of feature flags is to encourage [trunk-based development](https://trunkbaseddevelopment.com/) (TBD), where changes are made either directly in the `master` branch or in a short-lived feature branch (i.e. one that lasts a few days at most before being merged to `master`).  For teams that work mostly in a feature branch for weeks at a time, feature flags can help ease the transition to TBD, although care should be taken to ensure that all code paths are tested and the feature flags are promptly removed when no longer needed.  An example of an HMCTS team using feature flags to assist trunk-based development is the **XUI** team.
+1. Trunk-based development
+
+The primary benefit of feature flags is to encourage [trunk-based development](https://trunkbaseddevelopment.com/) (TBD), where changes are made either directly in the `master` branch or in a short-lived feature branch (i.e. one that lasts a few days at most before being merged to `master`).  For teams that work mostly in a feature branch for weeks at a time, feature flags can help ease the transition to TBD, although care should be taken to ensure that all code paths are tested and the feature flags are promptly removed when no longer needed.
 
 Other recommended uses of feature flags are:
 
-1. Gradual roll-outs (e.g. one court at a time)
-2. Beta testing and A/B testing
-3. Operational toggles (kill switches, adjustment of logging levels and other performance or debugging aids)
+2. Gradual roll-outs (e.g. one court at a time)
+3. Beta testing and A/B testing
+4. Operational toggles (kill switches, adjustment of logging levels and other performance or debugging aids)
 
 
 ## When not to use feature flags
 
-It is always preferable to break features down into their smallest releasable components, such that code can be deployed rapidly _without_ needing to hide parts of the application behind a feature flag.  This allows users to see and use features at the earliest opportunity, enabling rapid iterations based on their feedback.  Therefore dark deployments (which suppress releases) should only be used when it is not possible or practical to release small incremental changes frequently or there is no obvious gain in doing so.  (See the [guidance](background-information.html#dark-deployments) for examples of such situations.)
+It is always preferable to break features down into their smallest releasable components, such that code can be deployed rapidly _without_ needing to hide parts of the application behind a feature flag.  This allows users to see and use features at the earliest opportunity, enabling rapid iterations based on their feedback.  Therefore _dark deployments_ (which suppress releases) should only be used when it is not possible or practical to release small incremental changes frequently or there is no obvious gain in doing so.  (See the [guidance](background-information.html#dark-deployments) for examples of such situations.)
 
 It is also not recommended to use feature flags to implement user permissions or preferences, or to take short-cuts during testing in lower environments, as there are better ways to achieve the same results (see the [guidance](background-information.html) for details).
 
