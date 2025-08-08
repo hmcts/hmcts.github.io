@@ -12,7 +12,7 @@ Feature flags are a powerful tool that can enhance a team's productivity; but th
 
 ## When to use feature flags
 
-The primary benefit of feature flags is to encourage [trunk-based development](https://trunkbaseddevelopment.com/) (TBD), where changes are made either directly in the `master` branch or in a short-lived feature branch (i.e. one that lasts a few days at most before being merged to `master`).  For teams that work mostly in a feature branch for weeks at a time, feature flags can help ease the transition to TBD, although care should be taken to ensure that all code paths are tested and the feature flags are promptly removed when no longer needed.
+The primary benefit of feature flags is to encourage [trunk-based development](https://trunkbaseddevelopment.com/) (TBD), where changes are made either directly in the `master` branch or in a short-lived feature branch (i.e. one that lasts a few days at most before being merged to `master`).  For teams that work mostly in a feature branch for weeks at a time, feature flags can help ease the transition to TBD.
 
 Other recommended uses of feature flags are:
 
@@ -28,9 +28,19 @@ It is always preferable to **break features down into their smallest releasable 
 It is also not recommended to use feature flags to:
 
 - Implement user permissions or preferences
-- Take short-cuts during testing in lower environments
+- Take short-cuts during testing
 
 See the [guidance](background-information.html) for better ways to achieve the same results.
+
+
+## Best practices when using feature flags
+
++ Ensure that all code paths (combinations of feature-flag values) are tested
++ Ensure that, in a live environment, changes to feature-flag values are treated the same way as any other changes to a live service
++ Remove feature flags promptly once the feature has been released
++ Minimise tech debt by reviewing _all_ feature flags in your project on a regular basis (e.g., every six months) and removing those that nobody can account for
+
+Product teams can be shy of removing feature flags in case the need for one materialises shortly after it has been removed.  To mitigate the risk of this happening, create a PR that _only_ removes the feature flag (with no other code changes at the same time); then create a tag in Git pointing to the (squashed) commit (on the server) that removes it.  This way it will be simple to reinstate the feature flag using `git revert`  if an urgent need for it is discovered later on.
 
 
 ## Feature-flag management tools
