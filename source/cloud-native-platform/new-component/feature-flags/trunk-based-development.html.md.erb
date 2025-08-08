@@ -8,7 +8,7 @@ hide_in_navigation: true
 
 # <%= current_page.data.title %>
 
-**Trunk-based development** is a development style where developers, as much as possible, work *directly* in the main or "trunk" branch of the code (usually named `master`, `main` or `trunk`).  If separate branches are needed for any reason, they do not usually exist for more than a day or so before being merged back into the trunk branch.  This is in contrast to **feature-based development**, where developers routinely create separate branches for each feature or task, which can exist for weeks or even months before being merged back into the trunk branch.
+**Trunk-based development** is a development style where developers, as far as possible, work *directly* in the main or "trunk" branch of the code (usually named `master`, `main` or `trunk`).  If separate branches are needed for any reason, they do not usually exist for more than a day or so before being merged back into the trunk branch.  This is in contrast to **feature-based development**, where developers routinely create separate branches for each feature or task, which can exist for weeks or even months before being merged back into the trunk branch.
 
 Feature-based development encourages long-lived feature branches, which generally lead to more complex merge conflicts that take longer to resolve.  It can also lead to situations where the trunk branch is not stable or deployable for a period of time, as newly merged branches may have introduced errors (identified during automated or manual testing) that are not trivial to fix.
 
@@ -21,8 +21,8 @@ Trunk-based development is the preferred method of software development at HMCTS
 - small, intimate, experienced and highly able teams who communicate frequently and well; code reviews, common coding styles and conventions etc. and a good understanding of each other are essential
 - products with continuous releases rather than feature-drops every quarter etc. (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags/background-information.html#dark-deployments))
 - projects with comprehensive automated tests (since that is the only protection against deploying bad code straight into live)
-- teams with the autonomy to deploy and release frequently (ideally several times per day) with full control over the release schedule, with no need to seek external approval (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags/background-information.html#dark-deployments))
-- teams who have regular contact with their users and can get fast, constructive feedback from them
+- teams with the autonomy to deploy and release frequently (ideally several times per day) with full control over the release schedule, who do not need to seek external approval (although challenges owing to infrequent releases can be mitigated through the use of [feature flags](/cloud-native-platform/new-component/feature-flags/background-information.html#dark-deployments))
+- teams who have direct contact with their users and can get fast, constructive feedback from them
 - teams who practise pair programming or mobbing
 
 For further reading, see the [trunk-based development website](https://trunkbaseddevelopment.com/).
