@@ -1,0 +1,110 @@
+---
+title: Update Redis with Zone Redundancy
+last_reviewed_on: 2025-10-12
+review_in: 6 months
+weight: 10
+---
+
+# Update Redis with Zone Redundancy
+
+This guide explains how to update your Azure Cache for Redis to enable zone redundancy for improved availability and resilience.
+
+## Prerequisites
+
+- Azure Cache for Redis instance
+- Appropriate permissions to modify the Redis cache
+
+## Upgrade from Basic to Standard SKU
+
+If your Redis cache is currently using the **Basic SKU**, you must first upgrade to **Standard** before enabling zone redundancy, as zone redundancy is not available on Basic tier.
+
+### Steps to Upgrade SKU:
+
+1. **Navigate to your Redis cache** in the Azure Portal
+2. **Go to Settings** → **Scale** in the left navigation menu
+3. **Select Standard tier** from the available options
+4. **Choose the appropriate cache size** based on your requirements
+5. **Click Select** to apply the upgrade
+
+![Redis Scale Options](../../images/redis-scale-options.png)
+
+> **Note:** The upgrade process may take several minutes.
+
+## Enable Zone Redundancy
+
+Once switched to Standard as per the screenshot above, you can verify the upgrade was successful by checking the Overview page which will show "Running - Standard 1 GB" status:
+
+![Redis Standard Status](../../images/redis-standard-status.png)
+
+then under the Settings choose **Advanced settings**, check the **Zone redundancy** option on the portal and save.
+
+### Steps to Enable Zone Redundancy:
+
+1. **Navigate to Settings** → **Advanced settings** in the left navigation menu
+2. **Scroll down to Zone redundancy** section
+3. **Check the "Allocate zones automatically"** checkbox
+4. **Click Save** to apply the changes
+
+![Redis Advanced Settings Zone Redundancy](../../images/redis-advanced-settings-zone-redundancy.png)
+
+## Update Terraform Configuration
+
+Once you have enabled zone redundancy on the portal, then update your code to Standard in the Terraform configuration as shown in the screenshot:
+
+![Terraform Redis Standard Configuration](../../images/terraform-redis-standard-config.png)
+
+Update your Terraform configuration to reflect the Standard SKU:
+
+```hcl
+sku_name = "Standard"
+family   = "C"
+```
+
+When you run the Terraform plan, it shows nothing to add or destroy as shown in the screenshot:
+
+![Terraform Plan No Changes](../../images/terraform-plan-no-changes.png)
+
+This confirms that your Terraform configuration now matches the infrastructure state after the manual upgrade.
+
+## Upgrade from Standard to Premium (Optional)
+
+Now switching from Standard to Premium as shown in the screenshot. Select **P1 Premium** for enhanced features:
+
+![Redis Standard to Premium Upgrade](../../images/redis-standard-to-premium.png)
+
+### Steps to Upgrade to Premium:
+
+1. **Navigate to Settings** → **Scale** in the left navigation menu
+2. **Select P1 Premium** from the Premium tier options
+3. **Review the features** including:
+   - 6 GB Cache
+   - All Standard features
+   - Data Persistence
+   - Virtual Network support
+   - Redis Cluster support
+4. **Click Select** to apply the Premium upgrade
+
+Once you have enabled zone redundancy as shown in the screenshot:
+
+![Redis Zone Redundancy Enabled](../../images/redis-zone-redundancy-enabled.png)
+
+## Update Terraform Configuration to Premium
+
+Change the code to Premium as shown in the screenshot:
+
+![Terraform Redis Premium Configuration](../../images/terraform-redis-premium-config.png)
+
+Update your Terraform configuration to reflect the Premium SKU:
+
+```hcl
+sku_name = "Premium"
+family   = "P"
+rdb_backup_enabled = true
+```
+
+When you run the Terraform plan, it shows 1 to add for storage account creation, nothing to destroy as shown in the screenshot:
+
+![Terraform Plan Premium Upgrade](../../images/terraform-plan-premium-upgrade.png)
+
+> **Note:** Premium tier provides additional features like data persistence, virtual network support, and clustering capabilities.
+
