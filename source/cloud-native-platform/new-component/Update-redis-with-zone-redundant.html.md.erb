@@ -14,37 +14,46 @@ This guide explains how to update your Azure Cache for Redis to enable zone redu
 - Azure Cache for Redis instance
 - Appropriate permissions to modify the Redis cache
 
+## Process Overview
+
+For enabling zone redundancy on Redis caches, follow this process:
+
+1. **Development team** creates a Jira ticket in **#platops-help** requesting zone redundancy enablement
+2. **Platops team** performs the manual update via Azure Portal
+3. **Development team** updates Terraform configuration after portal changes are complete
+
 ## Upgrade from Basic to Standard SKU
 
 If your Redis cache is currently using the **Basic SKU**, you must first upgrade to **Standard** before enabling zone redundancy, as zone redundancy is not available on Basic tier.
 
 ### Steps to Upgrade SKU:
 
-1. **Navigate to your Redis cache** in the Azure Portal
-2. **Go to Settings** → **Scale** in the left navigation menu
-3. **Select Standard tier** from the available options
-4. **Choose the appropriate cache size** based on your requirements
-5. **Click Select** to apply the upgrade
+1. **Development team** creates a Jira ticket in **#platops-help** requesting upgrade to Standard tier
+2. **Platops team** will:
+   - **Navigate to your Redis cache** in the Azure Portal
+   - **Go to Settings** → **Scale** in the left navigation menu
+   - **Select Standard tier** from the available options
+   - **Choose the appropriate cache size** based on your requirements
+   - **Click Select** to apply the upgrade
 
 
 > **Note:** The upgrade process may take several minutes.
 
 ## Enable Zone Redundancy
 
-Once switched to Standard, you can verify the upgrade was successful by checking the Overview page which will show "Running - Standard 1 GB" status:
+Once Platops has upgraded the Redis cache to Standard tier, they will:
 
-then under the Settings choose **Advanced settings**, check the **Zone redundancy** option on the portal and save.
+1. Verify the upgrade was successful by checking the Overview page which will show "Running - Standard 1 GB" status
+2. Navigate to **Settings** → **Advanced settings** in the left navigation menu
+3. Scroll down to **Zone redundancy** section
+4. Check the **"Allocate zones automatically"** checkbox
+5. Click **Save** to apply the changes
 
-### Steps to Enable Zone Redundancy:
-
-1. **Navigate to Settings** → **Advanced settings** in the left navigation menu
-2. **Scroll down to Zone redundancy** section
-3. **Check the "Allocate zones automatically"** checkbox
-4. **Click Save** to apply the changes
+After receiving confirmation from Platops that zone redundancy has been enabled:
 
 ## Update Terraform Configuration
 
-Once you have enabled zone redundancy on the portal, then update your code to Standard in the Terraform configuration:
+Once Platops has enabled zone redundancy via the portal, the development team should update their Terraform configuration:
 
 
 Update your Terraform configuration to reflect the Standard SKU:
@@ -61,32 +70,26 @@ This confirms that your Terraform configuration now matches the infrastructure s
 
 ## Upgrade from Standard to Premium (Optional)
 
-Now switching from Standard to Premium as shown. Select **P1 Premium** for enhanced features:
+If you need Premium features, the process is similar:
 
-### Steps to Upgrade to Premium:
-
-1. **Navigate to Settings** → **Scale** in the left navigation menu
-2. **Select P1 Premium** from the Premium tier options
-3. **Review the features** including:
-   - 6 GB Cache
-   - All Standard features
-   - Data Persistence
-   - Virtual Network support
-   - Redis Cluster support
-4. **Click Select** to apply the Premium upgrade
-
+1. **Development team** creates a Jira ticket in **#platops-help** requesting upgrade to Premium tier
+2. **Platops team** will:
+   - **Navigate to Settings** → **Scale** in the left navigation menu
+   - **Select P1 Premium** from the Premium tier options
+   - **Review the features** including:
+     - 6 GB Cache
+     - All Standard features
+     - Data Persistence
+     - Virtual Network support
+     - Redis Cluster support
+   - **Click Select** to apply the Premium upgrade
 
 ## Update Terraform Configuration to Premium
 
+After receiving confirmation from Platops that the Redis cache has been upgraded to Premium, the development team should update their Terraform configuration:
+
+
 Change the code to Premium as shown:
-
-```hcl
-sku_name = "Premium"
-family   = "P"
-rdb_backup_enabled = true
-```
-
-Update your Terraform configuration to reflect the Premium SKU:
 
 ```hcl
 sku_name = "Premium"
@@ -98,18 +101,18 @@ When you run the Terraform plan, it shows 1 to add for storage account creation,
 
 ## For Existing Premium Tier Redis Caches
 
-If you already have a Premium tier Redis cache instance, you can enable zone redundancy directly:
+If you already have a Premium tier Redis cache instance:
 
-### Steps for Premium Tier:
-
-1. **Navigate to your Redis cache** in the Azure Portal
-2. **Go to Settings** → **Advanced settings** in the left navigation menu
-3. **Check the "Zone redundancy"** option
-4. **Click Save** to apply the changes
+1. **Development team** creates a Jira ticket in **#platops-help** requesting zone redundancy enablement
+2. **Platops team** will:
+   - **Navigate to your Redis cache** in the Azure Portal
+   - **Go to Settings** → **Advanced settings** in the left navigation menu
+   - **Check the "Zone redundancy"** option
+   - **Click Save** to apply the changes
 
 ### Update Terraform Configuration
 
-After enabling zone redundancy in the portal, update your Terraform configuration:
+After Platops has enabled zone redundancy in the portal, the development team should update their Terraform configuration:
 
 ```hcl
 sku_name = "Premium"
