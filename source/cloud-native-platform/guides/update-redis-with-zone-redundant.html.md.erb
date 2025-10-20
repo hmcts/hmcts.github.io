@@ -38,6 +38,13 @@ Running `terraform apply` will create the Storage Account needed for backup func
 
 > **Note:** The Storage Account is required for the RDB backup feature enabled with `rdb_backup_enabled = true` in your Terraform configuration.
 
+## Important Environment and Cost Considerations
 
+> **Note:** Zone redundancy should only be enabled for production environments to avoid higher costs in lower environments. This process is intended only for the following production subscriptions:
+>
+> - DCD-CNP-Prod
+> - DTS-SHAREDSERVICES-PROD
+
+Please ensure you are applying these changes only in the specified production subscriptions.
 
 
