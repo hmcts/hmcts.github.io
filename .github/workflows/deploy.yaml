@@ -40,7 +40,7 @@ jobs:
       - name: Build site
         run: bundle exec rake build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: 'build/'
       - name: Deploy to GitHub Pages
