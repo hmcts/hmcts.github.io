@@ -18,6 +18,7 @@ GEM
     autoprefixer-rails (10.4.13.0)
       execjs (~> 2)
     backports (3.24.1)
+    base64 (0.3.0)
     bigdecimal (3.1.7)
     chronic (0.10.2)
     chunky_png (1.4.0)
@@ -157,6 +158,7 @@ GEM
     mini_portile2 (2.8.2)
     minitest (5.19.0)
     multi_json (1.15.0)
+    mutex_m (0.3.0)
     nokogiri (1.15.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -218,9 +220,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  base64
   govuk_tech_docs
   html-proofer
   middleman-gh-pages
+  mutex_m
+  sprockets
   tzinfo-data
   wdm (~> 0.1.0)
 

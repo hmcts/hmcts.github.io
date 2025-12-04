@@ -1,0 +1,147 @@
+---
+title: "Step 8: Configure SSH"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 8
+---
+
+# <%= current_page.data.title %>
+
+In this step, you'll configure your SSH settings to enable seamless access to platform systems.
+
+## Overview
+
+SSH configuration allows you to:
+- Connect to platform systems without repeatedly entering keys
+- Automatically use your SSH key
+- Configure host-specific settings
+
+## SSH Key Verification
+
+First, verify your SSH key from Step 1 is still in place:
+
+```bash
+ls -la ~/.ssh/id_ed25519
+```
+
+You should see output showing your private key exists with `600` permissions.
+
+## Configure SSH Config
+
+Your SSH client needs configuration to know about your keys and hosts.
+
+### Option A: Self-Service Script (Recommended)
+
+[Link to setup repo script]
+
+Run the script to generate your SSH config:
+
+```bash
+[command to run script]
+```
+
+This generates configuration from the template with your specific values.
+
+### Option B: Manual Configuration Using Template
+
+[Link to SSH config template in setup repo]
+
+#### View Template
+
+The setup repository includes a template file showing example SSH configuration:
+
+```bash
+cat [path-to-template]
+```
+
+#### Create Your SSH Config
+
+1. Open or create: `~/.ssh/config`
+
+   ```bash
+   nano ~/.ssh/config
+   ```
+
+2. Add entries based on the template for each platform host:
+
+   ```
+   Host [host1-placeholder]
+       HostName [hostname.example.com]
+       User [your-username]
+       IdentityFile ~/.ssh/id_ed25519
+       [Placeholder: additional host-specific settings]
+
+   Host [host2-placeholder]
+       HostName [hostname.example.com]
+       User [your-username]
+       IdentityFile ~/.ssh/id_ed25519
+       [Placeholder: additional host-specific settings]
+   ```
+
+3. Set correct permissions:
+
+   ```bash
+   chmod 600 ~/.ssh/config
+   ```
+
+<details>
+<summary>📋 View detailed SSH config template</summary>
+
+**Complete template with all host entries:**
+
+[Placeholder: Full SSH config template with all platform hosts and settings]
+
+</details>
+
+## Verify SSH Configuration
+
+Test your SSH configuration:
+
+```bash
+# Test connection to a platform host
+ssh [host-placeholder]
+```
+
+If successful:
+- [ ] You should connect without entering a password
+- [ ] Your SSH key is automatically used
+- [ ] You're authenticated to the remote system
+
+If you receive a permission denied error, see troubleshooting below.
+
+---
+
+## Troubleshooting
+
+### Permission Denied
+
+If you see "Permission denied (publickey)":
+
+1. Verify your SSH key exists: `ls -la ~/.ssh/id_ed25519`
+2. Verify your public key is in your platform user configuration
+3. Verify the host entry in `~/.ssh/config` matches the actual hostname
+4. Check with Platform Operations that your user is in the correct access group
+
+### Can't Connect to Host
+
+If you see "Could not resolve hostname":
+
+1. Verify your VPN is connected (from Step 7)
+2. Verify DNS is configured correctly
+3. Verify the hostname in your SSH config is correct
+4. Try adding `-v` flag for verbose output: `ssh -v [host-placeholder]`
+
+---
+
+## Summary Checklist
+
+- ✓ SSH key exists at `~/.ssh/id_ed25519`
+- ✓ SSH config created at `~/.ssh/config`
+- ✓ SSH config permissions set to 600
+- ✓ Can successfully SSH to platform hosts
+
+---
+
+**Next step:** [Step 9: Obtain Secrets](09-obtain-secrets.html)
+
+[← Back to onboarding overview](index.html)

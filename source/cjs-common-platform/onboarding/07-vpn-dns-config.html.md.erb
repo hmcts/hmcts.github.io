@@ -1,0 +1,217 @@
+---
+title: "Step 7: Configure VPN and DNS"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 7
+---
+
+# <%= current_page.data.title %>
+
+In this step, you'll configure your VPN connection and DNS settings to securely access the Crime Platform.
+
+## Prerequisites
+
+Before starting this step:
+- [ ] Ensure **Global Protect VPN is disabled** (if previously installed)
+- [ ] Ensure you obtained your OpenVPN secrets (see Step 9 if not yet done)
+- [ ] Have Tunnelblick installed on macOS or equivalent VPN client for your OS
+
+## Install VPN Client
+
+### macOS: Tunnelblick
+
+1. Download Tunnelblick from [https://tunnelblick.net/](https://tunnelblick.net/)
+2. Install following the standard macOS installation process
+3. Launch Tunnelblick from Applications
+
+<details>
+<summary>📋 View screenshot: Tunnelblick installation</summary>
+
+[Placeholder for screenshot]
+
+</details>
+
+### Other Operating Systems
+
+[Placeholder: Links and instructions for Windows/Linux VPN clients]
+
+## Configure Tunnelblick
+
+### Get Configuration File
+
+Option A: Use Self-Service Script (Recommended)
+
+[Link to setup repo script]
+
+Run the script to generate your VPN configuration:
+
+```bash
+[command to run script]
+```
+
+This will create a `.ovpn` configuration file based on the template and your environment details.
+
+### Option B: Manual Setup Using Template
+
+[Link to template file in setup repo]
+
+1. Copy the template configuration file
+2. Customize placeholders with your specific values:
+   - [Placeholder: Parameter 1 description]
+   - [Placeholder: Parameter 2 description]
+   - [Placeholder: Parameter 3 description]
+3. Save as `crime-platform.ovpn`
+
+<details>
+<summary>📋 View template configuration details</summary>
+
+[Placeholder: Detailed configuration template with all parameters]
+
+</details>
+
+### Import into Tunnelblick
+
+1. Open Tunnelblick
+2. Drag your `.ovpn` file into the Tunnelblick window
+3. Enter your macOS password if prompted
+4. The configuration will appear in your VPN list
+
+---
+
+## Configure DNS
+
+### DNS Challenge
+
+When using the VPN, you need to route DNS queries to the platform's DNS servers. This is done using dnsmasq.
+
+### Option A: Self-Service Script (Recommended)
+
+[Link to setup repo script]
+
+Run the script to automatically configure dnsmasq:
+
+```bash
+[command to run script]
+```
+
+The script will:
+- [ ] Install dnsmasq
+- [ ] Create configuration from template
+- [ ] Set up macOS to use local DNS
+
+### Option B: Manual Configuration
+
+#### Install dnsmasq
+
+```bash
+brew install dnsmasq
+```
+
+#### Create Configuration
+
+[Link to dnsmasq template in setup repo]
+
+1. Copy the template
+2. Update with your specific DNS settings:
+   - [Placeholder: DNS server 1]
+   - [Placeholder: DNS server 2]
+   - [Placeholder: Domain mappings]
+3. Save to `/usr/local/etc/dnsmasq.conf`
+
+#### Start dnsmasq
+
+```bash
+sudo brew services start dnsmasq
+```
+
+#### Configure macOS DNS Settings
+
+1. Open System Preferences → Network
+2. Select your active connection (Wi-Fi or Ethernet)
+3. Advanced → DNS
+4. Add DNS server: `127.0.0.1`
+5. Click OK
+
+<details>
+<summary>📋 View screenshots: DNS configuration</summary>
+
+[Placeholder for screenshots showing:
+- macOS network settings location
+- DNS server addition
+- Network settings confirmation]
+
+</details>
+
+### Optional: DNS Switching Alias
+
+Create a shell alias to quickly switch between platform DNS and default DNS:
+
+```bash
+# Add to your ~/.zshrc file
+alias use-platform-dns="sudo scutil <<< 'open\nget State:/Network/Global/IPv4\nd.146.2.132.1 127.0.0.1 192.168.1.1\nset State:/Network/Global/IPv4\nquit'"
+alias use-default-dns="sudo scutil <<< 'open\nget State:/Network/Global/IPv4\nd.146.2.132.1 192.168.1.1\nset State:/Network/Global/IPv4\nquit'"
+```
+
+Then reload your shell:
+
+```bash
+source ~/.zshrc
+```
+
+<details>
+<summary>📋 View DNS switching details</summary>
+
+[Placeholder: Detailed DNS switching documentation]
+
+</details>
+
+---
+
+## Important: Disable Global Protect
+
+⚠️ If you have Global Protect VPN installed from previous roles:
+
+1. Open Global Protect
+2. Disconnect and disable
+3. Remove from startup items
+4. The Tunnelblick VPN should be your only active VPN
+
+Having multiple VPN clients active simultaneously will cause connection issues.
+
+---
+
+## Test Your VPN Connection
+
+1. Open Tunnelblick
+2. Select "crime-platform" (or your configuration name)
+3. Click "Connect"
+4. You should see a connected status within [Placeholder: X seconds]
+
+**Successful connection indicators:**
+- [ ] Green connection icon in Tunnelblick
+- [ ] System notifications show VPN connected
+- [ ] Your local IP shows in VPN details
+
+<details>
+<summary>📋 View screenshot: Successful VPN connection</summary>
+
+[Placeholder for screenshot]
+
+</details>
+
+---
+
+## Summary Checklist
+
+- ✓ Tunnelblick installed
+- ✓ VPN configuration created and imported
+- ✓ dnsmasq installed and configured
+- ✓ macOS DNS set to 127.0.0.1
+- ✓ Global Protect disabled
+- ✓ Successfully connected to VPN
+
+---
+
+**Next step:** [Step 8: Configure SSH](08-ssh-config.html)
+
+[← Back to onboarding overview](index.html)

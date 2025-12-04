@@ -1,0 +1,236 @@
+---
+title: "Step 10: Validation"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 10
+---
+
+# <%= current_page.data.title %>
+
+Congratulations! You've completed all configuration steps. Now let's verify everything is working correctly.
+
+## Pre-Validation Checklist
+
+Before running validation tests, confirm you have completed all previous steps:
+
+- [ ] Step 1: Generated GPG and SSH key pairs
+- [ ] Step 2: Submitted access request PR
+- [ ] Step 3: PR was approved and merged
+- [ ] Step 4: ADO pipeline executed successfully
+- [ ] Step 5: Decrypted your initial password
+- [ ] Step 6: Set up Azure Portal with MFA
+- [ ] Step 7: Configured VPN and DNS
+- [ ] Step 8: Configured SSH
+- [ ] Step 9: Obtained and configured secrets
+
+---
+
+## Validation Tests
+
+### Test 1: VPN Connection
+
+**Objective:** Verify your VPN client can connect
+
+1. Open Tunnelblick (or your VPN client)
+2. Select your VPN configuration
+3. Click "Connect"
+4. Wait for connection status to show "Connected"
+
+**Expected result:** ✓ Connected within [X seconds]
+
+**If this fails:**
+- Verify dnsmasq is running: `brew services list | grep dnsmasq`
+- Verify DNS is configured in System Preferences
+- Check VPN configuration file syntax
+- Post error in [#slack-channel-placeholder]
+
+### Test 2: Access Gerrit (Code Review System)
+
+**Objective:** Verify you can access the code review platform
+
+1. Ensure VPN is connected
+2. Navigate to [Placeholder: Gerrit URL]
+3. You should see Gerrit interface with "Sign in" option
+4. Sign in with [Placeholder: credentials/method]
+
+**Expected result:** ✓ Successfully authenticated to Gerrit
+
+**If this fails:**
+- Verify VPN is connected
+- Verify your user account has Gerrit access permissions
+- Check that you're in the correct access group
+- Contact Platform Operations
+
+### Test 3: Access Jenkins
+
+**Objective:** Verify you can access the CI/CD system
+
+1. Ensure VPN is connected
+2. Navigate to [Placeholder: Jenkins URL]
+3. You should see Jenkins interface
+4. Sign in with [Placeholder: credentials/method]
+
+**Expected result:** ✓ Successfully authenticated to Jenkins
+
+**If this fails:**
+- Verify VPN is connected
+- Verify your user account has Jenkins access
+- Check that you're in the correct access group
+- Contact Platform Operations
+
+### Test 4: SSH Connection
+
+**Objective:** Verify you can SSH to platform systems
+
+**Prerequisite:** You must be a member of the appropriate SSH access group. If this test fails, it may be due to group membership, not configuration issues.
+
+```bash
+# Test SSH connection
+ssh [host-placeholder]
+```
+
+**Expected result:** ✓ Successfully connected to remote system
+
+If you see a prompt or command output, you've successfully authenticated.
+
+<details>
+<summary>📋 View verbose SSH troubleshooting</summary>
+
+If SSH fails, run with verbose output:
+
+```bash
+ssh -v [host-placeholder]
+```
+
+This shows detailed connection information. Look for:
+- "Trying to connect to..." - shows name resolution working
+- "Permission denied (publickey)" - your key wasn't accepted
+- "Could not resolve hostname" - DNS issue (check Step 7)
+
+</details>
+
+**If this fails:**
+- Verify your SSH key exists: `ls -la ~/.ssh/id_ed25519`
+- Verify SSH config is correct: `cat ~/.ssh/config`
+- Verify your public SSH key is in user configuration
+- Verify you're a member of SSH access group
+- Contact Platform Operations
+
+### Test 5: Google Authenticator
+
+**Objective:** Verify your authenticator is working
+
+1. Open your authenticator app
+2. Find your Crime Platform account
+3. Verify a 6-digit code is displayed
+4. Verify the code changes approximately every 30 seconds
+
+**Expected result:** ✓ Code is displayed and rotates every 30 seconds
+
+**If this fails:**
+- Verify you added the secret correctly
+- Verify your device time is synchronized (important for TOTP)
+- Try re-adding the secret from Step 9
+- Contact Platform Operations
+
+---
+
+## Optional: Self-Service Validation Script
+
+[Link to setup repo script]
+
+A comprehensive validation script is available that tests all connectivity and access:
+
+```bash
+[command to run validation script]
+```
+
+This script will:
+- [ ] Test VPN connectivity
+- [ ] Test Gerrit access
+- [ ] Test Jenkins access
+- [ ] Test SSH connectivity
+- [ ] Test Google Authenticator
+- [ ] Generate a validation report
+
+---
+
+## Success Criteria
+
+You have successfully completed onboarding when:
+
+- ✓ VPN connects without errors
+- ✓ You can access Gerrit
+- ✓ You can access Jenkins
+- ✓ You can SSH to platform systems
+- ✓ Google Authenticator shows valid TOTP codes
+
+---
+
+## What's Next?
+
+Congratulations! You now have full access to the Crime Platform.
+
+### Immediate Next Steps
+
+1. **Join Slack channels:**
+   - [Placeholder: Team channel]
+   - [Placeholder: Support channel]
+   - [Placeholder: General channel]
+
+2. **Review Documentation:**
+   - [Link to platform overview]
+   - [Link to developer guides]
+   - [Link to common tasks]
+
+3. **Set Up Your Development Environment:**
+   - [Link to dev setup guide]
+   - [Link to local development guide]
+
+4. **Contact Your Team:**
+   - Reach out to your team lead
+   - Introduce yourself on team Slack
+   - Ask about first assigned tasks
+
+### Getting Help
+
+If you encounter issues or have questions:
+
+1. **Documentation:**
+   - Check the [Knowledge Base]([link])
+   - Review [Troubleshooting Guide]([link])
+
+2. **Slack Channels:**
+   - Post in [#dev-support]
+   - Post in [#general]
+   - Mention [Platform Operations team]
+
+3. **Direct Contact:**
+   - Email: [Placeholder: support email]
+   - Slack: [Placeholder: support person/team]
+
+---
+
+## Feedback
+
+We'd like to hear about your onboarding experience!
+
+- What went smoothly?
+- What was confusing?
+- What took longer than expected?
+- How can we improve?
+
+Please provide feedback via [Placeholder: feedback link/method]
+
+---
+
+## Summary Checklist
+
+- ✓ Completed all validation tests
+- ✓ Have full access to Crime Platform
+- ✓ Know where to get help
+- ✓ Ready to start working!
+
+---
+
+[← Back to onboarding overview](index.html)

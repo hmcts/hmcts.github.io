@@ -1,0 +1,96 @@
+---
+title: "Step 2: Request Access"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Now that you have your key pairs, you'll submit a pull request to request access to the Crime Platform.
+
+## Locate the Setup Repository
+
+[Placeholder: Link to setup repo]
+
+This repository contains the access control configuration and detailed guidance on the access request process.
+
+## Prepare Your PR
+
+Before creating your pull request, gather:
+
+- [ ] Your GPG public key (from Step 1)
+- [ ] Your SSH public key (from Step 1)
+- [ ] Your team name (ask your colleagues which team you should join)
+
+## Where to Add Your Keys
+
+[Placeholder: Path and file structure in setup repo]
+
+Add your public keys to the appropriate location in the repository:
+
+```
+[placeholder/path/to/user/file]
+```
+
+## Select Your Team
+
+Your access is controlled through team membership. Ask your colleagues which team applies to your role:
+
+- [Placeholder: Team A description]
+- [Placeholder: Team B description]
+- [Placeholder: Team C description]
+
+Add your entry to the appropriate team configuration file.
+
+<details>
+<summary>📋 View team selection guidance</summary>
+
+[Placeholder: Detailed team descriptions and selection criteria]
+
+</details>
+
+## Raise the Pull Request
+
+1. Create a new branch: `git checkout -b onboarding/add-user-[your-name]`
+2. Commit your changes: `git add . && git commit -m "Add user access: [your name]"`
+3. Push to remote: `git push origin onboarding/add-user-[your-name]`
+4. Create the PR in GitHub with title: `Add user access: [your name]`
+
+## PR Description Template
+
+Include the following in your PR description:
+
+```
+User: [Your Name]
+Email: [your-email@hmcts.net]
+Team: [Selected Team]
+Manager: [Manager Name]
+
+Requesting access to:
+- [ ] Non-live tenant
+- [ ] Live tenant (approval from manager required)
+```
+
+### Further Guidance
+
+The setup repository README contains detailed step-by-step instructions and may include additional configuration options. Review it alongside this guide.
+
+[Link to setup repo README]
+
+---
+
+## Summary Checklist
+
+Before proceeding, confirm:
+
+- ✓ Public keys added to correct files
+- ✓ Team assignment selected
+- ✓ PR created with clear description
+- ✓ PR links to your public keys location
+
+---
+
+**Next step:** [Step 3: Get Approved](03-get-approved.html)
+
+[← Back to onboarding overview](index.html)

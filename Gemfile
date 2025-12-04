@@ -13,3 +13,7 @@ gem 'govuk_tech_docs'
 
 gem 'middleman-gh-pages'
 gem 'html-proofer'
+
+gem 'mutex_m'
+gem 'sprockets'
+gem 'base64'

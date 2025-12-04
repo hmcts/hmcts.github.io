@@ -1,0 +1,140 @@
+---
+title: "Step 1: Generate Key Pairs"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+In this step, you'll generate two key pairs required for platform access:
+
+- **GPG key pair**: Public key is used to encrypt your secrets and you will use your private key to decrypt them.
+- **SSH key pair**: Public key is used to configure your SSH access and you use your private key to authenticate.
+
+You'll need both public keys for the next step when requesting access.
+
+### Option A: Using self-service script (Recommended)
+
+You should have access to GitHub repository containing [following self-service script](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/self-service/run.sh).
+
+Clone the repository, open your terminal and run the script:
+
+```bash
+./self-service/run.sh
+```
+
+You should end up with following files in the `self-service` directory:
+
+- **your@email_rsa** - private SSH key
+- **your@email_rsa.pub** - public SSH key
+- **your@email_rsa.pubb64** - public SSH key in base64 format
+- **your@email.asc** - public GPG key
+- **your@email_asc.b64** - public GPG key in base64 format
+
+---
+
+### Option B: Manual Command
+
+If you only need to generate one of the key pairs, you can run individual self-service scripts from your terminal:
+
+- [self-service/export-gpg-public-key.sh](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/self-service/export-gpg-public-key.sh)
+- [self-service/export-ssh-public-key.sh](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/self-service/export-ssh-public-key.sh)
+
+If you prefer to run the commands manually, follow these steps:
+
+```bash
+# Generate GPG key pair
+gpg --generate-key
+> name
+> email
+> 4096 RSA key
+> Key expiry 0
+> passphrase - keep this safe!
+
+# Export GPG public key
+gpg --export --armor your-email > your-pub-key.asc
+
+# Generate SSH key pair
+ssh-keygen -b 4096 -t rsa -C your-email -f your-file_rsa -N your-passphrase
+
+# Copy your private SSH key to .ssh folder
+cp your-file_rsa ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa
+
+# Encode public keys to base64
+base64 -i "your-pub-key.asc" -o "your-pub-key.asc.b64"
+base64 -i "your-file_rsa.pub" -o "your-file_rsa.pub.b64"
+```
+
+---
+
+## Summary Checklist
+
+<details>
+<summary><strong>✓ SSH key pair generated</strong></summary>
+
+```bash
+ls
+your@email_rsa
+your@email_rsa.pub
+```
+
+</details>
+
+<details>
+<summary><strong>✓ SSH private key in ~/.ssh folder</strong></summary>
+
+```bash
+ls -la ~/.ssh/id_rsa
+-rw-------@  1 demo.user  staff   3389 10 Apr  2025 id_rsa
+```
+
+</details>
+
+<details>
+<summary><strong>✓ GPG key generated</strong></summary>
+
+```bash
+gpg --list-keys
+pub   rsa4096 2026-01-01 [SC]
+      72T8CD00FBD63C00CBAC5662315EE035D4FF13DH
+uid           [ unknown] Demo User <demo.user@justice.gov.uk>
+sub   rsa4096 2026-01-01 [E]
+```
+
+</details>
+
+<details>
+<summary><strong>✓ GPG public key exported</strong></summary>
+
+```bash
+cat your-pub-key.asc | head -n 1
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+```
+
+</details>
+
+<details>
+<summary><strong>✓ Public keys encoded to base64</strong></summary>
+
+```bash
+ls
+your-pub-key.asc.b64
+your-file_rsa.pub.b64
+```
+
+</details>
+
+<details>
+<summary><strong>✓ Private keys stored securely</strong></summary>
+
+Your private SSH and GPG keys should not be shared or committed to repositories. They are stored locally for your use only.
+
+</details>
+
+---
+
+**Next step:** [Step 2: Request Access](02-request-access.html)
+
+[← Back to onboarding overview](index.html)
