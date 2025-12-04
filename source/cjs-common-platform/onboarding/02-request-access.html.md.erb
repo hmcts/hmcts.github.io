@@ -7,87 +7,88 @@ weight: 2
 
 # <%= current_page.data.title %>
 
-Now that you have your key pairs, you'll submit a pull request to request access to the Crime Platform.
+Now that you have your key pairs, you will submit a pull request including those keys and your HMCTS email to get the access you need.
 
-## Locate the Setup Repository
+## Access the Setup Repository
 
-[Placeholder: Link to setup repo]
+[https://www.github.com/hmcts/cpp-terraform-azurerm-azuread](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/README.md)
 
-This repository contains the access control configuration and detailed guidance on the access request process.
+You would have already pulled this repository in earlier step if you used the self-service scripts to generate your keys.
+
+It contains the user access configuration and detailed guidance on the access request process.
 
 ## Prepare Your PR
 
 Before creating your pull request, gather:
 
-- [ ] Your GPG public key (from Step 1)
-- [ ] Your SSH public key (from Step 1)
-- [ ] Your team name (ask your colleagues which team you should join)
+✓ Your GPG public key (from Step 1)
 
-## Where to Add Your Keys
+✓ Your SSH public key (from Step 1)
 
-[Placeholder: Path and file structure in setup repo]
+✓ Your team name (ask your colleagues which team you should join)
 
-Add your public keys to the appropriate location in the repository:
+## Add your user to configuration
 
-```
-[placeholder/path/to/user/file]
-```
+Configuration for each user is stored within:
 
-## Select Your Team
+- `vars/nonlive/*-users.tfvars` files for non-live tenant
+- `vars/live/*-users.tfvars` files for live tenant
 
-Your access is controlled through team membership. Ask your colleagues which team applies to your role:
+Here is an example of adding a new user to backend developers team in non-live tenant:
 
-- [Placeholder: Team A description]
-- [Placeholder: Team B description]
-- [Placeholder: Team C description]
+`vars/nonlive/backend_dev-users.tfvars`
 
-Add your entry to the appropriate team configuration file.
-
-<details>
-<summary>📋 View team selection guidance</summary>
-
-[Placeholder: Detailed team descriptions and selection criteria]
-
-</details>
-
-## Raise the Pull Request
-
-1. Create a new branch: `git checkout -b onboarding/add-user-[your-name]`
-2. Commit your changes: `git add . && git commit -m "Add user access: [your name]"`
-3. Push to remote: `git push origin onboarding/add-user-[your-name]`
-4. Create the PR in GitHub with title: `Add user access: [your name]`
-
-## PR Description Template
-
-Include the following in your PR description:
-
-```
-User: [Your Name]
-Email: [your-email@hmcts.net]
-Team: [Selected Team]
-Manager: [Manager Name]
-
-Requesting access to:
-- [ ] Non-live tenant
-- [ ] Live tenant (approval from manager required)
+```hcl
+{
+  user_principal_name = "<demo.user>@hmctsnonlive.onmicrosoft.com"
+  display_name        = "Demo user"
+  account_enabled     = true
+  imported            = false
+  initial_setup_info = {
+    parent_email       = "demo.user@justice.gov.uk"
+    ssh_b64_public_key = "<contents of your ssh-key.pub.b64 from Step 1>"
+    gpg_b64_public_key = "<contents of your your-pub-key.asc.b64 from Step 1>"
+  }
+  job_title = "Your job title"
+},
 ```
 
-### Further Guidance
+## Create the Pull Request
 
-The setup repository README contains detailed step-by-step instructions and may include additional configuration options. Review it alongside this guide.
+1. Create a new branch: 
 
-[Link to setup repo README]
+```bash
+git checkout -b onboarding/add-user-[your-name]
+```
 
----
+2. Commit your changes:
+
+```bash
+git add . && git commit -m "Add user access: [your name]"
+```
+
+3. Push to remote: 
+
+```bash
+git push origin onboarding/add-user-[your-name]
+```
+
+4. Create the PR in GitHub with title: 
+
+```bash
+Add user access: [your name]
+```
+
+## Further Guidance
+
+[The configuration repository README](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/README.md)
+contains more guidance and some more in-depth information.
 
 ## Summary Checklist
 
-Before proceeding, confirm:
+✓ <strong>Base64 encoded public keys and your email added to correct *-users.tfvars file</strong>
 
-- ✓ Public keys added to correct files
-- ✓ Team assignment selected
-- ✓ PR created with clear description
-- ✓ PR links to your public keys location
+✓ <strong>PR created with clear description</strong>
 
 ---
 

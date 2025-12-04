@@ -14,9 +14,14 @@ In this step, you'll generate two key pairs required for platform access:
 
 You'll need both public keys for the next step when requesting access.
 
+---
+
 ### Option A: Using self-service script (Recommended)
 
 You should have access to GitHub repository containing [following self-service script](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/self-service/run.sh).
+
+If you are having issues check that your GitHub account has been added to the HMCTS organisation, you should receive an email with an invitation.
+
 
 Clone the repository, open your terminal and run the script:
 
@@ -67,71 +72,57 @@ base64 -i "your-pub-key.asc" -o "your-pub-key.asc.b64"
 base64 -i "your-file_rsa.pub" -o "your-file_rsa.pub.b64"
 ```
 
----
-
 ## Summary Checklist
 
-<details>
-<summary><strong>✓ SSH key pair generated</strong></summary>
+✓ <strong>SSH key pair generated successfully</strong>
 
 ```bash
-ls
+> ls
 your@email_rsa
 your@email_rsa.pub
 ```
-
-</details>
-
-<details>
-<summary><strong>✓ SSH private key in ~/.ssh folder</strong></summary>
+✓ <strong>SSH private key copied to your `~/.ssh` folder so it is automatically used by your SSH client</strong>
 
 ```bash
-ls -la ~/.ssh/id_rsa
+> ls -la ~/.ssh/id_rsa
+# this should be the new ssh key you just created
 -rw-------@  1 demo.user  staff   3389 10 Apr  2025 id_rsa
 ```
 
-</details>
-
-<details>
-<summary><strong>✓ GPG key generated</strong></summary>
+✓ <strong>GPG key generated successfully</strong>
 
 ```bash
-gpg --list-keys
+> gpg --list-keys
 pub   rsa4096 2026-01-01 [SC]
       72T8CD00FBD63C00CBAC5662315EE035D4FF13DH
 uid           [ unknown] Demo User <demo.user@justice.gov.uk>
 sub   rsa4096 2026-01-01 [E]
 ```
 
-</details>
-
-<details>
-<summary><strong>✓ GPG public key exported</strong></summary>
+✓ <strong>GPG public key exported successfully</strong>
 
 ```bash
-cat your-pub-key.asc | head -n 1
+> ls
+your-pub-key.asc
+> cat your-pub-key.asc | head -n 1
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 ```
 
-</details>
-
-<details>
-<summary><strong>✓ Public keys encoded to base64</strong></summary>
+✓ <strong>SSH and GPG public keys encoded to base64 successfully</strong>
 
 ```bash
-ls
+> ls
 your-pub-key.asc.b64
 your-file_rsa.pub.b64
+
+> head -c 30 *.b64
+==> your-pub-key.asc.b64 <==
+randomBase64EncodedContentCg=
+==> your-file_rsa.pub.b64 <==
+randomBase64EncodedContentCg=
 ```
 
-</details>
-
-<details>
-<summary><strong>✓ Private keys stored securely</strong></summary>
-
-Your private SSH and GPG keys should not be shared or committed to repositories. They are stored locally for your use only.
-
-</details>
+✓ <strong>Private SSH and GPG keys stored in safe location</strong>
 
 ---
 
