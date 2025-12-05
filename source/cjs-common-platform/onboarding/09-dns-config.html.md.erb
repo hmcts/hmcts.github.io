@@ -1,88 +1,42 @@
 ---
-title: "Step 7: Configure VPN and DNS"
+title: "Step 9: Configure DNS"
 last_reviewed_on: 2025-12-03
 review_in: 6 months
-weight: 7
+weight: 9
 ---
 
 # <%= current_page.data.title %>
 
-In this step, you'll configure your VPN connection and DNS settings to securely access the Crime Platform.
+In this step, you will complete your VPN configuration by setting up your DNS settings.
+This will allow you to resolve platform-specific Crime domains when connected to the VPN, such as:
 
-## Prerequisites
+- [Jenkins](https://build.mdv.cpp.nonlive/)
+- [Gerrit Code Review](https://codereview.mdv.cpp.nonlive/)
 
-Before starting this step:
-- [ ] Ensure **Global Protect VPN is disabled** (if previously installed)
-- [ ] Ensure you obtained your OpenVPN secrets (see Step 9 if not yet done)
-- [ ] Have Tunnelblick installed on macOS or equivalent VPN client for your OS
+Detailed guidance is also available [in this document](https://tools.hmcts.net/confluence/spaces/DATS/pages/1597739711/Crime+VPN+Gerrit+Access+Setup+In+Simple+Steps#CrimeVPN&GerritAccess&SetupInSimpleSteps-TestVPNConnectionSuccessful(justvalidatingthestepdonepreviously))
 
-## Install VPN Client
+### Prerequisites
 
-### macOS: Tunnelblick
-
-1. Download Tunnelblick from [https://tunnelblick.net/](https://tunnelblick.net/)
-2. Install following the standard macOS installation process
-3. Launch Tunnelblick from Applications
-
-<details>
-<summary>📋 View screenshot: Tunnelblick installation</summary>
-
-[Placeholder for screenshot]
-
-</details>
-
-### Other Operating Systems
-
-[Placeholder: Links and instructions for Windows/Linux VPN clients]
-
-## Configure Tunnelblick
-
-### Get Configuration File
-
-Option A: Use Self-Service Script (Recommended)
-
-[Link to setup repo script]
-
-Run the script to generate your VPN configuration:
-
-```bash
-[command to run script]
-```
-
-This will create a `.ovpn` configuration file based on the template and your environment details.
-
-### Option B: Manual Setup Using Template
-
-[Link to template file in setup repo]
-
-1. Copy the template configuration file
-2. Customize placeholders with your specific values:
-   - [Placeholder: Parameter 1 description]
-   - [Placeholder: Parameter 2 description]
-   - [Placeholder: Parameter 3 description]
-3. Save as `crime-platform.ovpn`
-
-<details>
-<summary>📋 View template configuration details</summary>
-
-[Placeholder: Detailed configuration template with all parameters]
-
-</details>
-
-### Import into Tunnelblick
-
-1. Open Tunnelblick
-2. Drag your `.ovpn` file into the Tunnelblick window
-3. Enter your macOS password if prompted
-4. The configuration will appear in your VPN list
+- You should have your Tunnelblick VPN mostly configured from [Step 8](08-vpn-config.html)
 
 ---
 
 ## Configure DNS
 
+DNSmasq is used as a local DNS server that forwards queries to upstream DNS servers when you are connected to the VPN.
+
+### Option A: Use self-service script (Recommended)
+
+
+
+
+
+
+
+
 ### DNS Challenge
 
-When using the VPN, you need to route DNS queries to the platform's DNS servers. This is done using dnsmasq.
+When using the VPN, you need to route DNS queries to the platform''s DNS servers. This is done using dnsmasq.
 
 ### Option A: Self-Service Script (Recommended)
 

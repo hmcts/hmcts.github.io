@@ -1,0 +1,54 @@
+---
+title: "Step 8: Configure VPN"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 8
+---
+
+# <%= current_page.data.title %>
+
+In this step, you will configure your Crime non-live and/or live VPN connection.
+
+### Prerequisites
+
+Some of steps below will require admin permissions on your Mac which need to be requested by following [this document](https://tools.hmcts.net/confluence/spaces/DATS/pages/1824151238/1.+Temporary+Admin+Escalation+Process).
+
+To avoid having to request admin session multiple times it is worth reading ahead through the entire VPN and DNS configuration steps so you can complete all tasks in a single admin session.
+
+Before starting this step:
+
+- Ensure your Crime account provisioning (described in [Step 3](03-get-approved.html)) has completed successfully
+- Install Tunnelblick by [following instructions in this document](https://tools.hmcts.net/confluence/spaces/DATS/pages/1824151070/3.+TunnelBlick+Setup+for+NonAdmin+Macbook+Developers)
+- Ensure you have your OpenVPN `.ovpn` secret file ready (see [Step 6](06-obtain-vpn-gauth-secrets.html) if you have not yet done this)
+
+---
+
+### Add VPN Configuration to Tunnelblick
+
+Detailed Tunnelblick setup is described in the document linked above, but here is a summary:
+
+1. Click on Tunnelblick icon in the top right menu bar
+2. Select "VPN Details..."
+3. Drag and drop your `.ovpn` file into the configurations list
+4. Select **"Only Me"** when prompted
+5. Click on your new connection and set: `Set DNS/WINS` to `Do not set nameserver`
+6. Untick `Check if the apparent public IP address changed after connecting`
+7. Go to `Preferences` and untick `Configuration changes: Require administrator authorization to install all configurations` **(⚠️ requires admin permissions)**
+8. Click connect **(⚠️ requires admin permissions)**
+9. After initial connection using this configuration, subsequent connections will not require admin permissions
+
+---
+
+## Summary Checklist
+
+✓ **Tunnelblick installed**
+
+✓ **VPN configuration created and imported**
+
+✓ **Tunnelblick connects using new configuration successfully (Connected status)**
+
+---
+
+**Next step:** [Step 8: Configure DNS](09-dns-config.html)
+
+[← Back to onboarding overview](index.html)

@@ -1,0 +1,69 @@
+---
+title: "Step 7: Configure Google Authenticator"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 7
+---
+
+# <%= current_page.data.title %>
+
+In previous step you retrieved and decrypted your Google Authenticator secret and OpenVPN profile.
+
+In this step you will configure your authenticator app with the secret so you can generate the required codes for two-factor authentication.
+
+### Option A: CLI utility (oathtool)
+
+If you are using `iTerm2` then you can use built-in password manager to store your authenticator secret.
+
+1. Press `option` + `command` + `F` (or click `Window > Password Manager`) to open password manager
+2. Click `+` to add new password entry:
+   - **Name:** OTP-non-live (or OTP-live)
+   - **Username:** Your.Name
+   - **Password:** Paste your authenticator secret here
+3. Install `oathtool` if not already installed:
+
+      ```bash
+      brew install oath-toolkit
+      ```
+
+4. Paste following into your terminal to add handy alias to your `.zshrc`:
+
+      ```bash
+      echo '\nfunction oo() {
+         echo -n "Enter the code:\\n"
+         read -s code
+         code=$(oathtool --base32 --totp $code)
+         echo $code
+         echo -n $code | pbcopy
+      }\n' >> ~/.zshrc
+      ```
+
+5. Close and open terminal or run `exec zsh` to reload your shell
+6. Run alias `oo`
+7. When prompted press `option` + `command` + `F`, select `OTP-non-live` and press enter
+8. Authenticator code will be generated and automatically copied to your clipboard
+
+---
+
+### Option B: MS Authenticator App
+
+1. Install Microsoft Authenticator App on your mobile device
+2. Open the app
+3. Tap the QR code in bottom right
+4. Tap `Enter the code manually` > `Work or school account`
+5. Enter your email as account name
+6. Paste your Google Authenticator secret from the decrypted output
+
+---
+
+## Summary Checklist
+
+✓ **Authenticator setup in CLI or App**
+
+✓ **Can generate authentication codes**
+
+---
+
+**Next step:** [Step 8: Configure VPN](08-vpn-config.html)
+
+[← Back to onboarding overview](index.html)

@@ -1,0 +1,64 @@
+---
+title: "Step 5: Setup Azure Portal"
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+Now you will log into Azure Portal for the first time, set a new password and configure your account with MFA (Multi-Factor Authentication).
+
+## Access Azure Portal
+
+1. Navigate to [https://portal.azure.com/](https://portal.azure.com/)
+2. Sign in with:
+   - **Crime Email:** your-email@hmctsnonlive.onmicrosoft.com
+   - **Password:** The decrypted password from Step 4
+
+## First Login: Reset Password
+
+On first login, Azure will prompt you to reset your password:
+
+1. Enter your current password (from Step 4)
+2. Create a new password
+3. Confirm the new password
+4. Click "Update password and sign in"
+
+## Set Up Multi-Factor Authentication (MFA)
+
+After password reset, you will be prompted to set up MFA:
+
+1. Download Microsoft Authenticator app from your app store
+2. When prompted in portal, select "Authenticator app"
+4. Scan the QR code with your app
+5. Enter the code shown in the app to verify
+
+## Complete Portal Access
+
+Once MFA is configured, you should have access to Azure Portal.
+
+<details>
+<summary>📋 View screenshot: Successful portal access</summary>
+
+<img src="/images/azure-portal-dashboard.png" alt="Azure Portal Dashboard"/>
+
+</details>
+
+---
+
+## Summary Checklist
+
+✓ **Reset initial password**
+
+✓ **Set up MFA**
+
+✓ **Logged into Azure Portal**
+
+✓ **Can access dashboard**
+
+---
+
+**Next step:** [Step 6: Obtain VPN and authenticator secrets](06-obtain-vpn-gauth-secrets.html)
+
+[← Back to onboarding overview](index.html)

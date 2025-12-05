@@ -7,55 +7,36 @@ weight: 3
 
 # <%= current_page.data.title %>
 
-Once your PR is created, the Platform Operations team will be notified and should review and approve your access request shortly.
+Once your Pull Request is created, the Platform Operations team will be notified and should review and approve your access request shortly.
 
 ### Slack Channel
 
-Post in [#slack-channel-placeholder] with:
-- Link to your PR
-- Brief message: "Hi, I've submitted an access request PR - waiting for Platform Operations review"
+If your PR is not reviewed within a reasonable time you can also post a message with a link in the [Platops Code Review Slack channel](https://moj.enterprise.slack.com/archives/C034HQ2RDR8).
 
-The team monitors this channel and will prioritize your request.
+### Merge the PR
 
-### Code Owner Assignment
+Once your Pull Request has been approved by a member of the Platform Operations team, you can proceed to merge it into the main branch.  
+This should automatically trigger a run of an ADO pipeline to provision your access.*
 
-The GitHub code owners configuration should automatically assign the Platform Operations team. If this doesn't happen:
+*\* - Automatic trigger is still work in progress, in the meantime the pipeline will be run for you by member of Platform Operations team*
 
-1. Check that your PR is linked properly in the repository
-2. Mention `@platform-operations` in a comment on your PR
-3. Reach out on Slack if still not assigned
 
-## What Platform Operations Will Review
+### Check your email
 
-The team will verify:
+Once pipeline runs successfully you should receive an email to your HMCTS email address with your encrypted password for non-live or live Azure Portal access.
 
-- ✓ Public keys are in correct format and location
-- ✓ Team assignment is valid
-- ✓ All required information is present
-- ✓ Manager approval (for live tenant access)
-
-## Approval Process
-
-Once approved, a Platform Operations team member will:
-
-1. Approve the PR
-2. Add a comment with next steps
-3. Merge the PR into the repository
-
-You'll receive a notification when this happens.
+If you are getting access to both tenants, you will receive two separate emails.
 
 ---
 
 ## Summary Checklist
 
-You're waiting for approval - nothing to do here except:
+✓ Your PR has been approved and merged
 
-- ✓ Check your GitHub notifications for PR review comments
-- ✓ Monitor the Slack channel for any clarification requests
-- ✓ Be ready to proceed to next step once merged
+✓ You have received an email with your initial encrypted password
 
 ---
 
-**Next step:** [Step 4: Run ADO Pipeline](04-run-pipeline.html)
+**Next step:** [Step 4: Decrypt Credentials](04-decrypt-credentials.html)
 
 [← Back to onboarding overview](index.html)
