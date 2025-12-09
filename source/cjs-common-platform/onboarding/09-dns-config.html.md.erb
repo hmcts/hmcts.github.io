@@ -1,0 +1,146 @@
+---
+title: "Step 9: Configure DNS"
+last_reviewed_on: 2025-12-09
+review_in: 6 months
+weight: 9
+---
+
+# <%= current_page.data.title %>
+
+In this step, you will complete your VPN configuration by setting up your DNS settings.
+This will allow you to resolve platform-specific Crime domains when connected to the VPN, such as:
+
+- [Jenkins](https://build.mdv.cpp.nonlive/)
+- [Gerrit Code Review](https://codereview.mdv.cpp.nonlive/)
+
+Detailed guidance is also available [in this document](https://tools.hmcts.net/confluence/spaces/DATS/pages/1597739711/Crime+VPN+Gerrit+Access+Setup+In+Simple+Steps#CrimeVPN&GerritAccess&SetupInSimpleSteps-TestVPNConnectionSuccessful(justvalidatingthestepdonepreviously))
+
+### Prerequisites
+
+- You should have your Tunnelblick VPN mostly configured from [Step 8](08-vpn-config.html)
+
+## Configure Dnsmasq
+
+Dnsmasq is used as a local DNS server that forwards queries to upstream DNS servers when you are connected to the VPN.
+
+### Option A: Use self-service script (Recommended)
+
+Run [self-service script](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/run.sh) in your terminal:
+
+```bash
+./self-service/run.sh dns
+```
+
+This script will:
+
+- Check if you have dnsmasq installed and prompt you to install it using homebrew if not
+- Verify if dnsmasq is running on your machine
+- Locate your dnsmasq config file as it can be in two different locations depending on whether you have an Intel or Apple Silicon Mac
+- Append [the required configuration from a template](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/files/dnsmasq-config-entries.txt) into your dnsmasq config file
+- Run dnsmasq test command to verify your configuration is valid
+
+### Option B: Manual Configuration
+
+If you do not want to use the script you should install dnsmasq yourself and ensure it is running.
+
+Then [copy and paste the contents of this template file](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/files/dnsmasq-config-entries.txt)
+at the end of the configuration file which may be located in one of the following paths:
+
+- `/usr/local/etc/dnsmasq.conf` (Intel Macs)
+- `/opt/homebrew/etc/dnsmasq.conf` (Apple Silicon Macs)
+
+## Set your macOS DNS to use dnsmasq
+
+Once you have confirmed that your dnsmasq is running with correct configuration, you need to set your macOS network settings to use dnsmasq as the primary DNS server.
+
+1. Open macOS `Settings`
+2. Go to `Network` or `WiFi`
+3. Click `Details` on your active connection
+4. On the panel to the left click `DNS`
+5. By default there should be no entries there just your ISP defaults
+6. Click the `+` button to add a new DNS server
+7. Enter `127.0.0.1` and press enter - you can close the settings app now
+
+Provided that you are connected to the VPN you should be able to access platform domains while rest of the traffic should still go through your regular connection.
+
+<details>
+<summary>📋 View screenshot: macOS Settings App</summary>
+
+<img src="/images/macos-settings-app.png" alt="macOS Settings App"/>
+
+</details>
+
+<details>
+<summary>📋 View screenshot: macOS Wifi Settings</summary>
+
+<img src="/images/macos-wifi-settings.png" alt="macOS Wifi Settings"/>
+
+</details>
+
+<details>
+<summary>📋 View screenshot: macOS DNS Settings</summary>
+
+<img src="/images/macos-dns-settings.png" alt="macOS DNS Settings"/>
+
+</details>
+
+<details>
+<summary>📋 View screenshot: macOS Set local DNS</summary>
+
+<img src="/images/macos-set-local-dns.png" alt="macOS Set local DNS"/>
+
+</details>
+
+## Verify your VPN and DNS configuration
+
+To verify everything is working correctly:
+
+1. **Disable Global Protect** - you cannot have Tunnelblick and Global Protect active at the same time because Global Protect overwrites all other configuration
+2. Connect your Tunnelblick VPN
+3. Open new browser window and verify you can access:
+   - [Jenkins](https://build.mdv.cpp.nonlive/)
+   - [Gerrit Code Review](https://codereview.mdv.cpp.nonlive/)
+
+ > ⚠️ Disabling Global Protect is important - you will not be able to access Crime resources otherwise.You can re-enable it once you are done accessing Crime resources.
+
+<details>
+<summary>📋 View screenshot: Disable Global Protect</summary>
+
+<img src="/images/disable-global-protect.png" alt="Disable Global Protect"/>
+<img src="/images/global-protect-disabled.png" alt="Global Protect disabled"/>
+
+</details>
+
+<details>
+<summary>📋 View screenshot: Jenkins dashboard</summary>
+
+<img src="/images/jenkins-dashboard.png" alt="Jenkins Dashboard"/>
+
+</details>
+
+<details>
+<summary>📋 View screenshot: Gerrit Code Review</summary>
+
+<img src="/images/gerrit-code-review.png" alt="Gerrit Code Review"/>
+
+</details>
+
+---
+
+## Summary Checklist
+
+✓ **Dnsmasq installed, configured and running**
+
+✓ **macOS DNS set to 127.0.0.1**
+
+✓ **Global Protect disabled**
+
+✓ **Successfully connected Tunnelblick VPN**
+
+✓ **Able to access Gerrit Code Review and Jenkins sites**
+
+---
+
+**Next step:** [Step 10: Configure SSH](10-ssh-config.html)
+
+[← Back to onboarding overview](index.html)

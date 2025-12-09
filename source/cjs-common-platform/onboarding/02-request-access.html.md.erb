@@ -1,0 +1,99 @@
+---
+title: "Step 2: Request Access"
+last_reviewed_on: 2025-12-09
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Now that you have your key pairs, you will submit a pull request including those keys and your HMCTS email to get the access you need.
+
+### Access the Setup Repository
+
+[https://www.github.com/hmcts/cpp-terraform-azurerm-azuread](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/README.md)
+
+You would have already pulled this repository in earlier step if you used the self-service scripts to generate your keys.
+
+It contains the user access configuration and detailed guidance on the access request process.
+
+### Prepare Your PR
+
+Before creating your pull request, gather:
+
+✓ Your GPG public key (from Step 1)
+
+✓ Your SSH public key (from Step 1)
+
+✓ Your team name (ask your colleagues which team you should join)
+
+### Add your user to configuration
+
+Configuration for each user is stored within:
+
+- `vars/nonlive/*-users.tfvars` files for non-live tenant
+- `vars/live/*-users.tfvars` files for live tenant
+
+Here is an example of adding a new user to backend developers team in non-live tenant:
+
+`vars/nonlive/backend_dev-users.tfvars`
+
+```hcl
+{
+  user_principal_name = "<demo.user>@hmctsnonlive.onmicrosoft.com"
+  display_name        = "Demo user"
+  account_enabled     = true
+  imported            = false
+  initial_setup_info = {
+    parent_email       = "demo.user@justice.gov.uk"
+    ssh_b64_public_key = "<contents of your ssh-key.pub.b64 from Step 1>"
+    gpg_b64_public_key = "<contents of your your-pub-key.asc.b64 from Step 1>"
+  }
+  job_title = "Your job title"
+},
+```
+
+### Create the Pull Request
+
+1. Create a new branch: 
+
+```bash
+git checkout -b onboarding/add-user-[your-name]
+```
+
+2. Commit your changes:
+
+```bash
+git add . && git commit -m "Add user access: [your name]"
+```
+
+3. Push to remote: 
+
+```bash
+git push origin onboarding/add-user-[your-name]
+```
+
+4. Create the PR in GitHub with title: 
+
+```bash
+Add user access: [your name]
+```
+
+### Further Guidance
+
+[The configuration repository README](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/README.md)
+contains more guidance and some more in-depth information.
+
+---
+
+## Summary Checklist
+
+✓ **Base64 encoded public keys and your email added to correct *-users.tfvars file**
+
+✓ **PR created with clear description**
+
+---
+
+**Next step:** [Step 3: Get Approved](03-get-approved.html)
+
+[← Back to onboarding overview](index.html)

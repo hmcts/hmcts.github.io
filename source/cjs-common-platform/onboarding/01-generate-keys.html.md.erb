@@ -1,0 +1,135 @@
+---
+title: "Step 1: Generate Key Pairs"
+last_reviewed_on: 2025-12-09
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+In this step, you will generate two key pairs required for platform access:
+
+- **GPG key pair**: Public key is used to encrypt your secrets and you will use your private key to decrypt them.
+- **SSH key pair**: Public key is used to configure your SSH access and you use your private key to authenticate.
+
+You will need both public keys for the next step when requesting access.
+
+---
+
+### Option A: Using self-service script (Recommended)
+
+You should have access to GitHub repository containing [following self-service script](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/self-service/run.sh).
+
+If you are having issues check that your GitHub account has been added to the HMCTS organisation, you should receive an email with an invitation.
+
+Clone the repository (or download a ZIP file), open your terminal and run the script:
+
+```bash
+./self-service/run.sh keys
+```
+
+>⚠️ If you just created your GitHub account and setting up from a fresh machine you might not have any SSH keys added to GitHub so will not be able to clone with `git clone`.  
+In such case you can simply download a ZIP file of the repository from GitHub web interface.  
+Alternatively, follow [GitHub guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add SSH key to GitHub temporarily.  
+Once you are able to run the above script and obtain a new key pair, you can update your GitHub SSH key or even have both added.
+
+You should end up with following files in the `self-service` directory:
+
+- **your@email_rsa** - private SSH key
+- **your@email_rsa.pub** - public SSH key
+- **your@email_rsa.pub.b64** - public SSH key in base64 format
+- **your@email.asc** - public GPG key
+- **your@email_asc.b64** - public GPG key in base64 format
+
+---
+
+### Option B: Manual Command
+
+If you only need to generate one of the key pairs, you can run individual self-service scripts from your terminal:
+
+- [self-service/export-gpg-public-key.sh](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/self-service/export-gpg-public-key.sh)
+- [self-service/export-ssh-public-key.sh](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/main/self-service/export-ssh-public-key.sh)
+
+If you prefer to run the commands manually, follow these steps:
+
+```bash
+# Generate GPG key pair
+gpg --generate-key
+> name
+> email
+> 4096 RSA key
+> Key expiry 0
+> passphrase - keep this safe!
+
+# Export GPG public key
+gpg --export --armor your-email > your-pub-key.asc
+
+# Generate SSH key pair
+ssh-keygen -b 4096 -t rsa -C your-email -f your-file_rsa -N your-passphrase
+
+# Copy your private SSH key to .ssh folder
+cp your-file_rsa ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa
+
+# Encode public keys to base64
+base64 -i "your-pub-key.asc" -o "your-pub-key.asc.b64"
+base64 -i "your-file_rsa.pub" -o "your-file_rsa.pub.b64"
+```
+
+## Summary Checklist
+
+✓ **SSH key pair generated successfully**
+
+```bash
+> ls
+your@email_rsa
+your@email_rsa.pub
+```
+✓ **SSH private key copied to your `~/.ssh` folder so it is automatically used by your SSH client**
+
+```bash
+> ls -la ~/.ssh/id_rsa
+# this should be the new ssh key you just created
+-rw-------@  1 demo.user  staff   3389 10 Apr  2025 id_rsa
+```
+
+✓ **GPG key generated successfully**
+
+```bash
+> gpg --list-keys
+pub   rsa4096 2026-01-01 [SC]
+      72T8CD00FBD63C00CBAC5662315EE035D4FF13DH
+uid           [ unknown] Demo User <demo.user@justice.gov.uk>
+sub   rsa4096 2026-01-01 [E]
+```
+
+✓ **GPG public key exported successfully**
+
+```bash
+> ls
+your-pub-key.asc
+> cat your-pub-key.asc | head -n 1
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+```
+
+✓ **SSH and GPG public keys encoded to base64 successfully**
+
+```bash
+> ls
+your-pub-key.asc.b64
+your-file_rsa.pub.b64
+
+> head -c 30 *.b64
+==> your-pub-key.asc.b64 <==
+randomBase64EncodedContentCg=
+==> your-file_rsa.pub.b64 <==
+randomBase64EncodedContentCg=
+```
+
+✓ **Private SSH and GPG keys stored in safe location**
+
+---
+
+**Next step:** [Step 2: Request Access](02-request-access.html)
+
+[← Back to onboarding overview](index.html)

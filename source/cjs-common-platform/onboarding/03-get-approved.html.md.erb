@@ -1,0 +1,42 @@
+---
+title: "Step 3: Get Approved"
+last_reviewed_on: 2025-12-09
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+Once your Pull Request is created, the Platform Operations team will be notified and should review and approve your access request shortly.
+
+### Slack Channel
+
+If your PR is not reviewed within a reasonable time you can also post a message with a link in the [Platops Code Review Slack channel](https://moj.enterprise.slack.com/archives/C034HQ2RDR8).
+
+### Merge the PR
+
+Once your Pull Request has been approved by a member of the Platform Operations team, you can proceed to merge it into the main branch.  
+This should automatically trigger a run of an ADO pipeline to provision your access.*
+
+*\* - Automatic trigger is still work in progress, in the meantime the pipeline will be run for you by member of Platform Operations team*
+
+
+### Check your email
+
+Once pipeline runs successfully you should receive an email to your HMCTS email address with your encrypted password for non-live or live Azure Portal access.
+
+If you are getting access to both tenants, you will receive two separate emails.
+
+---
+
+## Summary Checklist
+
+✓ Your PR has been approved and merged
+
+✓ You have received an email with your initial encrypted password
+
+---
+
+**Next step:** [Step 4: Decrypt Credentials](04-decrypt-credentials.html)
+
+[← Back to onboarding overview](index.html)
