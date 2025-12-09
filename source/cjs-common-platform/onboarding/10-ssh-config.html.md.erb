@@ -1,0 +1,161 @@
+---
+title: "Step 10: Configure SSH"
+last_reviewed_on: 2025-12-09
+review_in: 6 months
+weight: 10
+---
+
+# <%= current_page.data.title %>
+
+In this step, you will setup your SSH config so that you are able to connect via SSH to Crime resources (such as VMs) and clone Gerrit repositories. 
+
+## Setup your SSH Config
+
+### Option A: Run self-service script (Recommended)
+
+Run [self-service script](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/run.sh) in your terminal:
+
+```bash
+./self-service/run.sh ssh
+```
+
+This script will:
+
+- Backup your old SSH config file to `~/.sssh/config.backup.<date>`
+- Create a new Crime SSH config file at `~/.ssh/config` using template filled in with your username and HMCTS email
+- Create Control Master directory at `~/.ssh/cm/`
+
+### Option B: Manual Configuration
+
+Copy and paste contents of the [following template](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/files/ssh-config.tpl)
+into your `~/.ssh/config` file and update the placeholders with your specific values.
+
+Ensure that you create `~/.ssh/cm/` directory for SSH Control Master sockets.
+
+## Place your private SSH key
+
+Ensure your private SSH key (generated in Step 1) is placed in your `~/.ssh/` directory with correct permissions:
+
+```bash
+mv <PATH-TO-YOUR-PRIVATE-SSH-KEY> ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa
+```
+
+## SSH into a VM
+
+If you have been granted access to SSH into any VMs this is a good time to test this:
+
+```bash
+ssh <VM-HOSTNAME>
+> when prompted enter the authenticator code - you can use the alias you created in Step 7 to generate it
+> when prompted enter your Crime Azure Portal password
+```
+
+## View and clone Gerrit code repositories
+
+Once you can access Gerrit you should be able to login using your Crime Azure AD credentials for the account you setup in earlier steps:
+
+- **Username:** name.surname part of your Crime email
+- **Password:** Your Crime Azure Portal password
+
+<details>
+<summary>📋 View screenshot: Gerrit login</summary>
+
+<img src="/images/gerrit-login.png" alt="Gerrit Login"/>
+
+</details>
+</br>
+
+### Add your public SSH key to Gerrit
+
+1. Click on the cog icon on the top right, settings page will open
+2. On the left menu click `SSH Keys`
+3. Under `SSH Keys` in `New SSH key` field paste in your **public** SSH key and click `ADD NEW SSH KEY`
+4. Ensure you are using matching private SSH key when trying to clone a repository
+
+<details>
+<summary>📋 View screenshot: Add your SSH Key to Gerrit</summary>
+
+<img src="/images/gerrit-add-ssh-key.png" alt="Add SSH Key to Gerrit"/>
+
+</details>
+</br>
+
+### Browse Repositories
+
+1. Log into Gerrit at [https://codereview.mdv.cpp.nonlive/](https://codereview.mdv.cpp.nonlive/)
+2. Once logged in, click on `Browse` on the top menu bar
+3. Then click `Repositories` from the top menu - you can search for repositories here (depending on your permissions you might not be able to see or clone all of them)
+
+<details>
+<summary>📋 View screenshot: Gerrit Repository search</summary>
+
+<img src="/images/gerrit-repo-search.png" alt="Gerrit Repository Search"/>
+
+</details>
+</br>
+
+### Clone a Repository
+
+1. Ensure your SSH agent is running and your private key is added to the keyring:
+
+      ```bash
+      # Check if ssh-agent is running
+      eval `ssh-agent`
+
+      # Add your key to keyring
+      ssh-add
+
+      # If your ssh key filename is diff to id_rsa
+      ssh-add <PATH-TO-PRIVATE-KEY>
+
+      # Check if your key is added to keyring
+      ssh-add -l
+      ```
+
+2. Find your repository on Gerrit and click on it
+3. On the repository page under `Download` click `SSH` tab
+4. Copy to clipboard the section under `Clone with commit-msg hook`
+5. Paste it into your terminal
+
+```bash
+git clone ssh://demo.user@coderepo.mdv.cpp.nonlive:29418/opsvcs.general && \
+scp -p -P 29418 demo.user@coderepo.mdv.cpp.nonlive:hooks/commit-msg opsvcs.general/.git/hooks/
+```
+
+ > ⚠️ You might need to add -O option (to force a legacy file transfer protocol) to the `scp` command for it to succeed
+
+<details>
+<summary>📋 View screenshot: Clone Gerrit repository</summary>
+
+<img src="/images/gerrit-clone-repo.png" alt="Gerrit Clone Repository"/>
+
+</details>
+</br>
+
+---
+
+## Troubleshooting
+
+Refer to [this documentation for more details and troubleshooting steps](https://tools.hmcts.net/confluence/spaces/DATS/pages/1597739711/Crime+VPN+Gerrit+Access+Setup+In+Simple+Steps#CrimeVPN&GerritAccess&SetupInSimpleSteps-Introduction).
+
+## Summary Checklist
+
+
+✓ Your Crime private SSH key exists at `~/.ssh/rsa_id`
+
+✓ SSH private key permissions set to `0600`
+
+✓ SSH config created at `~/.ssh/config`
+
+✓ Directory `~/.ssh/cm` created
+
+✓ Can successfully SSH to required hosts
+
+✓ Public SSH key added to Gerrit
+
+✓ Can login and pull repositories from Gerrit
+
+---
+
+[← Back to onboarding overview](index.html)

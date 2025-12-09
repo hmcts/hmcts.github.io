@@ -22,11 +22,10 @@ You should have access to GitHub repository containing [following self-service s
 
 If you are having issues check that your GitHub account has been added to the HMCTS organisation, you should receive an email with an invitation.
 
-
-Clone the repository, open your terminal and run the script:
+Clone the repository (or download a ZIP file), open your terminal and run the script:
 
 ```bash
-./self-service/run.sh
+./self-service/run.sh keys
 ```
 
 You should end up with following files in the `self-service` directory:
@@ -74,14 +73,14 @@ base64 -i "your-file_rsa.pub" -o "your-file_rsa.pub.b64"
 
 ## Summary Checklist
 
-✓ <strong>SSH key pair generated successfully</strong>
+✓ **SSH key pair generated successfully**
 
 ```bash
 > ls
 your@email_rsa
 your@email_rsa.pub
 ```
-✓ <strong>SSH private key copied to your `~/.ssh` folder so it is automatically used by your SSH client</strong>
+✓ **SSH private key copied to your `~/.ssh` folder so it is automatically used by your SSH client**
 
 ```bash
 > ls -la ~/.ssh/id_rsa
@@ -89,7 +88,7 @@ your@email_rsa.pub
 -rw-------@  1 demo.user  staff   3389 10 Apr  2025 id_rsa
 ```
 
-✓ <strong>GPG key generated successfully</strong>
+✓ **GPG key generated successfully**
 
 ```bash
 > gpg --list-keys
@@ -99,7 +98,7 @@ uid           [ unknown] Demo User <demo.user@justice.gov.uk>
 sub   rsa4096 2026-01-01 [E]
 ```
 
-✓ <strong>GPG public key exported successfully</strong>
+✓ **GPG public key exported successfully**
 
 ```bash
 > ls
@@ -108,7 +107,7 @@ your-pub-key.asc
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 ```
 
-✓ <strong>SSH and GPG public keys encoded to base64 successfully</strong>
+✓ **SSH and GPG public keys encoded to base64 successfully**
 
 ```bash
 > ls
@@ -122,7 +121,7 @@ randomBase64EncodedContentCg=
 randomBase64EncodedContentCg=
 ```
 
-✓ <strong>Private SSH and GPG keys stored in safe location</strong>
+✓ **Private SSH and GPG keys stored in safe location**
 
 ---
 

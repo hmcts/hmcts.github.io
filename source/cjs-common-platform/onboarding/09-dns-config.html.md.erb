@@ -1,6 +1,6 @@
 ---
 title: "Step 9: Configure DNS"
-last_reviewed_on: 2025-12-03
+last_reviewed_on: 2025-12-09
 review_in: 6 months
 weight: 9
 ---
@@ -19,137 +19,109 @@ Detailed guidance is also available [in this document](https://tools.hmcts.net/c
 
 - You should have your Tunnelblick VPN mostly configured from [Step 8](08-vpn-config.html)
 
----
+## Configure Dnsmasq
 
-## Configure DNS
-
-DNSmasq is used as a local DNS server that forwards queries to upstream DNS servers when you are connected to the VPN.
+Dnsmasq is used as a local DNS server that forwards queries to upstream DNS servers when you are connected to the VPN.
 
 ### Option A: Use self-service script (Recommended)
 
-
-
-
-
-
-
-
-### DNS Challenge
-
-When using the VPN, you need to route DNS queries to the platform''s DNS servers. This is done using dnsmasq.
-
-### Option A: Self-Service Script (Recommended)
-
-[Link to setup repo script]
-
-Run the script to automatically configure dnsmasq:
+Run [self-service script](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/run.sh) in your terminal:
 
 ```bash
-[command to run script]
+./self-service/run.sh dns
 ```
 
-The script will:
-- [ ] Install dnsmasq
-- [ ] Create configuration from template
-- [ ] Set up macOS to use local DNS
+This script will:
+
+- Check if you have dnsmasq installed and prompt you to install it using homebrew if not
+- Verify if dnsmasq is running on your machine
+- Locate your dnsmasq config file as it can be in two different locations depending on whether you have an Intel or Apple Silicon Mac
+- Append [the required configuration from a template](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/files/dnsmasq-config-entries.txt) into your dnsmasq config file
+- Run dnsmasq test command to verify your configuration is valid
 
 ### Option B: Manual Configuration
 
-#### Install dnsmasq
+If you do not want to use the script you should install dnsmasq yourself and ensure it is running.
 
-```bash
-brew install dnsmasq
-```
+Then [copy and paste the contents of this template file](https://github.com/hmcts/cpp-terraform-azurerm-azuread/blob/dtspo-27888-add-crime-onboarding-guide/self-service/files/dnsmasq-config-entries.txt)
+at the end of the configuration file which may be located in one of the following paths:
 
-#### Create Configuration
+- `/usr/local/etc/dnsmasq.conf` (Intel Macs)
+- `/opt/homebrew/etc/dnsmasq.conf` (Apple Silicon Macs)
 
-[Link to dnsmasq template in setup repo]
+## Set your macOS DNS to use dnsmasq
 
-1. Copy the template
-2. Update with your specific DNS settings:
-   - [Placeholder: DNS server 1]
-   - [Placeholder: DNS server 2]
-   - [Placeholder: Domain mappings]
-3. Save to `/usr/local/etc/dnsmasq.conf`
+Once you have confirmed that your dnsmasq is running with correct configuration, you need to set your macOS network settings to use dnsmasq as the primary DNS server.
 
-#### Start dnsmasq
+1. Open macOS `Settings`
+2. Go to `Network` or `WiFi`
+3. Click `Details` on your active connection
+4. On the panel to the left click `DNS`
+5. By default there should be no entries there just your ISP defaults
+6. Click the `+` button to add a new DNS server
+7. Enter `127.0.0.1` and press enter - you can close the settings app now
 
-```bash
-sudo brew services start dnsmasq
-```
-
-#### Configure macOS DNS Settings
-
-1. Open System Preferences → Network
-2. Select your active connection (Wi-Fi or Ethernet)
-3. Advanced → DNS
-4. Add DNS server: `127.0.0.1`
-5. Click OK
+Provided that you are connected to the VPN you should be able to access platform domains while rest of the traffic should still go through your regular connection.
 
 <details>
-<summary>📋 View screenshots: DNS configuration</summary>
+<summary>📋 View screenshot: macOS Settings App</summary>
 
-[Placeholder for screenshots showing:
-- macOS network settings location
-- DNS server addition
-- Network settings confirmation]
+<img src="/images/macos-settings-app.png" alt="macOS Settings App"/>
 
 </details>
 
-### Optional: DNS Switching Alias
-
-Create a shell alias to quickly switch between platform DNS and default DNS:
-
-```bash
-# Add to your ~/.zshrc file
-alias use-platform-dns="sudo scutil <<< 'open\nget State:/Network/Global/IPv4\nd.146.2.132.1 127.0.0.1 192.168.1.1\nset State:/Network/Global/IPv4\nquit'"
-alias use-default-dns="sudo scutil <<< 'open\nget State:/Network/Global/IPv4\nd.146.2.132.1 192.168.1.1\nset State:/Network/Global/IPv4\nquit'"
-```
-
-Then reload your shell:
-
-```bash
-source ~/.zshrc
-```
-
 <details>
-<summary>📋 View DNS switching details</summary>
+<summary>📋 View screenshot: macOS Wifi Settings</summary>
 
-[Placeholder: Detailed DNS switching documentation]
+<img src="/images/macos-wifi-settings.png" alt="macOS Wifi Settings"/>
 
 </details>
 
----
+<details>
+<summary>📋 View screenshot: macOS DNS Settings</summary>
 
-## Important: Disable Global Protect
+<img src="/images/macos-dns-settings.png" alt="macOS DNS Settings"/>
 
-⚠️ If you have Global Protect VPN installed from previous roles:
-
-1. Open Global Protect
-2. Disconnect and disable
-3. Remove from startup items
-4. The Tunnelblick VPN should be your only active VPN
-
-Having multiple VPN clients active simultaneously will cause connection issues.
-
----
-
-## Test Your VPN Connection
-
-1. Open Tunnelblick
-2. Select "crime-platform" (or your configuration name)
-3. Click "Connect"
-4. You should see a connected status within [Placeholder: X seconds]
-
-**Successful connection indicators:**
-- [ ] Green connection icon in Tunnelblick
-- [ ] System notifications show VPN connected
-- [ ] Your local IP shows in VPN details
+</details>
 
 <details>
-<summary>📋 View screenshot: Successful VPN connection</summary>
+<summary>📋 View screenshot: macOS Set local DNS</summary>
 
-[Placeholder for screenshot]
+<img src="/images/macos-set-local-dns.png" alt="macOS Set local DNS"/>
+
+</details>
+
+## Verify your VPN and DNS configuration
+
+To verify everything is working correctly:
+
+1. **Disable Global Protect** - you cannot have Tunnelblick and Global Protect active at the same time because Global Protect overwrites all other configuration
+2. Connect your Tunnelblick VPN
+3. Open new browser window and verify you can access:
+   - [Jenkins](https://build.mdv.cpp.nonlive/)
+   - [Gerrit Code Review](https://codereview.mdv.cpp.nonlive/)
+
+ > ⚠️ Disabling Global Protect is important - you will not be able to access Crime resources otherwise.You can re-enable it once you are done accessing Crime resources.
+
+<details>
+<summary>📋 View screenshot: Disable Global Protect</summary>
+
+<img src="/images/disable-global-protect.png" alt="Disable Global Protect"/>
+<img src="/images/global-protect-disabled.png" alt="Global Protect disabled"/>
+
+</details>
+
+<details>
+<summary>📋 View screenshot: Jenkins dashboard</summary>
+
+<img src="/images/jenkins-dashboard.png" alt="Jenkins Dashboard"/>
+
+</details>
+
+<details>
+<summary>📋 View screenshot: Gerrit Code Review</summary>
+
+<img src="/images/gerrit-code-review.png" alt="Gerrit Code Review"/>
 
 </details>
 
@@ -157,15 +129,18 @@ Having multiple VPN clients active simultaneously will cause connection issues.
 
 ## Summary Checklist
 
-- ✓ Tunnelblick installed
-- ✓ VPN configuration created and imported
-- ✓ dnsmasq installed and configured
-- ✓ macOS DNS set to 127.0.0.1
-- ✓ Global Protect disabled
-- ✓ Successfully connected to VPN
+✓ **Dnsmasq installed, configured and running**
+
+✓ **macOS DNS set to 127.0.0.1**
+
+✓ **Global Protect disabled**
+
+✓ **Successfully connected Tunnelblick VPN**
+
+✓ **Able to access Gerrit Code Review and Jenkins sites**
 
 ---
 
-**Next step:** [Step 8: Configure SSH](08-ssh-config.html)
+**Next step:** [Step 10: Configure SSH](10-ssh-config.html)
 
 [← Back to onboarding overview](index.html)
