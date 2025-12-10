@@ -34,6 +34,8 @@ Configuration for each user is stored within:
 - `vars/nonlive/*-users.tfvars` files for non-live tenant
 - `vars/live/*-users.tfvars` files for live tenant
 
+If you need access to both, add yourself to both a non-live and a live team file.
+
 Here is an example of adding a new user to backend developers team in non-live tenant:
 
 `vars/nonlive/backend_dev-users.tfvars`
@@ -52,6 +54,8 @@ Here is an example of adding a new user to backend developers team in non-live t
   job_title = "Your job title"
 },
 ```
+
+>⚠️ Make sure you have your manager approval before requesting access.
 
 ### Create the Pull Request
 
