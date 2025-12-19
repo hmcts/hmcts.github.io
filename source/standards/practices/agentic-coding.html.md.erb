@@ -1,0 +1,89 @@
+---
+title: Agentic Coding
+last_reviewed_on: 2025-12-19
+review_in: 12 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Guidance for adopting agentic coding:
+
+ - You must sandbox agents with a devcontainer so that they are isolated from other workspaces
+ - You must continue to thoroughly review the code as you normally do in your software development process
+ - You must have automated tests and code quality checks (such as Sonar) enabled
+ - You should consider adding additional code quality checks, such as Code Rabbit
+ - You must not put secrets into prompts. Treat prompts and tool logs as potentially retained. Use secret stores and redaction.
+ - You must ensure licensing/compliance is respected. Don't paste in large third-party code blobs; prefer libraries you already approve.
+
+### Devcontainer example
+
+A [devcontainer](https://containers.dev/) is as way of running your IDE inside a docker container. It is supported by common IDEs such as VSCode and Intellij.
+
+When adopting agentic coding you must run the agent from within the sandboxed docker container in order to isolate it from the host file system. You should also isolate it from production systems using firewall rules.
+
+`.devcontainer.json`
+
+```javascript
+{
+  "name": "Agent Development Container",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+    // features are docker image layers, you may want to include more for your specific project:
+    // "ghcr.io/devcontainers/features/common-utils:2": {
+    //   "installZsh": true,
+    //   "installOhMyZsh": true,
+    //   "upgradePackages": true
+    // },
+    // "ghcr.io/devcontainers/features/github-cli:1": {},
+    // "ghcr.io/devcontainers/features/azure-cli:1": {},
+    // "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    // "ghcr.io/devcontainers/features/node:1": {
+    //   "version": "lts",
+    //   "nvmInstallPath": "/usr/local/share/nvm"
+    // }
+  },
+  "mounts": [
+    // add a mount for the firewall set up (if required)
+    "source=${localWorkspaceFolder}/.devcontainer/setup-firewall.sh,target=/usr/local/bin/setup-firewall.sh,type=bind,consistency=cached"
+  ],
+  "runArgs": [
+    // these docker arguments are required in order to suppport the firewall
+    "--cap-add=NET_ADMIN",
+    "--cap-add=NET_RAW"
+  ],
+
+  // set up the firewall after the image starts
+  "postStartCommand": "sudo /usr/local/bin/setup-firewall.sh",
+
+  // install iptables for the firewall
+  "postCreateCommand": "sudo apt update; sudo apt install -y iptables",
+  "customizations": {
+    // your IDE customizations can go here
+    "vscode": {
+      "extensions": [
+        // your choice of IDE plugins
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ]
+    }
+  }
+}
+```
+
+`setup-firewall.sh`
+
+```sh
+#!/bin/bash
+set -euo pipefail
+
+# Example: block all outbound to specific CIDRs or ports
+iptables -A OUTPUT -p tcp --dport 443 -d 157.240.0.0/16 -j REJECT  # Meta ranges (example)
+iptables -A OUTPUT -p tcp --dport 443 -d 104.244.42.0/24 -j REJECT # Twitter (example)
+```
+
+### More information
+
+For more information on adopting agentic coding at HMCTS, read the [Agentic / Vibe coding Toolkit](https://tools.hmcts.net/confluence/spaces/DATS/pages/1904132180/Agentic+Vibe+Coding+Toolkit)
+
