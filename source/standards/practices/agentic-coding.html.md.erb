@@ -24,7 +24,6 @@ You MUST
 
   - Drop all capabilities with `--cap-drop=ALL` and only re-add specific capabilities required for your use case.
   - Apply a seccomp profile to restrict system calls available to the container.
-  - Set memory and CPU limits using --memory and --cpus to prevent resource exhaustion.
   - Use forwardPorts for port exposure instead of Docker's -p flag.
   - Exclude `.env` files from version control using `.gitignore`.
   - Use verified base images from trusted registries (e.g., Microsoft's official devcontainer images).
@@ -34,7 +33,7 @@ You MUST
   - Block access to non-essential domains using firewall rules.
   - Configure an AppArmor profile for additional mandatory access control.
   - Review and customise the blocked domain list for your organisation's requirements.
-  - Set resource limits appropriate to your workload (default: 8GB memory, 8 CPUs).
+  - Set memory and CPU limits using --memory and --cpus to prevent resource exhaustion.
 
   You MUST NOT
 
