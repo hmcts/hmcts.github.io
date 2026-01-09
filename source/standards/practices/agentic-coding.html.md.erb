@@ -9,79 +9,45 @@ weight: 2
 
 Guidance for adopting agentic coding:
 
- - You must sandbox agents with a devcontainer so that they are isolated from other workspaces
  - You must continue to thoroughly review the code as you normally do in your software development process
  - You must have automated tests and code quality checks (such as Sonar) enabled
  - You should consider adding additional code quality checks, such as Code Rabbit
  - You must not put secrets into prompts. Treat prompts and tool logs as potentially retained. Use secret stores and redaction.
- - You must ensure licensing/compliance is respected. Don't paste in large third-party code blobs; prefer libraries you already approve.
+ - You must ensure licensing/compliance is respected. 
+ - You must sandbox agents with a devcontainer so that they are isolated from other workspaces (see below)
 
-### Devcontainer example
+### Devcontainer isolation
 
 A [devcontainer](https://containers.dev/) is as way of running your IDE inside a docker container. It is supported by common IDEs such as VSCode and Intellij.
 
-When adopting agentic coding you must run the agent from within the sandboxed docker container in order to isolate it from the host file system. You should also isolate it from production systems using firewall rules.
+You MUST
 
-`.devcontainer.json`
+  - Drop all capabilities with `--cap-drop=ALL` and only re-add specific capabilities required for your use case.
+  - Apply a seccomp profile to restrict system calls available to the container.
+  - Set memory and CPU limits using --memory and --cpus to prevent resource exhaustion.
+  - Use forwardPorts for port exposure instead of Docker's -p flag.
+  - Exclude `.env` files from version control using `.gitignore`.
+  - Use verified base images from trusted registries (e.g., Microsoft's official devcontainer images).
 
-```javascript
-{
-  "name": "Agent Development Container",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
-    // features are docker image layers, you may want to include more for your specific project:
-    // "ghcr.io/devcontainers/features/common-utils:2": {
-    //   "installZsh": true,
-    //   "installOhMyZsh": true,
-    //   "upgradePackages": true
-    // },
-    // "ghcr.io/devcontainers/features/github-cli:1": {},
-    // "ghcr.io/devcontainers/features/azure-cli:1": {},
-    // "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-    // "ghcr.io/devcontainers/features/node:1": {
-    //   "version": "lts",
-    //   "nvmInstallPath": "/usr/local/share/nvm"
-    // }
-  },
-  "mounts": [
-    // add a mount for the firewall set up (if required)
-    "source=${localWorkspaceFolder}/.devcontainer/setup-firewall.sh,target=/usr/local/bin/setup-firewall.sh,type=bind,consistency=cached"
-  ],
-  "runArgs": [
-    // these docker arguments are required in order to suppport the firewall
-    "--cap-add=NET_ADMIN",
-    "--cap-add=NET_RAW"
-  ],
+  You SHOULD
 
-  // set up the firewall after the image starts
-  "postStartCommand": "sudo /usr/local/bin/setup-firewall.sh",
+  - Block access to non-essential domains using firewall rules.
+  - Configure an AppArmor profile for additional mandatory access control.
+  - Review and customise the blocked domain list for your organisation's requirements.
+  - Set resource limits appropriate to your workload (default: 8GB memory, 8 CPUs).
 
-  // install iptables for the firewall
-  "postCreateCommand": "sudo apt update; sudo apt install -y iptables",
-  "customizations": {
-    // your IDE customizations can go here
-    "vscode": {
-      "extensions": [
-        // your choice of IDE plugins
-        "GitHub.copilot",
-        "GitHub.copilot-chat"
-      ]
-    }
-  }
-}
-```
+  You MUST NOT
 
-`setup-firewall.sh`
+  - Use --privileged flag as it grants full host access.
+  - Use --security-opt seccomp=unconfined as it disables syscall filtering.
+  - Use --security-opt apparmor=unconfined as it disables mandatory access control.
+  - Add dangerous capabilities such as SYS_ADMIN, SYS_MODULE, SYS_RAWIO, or SYS_PTRACE.
+  - Hardcode secrets in devcontainer.json or any files committed to version control.
+  - Mount sensitive host directories such as /, /etc, /home, or ~/.ssh into the container.
 
-```sh
-#!/bin/bash
-set -euo pipefail
+### Example
 
-# Example: block all outbound to specific CIDRs or ports
-iptables -A OUTPUT -p tcp --dport 443 -d 157.240.0.0/16 -j REJECT  # Meta ranges (example)
-iptables -A OUTPUT -p tcp --dport 443 -d 104.244.42.0/24 -j REJECT # Twitter (example)
-```
+There is an example devcontainer configuration available on the [HMCTS GitHub](https://github.com/hmcts/ai-agent-devcontainer-example)
 
 ### More information
 
