@@ -322,3 +322,13 @@ checkbox
 rdb
 screenshot
 sku
+agentic
+seccomp
+CIDRs
+devcontainer
+dport
+euo
+mcr
+pipefail
+suppport
+workspaces

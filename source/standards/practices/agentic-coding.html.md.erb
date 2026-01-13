@@ -1,0 +1,54 @@
+---
+title: Agentic Coding
+last_reviewed_on: 2025-12-19
+review_in: 12 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Guidance for adopting agentic coding:
+
+ - You must continue to thoroughly review the code as you normally do in your software development process
+ - You must have automated tests and code quality checks (such as Sonar) enabled
+ - You should consider adding additional code quality checks, such as Code Rabbit
+ - You must not put secrets into prompts. Treat prompts and tool logs as potentially retained. Use secret stores and redaction.
+ - You must ensure licensing/compliance is respected. 
+ - You must sandbox agents with a devcontainer so that they are isolated from other workspaces (see below)
+
+### Devcontainer isolation
+
+A [devcontainer](https://containers.dev/) is as way of running your IDE inside a docker container. It is supported by common IDEs such as VSCode and Intellij.
+
+You MUST
+
+  - Drop all capabilities with `--cap-drop=ALL` and only re-add specific capabilities required for your use case.
+  - Apply a seccomp profile to restrict system calls available to the container.
+  - Use forwardPorts for port exposure instead of Docker's -p flag.
+  - Exclude `.env` files from version control using `.gitignore`.
+  - Use verified base images from trusted registries (e.g., Microsoft's official devcontainer images).
+
+  You SHOULD
+
+  - Block access to non-essential domains using firewall rules.
+  - Configure an AppArmor profile for additional mandatory access control.
+  - Review and customise the blocked domain list for your organisation's requirements.
+  - Set memory and CPU limits using --memory and --cpus to prevent resource exhaustion.
+
+  You MUST NOT
+
+  - Use --privileged flag as it grants full host access.
+  - Use --security-opt seccomp=unconfined as it disables syscall filtering.
+  - Use --security-opt apparmor=unconfined as it disables mandatory access control.
+  - Add dangerous capabilities such as SYS_ADMIN, SYS_MODULE, SYS_RAWIO, or SYS_PTRACE.
+  - Hardcode secrets in devcontainer.json or any files committed to version control.
+  - Mount sensitive host directories such as /, /etc, /home, or ~/.ssh into the container.
+
+### Example
+
+There is an example devcontainer configuration available on the [HMCTS GitHub](https://github.com/hmcts/ai-agent-devcontainer-example).
+
+### More information
+
+For more information on adopting agentic coding at HMCTS, read the [Agentic / Vibe coding Toolkit](https://tools.hmcts.net/confluence/spaces/DATS/pages/1904132180/Agentic+Vibe+Coding+Toolkit).
+
