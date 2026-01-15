@@ -1,6 +1,7 @@
 aabtenhae
 abfwhrf
 acedcyeygkgk
+apparmor
 aqda
 ard
 aso
@@ -52,6 +53,7 @@ hpfvc
 htmlq
 HXAAAAAAD
 ico
+Intellij
 ISP
 Jenkinsfiles
 keyring
@@ -72,8 +74,10 @@ platopslackhelpbotai
 pnp
 popd
 postgres
+PTRACE
 pushd
 QLDTj
+RAWIO
 Rthnz
 scp
 totp
