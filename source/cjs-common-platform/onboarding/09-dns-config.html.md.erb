@@ -62,6 +62,7 @@ Once you have confirmed that your dnsmasq is running with correct configuration,
 7. Enter `127.0.0.1` and press enter - you can close the settings app now
 
 Provided that you are connected to the VPN you should be able to access platform domains while rest of the traffic should still go through your regular connection.
+If you 
 
 <details>
 <summary>📋 View screenshot: macOS Settings App</summary>
@@ -100,6 +101,11 @@ To verify everything is working correctly:
 3. Open new browser window and verify you can access:
    - [Jenkins](https://build.mdv.cpp.nonlive/)
    - [Gerrit Code Review](https://codereview.mdv.cpp.nonlive/)
+4. If you encounter any issues reaching these sites, try restarting dnsmasq service using the following command in your terminal:
+
+   ```bash
+   sudo brew services restart dnsmasq
+   ```
 
  > ⚠️ Disabling Global Protect is important - you will not be able to access Crime resources otherwise.You can re-enable it once you are done accessing Crime resources.
 
