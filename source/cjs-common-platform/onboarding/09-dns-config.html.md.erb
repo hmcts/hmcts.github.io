@@ -100,6 +100,11 @@ To verify everything is working correctly:
 3. Open new browser window and verify you can access:
    - [Jenkins](https://build.mdv.cpp.nonlive/)
    - [Gerrit Code Review](https://codereview.mdv.cpp.nonlive/)
+4. If you encounter any issues reaching these sites, try restarting dnsmasq service using the following command in your terminal:
+
+   ```bash
+   sudo brew services restart dnsmasq
+   ```
 
  > ⚠️ Disabling Global Protect is important - you will not be able to access Crime resources otherwise.You can re-enable it once you are done accessing Crime resources.
 
