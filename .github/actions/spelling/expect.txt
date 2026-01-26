@@ -63,6 +63,7 @@ MQBFZ
 nameserver
 nfunction
 oathtool
+OIDC
 OMj
 onmicrosoft
 opsvcs
