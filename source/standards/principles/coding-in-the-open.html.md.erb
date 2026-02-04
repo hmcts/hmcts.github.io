@@ -1,0 +1,55 @@
+---
+title: Code in the Open
+last_reviewed_on: 2026-02-03
+review_in: 12 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+## HMCTS Corporate Guidance 
+
+### Default to Open
+
+The foundational principle for all new code developed for public services is "Default to Open."
+All public repositories must include a clear open-source license to provide legal clarity, encourage collaboration, and enable reuse across teams and
+government departments, helping to avoid duplication of effort and save public funds. Simply naming a license (e.g., “MIT License”) is insufficient; the full
+text must be included in a LICENSE file at the repository root and referenced in the README.md. Publishing code under an open license also reduces
+vendor lock-in by ensuring the organisation retains full control and ownership of the Intellectual Property (IP), while supporting automated license detection
+and compliance with standards such as [The GDS Way] (https://gds-way.digital.cabinet-office.gov.uk/). The recommended default is the MIT License.
+
+- Principle [GDS Service Standard 12] (https://www.gov.uk/service-manual/service-standard/point-12-make-new-source-code-open): Public money funds public services, and therefore, the code created should be made available for reuse. This is mandatory unless there is an approved exception as why it cannot be done.
+- Benefit: Publishing code under an open licence (like MIT) actively encourages collaboration and reuse across teams and government departments, avoiding duplication of effort and saving public funds. It also reduces vendor lock-in by ensuring the organisation maintains full control and ownership of the Intellectual Property (IP).
+
+The decision tree checklist demonstrates the enforcement of this mandate: If it's new code, the default is to proceed with open development.
+
+### Default to Open
+
+The most common misconception is that open code inherently means a less secure system. The opposite is true: openly publishing code forces the team to adopt stronger software hygiene. The following two items are a critical part of the decision making process of coding in the open.
+
+#### Secrets and Data
+
+- Being open means sharing the logic, not the credentials. You must not publish sensitive information such as API keys, passwords, user data, or unreleased policy details. Security-conscious development demands that secrets are stored securely outside the codebase, typically in a CI/CD system like Jenkins or dedicated secret managers like Azure Key Vault.
+- The GOV.UK Code of Practice aligns with the "Secure Design & Development" theme, specifically the need for a secure development framework
+and protecting against the disclosure of sensitive information.
+
+#### Intrinsically Security-Critical Logic
+
+- Certain core functions, like fraud detection, identity verification, or specialised encryption logic, must be closed temporarily if their effectiveness relies on the details remaining non-public. Similarly, code tied to unpublished government policy must remain closed until that policy is officially announced. This is about preventing real-world harm or undermining policy effectiveness.
+- If the above is a constraint then the team must use the Exceptions Process to document the justification and set a review date. The code must be reviewed regularly (e.g., every six months) to see if the policy has been released or if the security-critical logic can be safely abstracted and opened.
+
+### Legal, Commercial, and Review Process
+
+The final blockers ensure the organisation is compliant and protected before publishing.
+
+- Before making code public, Delivery Managers must verify that the organisation owns the Intellectual Property and that no third-party libraries or contractual agreements prohibit open publication. Failing to do this can lead to legal complications and IP disputes.
+- If a valid legal or commercial reason exists to keep the code closed, it is treated as an exception. The Exceptions Process above is key to maintaining transparency and accountability, proving that the team met the "provide a convincing explanation" requirement of the [GDS service standard] (https://www.gov.uk/service-manual/service-standard).
+
+### Safe and Reusable Open Code
+
+Ensure that code is not just public, but is secure, usable, and maintainable.
+
+- The decision making checklist below reiterates the need to scrub history and use secure CI/CD practices, protecting the Build Environment and using a Secure Development Framework.
+- Code is not truly open-source without clear licensing (e.g., MIT) and comprehensive documentation (README, CONTRIBUTION guide, CHANGELOG and SECURITY file). These artefacts are essential for allowing others to reuse and contribute to the code effectively.
+- Ensure a sustainable open-source project by demanding semantic versions, a maintenance owner, and a support plan. Adhering to [Secure
+Deployment & Maintenance principles] (https://www.ncsc.gov.uk/collection/software-security-code-of-practice-implementation-guidance/secure-deployment-maintenance).
