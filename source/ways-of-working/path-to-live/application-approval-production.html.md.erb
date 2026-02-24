@@ -1,0 +1,41 @@
+---
+title: Application approval into Production
+last_reviewed_on: 2021-06-21
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+This guide explains the typical processes an application team must ensure their app has been through before getting the green light to deploy to production
+
+1. OAT - Operational acceptance testing covers multiple topics to try and ensure that your application is ready to go into production, it evidences topics such as best practices, avoiding anti-patterns, scalability, disaster recovery etc. 
+
+you will need to contact the Release and Transition team with a proposed go live date and they will create the templated tickets for your consumption.
+
+Platform Operations ask for a few weeks notice and a few weeks leeway from your desired go live date. 
+
+Platform Operations role in OAT is to raise any risks that the application might pose on any of the topics covered in the OAT and 
+
+[OAT Ticket Sample](https://tools.hmcts.net/jira/browse/RBC-7754)
+
+2. ITHC
+
+an IT Health check is akin to a penetatration/vulnerability scanning test conducted by the Security team
+
+3. Tech Readiness Sign Off
+
+After OAT & ITHC is completed and usually 1-2 weeks before the proposed go live date, a tech readiness call will be arranged and chaired by the Release and Transition team 
+
+The tech readiness is a chance for Business/Product Owners, Platform Operations, Programme Leads, Security and Release and Transition to raise any risks or approve the release for production
+
+4. Authority to Operate
+
+an Authority to Operate or AtO will be given after a successful ITHC and subsequent approval from the Tech Readiness meeting, this is granted by the CISO
+
+Best Practices:
+
+We discourage big bang deployments and encourage deploying components like infrastructure earlier than the proposed release dates to streamline the go live and as an opportunity to catch any unknowns ahead of the release date
+
+For application deployments to production via Jenkins you will need your repo included here [Environment Approvals] (https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
+
+For infrastructure deployments via Jenkins you will need to have a read through [Terraform Infra Approvals] (https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals) and seek approval way ahead of time
