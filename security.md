@@ -66,7 +66,7 @@ All contributors and reporters are expected to act in good faith and in accordan
 
 ## Further Reading
 
-- NCSC Vulnerability Reporting] (https://www.ncsc.gov.uk/information/vulnerability-reporting)
+- [NCSC Vulnerability Reporting] (https://www.ncsc.gov.uk/information/vulnerability-reporting)
 - [Code in the Open Developer Checklist] (https://tools.hmcts.net/confluence/spaces/DATS/pages/1903995810/1.+Code+in+the+open+Developer+Checklist)
 https://www.gov.uk/help/report-vulnerability
 https://github.com/Trewaters/security-README
