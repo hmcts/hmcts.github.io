@@ -7,7 +7,7 @@ repository.
 HMCTS is committed to responsible vulnerability disclosure and to addressing
 legitimate security issues in a timely and coordinated manner.
 
-## Reporting a vulnerabiltiy
+## Reporting a vulnerability
 
 If you believe you have identified a security vulnerability in this repository, please report it by email to: 
 
@@ -66,8 +66,7 @@ All contributors and reporters are expected to act in good faith and in accordan
 
 ## Further Reading
 
-- NCSC Vulnerability Reporting (https://www.ncsc.gov.uk/information/vulnerability-reporting)
+- https://www.ncsc.gov.uk/information/vulnerability-reporting
+- https://www.gov.uk/help/report-vulnerability
+- https://github.com/Trewaters/security-README
 
-https://www.gov.uk/help/report-vulnerability
-https://github.com/Trewaters/security-README
-- Principle [GDS Service Standard 12] (https://www.gov.uk/service-manual/service-standard/point-12-make-new-source-code-open): Public money funds public services, and therefore, the cod
