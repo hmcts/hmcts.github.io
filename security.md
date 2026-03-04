@@ -43,7 +43,7 @@ Modify or delete data
 Perform denial-of-service or other disruptive testing
 Use high-intensity, invasive, or destructive scanning techniques
 Publicly disclose the vulnerability before it has been addressed
-Attempt social engineering, phishing, or physical attacks
+Attempt social engineering, Phishing, or physical attacks
 Demand payment or compensation in exchange for disclosure
 
 These guidelines are intended to protect users, services, and data while allowing good-faith security research.
