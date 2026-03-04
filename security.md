@@ -70,3 +70,4 @@ All contributors and reporters are expected to act in good faith and in accordan
 
 https://www.gov.uk/help/report-vulnerability
 https://github.com/Trewaters/security-README
+- Principle [GDS Service Standard 12] (https://www.gov.uk/service-manual/service-standard/point-12-make-new-source-code-open): Public money funds public services, and therefore, the cod
