@@ -58,7 +58,7 @@ All contributors and reporters are expected to act in good faith and in accordan
 
 ## Bug Bounty
 
-MCTS does not operate a paid bug bounty programme.
+HMCTS does not operate a paid bug bounty programme.
 
 ## Code of Conduct
 
