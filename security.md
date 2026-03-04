@@ -11,7 +11,7 @@ legitimate security issues in a timely and coordinated manner.
 
 If you believe you have identified a security vulnerability in this repository, please report it by email to: 
 
-HMTCSVulnerabilityDisclosure@justice.gov.uk
+HMCTSVulnerabilityDisclosure@justice.gov.uk
 
 This email address is the sole approved point of contact for vulnerability disclosures relating to HMCTS-owned repositories and services.
 
@@ -29,7 +29,7 @@ Any non-destructive proof of concept or exploitation details
 Where available, the following additional information is helpful:
 
 The suspected vulnerability type (for example, an OWASP category) 
-Relevant logs, screenshots, or error messages
+Relevant logs, a screenshot, or error messages
 
 Reports do not need to be fully validated before submission. If you are unsure whether an issue is exploitable or security-relevant, you are still encouraged to report it.
 
