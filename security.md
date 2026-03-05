@@ -16,7 +16,7 @@ HMCTSVulnerabilityDisclosure@justice.gov.uk
 
 This email address is the sole approved point of contact for vulnerability disclosures relating to HMCTS-owned repositories and services.
 
-Please do not create public GitHub issues or pull requests to report security vulnerabilities.
+Please **do not** create public GitHub issues or pull requests to report security vulnerabilities.
 
 ## What to Include in a Report
 
