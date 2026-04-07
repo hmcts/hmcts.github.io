@@ -9,7 +9,19 @@ weight: 3
 
 ### API Design and implementation
 
-Use the [HMCTS RESTful API standards](https://hmcts.github.io/restful-api-standards/).
+Use the [Zalando RESTful API Guidelines](https://opensource.zalando.com/restful-api-guidelines/) as the reference standard for API design.
+
+The source repository is [zalando/restful-api-guidelines](https://github.com/zalando/restful-api-guidelines).
+
+#### Personal data in URLs
+
+In addition to the Zalando guidelines, HMCTS services **must not** transmit
+[personal data](https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/key-definitions/what-is-personal-data/)
+in URL paths or query strings. This information can be inadvertently exposed
+via client, network, and server logs.
+
+Where personal data is required, transmit it in the request body or, where
+that is not possible (e.g. GET requests), in HTTP headers.
 
 ### Versioning
 
