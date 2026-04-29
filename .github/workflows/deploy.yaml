@@ -45,7 +45,7 @@ jobs:
           path: 'build/'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
       # For Azure AI Search used in hmcts/slack-help-bot
       - name: Azure login
