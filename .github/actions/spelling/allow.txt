@@ -197,6 +197,7 @@ npmjs
 nsenter
 nslookup
 nta
+NVMe
 offboarding
 Offboarding
 onboarded
@@ -229,6 +230,7 @@ prebuild
 prebuilds
 prioritisation
 prioritise
+privatelink
 Protips
 ptl
 ptlsbox
@@ -261,10 +263,12 @@ servicebus
 servolux
 sharedservices
 SHAREDSERVICESPTL
+should've
 showpad
 shuttername
 Shuttersolution
 sku
+SKUs
 slackernoon
 SLAs
 slf
@@ -277,6 +281,7 @@ spellcheck
 springframework
 sscs
 sscscor
+ssl
 sso
 stackoverflow
 stakeholders
@@ -300,6 +305,7 @@ TGL
 TLS
 toc
 toml
+toset
 TRO
 trunc
 TTFB
@@ -310,6 +316,7 @@ typescriptlang
 uksouth
 unsubscribe
 unsubscriptions
+urlencode
 usr
 versioned
 Versioning
