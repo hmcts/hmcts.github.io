@@ -29,8 +29,6 @@ The steps to be followed below depend on what business area your application is 
       deployment-enabled: true
     ```
 
-    > **Note:** If `deployment-enabled` is set to `false` OR is blank, your repository will only be able to run the **build stages** of the common pipeline. Deployment to AKS and infrastructure stages (e.g. Terraform) will not run. Set it to `true` to enable the full pipeline including deployments.
-
 3.  Add a Jenkins build dashboard.
 
     CFT: [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/blob/master/apps/jenkins/jenkins/ptl-intsvc/jenkins.yaml#L109)
@@ -44,6 +42,17 @@ The steps to be followed below depend on what business area your application is 
     CFT: [hmcts/cnp-jenkins-config/environment-approvals.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
 
     SDS: [hmcts/sds-jenkins-config/environment-approvals.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/environment-approvals.yml)
+
+## Pipeline stages and deployment controls
+
+The diagram below illustrates which pipeline stages are available depending on your `deployment-enabled` setting in `deployment-controls.yml`:
+
+![Common pipeline stages by deployment-enabled setting](/images/common-pipeline-deploy-controls.png)
+
+- **Orange box** — stages available when your repository is in `deployment-controls.yml` but `deployment-enabled` is not set to `true`: `checkout master`, `build code`, `static QA`
+- **Purple box** — all stages available when `deployment-enabled: true` is set, including: `build/publish image`, `build infra`, `deploy`, `dynamic QA`, `tag image`, and `build infra` (prod)
+
+Without `deployment-enabled: true`, no Docker images will be published, no infrastructure will be applied, and no deployments to AKS will occur.
 
 ## GitHub topics
 
