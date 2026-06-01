@@ -39,7 +39,7 @@ https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-underst
 
     [Darts repo](https://github.com/hmcts/darts-shared-infrastructure/pull/380/changes) 
 
-    [identical PR located in Plum repo](https://github.com/hmcts/cnp-plum-recipes-service/pull/1324/changes)
+    [Plum example change](https://github.com/hmcts/cnp-plum-recipes-service/blob/master/infrastructure/main.tf#L155-L174)
 
     example folder, see example/main.tf in this repo
 
@@ -55,16 +55,9 @@ https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-underst
 
     OPTIONAL) You may choose to spin up a kubernetes pod to test your redis instance is available. Unsupported documentation is here: [Platops confluence](https://tools.hmcts.net/confluence/spaces/DTSPO/pages/1973497319/Plum+Managed+Redis+%E2%80%94+Connection+Validation+Guide). Alternatively continue below if you're already comfortable writing/reading keys from redis.
 
-3) Update your application/ code to target the new resource
+3) Update application/ code to target the new resource
 
-    option A)
-    If you are utilising the same terraform/azure secret resource:
-    Your application should pull the new connection string directly from the keyvault.
-
-    Latest helm release on the cluster can be deleted, Flux should then automatically redeploy with the updated values.
-
-
-    option B) If you have chosen to save your connection string secret as a new value, you will need to update your application code to target the new resource.
+  If the secret is in the same location in the keyvault, Flux should then automatically redeploy your applicaiton with the updated values.
 
 ##### Below has been created with the assistance of AI, please exercise caution.
 ## Key differences at a glance
