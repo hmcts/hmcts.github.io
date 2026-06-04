@@ -37,9 +37,8 @@ Further information can be found by viewing the new module's example folder, 'in
 ## Feature parity
 While MS is ending support for Az Cache for Redis, there is not complete feature parity between the offerings.
 
-Please investigate + test these carefully as documentation from MS is hit or miss.
-
-https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-understand
+Please investigate & test these carefully as documentation from MS is hit or miss.
+[MS Migration Docs](https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-understand)
 
 
 ## Quick Start
@@ -57,7 +56,7 @@ Example PRs:
 
   - [Plum example change](https://github.com/hmcts/cnp-plum-recipes-service/blob/master/infrastructure/main.tf#L155-L174)
 
-  - example folder, see example/main.tf in this repo
+  - example folder, see example/main.tf in the new module's repo
 
 
 
@@ -74,8 +73,10 @@ Example PRs:
 
 3) Update application/ code to target the new resource
 
-  If the secret is in the same location in the keyvault, Flux should then automatically redeploy your application with the updated values.
+  Ensure you create the redis connection string as a new Keyvault secret resource.  That way, if rollback is needed, you can point back to your preexisting secret via a flux PR.
 
+  Please see this reference [PR](https://github.com/hmcts/cnp-flux-config/pull/45044/changes) for how to switch connection string using flux config.  It uses a new Key Vault secret but same variable name for the application.
+  
 
 ## Data migration instructions
 
