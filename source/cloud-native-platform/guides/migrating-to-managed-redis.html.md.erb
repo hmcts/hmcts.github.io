@@ -74,8 +74,9 @@ Example PRs:
 
 3) Update application/ code to target the new resource
 
-  If the secret is in the same location in the keyvault, Flux should then automatically redeploy your application with the updated values.
+  Ensure you create the redis connection string in the same Keyvault secret resource.  That way, if rollback is needed, we can reference the archived secret value to roll back easily
 
+  Please see this [PR](https://github.com/hmcts/cnp-flux-config/pull/45044/changes) to how to switch connection string using flux config. It uses the new Key Vault secret but the same variable name in the application.
 
 ## Data migration instructions
 
