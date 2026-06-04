@@ -21,6 +21,12 @@ Click the button below to get started:
 
 ### Local installation
 
+##### below instructions will need to be modified to accomodate non-admin laptops
+e.g.
+gem install -user-install bundler
+bundle install --path ~/.gem                     
+
+
 Install Ruby with Rubygems, preferably with a [Ruby version manager][rvm],
 and the [Bundler gem][bundler].
 
