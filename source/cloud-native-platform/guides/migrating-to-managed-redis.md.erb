@@ -6,6 +6,8 @@ weight: 10
 ---
 # Migrating from `cnp-module-redis` to `terraform-module-azure-managed-redis`
 
+###### Below has been created with the assistance of AI, please exercise caution.
+
 Azure Managed Redis is a fully managed, enterprise-tier Redis service that replaces the
 older Azure Cache for Redis (Standard/Premium) offering that `cnp-module-redis` provisions.
 This guide explains the input/output differences and the steps needed to switch.
@@ -50,7 +52,8 @@ https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-underst
 
     After deployment you should see:
     - Creation for new Redis infrastructure, with associated networking and secrets accordingly.
-    No destroys should've occurred unless you are intentionally planning to replace (destroy forever) your current instance and secrets. If any destroys are planned and you're not sure, please get in touch as this is likely to be an _irreversible_ change.
+
+    No destroys should've occurred unless you are intentionally planning to replace (destroy forever) your current instance and secrets. If any destroys are planned and you're not sure, please get in touch as this is likely to be an _irreversible_ change. 
     - New secret should be added to your keyvault 
 
     OPTIONAL) You may choose to spin up a kubernetes pod to test your redis instance is available. Unsupported documentation is here: [Platops confluence](https://tools.hmcts.net/confluence/spaces/DTSPO/pages/1973497319/Plum+Managed+Redis+%E2%80%94+Connection+Validation+Guide). Alternatively continue below if you're already comfortable writing/reading keys from redis.
@@ -59,7 +62,11 @@ https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-underst
 
   If the secret is in the same location in the keyvault, Flux should then automatically redeploy your applicaiton with the updated values.
 
-##### Below has been created with the assistance of AI, please exercise caution.
+
+## Data migration instructions
+
+If data migration is required, please follow the instructions [here](https://hmcts.github.io/ops-runbooks/Services/migrating-azure-redis-cache.html)
+
 ## Key differences at a glance
 
 | Concern | `cnp-module-redis` | `terraform-module-azure-managed-redis` |
