@@ -11,19 +11,28 @@ older Azure Cache for Redis (Standard/Premium) offering that `cnp-module-redis` 
 This guide explains the input/output differences and the steps needed to switch.
 
 ---
-Example PR is provided to assist adoption of the new module. This should be used to get the new infrastructure up and running in alongside your current Redis in sandbox (side by side). Replacing your current resource block will _DELETE_ your current Redis instance.
+An agentic coding skill and example PRs are provided to assist adoption of the new module. This should be used to get the new infrastructure up and running in alongside your current Redis in sandbox (side by side). 
 
-Private endpoints are abstracted by the module as before.
-
-Gotchas/troubleshooting at the bottom of this doc
-
-Further information can be found by viewing this module's example folder, 'inputs-*.tf' files, the Azure documentation, terraform documentation or getting in touch with Platform Operations.
+Further information can be found by viewing the new module's example folder, 'inputs-*.tf' files, the Azure documentation, terraform documentation or getting in touch with Platform Operations.
 
 [Input files](https://github.com/hmcts/terraform-module-azure-managed-redis/blob/e018f031e653e66d226dbde406d7eb39c39e241e/inputs-optional.tf)
 
 [Azure Managed Redis Docs](https://learn.microsoft.com/en-us/azure/redis/)
 
 [Terraform Managed Redis Docs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis)
+
+## Quick navigation
+
+- [Feature parity](#feature-parity)
+- [Quick Start](#quick-start)
+- [Data migration instructions](#data-migration-instructions)
+- [Key differences at a glance](#key-differences-at-a-glance)
+- [Input mapping](#input-mapping)
+- [Output mapping](#output-mapping)
+- [SKU reference](#sku-reference)
+- [Fine-grained Migration steps](#fine-grained-migration-steps)
+- [Variables to add / remove from `variables.tf`](#variables-to-add--remove-from-variablestf)
+- [Gotchas /Troubleshooting:](#gotchas-troubleshooting)
 
 ## Feature parity
 While MS is ending support for Az Cache for Redis, there is not complete feature parity between the offerings.
@@ -151,6 +160,7 @@ downstream reference at once.
 [OLD Azure Cache for Redis - pricing](https://azure.microsoft.com/en-gb/pricing/details/cache/)
 
 Managed Redis SKUs combine **tier** and **size** into one string:
+
 | Tier | Example SKUs | Rough equivalent |
 |---|---|---|
 | `Balanced` (B) | `Balanced_B1`, `Balanced_B3`, `Balanced_B5` | General purpose workloads |
@@ -239,12 +249,13 @@ module "managed_redis" {
   ...
 }
 ```
+
 As mentioned in the example PR, removing this may cause your resources within terraform's state to change slightly. Please see the PR for remediation steps
----
+
 
 ## Variables to add / remove from `variables.tf`
 
-Remove (check if these are actually the ones utilised by `cnp-module-redis`):
+Remove (check if these are actually only utilised by `cnp-module-redis`):
 
 ```hcl
 variable "sku_name" {}       
@@ -271,6 +282,4 @@ Azure Managed Redis runs as a clustered Redis Enterprise instance with two shard
 
 - Database number
 Azure Managed Redis supports only a single database (database 0). If your application uses multiple databases, you need to refactor your data model to use a single database or use key prefixes to logically separate data before migrating.
-
-- Port numbers
 
