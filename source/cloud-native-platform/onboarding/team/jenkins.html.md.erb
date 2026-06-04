@@ -1,6 +1,6 @@
 ---
 title: Jenkins
-last_reviewed_on: 2026-01-15
+last_reviewed_on: 2026-06-01
 review_in: 6 months
 weight: 1
 hide_in_navigation: true
@@ -14,21 +14,45 @@ There are Jenkins servers for both CFT (Civil, Family & Tribunal) and SDS (Share
 
 The steps to be followed below depend on what business area your application is in.
 
- 1. Add the [required GitHub topic](#github-topics) to the repository to see your repository in Jenkins Org.
+1.  Add the [required GitHub topic](#github-topics) to the repository to see your repository in Jenkins Org.
 
- 2. Add a Jenkins build dashboard.
+2.  Raise a pull request to add your repository to the Jenkins allowlist. Only repositories present in this file will be picked up by the Jenkins org scan.
+
+    CFT: [hmcts/cnp-jenkins-config/deployment-controls.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/deployment-controls.yml)
+
+    SDS: [hmcts/sds-jenkins-config/deployment-controls.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/deployment-controls.yml)
+
+    Add an entry in the following format:
+
+    ```yaml
+    - repo: https://github.com/hmcts/<your-repo-name>.git
+      deployment-enabled: true
+    ```
+
+3.  Add a Jenkins build dashboard.
 
     CFT: [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/blob/master/apps/jenkins/jenkins/ptl-intsvc/jenkins.yaml#L109)
 
     SDS: [sds-flux-config](https://github.com/hmcts/sds-flux-config/blob/79ca3abe8d7d67c2ab9749129a13a62c3cf653e4/apps/jenkins/jenkins/ptl/jenkins.yaml#L130)
 
- 3. Scan the organisation manually on Jenkins if it doesn't scan automatically.
+4.  Scan the organisation manually on Jenkins if it doesn't scan automatically.
 
- 4. To allow Jenkins to deploy to production, you must add your GitHub repository to this list of approved repositories:
+5.  To allow Jenkins to deploy to production, you must add your GitHub repository to this list of approved repositories:
 
     CFT: [hmcts/cnp-jenkins-config/environment-approvals.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
 
     SDS: [hmcts/sds-jenkins-config/environment-approvals.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/environment-approvals.yml)
+
+## Pipeline stages and deployment controls
+
+The diagram below illustrates which pipeline stages are available depending on your `deployment-enabled` setting in `deployment-controls.yml`:
+
+![Common pipeline stages by deployment-enabled setting](/images/common-pipeline-deploy-controls.png)
+
+- **Orange box** — stages available when your repository is in `deployment-controls.yml` but `deployment-enabled` is not set to `true`: `checkout master`, `build code`, `static QA`
+- **Purple box** — all stages available when `deployment-enabled: true` is set, including: `build/publish image`, `build infra`, `deploy`, `dynamic QA`, `tag image`, and `build infra` (prod)
+
+Without `deployment-enabled: true`, no Docker images will be published, no infrastructure will be applied, and no deployments to AKS will occur.
 
 ## GitHub topics
 
