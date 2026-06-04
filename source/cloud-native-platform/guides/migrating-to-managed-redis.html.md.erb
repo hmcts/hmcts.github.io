@@ -37,9 +37,8 @@ Further information can be found by viewing the new module's example folder, 'in
 ## Feature parity
 While MS is ending support for Az Cache for Redis, there is not complete feature parity between the offerings.
 
-Please investigate + test these carefully as documentation from MS is hit or miss.
-
-https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-understand
+Please investigate & test these carefully as documentation from MS is hit or miss.
+[MS Migration Docs](https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-understand)
 
 
 ## Quick Start
@@ -76,7 +75,7 @@ Example PRs:
 
   Ensure you create the redis connection string as a new Keyvault secret resource.  That way, if rollback is needed, you can point back to your preexisting secret via a flux PR.
 
-  Please see this reference [PR](https://github.com/hmcts/cnp-flux-config/pull/45044/changes)] for how to switch connection string using flux config.  It uses a new Key Vault secret but same variable name for the application.
+  Please see this reference [PR](https://github.com/hmcts/cnp-flux-config/pull/45044/changes) for how to switch connection string using flux config.  It uses a new Key Vault secret but same variable name for the application.
   
 
 ## Data migration instructions
