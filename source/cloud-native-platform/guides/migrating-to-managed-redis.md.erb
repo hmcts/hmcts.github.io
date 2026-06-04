@@ -6,8 +6,6 @@ weight: 10
 ---
 # Migrating from `cnp-module-redis` to `terraform-module-azure-managed-redis`
 
-###### Below has been created with the assistance of AI, please exercise caution.
-
 Azure Managed Redis is a fully managed, enterprise-tier Redis service that replaces the
 older Azure Cache for Redis (Standard/Premium) offering that `cnp-module-redis` provisions.
 This guide explains the input/output differences and the steps needed to switch.
@@ -37,13 +35,20 @@ https://docs.azure.cn/en-us/redis/migrate/migrate-basic-standard-premium-underst
 
 ## Quick Start
 
-1) Infrastructure Code change. Example PRs:
+1) Build resources with Infrastructure as Code. 
 
-    [Darts repo](https://github.com/hmcts/darts-shared-infrastructure/pull/380/changes) 
+> We have an agent skill which can assist you through the migration process. It will allow your agentic AI to assist and create Terraform and Flux PRs more easily.
+Check it out here!
+platops-agent-skills [ azure-managed-redis-migration](https://github.com/hmcts/platops-agent-skills/tree/main/.github/skills/azure-managed-redis-migration) .
 
-    [Plum example change](https://github.com/hmcts/cnp-plum-recipes-service/blob/master/infrastructure/main.tf#L155-L174)
 
-    example folder, see example/main.tf in this repo
+Example PRs:
+
+  - [Darts repo](https://github.com/hmcts/darts-shared-infrastructure/pull/380/changes) 
+
+  - [Plum example change](https://github.com/hmcts/cnp-plum-recipes-service/blob/master/infrastructure/main.tf#L155-L174)
+
+  - example folder, see example/main.tf in this repo
 
 
 
