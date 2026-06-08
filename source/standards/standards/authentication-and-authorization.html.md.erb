@@ -1,0 +1,24 @@
+---
+title: Authentication and authorization
+last_reviewed_on: 2026-06-08
+review_in: 12 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+CFT services should use OpenID Connect with CFT IDAM for user authentication.
+
+Authentication and authorization are separate concerns. OpenID Connect establishes the user identity. Services are responsible for their own authorization decisions.
+
+### OpenID Connect flows
+
+Use the authorization code flow for browser-based user authentication.
+
+Use PKCE where the client stack supports it.
+
+Use client credentials only for service-to-service authentication where no user is involved.
+
+Avoid password and implicit grants for new integrations.
+
+For implementation guidance, see the [OpenID Connect Guide for CFT Developers Using CFT IDAM](https://tools.hmcts.net/confluence/spaces/SISM/pages/1973296310/OpenID+Connect+Guide+for+CFT+Developers+Using+CFT+IDAM).
