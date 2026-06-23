@@ -90,7 +90,8 @@ withPipeline(type, product, component) {}
 | Unit tests + Sonar | PR + master | `pytest tests/unit` with coverage, then SonarCloud scan |
 | Security check | PR + master | `uv audit` — fails build if vulnerabilities found, archives `uv-audit-report.json` |
 | Docker build | PR + master | Builds and pushes image to ACR |
-| Terraform plan - preview | PR | Runs a Terraform plan against preview infrastructure (only if `infrastructure/` folder exists) |
+| Terraform plan - AAT | PR | Runs a Terraform plan against AAT infrastructure (only if `infrastructure/` folder exists) |
+| Terraform plan - production | PR | Optionally runs a Terraform plan against production infrastructure (only if `infrastructure/` folder exists) |
 | Deploy to preview | PR | Deploys to preview AKS, runs smoke and functional tests |
 | Build infrastructure - AAT | master | Applies Terraform for AAT infrastructure (only if `infrastructure/` folder exists) |
 | Deploy to AAT | master | Deploys to AAT, runs smoke and functional tests |
@@ -143,7 +144,7 @@ One platform-specific note: the Docker build uses `uv sync --locked`, so the `uv
 
 ## What Python version should I use?
 
-The pipeline currently supports **Python 3.13**. Supported versions are defined in [`PythonBuilder.groovy`](https://github.com/hmcts/cnp-jenkins-library/blob/master/src/uk/gov/hmcts/contino/PythonBuilder.groovy).
+Supported versions are defined in [`PythonBuilder.groovy`](https://github.com/hmcts/cnp-jenkins-library/blob/master/src/uk/gov/hmcts/contino/PythonBuilder.groovy).
 
 Declare your version in a `.python-version` file in the repository root:
 
