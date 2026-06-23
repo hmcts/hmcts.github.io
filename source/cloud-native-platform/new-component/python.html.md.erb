@@ -1,0 +1,172 @@
+---
+title: Python services
+last_reviewed_on: 2026-06-23
+review_in: 6 months
+weight: 6
+---
+
+# <%= current_page.data.title %>
+
+This guide covers how to create and operate a Python microservice on the HMCTS platform using [FastAPI](https://fastapi.tiangolo.com/). It assumes you are already familiar with the platform — if not, start with [Starting a new component](/cloud-native-platform/new-component/).
+
+For a working reference implementation, see [cnp-plum-fastapi-backend](https://github.com/hmcts/cnp-plum-fastapi-backend) — an example Python service that follows all the patterns described in this guide.
+
+## How do I create a new Python service?
+
+We provide two templates depending on how your team creates new services.
+
+### Backstage (recommended)
+
+If your team uses the HMCTS Backstage developer portal, use the **fastapi-template-backstage** template. It scaffolds a fully configured service with your product and component names substituted throughout.
+
+Find it in the Backstage software catalogue under "Create".
+
+### GitHub template
+
+If you prefer to start from GitHub directly, use [fastapi-template-github](https://github.com/hmcts/fastapi-template-github):
+
+1. Click **"Use this template"** on GitHub
+2. Clone your new repo
+3. Run the setup script to replace placeholders:
+
+```bash
+bash bin/setup.sh
+```
+
+This replaces `myproduct` and `mycomponent` throughout the repo.
+
+### Naming convention
+
+Repositories follow the standard HMCTS convention: `{product}-{component}`. For example: `plum-fastapi-backend`.
+
+### What's included
+
+Both templates provide:
+
+- FastAPI application with health endpoints pre-wired
+- [uv](https://docs.astral.sh/uv/) for dependency management with a committed lock file
+- Helm chart configured for preview, AAT, and sandbox environments
+- Jenkinsfiles for the common pipeline (CI, nightly, parameterized)
+- `sonar-project.properties` for SonarCloud analysis
+- GitHub Actions CI workflow
+- HMCTS base Docker image
+
+---
+
+## How do I run the service locally?
+
+See [Running locally](https://github.com/hmcts/fastapi-template-github#running-locally) and [Running locally via Docker](https://github.com/hmcts/fastapi-template-github#running-locally-via-docker) in the template README.
+
+---
+
+## How do I run tests?
+
+See [Running tests](https://github.com/hmcts/fastapi-template-github#running-tests) in the template README.
+
+Test types and their directories (`tests/unit/`, `tests/smoke/`, `tests/functional/`) are documented there. The Jenkins pipeline runs unit tests with coverage automatically and uploads results to SonarCloud.
+
+---
+
+## How does the Jenkins pipeline work?
+
+Python services use the same common pipeline as Java and Node services. Configure your `Jenkinsfile_CNP`:
+
+```groovy
+@Library("Infrastructure")
+
+def type = "python"
+def product = "my-product"
+def component = "my-component"
+
+withPipeline(type, product, component) {}
+```
+
+### Pipeline stages
+
+| Stage | Runs on | What happens |
+|---|---|---|
+| Checkout | PR + master | Checks out the repo |
+| Build | PR + master | `uv sync` — installs all dependencies |
+| Unit tests + Sonar | PR + master | `pytest tests/unit` with coverage, then SonarCloud scan |
+| Security check | PR + master | `uv audit` — fails build if vulnerabilities found, archives `uv-audit-report.json` |
+| Docker build | PR + master | Builds and pushes image to ACR |
+| Terraform plan - preview | PR | Runs a Terraform plan against preview infrastructure (only if `infrastructure/` folder exists) |
+| Deploy to preview | PR | Deploys to preview AKS, runs smoke and functional tests |
+| Build infrastructure - AAT | master | Applies Terraform for AAT infrastructure (only if `infrastructure/` folder exists) |
+| Deploy to AAT | master | Deploys to AAT, runs smoke and functional tests |
+| Build infrastructure - production | master | Applies Terraform for production infrastructure (only if `infrastructure/` folder exists) |
+| Deploy to production | master | Promotes image and deploys to production |
+
+### Nightly pipeline
+
+Configure `Jenkinsfile_nightly` for nightly test runs against a live environment. The nightly pipeline runs smoke and functional tests but does not build or deploy.
+
+### Parameterized pipeline
+
+Configure `Jenkinsfile_parameterized` for on-demand deployments to a specific environment. Useful for deploying infrastructure changes or running targeted deployments without a full CI build.
+
+---
+
+## How do I deploy to an environment?
+
+### Helm chart values files
+
+Your application's Helm chart lives in `charts/{product}-{component}/` in the app repo. Configuration is split across several files:
+
+| File | Purpose |
+|---|---|
+| `values.yaml` | Default values — should produce a working chart on its own |
+| `values.preview.template.yaml` | Overrides for preview deployments (Jenkins substitutes `${IMAGE_NAME}` and `${SERVICE_FQDN}`) |
+| `values.aat.template.yaml` | Overrides for AAT deployments |
+| `values.sandbox.template.yaml` | Overrides for sandbox deployments |
+
+The `values.preview.template.yaml` is a good place to point preview deployments at fixed AAT instances of upstream services your component depends on.
+
+See the [chart-python README](https://github.com/hmcts/chart-python) for the full list of configurable values, including environment variables, Key Vault secret mounting, health check configuration, and HPA.
+
+### Registering in flux for AKS deployment
+
+Long-running environment deployments are managed by Flux, not Jenkins. Once your service is working in preview, register it in the appropriate flux config repo:
+
+- **CFT clusters:** [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) — see the [app deployment guide](https://github.com/hmcts/cnp-flux-config/blob/master/docs/app-deployment-v2.md)
+- **SDS clusters:** [sds-flux-config](https://github.com/hmcts/sds-flux-config) — follows the same process as cnp-flux-config
+
+---
+
+## How do I manage dependencies?
+
+See [Managing dependencies](https://github.com/hmcts/fastapi-template-github#managing-dependencies) in the template README.
+
+One platform-specific note: the Docker build uses `uv sync --locked`, so the `uv.lock` file must always be committed and up to date. The pipeline build will fail if it is missing or out of sync.
+
+---
+
+## What Python version should I use?
+
+The pipeline currently supports **Python 3.13**. Supported versions are defined in [`PythonBuilder.groovy`](https://github.com/hmcts/cnp-jenkins-library/blob/master/src/uk/gov/hmcts/contino/PythonBuilder.groovy).
+
+Declare your version in a `.python-version` file in the repository root:
+
+```
+3.13
+```
+
+This file is used by uv to select the correct Python version when creating virtual environments locally and in CI.
+
+### Version nagger
+
+The pipeline checks your `.python-version` on every build. If the version is unsupported or the file is missing, a warning is added to the build. Once a deprecation deadline is set centrally, builds will start failing — watch for Slack notices from the pipeline.
+
+---
+
+## How does security scanning work?
+
+See [Security scanning](https://github.com/hmcts/fastapi-template-github#security-scanning) in the template README.
+
+In the Jenkins pipeline, `uv audit` runs on every build. If vulnerabilities are found, the build fails and a `uv-audit-report.json` artifact is attached to the Jenkins build with full details.
+
+---
+
+## How do I enable Application Insights?
+
+See [Application Insights](https://github.com/hmcts/cnp-python-base#application-insights) in the cnp-python-base README. The base image has telemetry pre-wired via OpenTelemetry — no application code changes are required.

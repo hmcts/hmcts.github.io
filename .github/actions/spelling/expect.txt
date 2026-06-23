@@ -1,7 +1,6 @@
 aabtenhae
 abfwhrf
 acedcyeygkgk
-apparmor
 aqda
 ard
 aso
@@ -31,6 +30,7 @@ egd
 ejdt
 enhbenftckhu
 ercybwaubzbmfn
+fastapi
 fasterxml
 FBD
 FFREd
@@ -53,13 +53,14 @@ hpfvc
 htmlq
 HXAAAAAAD
 ico
-Intellij
 ISP
 Jenkinsfiles
 keyring
 knowledgebase
 mdv
 MQBFZ
+mycomponent
+myproduct
 nameserver
 nfunction
 oathtool
@@ -75,10 +76,9 @@ platopslackhelpbotai
 pnp
 popd
 postgres
-PTRACE
 pushd
+pytest
 QLDTj
-RAWIO
 Rthnz
 scp
 totp

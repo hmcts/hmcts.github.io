@@ -13,7 +13,10 @@ task :check_urls do
                 # This is a url that's generated each time we build the html by tech-docs-gem but does not exist
                 %r{https://github.com/hmcts/hmcts.github.io/blob/main/source/search/index.html},
                 # This handles new files that haven't been merged to master branch yet for this repo in a PR
-                %r{(?=.*hmcts.github.io)(?=.*github)}
+                %r{(?=.*hmcts.github.io)(?=.*github)},
+                # Private repos return 404 to unauthenticated requests when the URL contains an anchor (#)
+                # as the rewrite to raw.githubusercontent.com is skipped for anchor URLs
+                %r{https://github.com/hmcts/azure-platform-terraform}
             ]
         })
 
