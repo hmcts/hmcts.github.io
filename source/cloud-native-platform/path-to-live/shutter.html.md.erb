@@ -140,7 +140,21 @@ For shuttering purposes if you need to shutter an A record it **must** have one 
 - **shutter_resource_id**
 - **alias_target_resource_id**
 
-This is a requirement and failing to set one of these values on your A record before shuttering will result in the CI pipelines failing and your site may be in a limbo state until reverted or updated and re-run.
+Here you can see an example of an A record that uses [both](https://github.com/hmcts/azure-public-dns/blob/master/environments/prod/apply-to-adopt-a-child-placed-in-your-care-service-gov-uk.yml#L8).
+
+- You can see that the A record is an Alias, because it uses **alias_target_resource_id** instead of an IP **record** and it also has a **shutter_resource_id** entry that points to an Azure Static Web App which is discussed in the [implementation](#implementation) section.
+
+Setting **shutter_resource_id** you can use the following format:
+
+    shutter_resource_id = /subscriptions/<subId>/resourceGroups/cft-platform-shutter-webapp-<env>-rg/providers/Microsoft.Web/staticSites/<service name>
+
+Where you should replace:
+
+- subId = subscription Id where the static WebApp is stored, this will match the environment that you are deploying the shutter for e.g. An `sbox deployed app` = `DCD-CFTAPPS-SBOX` = `b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb`
+- env - the `environment` name for the resource group that contains the web app, again this will be the same as the environment for the app being shuttered
+- service name - This will match the name of your application. For example based on the example linked above, the static web app name is `adoption`
+
+**This is a requirement and failing to set one of these values on your A record before shuttering will result in the CI pipelines failing and your site may be in a limbo state until reverted or updated and re-run.**
 
 ### Shuttering CNAME record types
 
