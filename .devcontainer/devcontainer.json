@@ -2,7 +2,8 @@
   "name": "Middleman Preview",
 
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": ".."
   },
 
   "features": {
