@@ -1,10 +1,7 @@
 {
   "name": "Middleman Preview",
 
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3",
 
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
@@ -14,12 +11,5 @@
 
   "forwardPorts": [4567],
 
-  "postStartCommand": "bundle exec middleman server -p 4567 -h 0.0.0.0 --incremental",
-
-  "portsAttributes": {
-    "4567": {
-      "label": "Middleman Preview",
-      "onAutoForward": "openBrowser"
-    }
-  }
+  "postCreateCommand": "bundle install && bundle exec middleman server"
 }
