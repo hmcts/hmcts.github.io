@@ -11,7 +11,5 @@
 
   "forwardPorts": [4567],
 
-  "postCreateCommand": "bundle install",
-
-  "postStartCommand": "bundle exec middleman server -p 4567 -h 0.0.0.0"
+  "postCreateCommand": "bundle install && bundle exec middleman build"
 }
