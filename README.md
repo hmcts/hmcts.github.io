@@ -1,21 +1,18 @@
 # The HMCTS Way
 
-<a href="https://gitpod.io/#https://github.com/hmcts/hmcts.github.io">
-  <img
-    src="https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod"
-    alt="Contribute with Gitpod"
-  />
-</a>
+Source for [The HMCTS Way](https://hmcts.github.io) — technical documentation for engineering teams across HMCTS (His Majesty's Courts and Tribunals Service).
 
 ## Getting started
 
 There are two ways to run this site locally: Gitpod (no setup required) or a local installation.
 
-### Gitpod (recommended)
+### GitHub Codespaces
 
-Gitpod gives you a ready-to-use dev environment in your browser with no local setup needed.
+GitHub Codespaces gives you a ready-to-use dev environment in your browser with no local setup needed. The dev container installs all dependencies automatically, this can take a few minutes on first load.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/hmcts/hmcts.github.io)
+Once setup is complete, run `bundle exec middleman server` in the terminal, then open the site using the globe icon next to port 4567 in the **Ports** panel.
+
+![The VS Code Ports panel showing port 4567 forwarded for the Middleman preview server](source/images/ports.png)
 
 ### Local installation
 
