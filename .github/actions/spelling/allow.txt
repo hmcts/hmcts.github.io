@@ -345,3 +345,7 @@ yamls
 yml
 zalando
 zeitwerk
+finops
+Codespaces
+Customisation
+devcontainers
