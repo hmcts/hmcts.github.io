@@ -4,7 +4,7 @@ Source for [The HMCTS Way](https://hmcts.github.io) — technical documentation 
 
 ## Getting started
 
-There are two ways to run this site locally: Gitpod (no setup required) or a local installation.
+There are two ways to run this site locally: GitHub Codespaces (no setup required) or a local installation.
 
 ### GitHub Codespaces
 
@@ -12,7 +12,7 @@ GitHub Codespaces gives you a ready-to-use dev environment in your browser with 
 
 Once setup is complete, run `bundle exec middleman server` in the terminal, then open the site using the globe icon next to port 4567 in the **Ports** panel.
 
-![The VS Code Ports panel showing port 4567 forwarded for the Middleman preview server](source/images/ports.png)
+<img src="source/images/ports.png" alt="The VS Code Ports panel showing port 4567 forwarded for the Middleman preview server, with the Open in Browser icon highlighted" width="400">
 
 ### Local installation
 
