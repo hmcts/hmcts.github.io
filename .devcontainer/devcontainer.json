@@ -1,0 +1,11 @@
+{
+  "name": "Ruby Middleman",
+
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3",
+
+  "forwardPorts": [4567],
+
+  "postCreateCommand": "bundle install",
+
+  "postStartCommand": "bundle exec middleman server -p 4567 -h 0.0.0.0"
+}
