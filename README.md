@@ -11,24 +11,24 @@
 
 There are two ways to run this site locally: Gitpod (no setup required) or a local installation.
 
-### Option 1: Gitpod (recommended)
+### Gitpod (recommended)
 
 Gitpod gives you a ready-to-use dev environment in your browser with no local setup needed.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/hmcts/hmcts.github.io)
 
-### Option 2: Local installation
+### Local installation
 
-**Prerequisites:** macOS ships with an old system Ruby that won't work here. You need Ruby 3.3.0, managed via [rbenv].
+**Prerequisites:** macOS ships with an old system Ruby that won't work here. You need the version specified in [`.ruby-version`](.ruby-version), managed via [rbenv].
 
-**1. Install rbenv and Ruby 3.3.0**
+**1. Install rbenv and the required Ruby version**
 
 ```bash
 brew install rbenv ruby-build
 echo 'eval "$(rbenv init - zsh)"' >> ~/.zshrc
 source ~/.zshrc
-rbenv install 3.3.0
-rbenv local 3.3.0
+rbenv install        # reads the version from .ruby-version automatically
+rbenv rehash         # makes the new ruby commands available in your terminal
 ```
 
 **2. Install dependencies**
