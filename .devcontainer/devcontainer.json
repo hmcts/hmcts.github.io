@@ -1,7 +1,13 @@
 {
-  "name": "Ruby Middleman",
+  "name": "Middleman Preview",
 
   "image": "mcr.microsoft.com/devcontainers/ruby:3.3",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
 
   "forwardPorts": [4567],
 
