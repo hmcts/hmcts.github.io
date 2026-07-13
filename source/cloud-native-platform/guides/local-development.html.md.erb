@@ -1,0 +1,120 @@
+# Local Development
+
+Pipeline checks should be reproducible on a developer's machine. Running checks locally provides several benefits:
+
+- Faster feedback: Identify issues quicker than waiting for a CI run.
+- Higher productivity: Iterate quickly without repeatedly committing changes to trigger pipelines.
+- Greater confidence: Validate changes before opening a pull request.
+
+## What should be runnable locally
+
+As a minimum, developers should be able to run:
+
+- Linting and formatting
+- Static analysis
+- Security scans
+- Dependency checks
+- Terraform validation and planning
+- Build/package steps
+- Unit tests
+- Integration tests (where practical)
+
+## How to run locally
+
+Use the examples below to run the same types of checks locally before opening a PR.
+
+| Stack | Build/package steps | Unit tests | Linting and formatting | Static analysis | Security and dependency checks | Terraform validation and planning |
+|---|---|---|---|---|---|---|---|
+| Node.js | Follow the instructions in the [Express template](https://github.com/hmcts/expressjs-template#running-the-application) | Follow the [Running tests for Express](https://github.com/hmcts/expressjs-template#running-the-tests) guidance | `yarn lint` | `yarn lint --fix`<br>`yarn prettier --write src/`<br>`yarn lint` | Follow the [SonarQube for frontend](#running-sonarqube-scan-locally) guidance | `yarn audit` | If `infrastructure/` exists in the project repo or if running from shared-infrastructure repo, follow the [Running Terraform](#running-terraform-locally) guidance |
+| Java (Gradle) | Follow the instructions in the [Spring Boot template](https://github.com/hmcts/spring-boot-template#building-and-deploying-the-application) | Follow the [Plugins for Spring Boot](https://github.com/hmcts/spring-boot-template#plugins) guidance | `./gradlew --no-daemon check` | Follow the [SonarQube for backend](#running-sonarqube-scan-locally) guidance | Follow the [OWASP Dependency Checks for backend](#running-dependency-checks-locally) guidance | If `infrastructure/` exists in the project repo or if running from shared-infrastructure repo, follow the [Running Terraform](#running-terraform-locally) guidance |
+
+> **Advice:**  If you are troubleshooting a pipeline failure, commands can often be copied from your Jenkins step and run locally.
+
+## Running SonarQube Scan Locally
+
+### For frontend (Node.js)
+
+1. [Create a user token](https://docs.sonarsource.com/sonarqube-server/10.0/user-guide/user-account/generating-and-using-tokens) in SonarQube.
+2. Navigate to your project root in the terminal and run the following command to set the token in your environment variables:
+
+    ```bash
+    export SONAR_TOKEN='user-token-value'
+    ```
+3. Run the SonarQube scan:
+
+    ```bash
+    yarn sonar-scan
+    ```
+
+### For backend (Java)
+1. [Create a user token](https://docs.sonarsource.com/sonarqube-server/10.0/user-guide/user-account/generating-and-using-tokens) in SonarQube.
+2. Navigate to your project root in the terminal and run the following command to set the token in your environment variables:
+
+    ```bash
+    export SONAR_TOKEN='user-token-value'
+    ```
+3. Run the SonarQube scan:
+
+    ```bash
+    ./gradlew --no-daemon sonarqube
+    ```
+
+## Running Dependency Checks Locally
+
+### For backend (Java)
+
+You will need to generate an NVD API key to run the OWASP Dependency Check locally, else they will take a long time to run. You can generate a key by following the instructions on the [NVD website](https://nvd.nist.gov/developers/request-an-api-key).
+
+To run a dependency check locally, execute the following command in the project root in your terminal:
+
+```bash
+./gradlew \
+  --no-daemon \
+  -PnvdApiKey=your-api-key \
+  dependencyCheckAggregate
+```
+
+This runs the OWASP Dependency Check without connecting to the OWASP database, you can optionally provide the parameters to connect to the OWASP database if you want to run a full scan:
+
+```bash
+ ./gradlew --no-daemon --stacktrace \
+    -DdependencyCheck.failBuild=true \
+    -Dnvd.api.check.validforhours=24 \
+    -Danalyzer.central.enabled=false \
+    -Ddata.driver_name=org.postgresql.Driver \
+    -Ddata.connection_string="${OWASPDB_V15_CONNECTION_STRING}" \
+    -Ddata.user="${OWASPDB_V15_ACCOUNT}" \
+    -Ddata.password="${OWASPDB_V15_PASSWORD}" \
+    -Danalyzer.retirejs.enabled=false \
+    -Danalyzer.ossindex.enabled=false \
+    dependencyCheckAggregate
+```
+
+## Running Terraform Locally
+
+To run Terraform locally, you need to have Terraform installed on your machine. See the [Terraform website](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli).
+
+You will need to authenticate with Azure using the Azure CLI. See the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli) for more information.
+
+To run Terraform checks locally, navigate to the `infrastructure/` directory or the root of the `shared-infrastructure` repo and run the commands below. 
+
+You will need to include variables specific to your service, to obtain the full command including these variables, navigate to the 'console output' of your pipeline in Jenkins and copy the commands from there. You will want to search for the following commands in the console output:
+
+```bash
+terraform --version
+terraform init
+terraform validate
+terraform plan
+```
+
+To format your Terraform files, run the following command:
+
+```bash
+terraform fmt -recursive
+``` 
+
+If you are using multiple versions of Terraform, you may want to use [tfenv](https://github.com/tfutils/tfenv) to manage your Terraform versions.
+
+```bash
+tfenv
+``` 
