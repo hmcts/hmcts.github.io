@@ -16,7 +16,7 @@ Any developer added to [hmcts org](https://github.com/hmcts) is able to create a
     - [expressjs-template](https://github.com/hmcts/expressjs-template)
     - Alternatively you can simply create a blank directory. If so, we recommend you draw inspiration from an existing working repository.
 3. Repository should be public. [Gov UK guidance](https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable)
-4. Do not add any collaborators outside organization. All access needs to be managed with GitHub teams and not users.
+4. Do not add any collaborators outside the organisation. All access needs to be managed with GitHub teams and not users.
 
     _Note: You need to remove the user level admin access you got while creating the repository after you have added your team admins with the admin role._
 

@@ -1,115 +1,80 @@
 # The HMCTS Way
 
-<a href="https://gitpod.io/#https://github.com/hmcts/hmcts.github.io">
-  <img
-    src="https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod"
-    alt="Contribute with Gitpod"
-  />
-</a>
+Source for [The HMCTS Way](https://hmcts.github.io) — technical documentation for engineering teams across HMCTS (His Majesty's Courts and Tribunals Service).
 
 ## Getting started
 
-To preview or build the website, there are two options.
+There are two ways to run this site locally: GitHub Codespaces (no setup required) or a local installation.
 
-### Gitpod
+### GitHub Codespaces
 
-Gitpod is the easiest way to develop on this repository; you will get a fresh automated dev environment without having to set anything up on your machine.
+GitHub Codespaces gives you a ready-to-use dev environment in your browser with no local setup needed. The dev container installs all dependencies automatically, this can take a few minutes on first load.
 
-Click the button below to get started:
+Once setup is complete, run `bundle exec middleman server` in the terminal, then open the site using the globe icon next to port 4567 in the **Ports** panel.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/hmcts/hmcts.github.io)
+<img src="source/images/ports.png" alt="The VS Code Ports panel showing port 4567 forwarded for the Middleman preview server, with the Open in Browser icon highlighted" width="400">
 
 ### Local installation
 
-##### below instructions will need to be modified to accomodate non-admin laptops
-e.g.
-gem install -user-install bundler
-bundle install --path ~/.gem                     
+**Prerequisites:** macOS ships with an old system Ruby that won't work here. You need the version specified in [`.ruby-version`](.ruby-version), managed via [rbenv].
 
+**1. Install rbenv and the required Ruby version**
 
-Install Ruby with Rubygems, preferably with a [Ruby version manager][rvm],
-and the [Bundler gem][bundler].
-
-In the application folder, type the following to install the required gems:
-
+```bash
+brew install rbenv ruby-build
+echo 'eval "$(rbenv init - zsh)"' >> ~/.zshrc
+source ~/.zshrc
+rbenv install        # reads the version from .ruby-version automatically
+rbenv rehash         # makes the new ruby commands available in your terminal
 ```
+
+**2. Install dependencies**
+
+```bash
+gem install bundler
 bundle install
 ```
 
 ## Making changes
 
-To make changes, edit the source files in the `source` folder.
+Edit the source files in the `source` folder. Each section of the site is an `.html.md.erb` file.
 
-### Single page output
+### Adding content to an existing page
 
-Although a single page of HTML is generated, the markdown is spread across
-multiple files to make it easier to manage. They can be found in
-`source/documentation`.
-
-A new markdown file isn't automatically included in the generated output. If we
-add a new markdown file at the location `source/documentation/agile/scrum.md`,
-the following snippet in `source/index.html.md.erb` includes it in the
-generated output.
+Content is split across multiple markdown files and manually included in `source/index.html.md.erb`. To add a new file (e.g. `source/documentation/agile/scrum.md`), add this line in the appropriate place in that file:
 
 ```
 <%= partial 'documentation/agile/scrum' %>
 ```
 
-Including files manually like this lets us specify the position they appear in
-the page.
+### Adding a new page
 
-### Multiple pages
-
-To add a completely new page, create a file with a `.html.md` extension in the `/source` directory.
-
-For example, `source/about.html.md` will be accessible on <http://localhost:4567/about.html>.
+Create a file with a `.html.md` extension anywhere in the `source` directory. For example, `source/about.html.md` will be served at <http://localhost:4567/about.html>.
 
 ## Preview
 
-Whilst writing documentation we can run a middleman server to preview how the
-published version will look in the browser. After saving a change, the preview in
-the browser will be refreshed automatically.
+Start a local server that auto-reloads when you save changes:
 
-The preview is only available on our own computer. Others won't be able to
-access it if they are given the link.
-
-Type the following to start the server:
-
-```
+```bash
 bundle exec middleman server
 ```
 
-If all goes well, something like the following output will be displayed:
-
-```
-== The Middleman is loading
-== LiveReload accepting connections from ws://192.168.0.8:35729
-== View your site at "http://Laptop.local:4567", "http://192.168.0.8:4567"
-== Inspect your site configuration at "http://Laptop.local:4567/__middleman", "http://192.168.0.8:4567/__middleman"
-```
-
-You should now be able to view a live preview at http://localhost:4567.
+Then open <http://localhost:4567> in your browser.
 
 ## Build
 
-If you want to publish the website without using a build script, you may need to
-build the static HTML files.
+To generate static HTML files (e.g. to publish without a build script):
 
-Type the following to build the HTML:
-
-```
+```bash
 bundle exec middleman build
 ```
 
-This will create a `build` subfolder in the application folder which contains
-the HTML and asset files ready to be published.
-
-[rvm]: https://www.ruby-lang.org/en/documentation/installation/#managers
-[bundler]: http://bundler.io/
+This creates a `build` folder containing the compiled HTML and assets.
 
 ## Publishing
 
-Run:
-```
+```bash
 bundle exec rake publish
 ```
+
+[rbenv]: https://github.com/rbenv/rbenv

@@ -10,14 +10,14 @@ weight: 3
 
 ## Context
 
-By prioritizing frontend performance, governments can ensure that their online services are accessible, efficient, and user-friendly for all citizens, regardless of their device or connection. This fosters inclusivity, improves user satisfaction, and ultimately contributes to a more effective and trusted government. This aligns very closely with the topic of Frontend Performance in the [GDS Way](https://gds-way.digital.cabinet-office.gov.uk/standards/optimise-frontend-perf.html) and the [Service Manual](https://www.gov.uk/service-manual/technology/how-to-test-frontend-performance). Creating services that are performant is also a fundamental skill of being a [Frontend Developer](https://ddat-capability-framework.service.gov.uk/role/frontend-developer) in the Civil Service, according to the [Government Digital and Data Profession Capability Framework](https://ddat-capability-framework.service.gov.uk/).
+By prioritising frontend performance, governments can ensure that their online services are accessible, efficient, and user-friendly for all citizens, regardless of their device or connection. This fosters inclusivity, improves user satisfaction, and ultimately contributes to a more effective and trusted government. This aligns very closely with the topic of Frontend Performance in the [GDS Way](https://gds-way.digital.cabinet-office.gov.uk/standards/optimise-frontend-perf.html) and the [Service Manual](https://www.gov.uk/service-manual/technology/how-to-test-frontend-performance). Creating services that are performant is also a fundamental skill of being a [Frontend Developer](https://ddat-capability-framework.service.gov.uk/role/frontend-developer) in the Civil Service, according to the [Government Digital and Data Profession Capability Framework](https://ddat-capability-framework.service.gov.uk/).
 
 
 ## Use a CDN
 
-Using a Content Delivery Network (CDN) is essential for optimal frontend performance. By mirroring website assets across its network, a CDN serves content from the geographically closest server, minimizing HTTP connection time and accelerating asset downloads. This is crucial, as a browser can only download assets after establishing an HTTP connection.
+Using a Content Delivery Network (CDN) is essential for optimal frontend performance. By mirroring website assets across its network, a CDN serves content from the geographically closest server, minimising HTTP connection time and accelerating asset downloads. This is crucial, as a browser can only download assets after establishing an HTTP connection.
 
-CDNs are essential for fast page loads, as they minimize a user's Time to First Byte (TTFB).
+CDNs are essential for fast page loads, as they minimise a user's Time to First Byte (TTFB).
 
 **Important Note**: Given most HMCTS users are likely UK-based, this recommendation is low priority.
 
@@ -127,7 +127,7 @@ HTTP range requests allow clients to fetch only specific parts of a resource, ra
  * **Resuming interrupted downloads**: If a download fails, the client can request the remaining portion instead of restarting. e.g. PDF's
  * **Large file downloads**: Clients can download parts in parallel for faster speeds.
 
- Once implimented range requests optimize bandwidth usage and improve user experience in various scenarios. For more information on range requests see the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests).
+ Once implimented range requests optimise bandwidth usage and improve user experience in various scenarios. For more information on range requests see the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests).
 
 ## Frontdoor Caching
 
