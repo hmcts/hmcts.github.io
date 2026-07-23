@@ -1,0 +1,43 @@
+---
+title: Pipeline Best Practices
+last_reviewed_on: 2026-07-21
+review_in: 12 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+## Pipeline goals
+
+CI/CD pipelines exist to provide developers with fast, reliable feedback and to automate the delivery of software safely. Our pipelines should strive to meet the following goals.
+
+- **Simple**: The pipeline should be easy to understand. A new engineer should be able to follow its flow without needing extensive documentation.
+- **Maintainable**: Changes should be straightforward to make. Common functionality should be defined once and reused rather than duplicated.
+- **Reusable**: Pipeline components should be shared across repositories where practical to encourage consistency and reduce maintenance.
+- **Testable**: Pipeline logic should be easy to validate, and changes should be verifiable before they affect production workflows.
+- **Reliable**: Pipelines should produce deterministic results and fail only when there is a genuine problem, not because of flaky infrastructure or hidden dependencies. Pipelines should minimise hard dependencies on external services and should have a documented failure strategy for third-party outages.
+- **Secure**: Follow the principle of least privilege, protect secrets, and integrate security checks into the delivery process.
+- **Fast**: Provide feedback as quickly as possible. Optimise for developer feedback time through parallelism, caching, and efficient workflow design.
+
+## Design principles
+
+Pipelines should follow the Unix philosophy: compose small, focused steps that each do one thing well. Pipelines are responsible for orchestrating the software delivery process, not implementing business logic.
+
+Specifically:
+
+- **Single responsibility**: Each step should have one clearly defined purpose.
+- **Composition**: Steps should be reusable and composable across multiple pipelines.
+- **Orchestration over implementation**: Business logic belongs in the application or tooling, not in pipeline configuration.
+- **Explicit interfaces**: Every step should have well-defined inputs and outputs, making it easy to understand, test, and reuse in isolation.
+- **Local reproducibility**: Anything that runs in CI should also be [runnable locally](https://hmcts.github.io/cloud-native-platform/guides/local-development.html) with equivalent inputs and outputs.
+- **DRY**: Avoid duplicating steps or logic. Extract common functionality into reusable components.
+- **Declarative over imperative**: Prefer describing what should happen rather than embedding imperative scripts where possible.
+- **Explicit data flow**: Steps should communicate through well-defined inputs and outputs (artifacts, environment variables, or parameters), rather than hidden state or side effects.
+- **Fail fast**: Validate configuration and execute quick feedback checks early so developers receive failures as soon as possible.
+- **Deterministic execution**: Given the same inputs, a pipeline should produce the same outputs regardless of where or when it runs.
+
+## When to create a new pipeline
+
+When starting a new project, the preferred approach is to adopt the [Jenkins Common Pipeline](https://hmcts.github.io/cloud-native-platform/common-pipeline/#the-common-pipeline) rather than building a new pipeline from scratch.
+
+Using a common pipeline promotes consistency across projects, reduces duplication, simplifies maintenance, and allows improvements to benefit all consumers. A new pipeline should only be created when the project's requirements cannot be met by the common pipeline or would require changes that are not broadly applicable.

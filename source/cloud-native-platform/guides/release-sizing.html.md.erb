@@ -1,0 +1,54 @@
+---
+title: Release Categorisation
+last_reviewed_on: 2026-07-16
+review_in: 6 months
+weight: 10
+hide_in_navigation: true
+---
+
+# Release Categorisation
+
+This page is to help service teams decide on the size and scope of a release. Peer approval, via pull request reviews, is required for all releases, and should be considered the default approach for releasing changes to Production. However, some releases may require additional governance and review, depending on their size and impact.
+
+### Large
+
+1. SecOps involvement required for the release to proceed (ITHC)
+2. New interfaces with other common components or DTS services or new 3rd Party (Support Model)
+3. This is the first release of a new service / common component (Support Model)
+
+### Medium
+
+1. Altered interfaces with other common components / services / existing 3rd parties 
+2. Platform-level infrastructure changes affecting other services
+3. An outage is required for other services
+4. The change affects the use of data, introduces new data, or changes storage needs for data
+5. Performance Testing is required
+6. The change is legislative or requires practice orders/directions
+7. The change impacts multiple code repositories
+8. There are changes to the support of the service as a result of this release
+
+### Small
+
+1. An outage is required only to your own service
+2. The business feature/change impacts users beyond the boundary of your service/jurisdiction
+3. The change affects the Court & Tribunals Service Centre (Implementation Working Group)
+4. If this is a security release, there is a CVE with a risk rating of 9 and above
+
+### Peer approval (CI/CD)
+
+1. The business feature/change only impacts users of your service/jurisdiction
+2. The change impacts only one code repository
+
+## Release Governance per Category
+
+| Impact | ServiceNow Request for Change | Scheduled in Forward Schedule of Releases | Tech Readiness | Implementation Plan | Release Management On-Call Support | Service Transition Tickets | OATs | Review QA Report |
+|---|---|---|---|---|---|---|---|---|
+| **Large** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Medium** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **Small** | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Peer Approved** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+
+✅ = Required 
+❌ = Not Required
+
+More information on the above can be found in the [Release Management Process Guide](https://tools.hmcts.net/confluence/spaces/RSTR/pages/1663960545/RM+Processes).
