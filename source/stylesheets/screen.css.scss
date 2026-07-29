@@ -5,6 +5,61 @@ $govuk-font-family: nta, Helvetica, sans-serif;
   margin-left: 0;
 }
 
+.toc-nested-collapsible {
+  position: relative;
+}
+
+.toc-nested-collapsible__body {
+  display: none;
+
+  .toc-nested-collapsible.is-open > & {
+    display: block;
+  }
+}
+
+.toc-nested-collapsible__heading {
+  margin-right: 30px;
+}
+
+.toc-nested-collapsible__toggle {
+  position: absolute;
+  top: 0;
+  right: -25px;
+  width: 50px;
+  height: 40px;
+  overflow: hidden;
+  text-indent: -999em;
+  border: 0;
+  background: 0;
+  color: inherit;
+  padding: 0;
+
+  &:focus {
+    @include govuk-focused-text;
+  }
+}
+
+.toc-nested-collapsible__toggle-icon {
+  position: absolute;
+  top: 0;
+  right: 20px;
+
+  &::after {
+    content: '';
+    display: block;
+    border: 2px solid govuk-colour("black");
+    border-width: 2px 2px 0 0;
+    transform: rotate(135deg);
+    width: 10px;
+    height: 10px;
+    margin-top: 10px;
+  }
+
+  .toc-nested-collapsible.is-open > .toc-nested-collapsible__toggle &::after {
+    transform: rotate(315deg);
+    margin-top: 18px;
+  }
+}
 
 
 // =========================================================

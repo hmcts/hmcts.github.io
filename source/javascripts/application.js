@@ -126,3 +126,124 @@ var $tabs = document.querySelectorAll('[data-module="app-tabs"]');
 $tabs.forEach(function ($tabs) {
     new AppTabs($tabs).init();
 });
+
+function OnboardingNavigation ($module) {
+    this.$module = $module;
+    this.paths = [
+        '/cloud-native-platform/onboarding/',
+        '/cloud-native-platform/onboarding/person/',
+        '/cloud-native-platform/onboarding/team/'
+    ];
+}
+
+OnboardingNavigation.prototype.init = function () {
+    if (!this.$module) {
+        return;
+    }
+
+    this.paths.forEach(function (path) {
+        this.enhanceItem(path);
+    }, this);
+
+    this.openCurrentBranch();
+};
+
+OnboardingNavigation.prototype.enhanceItem = function (path) {
+    var $link = this.findLink(path);
+
+    if (!$link || !$link.parentNode) {
+        return;
+    }
+
+    var $item = $link.parentNode;
+    var $list = this.findDirectList($item);
+
+    if (!$list || $item.classList.contains('toc-nested-collapsible')) {
+        return;
+    }
+
+    var id = 'toc-nested-' + path.replace(/^\/|\/$/g, '').replace(/\//g, '-');
+    $list.id = $list.id || id;
+    $list.classList.add('toc-nested-collapsible__body');
+    $link.classList.add('toc-nested-collapsible__heading');
+    $item.classList.add('toc-nested-collapsible');
+
+    $link.insertAdjacentElement('afterend', this.buildButton($item, $link, $list.id));
+};
+
+OnboardingNavigation.prototype.buildButton = function ($item, $link, listId) {
+    var $button = document.createElement('button');
+    var $label = document.createElement('span');
+    var $icon = document.createElement('span');
+
+    $button.type = 'button';
+    $button.classList.add('toc-nested-collapsible__toggle');
+    $button.setAttribute('aria-expanded', 'false');
+    $button.setAttribute('aria-controls', listId);
+
+    $label.classList.add('toc-nested-collapsible__toggle-label');
+    $label.textContent = 'Expand ' + $link.textContent;
+    $icon.classList.add('toc-nested-collapsible__toggle-icon');
+    $icon.setAttribute('aria-hidden', 'true');
+
+    $button.appendChild($label);
+    $button.appendChild($icon);
+
+    $button.addEventListener('click', function (event) {
+        event.preventDefault();
+        this.toggleItem($item);
+    }.bind(this));
+
+    return $button;
+};
+
+OnboardingNavigation.prototype.findLink = function (path) {
+    var $links = this.$module.querySelectorAll('a[href]');
+
+    for (var i = 0; i < $links.length; i++) {
+        if (this.getAbsolutePath($links[i]) === path) {
+            return $links[i];
+        }
+    }
+};
+
+OnboardingNavigation.prototype.findDirectList = function ($item) {
+    for (var i = 0; i < $item.children.length; i++) {
+        if ($item.children[i].tagName.toLowerCase() === 'ul') {
+            return $item.children[i];
+        }
+    }
+};
+
+OnboardingNavigation.prototype.getAbsolutePath = function ($link) {
+    return new URL($link.getAttribute('href'), window.location.href).pathname;
+};
+
+OnboardingNavigation.prototype.openCurrentBranch = function () {
+    var currentPath = window.location.pathname;
+    var $items = this.$module.querySelectorAll('.toc-nested-collapsible');
+
+    $items.forEach(function ($item) {
+        var $links = $item.querySelectorAll('a[href]');
+        var containsCurrentPage = Array.prototype.some.call($links, function ($link) {
+            return this.getAbsolutePath($link) === currentPath;
+        }, this);
+
+        if (containsCurrentPage) {
+            this.toggleItem($item, true);
+        }
+    }, this);
+};
+
+OnboardingNavigation.prototype.toggleItem = function ($item, setOpen) {
+    var $link = $item.querySelector('a[href]');
+    var $button = $item.querySelector('.toc-nested-collapsible__toggle');
+    var $label = $item.querySelector('.toc-nested-collapsible__toggle-label');
+    var isOpen = typeof setOpen === 'boolean' ? setOpen : !$item.classList.contains('is-open');
+
+    $item.classList.toggle('is-open', isOpen);
+    $button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    $label.textContent = (isOpen ? 'Collapse ' : 'Expand ') + $link.textContent;
+};
+
+new OnboardingNavigation(document.querySelector('#toc')).init();
