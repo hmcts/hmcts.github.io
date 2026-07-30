@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting issues
-last_reviewed_on: 2026-01-15
+last_reviewed_on: 2026-07-29
 review_in: 6 months
 weight: 98
 ---
@@ -10,10 +10,10 @@ weight: 98
 ## Table of Contents
 
 - [GitHub](#github)
-- [Receiving an email regarding inactive account](#receiving-an-email-regarding-inactive-account)
+- [Microsoft Entra ID and account access](#microsoft-entra-id-and-account-access)
 - [Jenkins](#jenkins)
 - [Debug Application Startup issues in AKS](#debug-application-startup-issues-in-aks)
-- [F5 VPN not connecting or services not available over VPN that should be](#f5-vpn-not-connecting-or-services-not-available-over-vpn-that-should-be)
+- [VPN](#vpn)
 - [Flux and Gitops](#flux-and-gitops)
 - [Connecting to AKS Clusters](#connecting-to-aks-clusters)
 - [Golden Path](#golden-path)
@@ -21,45 +21,12 @@ weight: 98
 ## GitHub
 ---
 
-### Adding a new user on GitHub
+GitHub troubleshooting has moved to the [GitHub onboarding troubleshooting section](/cloud-native-platform/onboarding/person/github.html#troubleshooting).
 
-- See [GitHub Onboarding](/cloud-native-platform/onboarding/team/github.html#access) for how to get access
-- Make sure the user has accepted the invite received on the email setup in Github or by visiting [github.com/hmcts](https://github.com/hmcts).
-
-### Creating a new GitHub repository
-
-See [create a GitHub repository](../new-component/github-repo.html#)
-
-### Access to GitHub Repo
-
-- All repositories should be administered by the team who owns it.
-- Access should be managed through GitHub teams and not individuals.
-- If no one from your team have access, follow [asking for help](/cloud-native-platform/asking-for-help/#asking-for-help) to request org admins in one of the community/ support channels.
-
-## Receiving an email regarding inactive account
+## Microsoft Entra ID and account access
 ---
 
-You may have received an email from our scheduled pipeline which deletes guest user accounts if they're inactive for longer than 31 days.
-
-### Account close to being deleted
-
-Users who are within a week of being deleted get notified via email on the lead up to the deletion date, starting 7 days before.
-
-If you have received an email about your account being close to being deleted because of inactivity, that is because you haven't logged into the `CJS Common Platform` Azure Tenant for a while and need to do so now to keep your access.
-
-Please don't ignore this email if you use the `CJS Common Platform` Tenant or GitHub as you will lose access to both if you don't log in.
-
-To extend your access, visit the [CJS Common Platform Azure portal](https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082).
-
-Login link: [CJS Common Platform](https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082)
-
-*Note:* We're looking into fixing this soon so that as long as you're active in either GitHub or the `CJS Common Platform` Tenant you will not lose access.
-
-### Account has been deleted
-
-If your account has been deleted and you need it re-enabled, you need to create a ticket via slack in the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) channel and someone will send you another guest invite.
-
-Once that is done you will then be able to get your GitHub access back by asking one of your team members to re-add you following [person onboarding](/cloud-native-platform/onboarding/person/).
+Troubleshooting for inactive account emails, deleted tenant accounts, guest invitations and access groups has moved to [Microsoft Entra ID troubleshooting](/cloud-native-platform/onboarding/person/entra-id.html#troubleshooting).
 
 ## Jenkins
 ---
@@ -70,7 +37,7 @@ Once that is done you will then be able to get your GitHub access back by asking
 
 ### Cannot login to Jenkins
 
-  - Login to Jenkins is managed by Microsoft Entra ID, please make sure user is added to right [Microsoft Entra ID groups](/cloud-native-platform/onboarding/person/#microsoft-entra-id-groups)
+  - Login to Jenkins is managed by Microsoft Entra ID. Follow [Jenkins person onboarding](/cloud-native-platform/onboarding/person/jenkins.html) to check the user's access groups.
 
 ### You are now logged out of Jenkins/ Infinite loop when trying to login to Jenkins
 
@@ -78,7 +45,7 @@ Once that is done you will then be able to get your GitHub access back by asking
 
 ### Cannot see my new repo in Jenkins org / Dashboard
 
-  - See [Jenkins Onboarding section](/cloud-native-platform/onboarding/team/jenkins.html#jenkins) to add your app to Jenkins Org / Dashboard
+  - See [Jenkins setup](/cloud-native-platform/new-component/jenkins-repository.html) to add your app to the Jenkins organisation scan
 
 ### Cannot see my branch/PR or This project is currently disabled in Jenkins
 
@@ -163,13 +130,13 @@ When you want to send Jenkins pipeline notifications to a slack channel, you mus
 
 If you don't do this, you will receive the `channel_not_found` error message and the pipeline will fail.
 
-See the instructions on the [slack](/cloud-native-platform/onboarding/team/slack.html) section of the onboarding guide to find out how to do this.
+See the instructions on the [team Slack onboarding](/cloud-native-platform/onboarding/team/slack.html) section to add Jenkins to a build notices channel.
 
-If you are getting this message on a PR pipeline and the error also says `Failed to notify @U1234ABCD`, that means your github username has been mapped to an invalid slack id.
+If you are getting this message on a PR pipeline and the error also says `Failed to notify @U1234ABCD`, that means your GitHub username has been mapped to an invalid Slack ID.
 
-Find your slack id by clicking on `View profile` within the slack app, then click on the three dots and click `Copy member ID`.
+Find your Slack ID by clicking on `View profile` within the Slack app, then click on the three dots and click `Copy member ID`.
 
-Update your github to slack user mapping in [this file](https://github.com/hmcts/github-slack-user-mappings/blob/master/slack.json) and try running the pipeline again.
+Update your GitHub to Slack user mapping by following [Slack onboarding](/cloud-native-platform/onboarding/person/slack.html#github-to-slack-mapping) and try running the pipeline again.
 
 ### Sandbox Jenkins is not automatically picking up my changes
 
@@ -223,22 +190,10 @@ If this happens, simply run the master build manually on sandbox jenkins.
 
      ```
 
-## F5 VPN not connecting or services not available over VPN that should be
+## VPN
 ---
-Normally connecting to the VPN at [portal.platform.hmcts.net](https://portal.platform.hmcts.net) should work without issues.
 
-Occasionally there are issues where the VPN will hang on connecting or will connect but certain services will not be available over the VPN.
-
-The most common solution is to disable IPv6 on your device. This is because the F5 VPN has not been configured properly for IPv6 but services behind Azure Front Door
-are available over IPv6.
-
-The process to disable IPv6 will depend on your operating system, please choose the correct link below based on what your device uses:
-
-- [Windows](https://www.windowscentral.com/software-apps/windows-11/how-to-disable-tcpipv6-ipv6-on-windows-11)
-- [Mac OSX](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-macos)
-
-If that doesn’t work then make sure you’ve applied the latest operating system updates and tried restarting your device.
-If you’re still having issues then please raise a ticket in the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) channel.
+VPN access and troubleshooting has moved to [VPN onboarding](/cloud-native-platform/onboarding/person/vpn.html).
 
 ## Flux and Gitops
 ---
@@ -249,8 +204,8 @@ If you’re still having issues then please raise a ticket in the [#platops-help
 ### Latest image is not updated in cluster
 
 - Start with checking [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) to make sure flux has updated/ committed the image.
-- If image hasn't been committed to Github, see [ Flux did not commit latest image to Github](#flux-did-not-commit-latest-image-to-github).
-- If flux has committed the new image to Github, check if the `HelmRelease` has been updated by Flux. Run below command and check that the image tag has been updated in the output
+- If image hasn't been committed to GitHub, see [Flux did not commit latest image to GitHub](#flux-did-not-commit-latest-image-to-github).
+- If flux has committed the new image to GitHub, check if the `HelmRelease` has been updated by Flux. Run below command and check that the image tag has been updated in the output
 
     ```shell
     kubectl get hr -n <your-namespace> <your-helm-release-name> -o yaml
@@ -258,7 +213,7 @@ If you’re still having issues then please raise a ticket in the [#platops-help
 - If Image is not updated in above, [Change in git is not applied to cluster](#change-in-git-is-not-applied-to-cluster).
 - If the image tag is updated and still application pods are not deployed, see [Updated HelmRelease is not deployed to cluster](#updated-helmrelease-is-not-deployed-to-cluster)
 
-### Flux did not commit latest image to Github
+### Flux did not commit latest image to GitHub
 
    - Image automation is run from management cluster (CFTPTL). Please login to cftptl cluster before further troubleshooting.
    - Image reflector controller keeps polling ACR for new images, but it should generally update the new image in 10 minutes.
@@ -280,7 +235,7 @@ If you’re still having issues then please raise a ticket in the [#platops-help
     kubectl get imagepolicies -n flux-system <policy name(usually helm release name)>
     ```
    - If it doesn't match the expected tag, verify image reflector controller logs as described above.
-   - If the `imagepolicy` object returned shows the expected image, but it didn't commit to Github, check image automation controller logs.
+   - If the `imagepolicy` object returned shows the expected image, but it didn't commit to GitHub, check image automation controller logs.
 
     ```shell
     kubectl logs -n flux-system -l app=image-automation-controller
@@ -713,5 +668,3 @@ dependencies {
     }
 }
 ```
-
-

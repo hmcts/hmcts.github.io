@@ -1,6 +1,6 @@
 ---
 title: Feature flags
-last_reviewed_on: 2026-01-16
+last_reviewed_on: 2026-07-29
 review_in: 6 months
 weight: 99
 ---
@@ -30,7 +30,7 @@ End to end Process:
 ### Accessing LaunchDarkly
 
 Developers automatically get access by being part of 'DTS CFT Developers' or 'DTS SDS Developers', non-developers can get access with the 'DTS LaunchDarkly' group.
-see [onboarding](../onboarding/person/index.html) process to request access. You will need to login from [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net).
+See [Microsoft Entra ID](../onboarding/person/entra-id.html) to request access. You will need to login from [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net).
 
 After you've logged in once you will be able to login from [app.launchdarkly.com](https://app.launchdarkly.com/).
 
@@ -49,4 +49,3 @@ We currently provide 'Test' and 'Production' environments by default within Laun
 
 If your team does require additional environments, you can do this by updating your teams [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61). 
 It is not recommended to do this as targeting rules should be simpler to manage and ensure consistency across environments.
-

@@ -1,130 +1,19 @@
 ---
 title: Person
-last_reviewed_on: 2026-01-14
+last_reviewed_on: 2026-07-29
 review_in: 6 months
-weight: 2
+weight: 1
 ---
 
 # <%= current_page.data.title %>
 
-## Microsoft Entra ID Guest User Invite
+Use this section when adding a new starter to existing HMCTS Platform access:
 
-In order to give access to HMCTS resources, an account need to exist on the HMCTS Azure tenant.  If user have `@hmcts.net` account, this section could be skipped but for `@justice.gov.uk` account holder, they will need to be invited as guest user first to be able to add groups to their account otherwise the pipeline will throw error that User account does not exist.
-
-An existing teammate should create a pull request to [azure-access](https://github.com/hmcts/azure-access/blob/master/users/guest_user_invite.yml) and get it approved by Platform Operations.
-
-Once PR approved and merged, an automated email from the Microsoft will be sent out to the user to accept the invitation.
-
-[Example PR](https://github.com/hmcts/azure-access/pull/4439/files)
-
-## Microsoft Entra ID groups
-
-Microsoft Entra ID is used to give you and your team-mates access to specific subscriptions and resources in Azure.
-When your Microsoft Entra ID user has access to a subscription, you will be able to view, create and modify Azure resources for your team.
-
-As GitHub access is also provided by adding an Microsoft Entra ID Group, an existing teammate should create a pull request
-to [azure-access](https://github.com/hmcts/azure-access/blob/master/users/prod_users.yml) and get it approved by Platform Operations.
-
-The first user in a team should raise a [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) request with the required groups.
-
-To start with send the [acceptable use policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance) to the new starter.
-
-Then add these groups:
-
-```yaml
-# username is the part of the email before @ for hmcts.net users, e.g. mary.jayne
-# for justice.gov.uk users it's the full email, e.g. mary.jayne@justice.gov.uk
-- name: username
-  groups:
-  - DTS CFT Developers # or if you're working on SDS 'DTS SDS Developers', if you only need access to GitHub you can skip this
-  - DTS GitHub Access # if you need access to GitHub
-  - <your-team-group> # check other team members to find the group
-```
-
-These groups will give you access to:
-
-- [VPN](https://portal.platform.hmcts.net)
-- [LaunchDarkly](/cloud-native-platform/new-component/feature-flags.html#accessing-launchdarkly)
-- the [Azure Portal](https://portal.azure.com/)
-- application logs
-- [GitHub](https://github.com/orgs/hmcts/sso)
-
-Being a member of the `DTS CFT/SDS Developers` groups will allow you to request the [access package](https://myaccess.microsoft.com/@CJSCommonPlatform.onmicrosoft.com#/access-packages/e7cbb8d7-bd25-4d5a-8bbc-c94c03f1c827) that adds you to our list of people with security clearance.
-
-Being a member of the group that indicates you are security cleared is a pre-requisite for gaining access to certain sensitive resources so you should request the access package when you join.
-
-The access package expires after one year, so you will have to re-request it after one year by clicking the link above.
-
-There are checks in place on our [azure-access](https://github.com/hmcts/azure-access) pipeline to ensure certain groups require security clearance. If you have not requested the package and been approved, you will not be able to be added to groups that grant access to sensitive resources such as production environments.
-
-## GitHub
-
-Once you've joined the `DTS GitHub Access` Microsoft Entra ID group you will be able to join GitHub from your [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net) dashboard.
-
-GitHub teams are managed either by being [linked to a team Microsoft Entra ID group](https://docs.github.com/en/enterprise-cloud@latest/organizations/organizing-members-into-teams/synchronizing-a-team-with-an-identity-provider-group)
-or by a senior member of the team, ask them to add you to any team groups.
-
-Once you've joined GitHub make sure you add your user to the [Slack -> GitHub mapping](https://github.com/hmcts/github-slack-user-mappings).
-
-## Deploying your first application
-
-It's highly encouraged that all new Software Engineers deploy their first application now.
-
-We're creating a set of guides known as the 'Golden path' to help you do this.
-
-The purpose of these guides is:
-
-> The Golden Path is the opinionated and supported path to build your system and the Golden Path tutorial walks you through this path
-
-The available tutorials will guide you through deploying your first Java, Node.js or Python application and will help you make your first change to it:
-
-- [Golden path - Java](https://backstage.platform.hmcts.net/docs/default/component/golden-path-java)
-- [Golden path - Node.js](https://backstage.platform.hmcts.net/docs/default/component/golden-path-nodejs)
-- [Golden path - Python](https://backstage.hmcts.net/create/templates/default/fastapi-template)
-
-## Office 365
-
-You should have your Office 365 team through the Jira onboarding process, but ask your team lead to add you to any email groups.
-Often there's a `$team-developers@hmcts.net` and a `$team@hmcts.net` group.
-
-## Docker Business Licence
-
-In order to use Docker Desktop at HMCTS you need to have a business license, this is linked to your Docker Hub account. Docker Hub isn't really used apart from for assigning licenses.
-
-Docker Desktop version 4.4.0 and above will redirect you to a web browser to sign in via single sign on by entering your HMCTS email address.
-
-To use the docker cli with your account, you will need to set up a Personal Authentication Token (PAT). See [docker documentation](https://docs.docker.com/docker-hub/access-tokens/) for how to create a PAT.
-
-You must be in one of the following groups:
-
-- DTS Platform Operations
-- DTS CFT Developers
-- DTS SDS Developers
-- DTS Docker Hub
-
-## Recommended reading
-
-- [Continuous Delivery](https://continuousdelivery.com/)
-- [How, when and where to ask for help?](../../asking-for-help/index.html)
-
-### Software Engineer specific reading
-
-- [Trunk Based Development](https://trunkbaseddevelopment.com/)
-- [Kubernetes Basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
-- [Using Helm](https://helm.sh/docs/intro/using_helm/)
-
-### Guides for specific roles
-
-#### Software engineer
-
-#### The following tools are commonly used
-
-- an IDE (e.g. IntelliJ or Visual Studio Code)
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-- [Docker](https://docs.docker.com/install/)
-- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [Helm CLI](https://helm.sh/docs/intro/install/)
-
-#### Slack channels
-
-Join the [developers Slack channel](https://hmcts-reform.slack.com/messages/developers)
+- [Microsoft Entra ID](entra-id.html): tenant accounts, guest invitations and access groups.
+- [Azure](azure.html): Azure access through Microsoft Entra ID groups.
+- [VPN](vpn.html): VPN access and troubleshooting.
+- [Slack](slack.html): workspace access, profile setup and common channels.
+- [GitHub](github.html): GitHub access, SSO licence retention and troubleshooting.
+- [Jenkins](jenkins.html): Jenkins login access.
+- [Developer tools](developer-tools.html): Docker Business, first application deployment and common tools.
+- [Office 365 team setup](../team/office365.html): team email groups.
