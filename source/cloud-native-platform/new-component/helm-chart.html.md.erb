@@ -1,8 +1,8 @@
 ---
 title: Helm chart
-last_reviewed_on: 2026-01-13
+last_reviewed_on: 2026-07-29
 review_in: 6 months
-weight: 3
+weight: 4
 ---
 
 # <%= current_page.data.title %>
@@ -14,7 +14,7 @@ We deploy all of our applications using a helm chart to Kubernetes.
 ## Installing helm
 
 Install helm along with the other tools using the links on the
-[person onboarding doc](/cloud-native-platform/onboarding/person/#the-following-tools-are-commonly-used).
+[developer tools onboarding page](/cloud-native-platform/onboarding/person/developer-tools.html#common-tools).
 
 ## Base charts
 
@@ -165,7 +165,7 @@ Performing a release consists of the following steps:
 1. Submit your PR which also includes a chart version bump (the version field in Chart.yaml)
 2. Wait for the PR validation build to pass and a colleague's approval
 3. Merge the PR
-4. Create a Github release, tagging it with the same version number used in Chart.yaml
+4. Create a GitHub release, tagging it with the same version number used in Chart.yaml
 5. The release build will be triggered, publishing the new chart version
 
 #### Setting up an AzureDevOps chart build
@@ -220,4 +220,4 @@ sbNamespace: chart-tests-servicebus
 ## All charts
 
 We follow a standard naming convention of `chart-<name>` for all Helm charts, you can find a list of all
-charts using Github Search in the organisation.
+charts using GitHub Search in the organisation.

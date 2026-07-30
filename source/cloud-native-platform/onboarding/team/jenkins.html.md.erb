@@ -1,79 +1,44 @@
 ---
 title: Jenkins
-last_reviewed_on: 2026-06-01
+last_reviewed_on: 2026-07-29
 review_in: 6 months
-weight: 1
-hide_in_navigation: true
+weight: 5
 ---
 
 # <%= current_page.data.title %>
 
-> To find out more about the common pipeline, please see its [documentation](/cloud-native-platform/common-pipeline/common-pipeline.html).
+Use this page when configuring team-level Jenkins metadata.
 
-There are Jenkins servers for both CFT (Civil, Family & Tribunal) and SDS (Shared Digital Services)
+For repository scanning, deployment controls and GitHub topics, use [Jenkins setup](/cloud-native-platform/new-component/jenkins-repository.html).
 
-The steps to be followed below depend on what business area your application is in.
+## Team metadata required for pipelines
 
-1.  Add the [required GitHub topic](#github-topics) to the repository to see your repository in Jenkins Org.
+Each team needs configuration in the [team-config](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml) file
+in the cnp-jenkins-config repository.
 
-2.  Raise a pull request to add your repository to the Jenkins allowlist. Only repositories present in this file will be picked up by the Jenkins org scan.
+Send a [pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) with your configuration.
 
-    CFT: [hmcts/cnp-jenkins-config/deployment-controls.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/deployment-controls.yml)
+All fields are mandatory. Copy another team's config and adjust it to meet your needs.
 
-    SDS: [hmcts/sds-jenkins-config/deployment-controls.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/deployment-controls.yml)
+```yaml
+sscs: # product name in Jenkinsfile_CNP, this will be a 'short name' that your team is known by
+  team: "SSCS" # team 'display name', useful for longer more recognisable names for tagging
+  namespace: "sscs" # Kubernetes namespace, usually the same as your 'product name'
+  slack:
+    contact_channel: "#sscs-tech" # public channel that you can be contacted at
+    build_notices_channel: "#sscs-tech" # all build notices will be sent here
+  tags:
+    application: "social-service-child-support" # name that your service is known to by FinOps. If unsure, verify in #finops channel. Temporary placeholders are allowed.
+```
 
-    Add an entry in the following format:
+Make sure your product name is not too long. Some Azure resources have length constraints and can fail if names are too long.
 
-    ```yaml
-    - repo: https://github.com/hmcts/<your-repo-name>.git
-      deployment-enabled: true
-    ```
+## Jenkins build dashboard
 
-3.  Add a Jenkins build dashboard.
+Add a Jenkins build dashboard for your team by following the existing config patterns:
 
-    CFT: [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/blob/master/apps/jenkins/jenkins/ptl-intsvc/jenkins.yaml#L109)
+CFT: [cnp-flux-config](https://github.com/hmcts/cnp-flux-config/blob/master/apps/jenkins/jenkins/ptl-intsvc/jenkins.yaml#L109)
 
-    SDS: [sds-flux-config](https://github.com/hmcts/sds-flux-config/blob/79ca3abe8d7d67c2ab9749129a13a62c3cf653e4/apps/jenkins/jenkins/ptl/jenkins.yaml#L130)
+SDS: [sds-flux-config](https://github.com/hmcts/sds-flux-config/blob/79ca3abe8d7d67c2ab9749129a13a62c3cf653e4/apps/jenkins/jenkins/ptl/jenkins.yaml#L130)
 
-4.  Scan the organisation manually on Jenkins if it doesn't scan automatically.
-
-5.  To allow Jenkins to deploy to production, you must add your GitHub repository to this list of approved repositories:
-
-    CFT: [hmcts/cnp-jenkins-config/environment-approvals.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
-
-    SDS: [hmcts/sds-jenkins-config/environment-approvals.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/environment-approvals.yml)
-
-## Pipeline stages and deployment controls
-
-The diagram below illustrates which pipeline stages are available depending on your `deployment-enabled` setting in `deployment-controls.yml`:
-
-![Common pipeline stages by deployment-enabled setting](/images/common-pipeline-deploy-controls.png)
-
-- **Orange box** — stages available when your repository is in `deployment-controls.yml` but `deployment-enabled` is not set to `true`: `checkout master`, `build code`, `static QA`
-- **Purple box** — all stages available when `deployment-enabled: true` is set, including: `build/publish image`, `build infra`, `deploy`, `dynamic QA`, `tag image`, and `build infra` (prod)
-
-Without `deployment-enabled: true`, no Docker images will be published, no infrastructure will be applied, and no deployments to AKS will occur.
-
-## GitHub topics
-
-Jenkins looks for repositories by searching for GitHub topics.
-
-The topics are named after the Jenkins instance the repository will be built on and on CFT they are split alphabetically
-in a balanced split (most teams are before 'j' in the alphabet).
-
-e.g. if your repository starts with `div` you look for where 'd' is in the topics, in CFT this would be `jenkins-cft-d-i`.
-
-See the [GitHub documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/classifying-your-repository-with-topics#adding-topics-to-your-repository)
-on how to add a topic.
-
-### CFT Topics
-
-- `jenkins-cft-a-c`
-- `jenkins-cft-d-i`
-- `jenkins-cft-j-z`
-
-### SDS Topics
-
-SDS repositories are not currently split, but they may be in the future.
-
-- `jenkins-sds`
+Add similar configuration for your team, then raise a pull request and get it approved.

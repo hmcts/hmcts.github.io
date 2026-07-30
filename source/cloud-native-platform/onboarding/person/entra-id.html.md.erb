@@ -1,0 +1,95 @@
+---
+title: Microsoft Entra ID
+last_reviewed_on: 2026-07-29
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+Microsoft Entra ID is the starting point for most HMCTS Platform access.
+
+Users must exist in the HMCTS tenant before they can be added to access groups.
+
+Users with an `@hmcts.net` account usually already exist in the tenant. Users with a `@justice.gov.uk` account must be invited as guest users first, otherwise the [azure-access](https://github.com/hmcts/azure-access) pipeline will fail because the user account does not exist.
+
+## Guest invitation for justice.gov.uk users
+
+An existing teammate should:
+
+1. Create a pull request in [azure-access guest_user_invite.yml](https://github.com/hmcts/azure-access/blob/master/users/guest_user_invite.yml).
+2. Get the pull request approved by Platform Operations.
+3. Ask the user to accept the automated Microsoft invitation email after the pull request is merged.
+
+See this [example guest invite pull request](https://github.com/hmcts/azure-access/pull/4439/files).
+
+## Microsoft Entra ID groups
+
+An existing teammate should create a pull request in [azure-access prod_users.yml](https://github.com/hmcts/azure-access/blob/master/users/prod_users.yml).
+
+Get the pull request approved by Platform Operations.
+
+The first user in a team should raise a [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) request with the required groups.
+
+Before access is added, send the [Acceptable Use Policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance) to the new starter.
+
+Then add the required groups:
+
+```yaml
+# For hmcts.net users, username is the part before @, e.g. mary.jayne
+# For justice.gov.uk users, username is the full email, e.g. mary.jayne@justice.gov.uk
+- name: username
+  groups:
+  - DTS CFT Developers # or DTS SDS Developers for SDS teams. Skip this if the user only needs GitHub.
+  - DTS GitHub Access # if the user needs GitHub
+  - <your-team-group> # check other team members to find the group
+```
+
+## Common access groups
+
+| Group | Provides access to |
+| --- | --- |
+| `DTS CFT Developers` | CFT developer access, Azure resources, VPN, application logs, LaunchDarkly and Docker Business eligibility |
+| `DTS SDS Developers` | SDS developer access, Azure resources, VPN, application logs, LaunchDarkly and Docker Business eligibility |
+| `DTS GitHub Access` | HMCTS GitHub organisation access |
+| `DTS Docker Hub` | Docker Business eligibility where wider developer access is not needed |
+| `<your-team-group>` | Team-specific Azure and application access |
+
+## Security clearance access package
+
+Being a member of the `DTS CFT Developers` or `DTS SDS Developers` groups lets you request the security clearance access package.
+
+[Request the access package](https://myaccess.microsoft.com/@CJSCommonPlatform.onmicrosoft.com#/access-packages/e7cbb8d7-bd25-4d5a-8bbc-c94c03f1c827) when you join.
+
+Security clearance is required for access to sensitive resources such as production environments.
+
+The access package expires after one year, so you must re-request it after one year.
+
+There are checks in place on the [azure-access](https://github.com/hmcts/azure-access) pipeline to ensure certain groups require security clearance.
+
+If you have not requested the package and been approved, you will not be able to be added to groups that grant access to sensitive resources.
+
+## Related access
+
+- After the user is added to `DTS GitHub Access`, follow [GitHub onboarding](github.html).
+- For Docker Business setup, follow [developer tools](developer-tools.html#docker-business-licence).
+
+## Troubleshooting
+
+### Inactive account email
+
+You may receive an email warning that your account is close to being deleted because you have not logged into the `CJS Common Platform` Azure Tenant for a while.
+
+Do not ignore this email if you use the `CJS Common Platform` Tenant or GitHub, as you will lose access to both if you do not log in.
+
+To extend your access, visit the [CJS Common Platform Azure portal](https://portal.azure.com/531ff96d-0ae9-462a-8d2d-bec7c0b42082).
+
+### Account deleted
+
+If your account has been deleted and you need it re-enabled, create a ticket in the [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help) Slack channel.
+
+Someone will send you another guest invite.
+
+Once that is done, ask one of your team members to re-add your access by following the [Microsoft Entra ID groups](#microsoft-entra-id-groups) instructions.
+
+If you also had GitHub access, follow [GitHub onboarding](github.html#join-github) after your account and access groups have been restored.
