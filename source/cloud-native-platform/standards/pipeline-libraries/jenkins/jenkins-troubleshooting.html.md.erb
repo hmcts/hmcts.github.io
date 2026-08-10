@@ -1,0 +1,128 @@
+---
+title: Jenkins - Troubleshooting Issues
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+See below for troubleshooting tips regarding common Jenkins issues.
+
+If you have recently discovered an issue and found a solution feel **free to create a PR in this repository with:**
+
+- Clear description of a problem
+- Where possible / applicable list of steps to reproduce the issue
+- Clear description of a fix or a workaround
+
+## You are now logged out of Jenkins/ Infinite loop when trying to login to Jenkins
+
+Please try clearing browser cookies on login.microsoft.com
+
+## Cannot see my new repo in Jenkins org / Dashboard
+
+See Jenkins setup to add your app to the Jenkins organisation scan
+
+## Cannot see my branch/PR or This project is currently disabled in Jenkins
+
+Any branches which are also filed as PRs are not listed as a branch, they will only be listed in pull requests section.
+Branch/ PR is not listed if its last commit creation date is older than 30 days, this includes the `Master` branch.
+
+## Sonar scan cannot find default branch
+
+You may get the error below, when the pipeline has not ran on the master/main branch first.
+
+When you run it on the master/main branch it will setup the default branch and then the pull request build will start working.
+
+```
+[2021-09-16T10:59:54.154Z] Execution failed for task ':sonarqube'.
+[2021-09-16T10:59:54.154Z] > Could not find a default branch to fall back on.
+```
+
+## Sonar scan timeout
+
+- Please see [sonarcloud status](https://status.sonarqube.com//) for any known issues with sonar cloud.
+- Remember that Platform Operation do not maintain SonarCloud, issues are usually discussed on community forums.
+
+## Sonar scan quality gate failure
+
+If you receive this error on Master:
+
+```
+Pipeline aborted due to quality gate failure: NONE
+```
+Try a re-run of the pipeline. This may simply be an intermittent issue caused by sonarcloud or because the GitHub repo has only just been created and this is the first time you're running the pipeline.
+
+## Build / Docker Build / Unit Test failure
+
+- If your build is failing in these stages, it's most likely to fail in your local as well. Look at the first line of the Jenkins step that fails and try run the same command Jenkins is running.
+- Try on a colleague's machine as you might have cached something locally.
+
+## Helm Upgrade Failed, Helm Release timed out waiting for condition, Helm Release Failure
+
+- See [Connecting to AKS Clusters](/cloud-native-platform/troubleshooting#connecting-to-aks-clusters) and connect to the relevant cluster.
+- These errors usually mean your pods didn't start as expected in time.
+- It could be that they are stuck in `Pending`, `ContainerCreating` status or might be failing to startup leading to `CrashLoopBackOff` status.
+- Follow [Debug Application Startup issues in AKS](/cloud-native-platform/troubleshooting#debug-application-startup-issues-in-aks) to troubleshoot further
+
+## Jenkins managed helm releases / pods are automatically deleted
+
+- To maintain the health of the cluster, it is important to cleanup unwanted pods regularly.
+- Helm release is cleared for PRs which are merged or closed.
+- Helm release of PRs raised by dependency bots (based on `dependencies` label) is cleared once the functional tests pass.
+- Helm release on AAT Staging is also cleared once functional tests pass.
+- For optimal usage, You can also configure your pipeline to [clear Helm releases on successful build](https://github.com/hmcts/cnp-jenkins-library#clear-helm-release-on-successful-build).
+- A scheduled pipeline runs every hour to clear any helm releases which are not updated in last 3 days. Teams can do more frequent cleanup by overriding in the [cleanup script](https://github.com/hmcts/cnp-aks-pipelines/blob/0fe733120f78b6dabcdd5895bb16134085631842/scripts/delete-inactive-helm-releases.sh#L5)
+
+## Smoke / Functional test failure
+
+- Jenkins only sets secrets as environment variables and runs the `gradle` / `yarn` task to run tests.
+- Access the URL on VPN and try running tests manually using the `TEST_URL` printed in the logs.
+- You can also run tests locally by setting the required secrets while on the VPN.
+- To add additional logging, see [Example config](#example-2).
+
+## Terraform/ Build Infrastructure failure
+
+- **It is important that you review your plan in a pull request before applying it to an environment.**
+- Please check if its an intermittent failure with Azure as a retry could fix it.
+- Also, see if there are any open issues/discussions on community channels for the failure.
+- There could be open GitHub issues on terraform/ azurerm, so googling it could help as well.
+
+## Using branches to troubleshoot issues
+
+TODO: Check how can this be done with new deployment controls
+
+If your pipeline is throwing an error, you may be able to more easily troubleshoot the issue by using a branch in the `cnp-jenkins-library` repo.
+
+#### Example 1
+Gradle is failing because a plugin cannot be found in artifactory. You've checked the plugin exists and there are no typos in your code.
+You can check if the issue lies with artifactory by temporarily by-passing it using a [branch](https://github.com/hmcts/cnp-jenkins-library/blob/073ad8587b7281d62bac705ed984e739a0911c83/resources/uk/gov/hmcts/gradle/init.gradle#L3).
+
+And then referencing that branch within your repo's [Jenkinsfile](https://github.com/hmcts/sds-toffee-recipes-service/pull/12/files)
+
+In this example, the issue is network related. This may be down to routing in Azure or traffic being blocked by a firewall.
+
+#### Example 2
+Gradle is failing a functional test. To help get more information on why, you could update the Gradle logging level in a branch of [cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library/blob/cfb31f3a2699b2a1dafd66fed0b525ae145d627d/src/uk/gov/hmcts/contino/GradleBuilder.groovy#L62)
+
+And then reference this branch within your repo's [Jenkinsfile](https://github.com/hmcts/document-management-store-app/blob/646593336377fd59112b0b6c84fd223d0cb7832c/Jenkinsfile_CNP#L12)
+
+## Error message `channel_not_found`
+
+When you want to send Jenkins pipeline notifications to a slack channel, you must make sure the Jenkins app has been added to the channel.
+
+If you don't do this, you will receive the `channel_not_found` error message and the pipeline will fail.
+
+See the instructions on the [team Slack onboarding](/cloud-native-platform/onboarding/team/slack.html) section to add Jenkins to a build notices channel.
+
+If you are getting this message on a PR pipeline and the error also says `Failed to notify @U1234ABCD`, that means your GitHub username has been mapped to an invalid Slack ID.
+
+Find your Slack ID by clicking on `View profile` within the Slack app, then click on the three dots and click `Copy member ID`.
+
+Update your GitHub to Slack user mapping by following [Slack onboarding](/cloud-native-platform/onboarding/person/slack.html#github-to-slack-mapping) and try running the pipeline again.
+
+## Sandbox Jenkins is not automatically picking up my changes
+
+Because we have a prod and sandbox Jenkins instance, sometimes your pushes to master may be picked up by prod Jenkins instead.
+
+If this happens, simply run the master build manually on sandbox jenkins.

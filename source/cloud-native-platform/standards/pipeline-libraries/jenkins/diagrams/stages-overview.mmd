@@ -1,0 +1,180 @@
+---
+config:
+    theme: base
+    flowchart:
+        nodeSpacing: 40
+        padding: 10
+        rankSpacing: 10
+        diagramPadding: 40
+        useMaxWidth: true
+        curve: step
+        wrappingWidth: 180
+    themeVariables:
+        fontSize: 18px
+---
+flowchart LR
+    subgraph mandatoryStages[Default / Mandatory Stages]
+        direction LR
+        subgraph legend[Legend]
+            direction LR
+            mandatory[Stages that run by default or are mandatory]
+            deploymentOnly[Stages only available if deployment enabled]
+            optional[Stages that can be optionally enabled with config]
+            note[* Note - diagram is a simplified visualisation of the pipeline code and represents mostly sequential order, stage dependencies and conditional logic may be more nuanced]
+        end
+        checkout ~~~ legend
+        checkout[Checkout] --> acrMigration[ACR Migration Check]
+        acrMigration --> build[Build]
+        build --> staticChecks[Static Checks / Container Build]
+        subgraph buildSteps[ Build steps / testing ]
+            unitTests[Unit Tests and Sonar Scan]
+            techMaintenance[Tech Stack Maintenance]
+		    dockerBuild[Docker Build]
+        end
+        staticChecks --> unitTests
+        staticChecks --> techMaintenance
+        staticChecks --> dockerBuild
+        subgraph securityChecksStages[ Security checks ]
+            direction LR
+            javaOwasp[Java OWASP dependency check]
+            nodejsYarnAudit[NodeJS Yarn audit]
+            pythonUvAudit[Python UV audit]
+        end
+        staticChecks --> javaOwasp
+        staticChecks --> nodejsYarnAudit
+        staticChecks --> pythonUvAudit
+        subgraph optionalSteps["Optional steps"]
+            direction LR
+            subgraph dockerTestStage[Jenkinsfile,Master,Java only]
+                dockerTest[Docker Test Build]
+                releaseOnMerge[Create GitHub Release on merge]
+            end
+            subgraph fortifyScanStage[Via PR Label / Jenkinsfile]
+                fortifyScan[Fortify Scan]
+            end
+            subgraph pactVerificationStage[Via Jenkinsfile]
+                pactVerification[Pact Consumer verification]
+            end
+        end
+        staticChecks --> dockerTest
+        staticChecks --> releaseOnMerge
+        staticChecks --> fortifyScan
+        subgraph deploymentMustBeEnabled[ Deployment-enabled only stages]
+            direction LR
+            promoteDockerImage[Promote Docker Image] --> pactVerification
+            pactVerification --> buildInfrastructureAAT
+            buildInfrastructureAAT --> planTFComponentAAT
+            planTFComponentAAT --> applyTFComponentAAT
+            applyTFComponentAAT --> flywayDbMigrationAAT
+            subgraph optionalDeploymentEnabledSteps[ Opt-in steps]
+                subgraph flywayDbMigrationAATStage[Via Jenkinsfile, Java only]
+                    flywayDbMigrationAAT["Db Migration - AAT/Staging (Flyway)"]
+                end
+                subgraph flywayDbMigrationProdStage[Via Jenkinsfile, Java only]
+                    flywayDbMigrationProd["Db Migration - Prod (Flyway)"]
+                end
+                subgraph optionalViaJenkinsFile[Via Jenkinsfile]
+                    highLevelDataSetupAAT[High Level Data Setup - AAT/Staging]
+                    pactConsumerCanIDeploy[Pact Consumer Can I Deploy]
+                    pactProviderVerification[Pact Provider Verification]
+                        e2eTestAAT[ E2E Test - AKS ]
+                        crossBrowserTestAAT[ Cross-browser Test ]
+                        mutationTestAAT[ Mutation Test ]
+                    highLevelDataSetupProd[High Level Data Setup - Prod]
+                    apiGatewayTests[API Gateway Tests]
+                    zapSecurityScan[ZAP Security Scan]
+                    performanceTests[Performance Tests]
+                    branchesToSyncWithProd["Branches to Sync (list of branches to sync with Prod)"]
+                    subgraph optionalPerformanceTests[ Optional performance tests ]
+                        dynatracePerformanceSetupAAT[Dynatrace Performance Setup]
+                        dynatraceSyntheticTestsAAT[Dynatrace Synthetic Tests]
+                        gatlingLoadTestsAAT[Gatling Load Tests]
+                        srgEvaluationAAT[Site Reliability Guardian Evaluation]
+                    end
+                end
+                subgraph optionalInfrastructure[Infrastructure directory exists]
+                    buildInfrastructureAAT[Build infrastructure - AAT/Staging]
+                    planTFComponentAAT["Plan component in AAT/Staging (TF)"]
+                    applyTFComponentAAT["Apply component in AAT/Staging(TF)"]
+                    buildInfrastructureProd[Build Infrastructure - Prod]
+                    planTFComponentProd["Plan component in Prod (TF)"] 
+                    applyTFComponentProd["Apply component in Prod (TF)"]
+                end
+                flywayDbMigrationAAT --> highLevelDataSetupAAT
+            end
+            highLevelDataSetupAAT --> aksDeployAAT[AKS Deploy - AAT]
+            aksDeployAAT --> pactConsumerCanIDeploy
+            pactConsumerCanIDeploy --> pactProviderVerification
+            pactProviderVerification --> smokeTestAKSAAT[Smoke Test AKS - AAT]
+            smokeTestAKSAAT --> apiGatewayTests
+            apiGatewayTests --> functionalTestAAT[Functional Test / Full Functional Test - AAT]
+            functionalTestAAT --> performanceTests
+            performanceTests --> zapSecurityScan
+            zapSecurityScan --> dynatracePerformanceSetupAAT
+            dynatracePerformanceSetupAAT --> dynatraceSyntheticTestsAAT
+            dynatracePerformanceSetupAAT --> gatlingLoadTestsAAT
+            dynatraceSyntheticTestsAAT --> srgEvaluationAAT
+            gatlingLoadTestsAAT --> srgEvaluationAAT
+            srgEvaluationAAT --> crossBrowserTestAAT
+            crossBrowserTestAAT --> mutationTestAAT
+            mutationTestAAT --> e2eTestAAT
+            e2eTestAAT --> uninstallHelmRelease[Uninstall Helm Release]
+            uninstallHelmRelease --> publishHelmChart[Publish Helm Chart]
+            publishHelmChart --> buildInfrastructureProd
+            buildInfrastructureProd --> planTFComponentProd
+            planTFComponentProd --> applyTFComponentProd
+            applyTFComponentProd --> flywayDbMigrationProd
+            flywayDbMigrationProd --> highLevelDataSetupProd
+            highLevelDataSetupProd --> productionBuildPromotion[Production build promotion]
+            productionBuildPromotion --> branchesToSyncWithProd
+        end
+        staticChecks --> promoteDockerImage
+    end
+
+
+
+style mandatoryStages fill:#f7f9ff,stroke:#cfdbf3,stroke-width:10px,stroke-dasharray: 20
+style buildSteps fill:none,stroke:#cfdbf3,stroke-width:5px,stroke-dasharray: 20
+style securityChecksStages fill:#00000,stroke:#cfdbf3,stroke-width:5px,stroke-dasharray: 20
+
+style optionalSteps fill:#9fc08f,stroke:#488f31,stroke-width:2px,stroke-dasharray: 20
+style dockerTestStage fill:#d5e0cf,stroke:#488f31,stroke-width:2px,stroke-dasharray: 20
+style fortifyScanStage fill:#d5e0cf,stroke:#488f31,stroke-width:2px,stroke-dasharray: 20
+style pactVerificationStage fill:#d5e0cf,stroke:#488f31,stroke-width:2px,stroke-dasharray: 20
+
+style deploymentMustBeEnabled fill:#f0b8b8,stroke:#ff5f66,stroke-width:5px,stroke-dasharray: 20
+style optionalDeploymentEnabledSteps fill:#9fc08f,stroke:#488f31,stroke-width:5px,stroke-dasharray: 20
+style flywayDbMigrationAATStage fill:#d5e0cf,stroke:#488f31,stroke-width:5px,stroke-dasharray: 20
+style optionalInfrastructure fill:#d5e0cf,stroke:#488f31,stroke-width:5px,stroke-dasharray: 20
+style optionalViaJenkinsFile fill:#d5e0cf,stroke:#488f31,stroke-width:5px,stroke-dasharray: 20
+style flywayDbMigrationProdStage fill:#d5e0cf,stroke:#488f31,stroke-width:5px,stroke-dasharray: 20
+style optionalPerformanceTests fill:#d5e0cf,stroke:#488f31,stroke-width:2px,stroke-dasharray: 0
+
+style legend fill:white,stroke:#cfdbf3,stroke-width:5px,stroke-dasharray: 0
+class mandatory legendMandatory
+class optional optional
+class deploymentOnly deploymentOnly
+classDef legendMandatory fill:#f7f9ff,stroke:#cfdbf3,stroke-width:5px,stroke-dasharray: 20
+classDef optional fill:#9fc08f,stroke:#488f31,color:whitstroke-width:5px,stroke-dasharray: 20
+classDef deploymentOnly fill:#f0b8b8,stroke:#ff5f66,stroke-width:5px,stroke-dasharray: 20
+
+
+classDef allNodes fill:white,stroke:#ffa600,stroke-width:3px
+class checkout,acrMigration,build,staticChecks allNodes
+class unitTests,techMaintenance,dockerBuild allNodes
+class javaOwasp,nodejsYarnAudit,pythonUvAudit allNodes
+class dockerTest,releaseOnMerge,fortifyScan,pactVerification allNodes
+class promoteDockerImage allNodes
+class buildInfrastructureAAT,planTFComponentAAT,applyTFComponentAAT allNodes
+class buildInfrastructureProd,planTFComponentProd,applyTFComponentProd allNodes
+class flywayDbMigrationAAT,flywayDbMigrationProd allNodes
+class highLevelDataSetupAAT,highLevelDataSetupProd allNodes
+class pactConsumerCanIDeploy,pactProviderVerification allNodes
+class e2eTestAAT,crossBrowserTestAAT,mutationTestAAT allNodes
+class apiGatewayTests,zapSecurityScan,performanceTests allNodes
+class dynatracePerformanceSetupAAT allNodes
+class dynatraceSyntheticTestsAAT,gatlingLoadTestsAAT,srgEvaluationAAT allNodes
+class aksDeployAAT,smokeTestAKSAAT,functionalTestAAT allNodes
+class uninstallHelmRelease,publishHelmChart allNodes
+class productionBuildPromotion,branchesToSyncWithProd allNodes
+

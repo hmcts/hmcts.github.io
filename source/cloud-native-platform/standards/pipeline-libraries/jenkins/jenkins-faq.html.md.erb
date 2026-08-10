@@ -1,0 +1,82 @@
+---
+title: Jenkins - Frequently Asked Questions
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 4
+---
+
+# <%= current_page.data.title %>
+
+## More information
+
+For an in-depth guide on how the common pipeline works and how it should be used, please refer to the [cnp-jenkins-library README](https://github.com/hmcts/cnp-jenkins-library/blob/master/README.md)
+
+## Why Jenkins is unavailable?
+
+Check if there is a planned outage on Slack channel: `#cloud-native-announce`
+Please note Jenkins could be temporarily unavailable while rolling out a change, give it a few minutes before you raise an issue.
+
+## Why can I not log-in to Jenkins?
+
+Login to Jenkins is managed by Microsoft Entra ID. Follow Jenkins person onboarding to check the user’s access groups.
+
+## How do I find my pipeline?
+
+Within Jenkins, there exists the concept of organisation folders. This enables Jenkins to scan a GitHub Organisation to discover repositories and automatically create managed pipelines for them.
+
+Your pipeline will exist within a specific organisation folder which should have been defined when the pipeline integration was first configured.
+
+See [Jenkins setup](/cloud-native-platform/new-component/jenkins-repository.html#scan-jenkins) for details.
+
+## Why has my Master branch pipeline disappeared?
+
+Jenkins automatically clears aged references such as PRs, branches and tags after 30 days, unfortunately this currently also includes the Master branch pipeline.
+
+If your Master branch has disappeared you will need to merge a commit to your Master branch for Jenkins to display it again.
+
+## How do I find my application?
+
+Within AKS, your application pods will exist within a namespace. The namespace will correspond to what has been configured in the Jenkins `team-config.yml` file.
+
+[CFT example](https://github.com/hmcts/cnp-jenkins-config/blob/4172d1409ec33072a867dee75fb8bb15192961e0/team-config.yml#L3)
+
+[SDS example](https://github.com/hmcts/sds-jenkins-config/blob/edda067f268fe4056c19963fc5c7419cbd559856/team-config.yml#L3)
+
+## How do I remove a resource lock to destroy a resource?
+
+Resources in Azure are locked in Staging and/or Production to prevent their destruction.
+
+If you need to rename or destroy a resource, you will need to temporarily remove the lock.
+This can be done by running a job to disable resource locks in the specified `subscription` and `resource group`, follow instructions 
+in the [Azure Resource Locks repository Readme](https://github.com/hmcts/azure-resource-locks/#pipeline-jobs).
+
+## How do I access my resources via SSH?
+
+To SSH into your Azure resources, such as a Postgres Database, you will typically need to go via a Bastion.
+
+- Staging and production resources use the **Production Bastion**
+- Other resources use the **Non-production Bastion**
+
+To SSH into the bastion, you must first get a temporary access pass on [myaccess.microsoft.com](https://myaccess.microsoft.com/@CJSCommonPlatform.onmicrosoft.com#/access-packages).
+
+***Production Bastion access requires SC clearance.***
+
+## How do I build infrastructure in the demo environment?
+
+To build infrastructure in Demo, you will need to create a branch called `demo`.
+
+All merges to this branch will be deployed in the Demo environment.
+
+## Key vaults build failures
+
+If your infrastructure pipeline requires the use of a Key Vault to build, and the Key Vault is also itself being built in the pipeline, then it is common for the first deployment to fail.
+
+Just rebuild the pipeline.
+
+## Troubleshooting build issues
+
+See:
+
+- [General troubleshooting](../../../troubleshooting/).
+- [Jenkins troubleshooting](jenkins-troubleshooting.html).
+
