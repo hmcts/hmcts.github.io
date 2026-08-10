@@ -2,25 +2,38 @@
 title: Starting a new component
 last_reviewed_on: 2026-07-29
 review_in: 6 months
-weight: 4
+weight: 0
 ---
 
 # <%= current_page.data.title %>
 
-When you create a new component (such as a database, application or a combination of such resources), you will need to follow some or all of the following:
+When you create a new component (application, data store, or shared infrastructure), follow this workflow.
 
-- Understand our [infrastructure as code](infrastructure-as-code.html) approach
-- Understand the [common pipeline](../common-pipeline/)
-- [Create new GitHub repo](github-repo.html)
-- [Add the repository to Jenkins](jenkins-repository.html)
-- Use our standard approach to [secrets management](secrets-management.html)
-- Configuration management
-- Logging and monitoring
-- Database schema management
+## Step 1: Choose your application type first
 
-If you are creating an application you will need:
+If you are creating an application service, start with the guidance for your runtime:
 
-- [Helm](helm-chart.html) for package management
-- [Flux](gitops-flux.html#application-config-in-flux) to automatically deploy pushed and merged code
+- [Java golden path](https://backstage.platform.hmcts.net/docs/default/component/golden-path-java)
+- [Node.js golden path](https://backstage.platform.hmcts.net/docs/default/component/golden-path-nodejs)
+- [Python services](python.html)
 
-If you are creating a new frontend or backend service, you should read [Path-to-live](../path-to-live/)
+After completing runtime-specific setup, return to this page and continue with the common steps below.
+
+If you are creating infrastructure-only components, skip this step and go straight to the common workflow.
+
+## Step 2: Common workflow for all components
+
+1. [Create a new GitHub repository](github-repo.html)
+2. [Add the repository to Jenkins](jenkins-repository.html)
+3. [Add a Helm chart](helm-chart.html) for deployable services
+4. [Add infrastructure as code](infrastructure-as-code.html) where infrastructure is required
+5. [Configure GitOps with Flux](gitops-flux.html#application-config-in-flux)
+6. [Set up secrets management](secrets-management.html)
+7. For service components, complete [Path-to-live](../path-to-live/) setup, including non-production requirements
+8. Use [feature flags](feature-flags.html) to safely release changes
+
+## Supporting guidance
+
+- [Common pipeline overview](../common-pipeline/)
+- [Python services](python.html)
+- [Elasticsearch](elasticsearch.html)

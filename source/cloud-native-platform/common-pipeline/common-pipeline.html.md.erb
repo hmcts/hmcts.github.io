@@ -9,6 +9,19 @@ weight: 2
 
 > To get onboarded to the common pipeline please see [Jenkins setup](/cloud-native-platform/new-component/jenkins-repository.html).
 
+## Standard onboarding workflow
+
+Follow this sequence when creating a new component:
+
+1. [Create a new GitHub repository](/cloud-native-platform/new-component/github-repo.html)
+2. [Add the repository to Jenkins](/cloud-native-platform/new-component/jenkins-repository.html)
+3. Add component setup in code:
+    - [Helm chart](/cloud-native-platform/new-component/helm-chart.html) for deployable services
+    - [Infrastructure as Code](/cloud-native-platform/new-component/infrastructure-as-code.html) for infrastructure
+4. [Configure GitOps with Flux](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux)
+5. [Set up secrets management](/cloud-native-platform/new-component/secrets-management.html)
+6. [Complete path-to-live setup](/cloud-native-platform/path-to-live/) for service components, including non-production readiness
+
 The common pipeline is a Jenkins pipeline defined by [code](https://github.com/hmcts/cnp-jenkins-library)
 which implements Continuous Delivery to production while enforcing a standard set of
 checks on the code processed.
