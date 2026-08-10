@@ -1,0 +1,61 @@
+---
+title: TLS certificates
+last_reviewed_on: 2026-01-13
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+<!-- Inspired by the MoJ policy: https://ministryofjustice.github.io/security-guidance/automated-certificate-renewal/#automated-certificate-renewal -->
+
+Where technically suitable, all new HMCTS domains must use automated certificate techniques and services,
+such as [Microsoft managed certificates](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain-https#option-1-default-use-a-certificate-managed-by-front-door)
+(most preferred) or LetsEncrypt (uses ACME).
+
+Over time, existing HMCTS domains must also be considered for migration to automated certificate provisioning and
+management techniques (preferably on their next certificate renewal cycle in advance of expiry) in order to reduce
+the consequences and management overheads of manual certificate renewal.
+
+HMCTS acknowledges that not all systems support automated certificate management,
+but leveraging such technology where possible reduces management overheads, the costs of such overheads and the consequences of
+unexpected certificate expiry.
+
+If your site is being hosted on:
+
+- [Azure FrontDoor](https://docs.microsoft.com/en-us/azure/frontdoor/)
+- [Azure App Service](https://docs.microsoft.com/en-us/azure/app-service/)
+- [Azure CDN](https://docs.microsoft.com/en-us/azure/cdn/)
+
+Then you must use [Microsoft managed certificates](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-custom-domain-https#option-1-default-use-a-certificate-managed-by-front-door)
+
+You can automatically generate/deploy an Azure-manged certificate by copying an existing site in [Azure Platform Terraform](https://github.com/hmcts/azure-platform-terraform/commit/f6655ecb98de678647e0adae1aeb7dc693a01cb4)
+
+Please note, if the certificate status on 'domains' under Frontdoor in Azure portal does not show as 'deployed', you will need to manually validate the certificate by creating a TXT record on Azure-public-DNS like in this [example PR](https://github.com/hmcts/azure-public-dns/pull/1963)
+
+You can view the TXT record that needs created by clicking on the status under 'validation state'
+
+<img src="../../images/validate-dns.png" alt="Domain validation TXT record" width="500"/>
+
+## Manual certificate requests
+
+If you cannot use a managed certificate then please raise a request in [#platops-help](https://app.slack.com/client/T1L0WSW9F/C8SR5CAMU),
+the ticket should contain the following information:
+
+- Where the certificate is to be hosted
+- DNS Name and SANS
+
+## ACME Certificates
+
+Let's Encrypt is a free, automated and open CA. ACME protocol is used to automate the certificate issuance.
+We are using [Key Vault Acmebot](https://github.com/shibayan/keyvault-acmebot) function app as an ACME client.
+
+Key Vault Acmebot is deployed from this repository [azure-enterprise-acme](https://github.com/hmcts/azure-enterprise-acme/tree/main) via this [azure-devops pipeline](https://dev.azure.com/hmcts/PlatformOperations/_build?definitionId=656&_a=summary), there is one instance per subscription.
+
+The naming convention for keyvaults and function App are `acme<subscription name without hyphens>`, `sharedservices` is replaced with `sds` because of length limits. e.g. `acmedtssdstest`.
+
+The naming convention for certificate name in Key Vault is `<DNS Name/wildcard>-<DNSZone>` separated by hyphen.  E.g. `hmi-apim-test-platform-hmcts-net`, `wildcard-test-platform-hmcts-net`.
+
+You may need to use ACME certificate due to [managed certificate limitations](https://hmcts.github.io/ops-runbooks/Certificates/managed.html#when-to-use-managed-certificates) in Front Door by updating the `ssl_mode` and `custom_domain` attributes in the Front Door config, here is an example in [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/526a2399ea19cdad28f0e12893adf395e3e40eb7/environments/prod/prod.tfvars#L1499-L1500).
+
+see [Create Certificates](https://hmcts.github.io/ops-runbooks/Certificates/letsencrypt.html) to create and renew certificates.
