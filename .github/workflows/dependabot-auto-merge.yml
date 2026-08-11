@@ -1,0 +1,32 @@
+name: Dependabot auto-merge
+
+# Auto-merge Dependabot minor/patch bumps into `main` once all required checks are
+# green. Major bumps fall through to human review.
+#
+# Grouped updates auto-merge only when the whole group is minor/patch - fetch-metadata
+# reports the group's highest bump, so any major in the group routes it to manual
+# review.
+#
+# Renovate handles its own merging through renovate.json; this covers the ecosystems
+# Dependabot owns here, plus any security update GitHub raises.
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: ${{ github.actor == 'dependabot[bot]' && github.base_ref == 'main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v3
+
+      - name: Enable auto-merge for minor/patch
+        if: ${{ contains(fromJSON('["version-update:semver-minor","version-update:semver-patch"]'), steps.meta.outputs.update-type) }}
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.html_url }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
