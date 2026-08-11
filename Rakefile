@@ -1,19 +1,28 @@
 require 'middleman-gh-pages'
 require 'html-proofer'
 
+desc "Check for broken links in build/ with html-proofer"
 task :check_urls do
     proofer = HTMLProofer.check_directory("./build",
         {
             :check_external_hash => false,
             :ignore_missing_alt => true,
-            :ignore_status_codes => [0, 401, 403, 429],
+            # 303 is a redirect html-proofer reports as a timeout rather than
+            # following; 415 is bot defence rejecting the client, not a broken
+            # link. Both produced false failures on three consecutive runs, on
+            # different hosts each time, blocking PRs that changed nothing
+            # related. Verified by hand: every URL involved returns 200.
+            :ignore_status_codes => [0, 303, 401, 403, 415, 429],
             :ignore_urls =>  [
                 # Ignore pulls/branches as these do not translate to raw content
                 %r{github\.com/hmcts/(?=.*(?:pull|tree|commit))},
                 # This is a url that's generated each time we build the html by tech-docs-gem but does not exist
                 %r{https://github.com/hmcts/hmcts.github.io/blob/main/source/search/index.html},
                 # This handles new files that haven't been merged to master branch yet for this repo in a PR
-                %r{(?=.*hmcts.github.io)(?=.*github)}
+                %r{(?=.*hmcts.github.io)(?=.*github)},
+                # Private repos return 404 to unauthenticated requests when the URL contains an anchor (#)
+                # as the rewrite to raw.githubusercontent.com is skipped for anchor URLs
+                %r{https://github.com/hmcts/azure-platform-terraform}
             ]
         })
 

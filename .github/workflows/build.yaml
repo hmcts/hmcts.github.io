@@ -12,7 +12,7 @@ jobs:
     name: Check spelling
     steps:
       - name: Spell-Check
-        uses: check-spelling/check-spelling@v0.0.23
+        uses: check-spelling/check-spelling@v0.0.26
         with:
           checkout: true
           # don't check extra dictionaries
@@ -26,13 +26,17 @@ jobs:
     runs-on: ubuntu-latest
     name: 'Build and Test'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: 'Check page frontmatter'
+        run: bundle exec rake check_frontmatter
       - name: Build
         run: bundle exec middleman build
+      - name: 'Check expected pages were built'
+        run: bundle exec rake check_pages
       - name: 'Check for broken links'
         run: bundle exec rake check_urls
         env:

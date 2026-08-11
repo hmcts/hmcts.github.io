@@ -1,5 +1,26 @@
 {
   "extends": [
     "local>hmcts/.github:renovate-config"
+  ],
+  "packageRules": [
+    {
+      "description": "Label minor and patch updates so the auto-merge workflow can act on them. The workflow decides whether to merge, not Renovate, so both bots follow one policy.",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "addLabels": [
+        "automerge-minor-patch"
+      ]
+    },
+    {
+      "description": "GitHub Actions are handled by Dependabot here; keep Renovate out of them so one bump does not raise two pull requests.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "enabled": false
+    }
   ]
 }
