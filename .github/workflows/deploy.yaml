@@ -38,7 +38,12 @@ jobs:
         with:
           bundler-cache: true
       - name: Build site
-        run: bundle exec rake build
+        # Not `rake build`: middleman-gh-pages 0.4.1 implements that task by
+        # shelling out to a nested `bundle exec`, and on Ruby 4 the inner
+        # bundler cannot resolve its own binstub - the site builds, then rake
+        # aborts on the nested call. Calling middleman directly is what this
+        # task did anyway, and is what build.yaml already does.
+        run: bundle exec middleman build --clean
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
