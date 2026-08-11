@@ -25,12 +25,14 @@ DNAT
 dnc
 dnsmasq
 dockerised
+drb
 Drevision
 dscwgwh
 egd
 ejdt
 enhbenftckhu
 ercybwaubzbmfn
+erubi
 fastapi
 fasterxml
 FBD
@@ -39,6 +41,7 @@ fkhfehdgahcrhbds
 flexibleserver
 FMDMy
 frdsdtbc
+frontmatter
 gauth
 Gdl
 gerrit
@@ -77,11 +80,14 @@ platopslackhelpbotai
 pnp
 popd
 postgres
+protobuf
 pushd
 pytest
 QLDTj
+rackup
 Rthnz
 scp
+securerandom
 totp
 tsv
 Tunnelblick
