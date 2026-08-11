@@ -1,5 +1,14 @@
 {
   "extends": [
     "local>hmcts/.github:renovate-config"
+  ],
+  "packageRules": [
+    {
+      "description": "Auto-merge minor and patch updates once checks pass. Majors still go to review.",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
   ]
 }
