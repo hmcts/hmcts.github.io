@@ -1,0 +1,90 @@
+name: Scheduled link check
+
+# build.yaml checks links on every pull request, which catches a link broken by a
+# change. It cannot catch a link that rots on its own: an external site moves a page
+# and nothing here notices until someone happens to edit that file. This closes that
+# gap (issue #290).
+#
+# Monday rather than Thursday, so it does not land on the same morning as the secrets
+# scan.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Build
+        run: bundle exec middleman build
+
+      # Retried once on purpose. Measured on this repository: three consecutive pull
+      # request runs failed on different external hosts - 415, 500 and 303 - where
+      # every URL returned 200 when fetched by hand. A scheduled job that reports the
+      # first failure would open issues for other people's rate limiting, and an
+      # issue raiser nobody trusts is worse than no issue raiser.
+      - name: Check links, retrying once
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set +e
+          bundle exec rake check_urls > /tmp/links.log 2>&1
+          if [ $? -eq 0 ]; then
+            echo "broken=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "First attempt failed. Retrying in 60s to filter transient failures."
+          sleep 60
+          bundle exec rake check_urls > /tmp/links.log 2>&1
+          if [ $? -eq 0 ]; then
+            echo "Passed on retry - treating the first failure as transient."
+            echo "broken=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "broken=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update an issue
+        if: steps.check.outputs.broken == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          title="Broken links found by the scheduled check"
+          # Only the failure lines: the full html-proofer output is long and mostly
+          # progress.
+          detail=$(grep -E '^\*|failed|internally linking|internal script' /tmp/links.log | head -40)
+          body=$(cat <<EOF
+          The scheduled link check failed twice in a row, sixty seconds apart, so this is unlikely to be a transient failure on someone else's host.
+
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          \`\`\`
+          ${detail}
+          \`\`\`
+
+          Fix the pages, or if a status code is being reported wrongly rather than a link being dead, add it to \`ignore_status_codes\` in the \`Rakefile\` with a note saying why.
+
+          This comment is added by the scheduled check; it updates this issue rather than opening a new one each week.
+          EOF
+          )
+          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+            echo "Commented on existing issue #${existing}"
+          else
+            gh issue create --title "$title" --body "$body" --label bug
+          fi
