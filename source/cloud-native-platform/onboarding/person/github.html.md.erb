@@ -1,0 +1,57 @@
+---
+title: GitHub
+last_reviewed_on: 2026-07-29
+review_in: 6 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+## Join GitHub
+
+You can request GitHub access after you have your `hmcts.net` or `justice.gov.uk` email account and Confluence access.
+
+There are two ways to get access:
+
+1. If someone in your team already has access, ask them to add you to the `DTS GitHub Access` group using the [Microsoft Entra ID groups](entra-id.html#microsoft-entra-id-groups) instructions.
+2. If you're the first person in your team, raise a help request in [#platops-help](https://hmcts-reform.slack.com/archives/C8SR5CAMU). Ask for GitHub access and say that you agree to the [Acceptable Use Policy](https://tools.hmcts.net/confluence/display/RPE/Acceptable+Use+Policy+and+Contractor+Security+Guidance).
+
+Once you've been added you will be able to join GitHub from your [myapps.microsoft.com](https://myapps.microsoft.com/hmcts.net) dashboard.
+
+Make sure you accept the GitHub invite sent to your email address. You can also visit [github.com/hmcts](https://github.com/hmcts) after your access has been added.
+
+Once you've joined GitHub make sure you add your user to the [Slack to GitHub mapping](slack.html#github-to-slack-mapping).
+
+## Keep access active
+
+- You must sign in to [GitHub using SSO](https://github.com/orgs/hmcts/sso) at least once every 30 days to retain your GitHub licence.
+- Users who do not sign in within this period will be removed based on SSO login logs, helping ensure access is revoked for leavers.
+- If you have multiple email aliases, use your primary/main ID when signing in with GitHub SSO.
+
+## Troubleshooting
+
+### Add a new user
+
+- Follow [Join GitHub](#join-github) to request access.
+- Make sure the user has accepted the invite received on the email address set up in GitHub, or by visiting [github.com/hmcts](https://github.com/hmcts).
+
+### Cannot access a repository
+
+- Check that access is granted through the correct GitHub team.
+- Check whether the team is linked to the correct Microsoft Entra ID group.
+- If no one from your team has access, follow [asking for help](/cloud-native-platform/asking-for-help/#asking-for-help) to request help from org admins.
+
+### Removed because SSO was not used
+
+If you have been removed because you did not sign in using SSO within 30 days:
+
+1. Try signing in again using [GitHub SSO](https://github.com/orgs/hmcts/sso).
+2. If that does not restore access, ask someone in your team to add you back to the `DTS GitHub Access` Microsoft Entra ID group.
+
+Use the [Microsoft Entra ID groups](entra-id.html#microsoft-entra-id-groups) instructions when adding the group.
+
+### Tenant account inactive or deleted
+
+If you received an inactive account email, or your tenant account has been deleted, follow [Microsoft Entra ID troubleshooting](entra-id.html#troubleshooting) first.
+
+GitHub access can only be restored after your Microsoft Entra ID account and access groups are restored.
