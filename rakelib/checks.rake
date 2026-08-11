@@ -42,6 +42,7 @@ CRITICAL_PAGES = %w[
   index.html
   cjs-common-platform/index.html
   cjs-common-platform/onboarding/index.html
+  cjs-common-platform/architecture/index.html
   cloud-native-platform/index.html
   hmcts-overview/index.html
   standards/index.html
