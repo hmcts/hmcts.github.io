@@ -30,26 +30,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: Build site
-        run: bundle exec rake build
+        # Not `rake build`: middleman-gh-pages 0.4.1 implements that task by
+        # shelling out to a nested `bundle exec`, and on Ruby 4 the inner
+        # bundler cannot resolve its own binstub - the site builds, then rake
+        # aborts on the nested call. Calling middleman directly is what this
+        # task did anyway, and is what build.yaml already does.
+        run: bundle exec middleman build --clean
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: 'build/'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
       # For Azure AI Search used in hmcts/slack-help-bot
       - name: Azure login
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}

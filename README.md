@@ -10,9 +10,12 @@ There are two ways to run this site locally: GitHub Codespaces (no setup require
 
 GitHub Codespaces gives you a ready-to-use dev environment in your browser with no local setup needed. The dev container installs all dependencies automatically, this can take a few minutes on first load.
 
-Once setup is complete, Navigate to **Ports** panel and hover over the port 4567's forward address to reveal the globe icon, then open the site using the icon.
+[![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hmcts/hmcts.github.io)
+
+The container starts the preview server itself. Once setup is complete, open the **Ports** panel, hover over the forwarded address for port 4567 to reveal the globe icon, and open the site from there.
 
 <img src="source/images/ports.png" alt="The VS Code Ports panel showing port 4567 forwarded for the Middleman preview server, with the Open in Browser icon highlighted" width="400">
+
 ### Local installation
 
 **Prerequisites:** macOS ships with an old system Ruby that won't work here. You need the version specified in [`.ruby-version`](.ruby-version), managed via [rbenv].

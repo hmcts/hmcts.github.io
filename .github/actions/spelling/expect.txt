@@ -13,6 +13,7 @@ btcqhe
 bueqa
 CBAC
 cdd
+cgi
 cname
 coderepo
 corepack
@@ -25,12 +26,14 @@ DNAT
 dnc
 dnsmasq
 dockerised
+drb
 Drevision
 dscwgwh
 egd
 ejdt
 enhbenftckhu
 ercybwaubzbmfn
+erubi
 fastapi
 fasterxml
 FBD
@@ -39,6 +42,7 @@ fkhfehdgahcrhbds
 flexibleserver
 FMDMy
 frdsdtbc
+frontmatter
 gauth
 Gdl
 gerrit
@@ -77,11 +81,16 @@ platopslackhelpbotai
 pnp
 popd
 postgres
+protobuf
 pushd
 pytest
 QLDTj
+rackup
+Rakefile
+rakelib
 Rthnz
 scp
+securerandom
 totp
 tsv
 Tunnelblick
