@@ -9,31 +9,38 @@ weight: 0
 
 When you create a new component (application, data store, or shared infrastructure), follow this workflow.
 
-## Step 1: Choose your application type first
+## Step 1: Create a new GitHub repository
 
-If you are creating an application service, start with the guidance for your runtime:
-
-- [Java golden path](https://backstage.platform.hmcts.net/docs/default/component/golden-path-java)
-- [Node.js golden path](https://backstage.platform.hmcts.net/docs/default/component/golden-path-nodejs)
-- [Python services](python.html)
+{% include github-repo.html %}
 
 After completing runtime-specific setup, return to this page and continue with the common steps below.
 
 If you are creating infrastructure-only components, skip this step and go straight to the common workflow.
 
-## Step 2: Common workflow for all components
+## Step 2: Set up repository and CI/CD
 
-1. [Create a new GitHub repository](github-repo.html)
-2. [Add the repository to Jenkins](jenkins-repository.html)
-3. [Add a Helm chart](helm-chart.html) for deployable services
-4. [Add infrastructure as code](infrastructure-as-code.html) where infrastructure is required
-5. [Configure GitOps with Flux](gitops-flux.html#application-config-in-flux)
-6. [Set up secrets management](secrets-management.html)
-7. [Configure load balancer](load-balancer-configuration.html) for backend services
-8. [Configure TLS certificates](tls-certificates.html)
-9. [Configure Public DNS](public-dns.html)
-10. [Configure Front Door](front-door.html) for frontend services
-11. Use [feature flags](feature-flags.html) to safely release changes
+1. [Add the repository to Jenkins](jenkins-repository.html)
+2. [Add a Helm chart](helm-chart.html) for deployable services
+3. [Configure GitOps with Flux](gitops-flux.html#application-config-in-flux)
+
+## Step 3: Set up infrastructure
+
+[Add infrastructure as code](infrastructure-as-code.html) where infrastructure is required
+
+## Step 4: Configure security
+
+1. [Set up secrets management](secrets-management.html)
+2. [Configure TLS certificates](tls-certificates.html)
+
+## Step 5: Configure networking
+
+1. [Configure load balancer](load-balancer-configuration.html) for backend services
+2. [Configure Public DNS](public-dns.html)
+3. [Configure Front Door](front-door.html) for frontend services
+
+## Step 6: Release management
+
+Use [feature flags](feature-flags.html) to safely release changes
 
 ## Supporting guidance
 
