@@ -1,0 +1,29 @@
+version: 2
+
+# This repository also runs Renovate (see renovate.json), so the two are split by
+# ecosystem rather than both watching everything. Overlapping them produces two pull
+# requests for the same bump, which is worse than either bot alone.
+#
+#   Dependabot  GitHub Actions, and security updates for everything
+#   Renovate    Ruby gems, and the devcontainer image
+#
+# Security updates do not come from this file - GitHub raises those whenever an
+# advisory matches, independently of the version-update config below.
+
+updates:
+  # ===================
+  # GitHub Actions
+  # ===================
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    open-pull-requests-limit: 10
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
