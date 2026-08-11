@@ -1,0 +1,48 @@
+name: Dependency auto-merge
+
+# Auto-merge minor and patch dependency bumps into `main` once all required checks are
+# green. Majors fall through to human review.
+#
+# Both bots raise dependency pull requests here, so both are handled, and the decision
+# lives in this one workflow rather than half here and half in renovate.json:
+#
+#   Dependabot  update type comes from dependabot/fetch-metadata. A grouped update
+#               auto-merges only when the whole group is minor/patch, because
+#               fetch-metadata reports the group's highest bump.
+#   Renovate    fetch-metadata does not understand Renovate, so renovate.json labels
+#               minor and patch updates instead and this reads the label. Parsing the
+#               title would be guesswork; a label is set by the same rule that decides
+#               the update type.
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot:
+    if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' && github.base_ref == 'main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v3
+
+      - name: Enable auto-merge for minor/patch
+        if: ${{ contains(fromJSON('["version-update:semver-minor","version-update:semver-patch"]'), steps.meta.outputs.update-type) }}
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.html_url }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  renovate:
+    if: >-
+      ${{ github.event.pull_request.user.login == 'renovate[bot]'
+          && github.base_ref == 'main'
+          && contains(github.event.pull_request.labels.*.name, 'automerge-minor-patch') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable auto-merge for minor/patch
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.html_url }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

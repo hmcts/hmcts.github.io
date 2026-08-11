@@ -4,16 +4,16 @@
   ],
   "packageRules": [
     {
-      "description": "Auto-merge minor and patch updates once checks pass. Majors still go to review.",
+      "description": "Label minor and patch updates so the auto-merge workflow can act on them. The workflow decides whether to merge, not Renovate, so both bots follow one policy.",
       "matchUpdateTypes": [
         "minor",
         "patch",
         "pin",
         "digest"
       ],
-      "automerge": true,
-      "automergeType": "pr",
-      "platformAutomerge": true
+      "addLabels": [
+        "automerge-minor-patch"
+      ]
     },
     {
       "description": "GitHub Actions are handled by Dependabot here; keep Renovate out of them so one bump does not raise two pull requests.",
