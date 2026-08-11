@@ -1,28 +1,21 @@
 ---
 title: Slack
-last_reviewed_on: 2026-01-14
+last_reviewed_on: 2026-07-29
 review_in: 6 months
-weight: 1
-hide_in_navigation: true
+weight: 3
 ---
 
 # <%= current_page.data.title %>
 
-Once you've received your `hmcts.net` or `justice.gov.uk` email account you can be invited into our Slack workspace by one of your team members.
+For individual Slack workspace access, profile setup and common channels, use [Slack onboarding](../person/slack.html).
 
-Most teams use the [hmcts-reform.slack.com](https://hmcts-reform.slack.com/) workspace.
-
-After you've created your account please make sure to fill out your profile,
-set at least your full name, and in the what I do section put your team name and role.
-
-## New team setup
-
-When creating a new team its important to also create the relevant Slack channels.
+When creating a new team, create the relevant Slack channels.
 The following channels should be created for every team:
 
-- a team contact channel, this must be public as this is where people on other teams will come to contact you,
-  this is often your regular developer chat channel, i.e. `team-dev` or `team-tech`.
-- a build notices channel, this should be public as there's no reason to hide your build failures.
+- A team contact channel. This must be public because people from other teams use it to contact you. This is often your regular developer chat channel.
+- A build notices channel. This should be public because build failures should be visible.
+
+These channel names are used in [team metadata required for pipelines](jenkins.html#team-metadata-required-for-pipelines).
 
 Once you've created a build notices channel you will need to invite our 'Jenkins' bot user into the channel.
 
@@ -33,10 +26,3 @@ Once you've created a build notices channel you will need to invite our 'Jenkins
 Make sure you pick the Jenkins \[app] user:
 
 <img src="/images/slack-jenkins-user-invite.png"/>
-
-## Troubleshooting
-
-### I have a hmcts.net account and can't sign up for an account
-
-This can happen if your Slack invite was approved but you haven't been added to the SSO exclusion list.
-Get someone in your team to ask in the #pls-admins channel to check on your account.

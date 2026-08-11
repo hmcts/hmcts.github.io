@@ -17,3 +17,7 @@ gem 'html-proofer'
 gem 'mutex_m'
 gem 'sprockets'
 gem 'base64'
+
+# Ruby 4.0 removed most of CGI from the default gems; rouge still calls CGI.parse.
+# Same reason mutex_m, sprockets and base64 are listed above.
+gem 'cgi'

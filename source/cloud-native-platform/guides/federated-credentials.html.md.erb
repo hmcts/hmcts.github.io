@@ -47,7 +47,7 @@ Azure has a hard limit of **20 federated credentials per App Registration**. Eac
 Roles define what permissions the GitHub Actions workflow has. Common roles include:
 - `Reader` - Read-only access to resources
 - `Contributor` - Full management access
-- Custom roles - Organization-specific roles for fine-grained control
+- Custom roles - Organisation-specific roles for fine-grained control
 
 ### Scopes
 
@@ -140,7 +140,7 @@ Check the following before committing:
 1. **YAML Syntax** - Ensure proper indentation (2 spaces, not tabs)
 2. **Subject Count** - Count the lines under `subjects:` - must be ≤ 20
 3. **Scopes Format** - Verify subscription IDs and resource group names are correct
-4. **Role Names** - Ensure role names match available Azure roles in your organization
+4. **Role Names** - Ensure role names match available Azure roles in your organisation
 
 ### Step 5: Commit and Push
 
@@ -156,7 +156,7 @@ Navigate to the repository on GitHub and create a pull request. The infrastructu
 - Correct syntax and format
 - Appropriate permissions (following principle of least privilege)
 - Valid Azure scopes
-- Compliance with organizational policies
+- Compliance with organisational policies
 
 Once approved and merged, the terraform pipeline will automatically create your App Registration, service principal, federated credentials, and role assignments.
 

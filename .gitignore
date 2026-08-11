@@ -24,3 +24,7 @@
 Staticfile.auth
 vendor/
 dist/
+
+# Ignore drawio backups
+
+*.drawio.bkp
