@@ -13,6 +13,7 @@ btcqhe
 bueqa
 CBAC
 cdd
+cgi
 cname
 coderepo
 corepack
