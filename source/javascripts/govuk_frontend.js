@@ -7,4 +7,9 @@
 //
 // Without this file every page links a script that was never generated, which
 // renders fine and fails the link check.
+//
+// The gem's upgrade notes say to put this in source/assets/javascripts/. This repo
+// keeps its JavaScript in source/javascripts/ (see application.js), and sprockets
+// resolves it from there, so it lives beside its sibling rather than in a second
+// directory created only for it.
 //= require govuk_frontend_all
