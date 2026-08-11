@@ -26,11 +26,6 @@ court list. Each is a self-contained application with its own routes and state.
 hearings, results, reference data, and so on. A service owns its data and publishes
 what happened rather than exposing its internals.
 
-The practical consequence, and it catches people out: **the same concept can be
-implemented more than once.** Two applications may both have something called an
-address component, and they are usually independent implementations rather than one
-shared thing. Confirming which it is takes evidence, not assumption.
-
 ## Built domain-first
 
 The system is built from a [Domain Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
