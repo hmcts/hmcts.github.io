@@ -8,8 +8,6 @@ There are two ways to run this site locally: GitHub Codespaces (no setup require
 
 ### GitHub Codespaces
 
-[![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hmcts/hmcts.github.io)
-
 GitHub Codespaces gives you a ready-to-use dev environment in your browser with no local setup needed. The dev container installs all dependencies automatically, this can take a few minutes on first load.
 
 [![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hmcts/hmcts.github.io)
