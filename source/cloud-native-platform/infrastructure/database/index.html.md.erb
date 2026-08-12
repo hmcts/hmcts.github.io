@@ -1,0 +1,86 @@
+---
+title: Database
+last_reviewed_on: 2026-08-06
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+Use this page for database infrastructure guidance.
+
+## PostgreSQL Flexible Server
+
+### Creation
+
+#### Production access prerequisites
+
+For production access, create the required Entra groups and access packages before creating or updating the PostgreSQL Flexible Server Terraform. See [Read access](#read-access) and [Write access](#write-access).
+
+#### Create the server
+
+Create PostgreSQL Flexible Server instances with the [terraform-module-postgresql-flexible](https://github.com/hmcts/terraform-module-postgresql-flexible) module.
+
+Use the module README for the current inputs, examples and operational guidance.
+
+### Production access
+
+This section describes how to self-service the creation of access request packages for PostgreSQL database read and write access.
+
+#### Overview
+
+JIT database access uses Microsoft Entra groups, access packages and the [PostgreSQL Flexible Server Terraform module](https://github.com/hmcts/terraform-module-postgresql-flexible).
+
+For production databases, the group names must match the PostgreSQL flexible server Terraform module naming convention:
+
+- Read access: `DTS JIT Access <product> DB Reader SC`
+- Write access: `DTS JIT Access <product> DB Writer SC`
+
+The access package grants membership of the matching group for a limited time. The database Terraform then maps that group to a PostgreSQL role and grants the database permissions.
+
+#### Read access
+
+Reader group access is enabled by default with `enable_read_only_group_access = true`, so the reader group must already exist unless `enable_read_only_group_access = false` is set.
+
+Before creating or updating the PostgreSQL Flexible Server Terraform:
+
+1. Create `DTS JIT Access <product> DB Reader SC` in [azure-access users/groups.yml](https://github.com/hmcts/azure-access/blob/master/users/groups.yml).
+2. Add the reader group to the `Databases` catalog in [azure-access-packages entitlement-catalogs.yml](https://github.com/hmcts/azure-access-packages/blob/master/entitlement-catalogs.yml).
+3. Add the read access package in [azure-access-packages entitlement-packages.yml](https://github.com/hmcts/azure-access-packages/blob/master/entitlement-packages.yml), following the [azure-access-packages README](https://github.com/hmcts/azure-access-packages#adding-a-new-access-package).
+
+Choose a requestor group that requires security clearance, such as `DTS CFT SC`.
+
+If the database needs read access outside the `public` schema, configure `schemas_for_reader_access` in the service infrastructure. See the [PostgreSQL Flexible Server module access documentation](https://github.com/hmcts/terraform-module-postgresql-flexible#access-to-databases).
+
+#### Write access
+
+Only enable write access where it is needed and approved. Enable writer grants in the service infrastructure with `enable_write_group_access = true`.
+
+Before enabling write access in Terraform:
+
+1. Create `DTS JIT Access <product> DB Writer SC` in [azure-access users/groups.yml](https://github.com/hmcts/azure-access/blob/master/users/groups.yml).
+2. Add the writer group to the `Databases` catalog in [azure-access-packages entitlement-catalogs.yml](https://github.com/hmcts/azure-access-packages/blob/master/entitlement-catalogs.yml).
+3. Add the write access package in [azure-access-packages entitlement-packages.yml](https://github.com/hmcts/azure-access-packages/blob/master/entitlement-packages.yml), following the [azure-access-packages README](https://github.com/hmcts/azure-access-packages#adding-a-new-access-package).
+
+Choose a requestor group that requires security clearance, such as `DTS CFT SC`.
+
+If write access should apply outside the `public` schema, configure `schemas_for_writer_access` in the service infrastructure. If `schemas_for_writer_access` is not set, the module uses `schemas_for_reader_access`, or `["public"]` if neither value is set.
+
+#### Example pull requests
+
+These pull requests show the group and package changes:
+
+- [Create the Entra group in azure-access](https://github.com/hmcts/azure-access/pull/7874/changes)
+- [Create the access package in azure-access-packages](https://github.com/hmcts/azure-access-packages/pull/134)
+
+#### Request read or write access
+
+Before requesting production database access, make sure you are a member of `DTS CFT Developers` or `DTS SDS Developers` and have completed the [security clearance access package](/cloud-native-platform/onboarding/person/entra-id.html#security-clearance-access-package).
+
+1. Go to [My Access access packages](https://myaccess.microsoft.com/@CJSCommonPlatform.onmicrosoft.com#/access-packages).
+2. Search for the database package:
+   - Read access: `Database - <product> read access - self approval`
+   - Write access: `Database - <product> write access - self approval`
+3. Request the package and provide the Jira or Halo link requested in the form.
+4. Wait for the access assignment to complete. You may need to sign out and sign in again before your new group membership appears in your Azure PostgreSQL access token.
+5. Connect to the database by following the [PostgreSQL flexible server access instructions](https://github.com/hmcts/terraform-module-postgresql-flexible#access-to-databases).

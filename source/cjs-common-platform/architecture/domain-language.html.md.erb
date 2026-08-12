@@ -1,0 +1,74 @@
+---
+title: The domain language
+last_reviewed_on: 2026-08-11
+review_in: 12 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+Because the platform is built domain-first, the words the courts use are the words the
+code uses, so these are the terms to search for when you are looking for where
+something happens.
+
+These are the terms most likely to come up in your first week. It is a starting point,
+not a complete glossary.
+
+## A case, and the people and offences in it
+
+A **prosecution case** is what a prosecuting authority sends to the court. It is the
+container everything else hangs from.
+
+A **defendant** is a person or organisation the case is brought against. A case can
+have more than one, and their circumstances can differ.
+
+An **offence** is what is alleged, and offence definitions are held centrally as
+reference data rather than per case. A **charge** is the case-level concept that
+carries an offence — so the definition is shared and its use is not.
+
+## Hearings, and what comes out of them
+
+A **hearing** is an occasion on which the court considers a case. Cases are **listed**
+into hearings, which is its own discipline — matching cases to courtrooms, dates and
+the people required.
+
+**Results** are what the court decided, recorded against a charge or a defendant.
+They drive a great deal of what happens next, including which documents are produced.
+They are structured rather than free text, which is what makes them actionable.
+
+**Result definitions** are the catalogue of outcomes a court can record, with the
+prompts each one asks for. They are reference data, maintained centrally, and they
+change over time — which means a question about results usually has a date in it.
+
+## Notices, orders and warrants
+
+**NOWs** — notices, orders and warrants — are the documents a court produces after a
+hearing, and what a person outside the court actually receives. The range is wide:
+
+- Notice of Grant of Bail
+- Notice of Financial Penalty
+- Notice of Disqualification from Driving
+- Notice of New Date of Hearing
+- Notice of Football Banning Order
+- Notice of Compensation
+
+A single hearing can generate several, addressed to different recipients, and which
+ones are produced follows from the results recorded — the document is generated from
+the decision rather than typed up afterwards.
+
+## Reference data
+
+A good deal of the platform's behaviour is not in code but in **reference data** — the
+offence definitions, result definitions, prompts, court and prosecutor details.
+
+Two things follow. Behaviour can change without a release, because the data changed.
+And a question of the form "why did it do that" is often answered by the reference data
+in force at the time, rather than by the code as it stands now.
+
+## Why the vocabulary is worth the effort
+
+Domain-first design means these words are load-bearing. If you search for the business
+term, you will usually find the code; if you search for a technical synonym you have
+invented, you often will not. When a term seems to be used in two different ways, that
+is worth pursuing rather than smoothing over — it usually marks a real boundary
+between two parts of the business.
