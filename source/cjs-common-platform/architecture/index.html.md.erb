@@ -1,0 +1,67 @@
+---
+title: Architecture
+last_reviewed_on: 2026-08-11
+review_in: 12 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Common Platform is the case management system for the criminal courts in England and
+Wales. It carries a criminal case from the point a prosecutor sends it in, through
+hearings, to the orders and notices a court produces at the end.
+
+This section is an orientation rather than a specification. It describes the shape of
+the system, the language it is written in, and where the authoritative material lives.
+
+## Two layers
+
+The platform separates what a user does from where the facts live.
+
+**User-facing applications** are the screens each role works in — a legal adviser
+preparing a hearing, a defence advocate reviewing a case, an administrator managing a
+court list. Each is a self-contained application with its own routes and state.
+
+**Domain services** sit behind them, one per area of the business: prosecution cases,
+hearings, results, reference data, and so on. A service owns its data and publishes
+what happened rather than exposing its internals.
+
+## Built domain-first
+
+The system is built from a [Domain Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
+perspective. Two things follow that are worth knowing before reading any code.
+
+**The business vocabulary is the code's vocabulary.** A hearing is a `Hearing`, a
+defendant is a `Defendant`. Learning the domain language is the fastest way in, which
+is why it has [its own page](domain-language.html).
+
+**Services communicate through events.** Rather than one service reaching into
+another, a service records what happened in its own terms and others react. This makes
+history a first-class thing — the sequence of events *is* the record — and it means a
+question like "what did this service know at the time" is answerable.
+
+## The architecture model
+
+There is a published architecture model of the platform, maintained as code:
+
+**[Browse the Common Platform architecture model](https://hmcts.github.io/cp-c4-architecture/)**
+
+It is a [C4](https://c4model.com/) model, so it presents the same estate at several
+zoom levels — the products, the containers inside them, and the relationships between
+them. It is generated from a source model rather than drawn by hand.
+
+Two limits are worth stating:
+
+- **It models deployable systems.** Shared libraries and frameworks are deliberately
+  out of scope, so something can be central to how the platform works and still be
+  absent from the model.
+- **It is a model, not the running system.** It describes intended structure. What is
+  actually deployed in an environment at a given moment is a different question, with
+  a different source of truth.
+
+## Where this fits
+
+If you are new and need access, start with
+[onboarding](../onboarding/index.html). If you want to know where a particular kind of
+answer lives — architecture, code, decisions, operational detail — see
+[finding things](finding-things.html).

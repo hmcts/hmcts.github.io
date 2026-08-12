@@ -1,0 +1,57 @@
+---
+title: Finding things
+last_reviewed_on: 2026-08-11
+review_in: 12 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Documentation about Common Platform is spread across several places, each authoritative
+for a different kind of question. Knowing which to reach for is most of the skill.
+
+## Which source answers which question
+
+| You want to know | Go to |
+|---|---|
+| How the products fit together, and what talks to what | The [architecture model](https://hmcts.github.io/cp-c4-architecture/) |
+| What a domain term means | [The domain language](domain-language.html) |
+| How to get access | [Onboarding](../onboarding/index.html) |
+| How something is actually implemented | The code, in the [HMCTS GitHub organisation](https://github.com/hmcts) |
+| Why a decision was made | Team records and internal Confluence |
+| What is running in an environment right now | The deployment configuration, not any document |
+
+## The architecture model is generated
+
+The [architecture model](https://hmcts.github.io/cp-c4-architecture/) is maintained as
+code and rendered, rather than drawn. That is worth knowing for two reasons: it is
+consistent with itself, and it can be reviewed like code — a change to the model is a
+pull request, not a redrawn picture in a document nobody can diff.
+
+If you find it disagrees with reality, that is a finding worth raising rather than
+working around. A model that has drifted and a system that has drifted are different
+problems with different fixes.
+
+## Standards that apply beyond this programme
+
+Common Platform sits inside wider HMCTS engineering practice. The
+[standards](/standards/) section of this site covers what applies across
+programmes — repository conventions, security expectations, ways of working — and is
+the right reference for anything not specific to the criminal courts domain.
+
+## When the documentation is wrong
+
+Everything here is a snapshot maintained by people, and the platform moves faster than
+its prose. A page with a stale `last_reviewed_on` date is telling you something useful.
+
+Prefer sources in this order when they disagree:
+
+1. **The running system**, for what is true now.
+2. **The code**, for what is intended.
+3. **Generated documentation**, such as the architecture model, which is derived from a
+   source and so is consistent even when it is behind.
+4. **Hand-written prose**, including this page, which goes stale quietly.
+
+Each page carries a contribution link. Correcting something you found wrong is more
+valuable than the time it costs you, because the next person pays that cost again
+otherwise.
