@@ -353,3 +353,15 @@ DSIT
 bsp
 cdm
 neuvector
+Qube
+Danalyzer
+Ddata
+Ddependency
+Dnvd
+ossindex
+OWASPDB
+Pnvd
+Qube
+retirejs
+tfenv
+validforhours
