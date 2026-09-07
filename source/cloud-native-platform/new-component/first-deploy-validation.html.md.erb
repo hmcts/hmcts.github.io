@@ -1,0 +1,18 @@
+---
+title: Deploy and validate your first build
+last_reviewed_on: 2026-09-07
+review_in: 3 months
+weight: 12
+---
+
+# <%= current_page.data.title %>
+
+This page is a placeholder for a walkthrough of validating your first deployment before moving on to [Path to Live](/cloud-native-platform/path-to-live/). Detailed content is tracked as a follow-up piece of work.
+
+In the meantime, once your pull request has built successfully in Jenkins:
+
+1. Check the deployment landed in the `preview` or `aat` environment you expect, using the `values.preview.template.yaml` / `values.aat.template.yaml` overrides described in [Helm chart](helm-chart.html#what-are-values-template-yaml-for).
+2. Confirm your application responds on its ingress host and that [health probes](/cloud-native-platform/path-to-live/health-endpoints.html) are passing.
+3. Confirm any infrastructure, secrets, TLS, DNS and Front Door configuration from the earlier steps has been applied without errors in the pipeline.
+
+If something does not come up as expected, see [Troubleshooting](/cloud-native-platform/troubleshooting/) or ask in [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help).
