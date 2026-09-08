@@ -1,0 +1,28 @@
+---
+title: Shared libraries
+last_reviewed_on: 2026-09-08
+review_in: 6 months
+weight: 7
+---
+
+# <%= current_page.data.title %>
+
+HMCTS maintains a set of shared pipeline libraries so that teams do not have to
+write and maintain their own build and deployment logic. Using them means your
+pipelines get the standard set of checks, security scanning, deployment patterns
+and fixes for free, and stay consistent with every other team on the platform.
+
+Use the guide for the CI/CD system your repository builds with:
+
+| Library | CI/CD system | Typical use |
+| --- | --- | --- |
+| [Jenkins library](jenkins-library.html) | Jenkins | Building, testing and deploying applications and application infrastructure through the common pipeline |
+| [Azure DevOps libraries](azure-devops-libraries.html) | Azure DevOps | Terraform plan/apply pipelines for platform infrastructure repositories |
+| [GitHub Actions library](github-actions-library.html) | GitHub Actions | Reusable workflows and composite actions, such as container build and push, Helm deploy and Terraform deploy |
+
+Each guide explains what the library is for, when to use it, how to import it
+into your repository, how versioning works, and links to real repositories
+using it today.
+
+If you are not sure which applies to you, ask in
+[#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help).
