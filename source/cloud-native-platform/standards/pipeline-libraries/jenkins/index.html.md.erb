@@ -9,20 +9,7 @@ weight: 3
 
 This section explains the common delivery workflow used at HMCTS.
 
-Use the guidance in this order so teams follow one consistent setup path from a new repository to production:
-
-1. For application services, start with runtime guidance in [Starting a new component](../../../new-component/) (Java, Node.js, Python)
-2. [Create a new GitHub repository](../../../new-component/github-repo.html)
-3. [Add the repository to Jenkins](../../../new-component/jenkins-repository.html)
-4. [Add a Helm chart](../../../new-component/helm-chart.html) for deployable services
-5. [Add infrastructure as code](../../../new-component/infrastructure-as-code.html) where infrastructure is required
-6. [Configure GitOps with Flux](../../../new-component/gitops-flux.html#application-config-in-flux)
-7. [Set up secrets management](../../../new-component/secrets-management.html)
-8. [Configure load balancer](../../../new-component/load-balancer-configuration.html) for backend services
-9. [Configure TLS certificates](../../../new-component/tls-certificates.html)
-10. [Configure Public DNS](../../../new-component/public-dns.html)
-11. [Configure Front Door](../../../new-component/front-door.html) for frontend services
-12. [Use feature flags](../../../new-component/feature-flags.html) to decouple deployment from release
+For the canonical setup sequence, follow [Starting a new component](../../../new-component/), which takes you from a new repository through non-production validation in the required order.
 
 After onboarding, use these references to understand and operate the pipeline:
 

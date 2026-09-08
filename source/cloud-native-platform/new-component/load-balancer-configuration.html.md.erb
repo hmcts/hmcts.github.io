@@ -9,6 +9,8 @@ old_paths:
 
 # <%= current_page.data.title %>
 
+This guidance applies to non-production and production environments where relevant. Production approvals and readiness checks remain part of [Path to Live](/cloud-native-platform/path-to-live/).
+
 In all our Path to Live environments we run two clusters for high availability
 and zero down-time upgrades. We load balance across these clusters using an
 [Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview) which has a health probe for each application
