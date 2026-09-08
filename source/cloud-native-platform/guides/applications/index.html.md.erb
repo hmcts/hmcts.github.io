@@ -8,3 +8,7 @@ weight: 9
 # <%= current_page.data.title %>
 
 Guides and how-to documents:
+
+<% current_page.children.each do |page| %>
+- [<%= page.data.title %>](<%= page.url %>)
+<% end %>
