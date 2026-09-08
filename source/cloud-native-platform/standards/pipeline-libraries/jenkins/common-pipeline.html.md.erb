@@ -22,7 +22,7 @@ Follow this sequence when creating a new component:
     - [Infrastructure as Code](/cloud-native-platform/new-component/infrastructure-as-code.html) for infrastructure
 4. [Configure GitOps with Flux](/cloud-native-platform/new-component/gitops-flux.html#application-config-in-flux)
 5. [Set up secrets management](/cloud-native-platform/new-component/secrets-management.html)
-6. [Complete path-to-live setup](/cloud-native-platform/path-to-live/) for service components, including non-production readiness
+6. [Complete Path to Live setup](/cloud-native-platform/path-to-live/) for service components, including non-production readiness
 
 The common pipeline is a Jenkins pipeline defined by [code](https://github.com/hmcts/cnp-jenkins-library)
 which implements Continuous Delivery to production while enforcing a standard set of
@@ -67,7 +67,7 @@ For more information about Helm, please see the related new component
 
 ![The Common Pipeline](/images/common-pipeline.png)
 
-The diagram below shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of a non path to live environment that is _optionally_ deployed to.
+The diagram below shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of an environment outside Path to Live that is _optionally_ deployed to.
 
 An application consists of the different infrastructure levels of platform, product and component as detailed in [Infrastructure levels](/cloud-native-platform/new-component/infrastructure-as-code.html#infrastructure-levels).
 

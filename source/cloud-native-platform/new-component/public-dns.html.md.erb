@@ -19,7 +19,7 @@ follow the [shuttering](/cloud-native-platform/path-to-live/shutter.html) instru
 for a new service.
 
 ## Setup required for an application
-- Copy the FrontDoor endpoint hostname for the environment:
+- Copy the Front Door endpoint hostname for the environment:
 
 ### CFT
 
@@ -27,7 +27,7 @@ for a new service.
 # Sandbox
 hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net
 
-# Preview (only used in very limited use-cases for FrontDoor)
+# Preview (only used in very limited use-cases for Front Door)
 hmcts-preview-fkhfehdgahcrhbds.z01.azurefd.net
 
 # AAT
@@ -52,7 +52,7 @@ hmcts-prod-hdgpbqdkafhmcse9.z01.azurefd.net
 # Sandbox
 sdshmcts-sbox-bueqa6a6hefjfne4.z01.azurefd.net
 
-# Dev (only used in very limited use-cases for FrontDoor)
+# Dev (only used in very limited use-cases for Front Door)
 sdshmcts-dev-c4ercybwaubzbmfn.z01.azurefd.net
 
 # Staging
@@ -81,12 +81,12 @@ There can be multiple zones in one environment,
 ```
 - name: "${name}"
   ttl: 300
-  record: "{copy endpoint hostname from frontdoor}"
+  record: "{copy endpoint hostname from Front Door}"
 ```
 
 Where:
 
-`${name}` =  Identifier that will be used to create endpoints and hosts entries in Frontdoor and CDN profiles.
+`${name}` =  Identifier that will be used to create endpoints and hosts entries in Front Door and CDN profiles.
 This should be the `name` attribute from env.tfvars file e.g. [name attribute](https://github.com/hmcts/azure-platform-terraform/blob/fa598ca88221555abcbe54a52f0738ca20d48f59/environments/prod.tfvars#L17)
 
 Send the PR for review to the [Platform Operations](https://hmcts-reform.slack.com/app_redirect?channel=platops-code-review) team. Once the PR is merged terraform will create appropriate records.

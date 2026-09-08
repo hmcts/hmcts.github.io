@@ -129,11 +129,11 @@ HTTP range requests allow clients to fetch only specific parts of a resource, ra
 
  Once implimented range requests optimise bandwidth usage and improve user experience in various scenarios. For more information on range requests see the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests).
 
-## Frontdoor Caching
+## Front Door Caching
 
-By default, the HMCTS frontdoor module, [terraform-module-frontdoor](https://github.com/hmcts/terraform-module-frontdoor), sets the Azure frontdoor to automatically cache static files like images (jpg, png), stylesheets (css), icons (ico), and Javascript files (js). However, for applications behind the frontdoor to benefit from this caching, they need to set the correct headers in their responses.
+By default, the HMCTS Front Door module, [terraform-module-frontdoor](https://github.com/hmcts/terraform-module-frontdoor), sets Azure Front Door to automatically cache static files like images (jpg, png), stylesheets (css), icons (ico), and Javascript files (js). However, for applications behind Front Door to benefit from this caching, they need to set the correct headers in their responses.
 
-Here's an example: The Toffee application (see [pull request #431](https://github.com/hmcts/sds-toffee-frontend/pull/431/files#diff-318a36d55c848c97aa1adea654c62dd6551bf887c6b6db655364ab6879e11fa4R37) ) configures its headers to allow the frontdoor to cache static files for 60 seconds. This improves performance by reducing the number of times the application needs to send the same static content to users.
+Here's an example: The Toffee application configures its headers to allow Front Door to cache static files for 60 seconds. This improves performance by reducing the number of times the application needs to send the same static content to users. See [pull request #431](https://github.com/hmcts/sds-toffee-frontend/pull/431/files#diff-318a36d55c848c97aa1adea654c62dd6551bf887c6b6db655364ab6879e11fa4R37) for an example.
 
 If you like to overwrite the default caching rule to include more static file type, please see below example for Toffee app.
 
