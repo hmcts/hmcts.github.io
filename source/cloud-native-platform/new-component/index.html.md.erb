@@ -9,6 +9,16 @@ weight: 5
 
 When you create a new component (application, data store, or shared infrastructure), follow this workflow in order, from an empty repository through to a working deployment in a non-production environment.
 
+## Before you start
+
+Make sure you have the required access and local setup in place before you begin the numbered flow below:
+
+- GitHub repo access and team ownership for the product or component, as described in [Create a GitHub Repository](github-repo.html)
+- Jenkins access and the repository topic needed for the organisation scan, as described in [Jenkins setup](jenkins-repository.html)
+- Azure access, VPN access, and the relevant developer tools listed in [Onboarding](../onboarding/)
+- The repo for any shared infrastructure or central configuration that your component depends on
+- A clear target environment for the first deployment, usually preview or AAT
+
 ## Step 1: Create a new GitHub repository
 
 {% include github-repo.html %}
@@ -71,4 +81,8 @@ Not every component needs these — add them if your component needs the capabil
 
 - [Common pipeline overview](../standards/pipeline-libraries/)
 - [Publishing libraries](../standards/publishing-libraries/) — for publishing a shared library rather than deploying a service
+
+<hr>
+
+<strong>Next step:</strong> [Path to Live →](/cloud-native-platform/path-to-live/)
 
