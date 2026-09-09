@@ -27,45 +27,46 @@ After completing runtime-specific setup, return to this page and continue with t
 
 If you are creating infrastructure-only components, create the repository, skip the runtime-specific setup, and continue with [Step 2: Set up Jenkins](#step-2-set-up-jenkins-including-deployment-controls).
 
-Runtime-specific guidance: [Python services](python.html). Java and Node.js use the templates linked above.
+Runtime-specific guidance:
+
+- [Python services](python.html)
+- [Java services](https://github.com/hmcts/spring-boot-template)
+- [Node.js services](https://github.com/hmcts/expressjs-template)
+- [Angular applications](/standards/standards/angular.html)
 
 ## Step 2: Set up Jenkins, including deployment controls
 
 [Add the repository to Jenkins](jenkins-repository.html), including the GitHub topic that gets it picked up by the organisation scan and the CMP `deployment-controls.yml` entry that turns on build and deploy stages.
 
-## Step 3: Add a Helm chart
+## Step 3: Configure GitOps with Flux
 
-[Add a Helm chart](helm-chart.html) for deployable services.
+We use Flux to deploy applications to AKS. Follow this guidance to [configure GitOps with Flux](gitops-flux.html#application-config-in-flux) and deploy your app.
 
-## Step 4: Configure GitOps with Flux
+## Step 4: Set up infrastructure
 
-[Configure GitOps with Flux](gitops-flux.html#application-config-in-flux).
+If your component needs infrastructure such as databases or storage accounts, [add infrastructure as code](infrastructure-as-code.html).
 
-## Step 5: Set up infrastructure
+## Step 5: Set up secrets management
 
-[Add infrastructure as code](infrastructure-as-code.html) where infrastructure is required.
+If your component needs secrets, [set up secrets management](secrets-management.html).
 
-## Step 6: Set up secrets management
+## Step 6: Configure TLS certificates
 
-[Set up secrets management](secrets-management.html).
+If your component is exposed publicly, [configure TLS certificates](tls-certificates.html).
 
-## Step 7: Configure TLS certificates
-
-[Configure TLS certificates](tls-certificates.html).
-
-## Step 8: Configure Public DNS
+## Step 7: Configure Public DNS
 
 [Configure Public DNS](public-dns.html).
 
-## Step 9: Configure load balancer
+## Step 8: Configure load balancer
 
 [Configure load balancer](load-balancer-configuration.html) for backend services.
 
-## Step 10: Configure Front Door
+## Step 9: Configure Front Door
 
 [Configure Front Door](front-door.html) for frontend services.
 
-## Step 11: Deploy to a non-production environment and validate
+## Step 10: Deploy to a non-production environment and validate
 
 [Deploy and validate your first build](first-deploy-validation.html) before moving on to [Path to Live](/cloud-native-platform/path-to-live/) for production readiness (environment approvals, OAT, shuttering and health probes).
 
@@ -80,6 +81,7 @@ Not every component needs these — add them if your component needs the capabil
 ## Supporting guidance
 
 - [Common pipeline overview](../standards/pipeline-libraries/)
+- [Helm charts](../standards/pipeline-libraries/helm-chart.html)
 - [Publishing libraries](../standards/publishing-libraries/) — for publishing a shared library rather than deploying a service
 
 <hr>
