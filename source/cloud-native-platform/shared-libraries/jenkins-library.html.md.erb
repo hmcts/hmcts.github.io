@@ -75,8 +75,10 @@ You can pin to a release tag if you need to:
 @Library("Infrastructure@2.5.1") _
 ```
 
-Pinned repositories do not receive new pipeline features or fixes until the pin
-is updated, so treat a pin as a temporary measure and prefer tracking `master`.
+Pinned repositories do not receive new pipeline features, fixes or security
+updates until the pin is updated. A pin can be useful to hold a known-good
+version briefly — for example while a breaking library change is resolved —
+but treat it as temporary and prefer tracking `master`.
 
 To test an unmerged library change, reference the branch instead:
 
