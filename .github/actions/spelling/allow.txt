@@ -120,6 +120,7 @@ haml
 hashie
 helmrelease
 hmcts
+hmctsprod
 hmctspublic
 hmi
 hotspot
