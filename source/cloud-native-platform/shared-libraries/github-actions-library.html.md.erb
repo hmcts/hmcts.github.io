@@ -1,0 +1,109 @@
+---
+title: GitHub Actions library
+last_reviewed_on: 2026-09-08
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+## Purpose
+
+[cnp-githubactions-library](https://github.com/hmcts/cnp-githubactions-library)
+is a library of reusable GitHub Actions workflows and composite actions. It
+provides standardised, production-ready building blocks so repositories using
+GitHub Actions do not have to reimplement common CI/CD tasks.
+
+## When to use it
+
+Use this library when your repository builds and deploys through GitHub Actions
+and needs one of:
+
+- **Container build and push** — build container images and push them to a
+  registry, with multi-platform and OpenID (workload identity) variants
+- **Helm deploy** — deploy Helm charts to AKS, including OCI chart
+  dependencies, with an OpenID variant
+- **Terraform deploy** — plan and apply Terraform, with an OpenID variant
+- **npm publish** — publish JavaScript packages to the HMCTS Azure Artifacts
+  feed using release-please
+- **Publish OpenAPI spec** — publish an OpenAPI/Swagger spec to the central
+  [cnp-api-docs](https://github.com/hmcts/cnp-api-docs) registry
+- **Release drafting and changelog** — draft GitHub releases from merged PRs
+  and keep `CHANGELOG.md` up to date
+
+Most components come in two formats: a **reusable workflow** (simple,
+standardised, built-in secret handling) and a **composite action** (flexible —
+use it when you need custom steps before or after, several images or releases
+in one job, or a matrix strategy).
+
+## How to import it
+
+Reusable workflows are called with `uses` at the job level:
+
+```yaml
+jobs:
+  build:
+    uses: hmcts/cnp-githubactions-library/.github/workflows/container-build-and-push.yaml@main
+    with:
+      image-name: my-application
+    secrets:
+      REGISTRY_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
+      REGISTRY_USERNAME: ${{ secrets.ACR_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+```
+
+Composite actions are used as a step within a job, alongside your own steps:
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and push
+        uses: hmcts/cnp-githubactions-library/container-build-push@main
+        with:
+          registry: myregistry.azurecr.io
+          registry-username: ${{ secrets.ACR_USERNAME }}
+          registry-password: ${{ secrets.ACR_PASSWORD }}
+          image-name: my-application
+```
+
+Every workflow and action has its own documentation page in the repository,
+next to its implementation — see the
+[library README](https://github.com/hmcts/cnp-githubactions-library#readme)
+for the full catalogue.
+
+## Versioning
+
+The reference after the `@` symbol selects the version. For production
+pipelines, pin to a specific tag or commit SHA rather than tracking `main`:
+
+```yaml
+# Pin to a specific tag (recommended for production)
+uses: hmcts/cnp-githubactions-library/.github/workflows/container-build-and-push.yaml@v1.0.0
+
+# Pin to a specific commit
+uses: hmcts/cnp-githubactions-library/.github/workflows/container-build-and-push.yaml@abc123def
+
+# Track the latest from main (not recommended for production)
+uses: hmcts/cnp-githubactions-library/.github/workflows/container-build-and-push.yaml@main
+```
+
+The same applies to composite actions, for example
+`hmcts/cnp-githubactions-library/container-build-push@v1.0.0`.
+
+## Real examples
+
+- [zap-glue](https://github.com/hmcts/zap-glue/blob/master/.github/workflows/acr-build-and-push.yaml)
+  — container build and push to ACR
+- [api-cp-crime-defendant-details](https://github.com/hmcts/api-cp-crime-defendant-details/blob/main/.github/workflows/terraform-infra.yaml)
+  — Terraform deploy through the reusable workflow
+
+## Related resources
+
+Organisation-wide workflow templates also live in
+[hmcts/.github](https://github.com/hmcts/.github). This library is the home for
+reusable CNP build and deployment workflows; if you are unsure which to use,
+ask in [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help).
