@@ -46,6 +46,7 @@ frontmatter
 gauth
 Gdl
 gerrit
+githubactions
 Githubusername
 gpg
 gufqadefbjgbhkhv
@@ -66,6 +67,7 @@ mdv
 MQBFZ
 mycomponent
 myproduct
+myregistry
 nameserver
 nfunction
 oathtool
@@ -91,6 +93,7 @@ rakelib
 Rthnz
 scp
 securerandom
+tfcmt
 totp
 tsv
 Tunnelblick
