@@ -137,6 +137,12 @@ on every master and pull request build.
 On a master build after functional testing has passed the chart will be published
 if it has not already been published.
 
+It is published to the [hmcts-charts](https://github.com/hmcts/hmcts-charts) repository as
+`stable/<chart-name>`, and that is the copy [flux reads](gitops-flux.html#application-config-in-flux) —
+your `HelmRelease` refers to it as `chart: ./stable/<chart-name>` with a `hmcts-charts` `GitRepository`
+source and no version. The same chart is also pushed to the `hmctsprod` container registry;
+nothing in flux reads that copy, so pointing a `HelmRelease` at it is a common and quiet mistake.
+
 To publish a new version:
 
 - Bump the version field in Chart.yaml in a pull request
