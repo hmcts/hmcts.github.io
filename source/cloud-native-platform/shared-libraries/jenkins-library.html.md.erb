@@ -34,12 +34,12 @@ Before using it, your repository must be
 
 Jenkins is already configured with this library under the name
 `Infrastructure`, so there is nothing to install. Import it at the top of your
-`Jenkinsfile_CNP`:
+`Jenkinsfile_CNP`, pinned to a release:
 
 ```groovy
 #!groovy
 
-@Library("Infrastructure") _
+@Library("Infrastructure@2.7.1") _
 
 def type = "java"        // "java", "nodejs", "angular" or "python"
 def product = "rhubarb"
@@ -65,20 +65,21 @@ tests, pact contract testing and more — is documented in the
 
 ## Versioning
 
-`@Library("Infrastructure")` tracks the library's `master` branch, so pipelines
-pick up new features and fixes automatically. This is the recommended way to
-consume it.
-
-You can pin to a release tag if you need to:
+The library is released as version tags, and pinning to a release is the
+default way to consume it:
 
 ```groovy
-@Library("Infrastructure@2.5.1") _
+@Library("Infrastructure@2.7.1") _
 ```
 
+A bare `@Library("Infrastructure")` follows the library's `master` branch and
+picks up every change as soon as it merges. Avoid this — pin to a release so
+your pipeline only changes when you choose to update it.
+
 Pinned repositories do not receive new pipeline features, fixes or security
-updates until the pin is updated. A pin can be useful to hold a known-good
-version briefly — for example while a breaking library change is resolved —
-but treat it as temporary and prefer tracking `master`.
+updates until the pin is updated, so review and update your pin regularly. The
+available versions are listed on the
+[library releases page](https://github.com/hmcts/cnp-jenkins-library/tags).
 
 To test an unmerged library change, reference the branch instead:
 
