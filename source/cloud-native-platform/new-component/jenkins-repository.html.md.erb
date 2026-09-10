@@ -11,7 +11,7 @@ Use this page when adding a GitHub repository to Jenkins.
 
 For team-level Jenkins metadata and build dashboards, use [Jenkins](/cloud-native-platform/onboarding/team/jenkins.html).
 
-> To find out more about the common pipeline, see its [documentation](/cloud-native-platform/common-pipeline/common-pipeline.html).
+> To find out more about the common pipeline, see its [documentation](/cloud-native-platform/standards/pipeline-libraries/jenkins/common-pipeline.html).
 
 There are Jenkins servers for both CFT (Civil, Family & Tribunal) and SDS (Shared Digital Services).
 
@@ -19,7 +19,7 @@ The setup depends on the business area your application is in.
 
 Before starting, make sure the repository exists and access is managed through the correct GitHub teams.
 
-See [Github](/cloud-native-platform/onboarding/team/github-repositories.html) and [creating a GitHub repository](github-repo.html#create-a-github-repository).
+See [GitHub](/cloud-native-platform/onboarding/team/github-repositories.html) and [creating a GitHub repository](github-repo.html#create-a-github-repository).
 
 ## Add the GitHub topic
 
@@ -48,11 +48,7 @@ Scan the organisation manually in Jenkins if it does not scan automatically.
 
 ## Allow production deployments
 
-To allow Jenkins to deploy to production, add your GitHub repository to the approved repositories list.
-
-CFT: [hmcts/cnp-jenkins-config/environment-approvals.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
-
-SDS: [hmcts/sds-jenkins-config/environment-approvals.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/environment-approvals.yml)
+Production deployment approval is a Path to Live concern. See [Environment approvals](/cloud-native-platform/path-to-live/productionise-your-application.html#environment-approvals) once you are ready to go live.
 
 ## Pipeline stages and deployment controls
 
@@ -86,3 +82,7 @@ See the [GitHub documentation](https://docs.github.com/en/repositories/managing-
 SDS repositories are not currently split, but they may be in the future.
 
 - `jenkins-sds`
+
+<hr>
+
+<strong>Next step in Creating a New Component:</strong> [Configure GitOps with Flux](gitops-flux.html)
