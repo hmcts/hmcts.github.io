@@ -11,7 +11,7 @@ The Platform Catalogue lists the platform capabilities teams can build on - star
 GitHub Actions, Helm charts and platform services to follow.
 
 Unlike the rest of this site, these pages are **generated, not hand-written**. Each module repo owns a small
-`.hmcts/catalogue.yaml` metadata file (see the [catalogue schema](https://github.com/hmcts/hmcts.github.io/blob/main/schemas/terraform-module-catalogue.schema.json)),
+`.hmcts/catalogue.yaml` metadata file (see the [catalogue schema](/schemas/terraform-module-catalogue.schema.json)),
 and a scheduled GitHub Action scans the `hmcts` organisation for repos tagged with the relevant topic, validates
 their metadata, and opens a pull request here with the result. If something in the catalogue is wrong or
 out of date, propose a change in that module's repository rather than here - the next refresh will pick it up.

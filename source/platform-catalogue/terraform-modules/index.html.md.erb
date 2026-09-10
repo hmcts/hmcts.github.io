@@ -9,7 +9,7 @@ weight: 1
 
 This list is generated from each module repo's `.hmcts/catalogue.yaml` file. To add or fix an entry, propose a
 pull request to that repository rather than editing HMCTS Way - see the
-[catalogue schema](https://github.com/hmcts/hmcts.github.io/blob/main/schemas/terraform-module-catalogue.schema.json)
+[catalogue schema](/schemas/terraform-module-catalogue.schema.json)
 for the fields it accepts.
 
 "Stewarded by" identifies the group best placed to review and support the module. It does not confer exclusive
@@ -37,6 +37,12 @@ consumption_labels = {
   'contribution-required' => 'Shared platform component'
 }
 %>
+
+<% if modules.empty? %>
+<p>The catalogue is being populated. Modules appear here automatically once
+their repositories publish a <code>.hmcts/catalogue.yaml</code> file and carry
+the <code>terraform-module</code> GitHub topic.</p>
+<% end %>
 
 <% if categories.any? %>
 <div class="catalogue-filters" role="group" aria-label="Filter Terraform modules">
@@ -71,6 +77,7 @@ consumption_labels = {
 </div>
 <% end %>
 
+<% if modules.any? %>
 <div id="catalogue-modules">
 <% modules.each do |mod| %>
 <% links = mod['links'] || {} %>
@@ -158,7 +165,7 @@ consumption_labels = {
       if (matches) visible += 1;
     });
     emptyState.hidden = visible !== 0;
-    countLabel.textContent = 'Showing ' + visible + ' of ' + moduleCards.length + ' modules';
+    if (countLabel) countLabel.textContent = 'Showing ' + visible + ' of ' + moduleCards.length + ' modules';
   }
 
   filterButtons.forEach(function (button) {
@@ -177,3 +184,4 @@ consumption_labels = {
   apply();
 })();
 </script>
+<% end %>

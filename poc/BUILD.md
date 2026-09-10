@@ -42,11 +42,11 @@ bundle exec rake check_pages
 `terraform-module`, follows all GitHub API result pages, and reads
 `.hmcts/catalogue.yaml` from each repository's default branch.
 
-The scheduled GitHub workflow uses an organisation-installed GitHub App token. Configure
-the `HMCTS_CATALOGUE_APP_ID` and `HMCTS_CATALOGUE_APP_PRIVATE_KEY` repository secrets and
-install the App with read access to the relevant HMCTS repositories. This allows discovery
-of authorised private repositories; the normal repository `GITHUB_TOKEN` is insufficient
-for that job.
+The scheduled GitHub workflow uses the repository `GITHUB_TOKEN`, which can read every
+public hmcts repository — all currently catalogued modules are public. If private module
+repositories ever need cataloguing, switch the workflow to an organisation-installed
+GitHub App token (`actions/create-github-app-token`) with read access to those
+repositories; the repository `GITHUB_TOKEN` cannot read private organisation repos.
 
 The workflow fails without changing catalogue data if discovery fails, and it fails rather
 than generating an incomplete catalogue if the GitHub topic exceeds the search API's

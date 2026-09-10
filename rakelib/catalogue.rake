@@ -1,10 +1,10 @@
 # Refreshes data/terraform_modules.yml (rendered by
 # source/platform-catalogue/terraform-modules/index.html.md.erb) from the
 # .hmcts/catalogue.yaml file each Terraform module repo owns. Discovery is
-# via the 'terraform-module' GitHub topic, not a hardcoded repo list, so
+# via the 'terraform-module' GitHub topic, not a hard-coded repo list, so
 # newly tagged repos are picked up automatically.
 #
-# Deliberately stdlib-only (net/http, json, yaml) to match rakelib/checks.rake
+# Deliberately standard-library-only (net/http, json, yaml) to match rakelib/checks.rake
 # rather than adding a new gem for a handful of GitHub API calls.
 
 require 'net/http'
