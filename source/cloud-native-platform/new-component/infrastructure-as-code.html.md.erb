@@ -69,7 +69,7 @@ Find the full set in GitHub:
 
 Not every module is meant for product/component teams to consume directly. Some (typically under `cnp-module-*` and `terraform-module-*`) are shared modules intended for teams to use in their own infrastructure, such as the ones listed above. Others exist to build the underlying platform itself and are maintained and consumed by Platform Operations rather than product teams.
 
-Before adopting a module, check its README for its intended audience and required inputs. If it's not clear whether a module is meant for team consumption, ask in the Platform Operations Slack channel before building on it.
+Before adopting a module, check its README for its intended audience and required inputs. If it's not clear whether a module is meant for team consumption, ask in `#cloud-native` or `#sds-cloud-native` before building on it.
 
 ### Approved resources and modules only
 
@@ -77,7 +77,7 @@ Only a pre-defined set of Azure resources and Terraform modules can be used in C
 
 ## Tagging
 
-The common CNP pipeline automatically tags every resource it provisions by injecting a `common_tags` Terraform variable — built by the [`spinInfra`](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/spinInfra.groovy) step in [cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library) — into every `terraform plan`/`apply`. It includes things like the environment, the owning team, the Slack channel to contact, the business area, and the build/change that created the resource, plus environment-specific tags such as `autoShutdown` outside production and `expiresAfter` in sandbox.
+All infrastructure should apply the HMCTS common tag set consistently. These tags are used for cost attribution, support ownership, automation (for example auto-shutdown/expiry in non-prod), and auditability.
 
 This is how we support:
 
@@ -86,12 +86,25 @@ This is how we support:
 - **automated lifecycle management** — non-production resources are shut down and sandbox resources are expired based on their tags
 - **compliance and audit** — resources can be traced back to the change and pipeline run that created them
 
-For your infrastructure to pick this up:
+How tags are supplied depends on your delivery pipeline:
 
-1. Declare a `common_tags` variable (a `map(string)`) in your Terraform.
-2. Pass it into the `common_tags`/`tags` input of every module and resource that accepts one — see any shared module's README (for example, [cnp-module-key-vault](https://github.com/hmcts/cnp-module-key-vault)) for the exact variable name it expects.
+- **Jenkins (common CNP pipeline):** tags are injected automatically as a `common_tags` variable, built by the [`spinInfra`](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/spinInfra.groovy) step in [cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library), into every `terraform plan`/`apply`. It includes things like the environment, the owning team, the business area, and the build/change that created the resource, plus environment-specific tags such as `autoShutdown` outside production and `expiresAfter` in sandbox. You don't need to (and shouldn't) set the values yourself — the pipeline supplies them at plan/apply time.
+- **Azure DevOps or other Terraform-based delivery:** use the [terraform-module-common-tags](https://github.com/hmcts/terraform-module-common-tags) module directly and pass its `common_tags` output into your resources/modules — same variable name and shape as the Jenkins-injected one:
 
-You don't need to (and shouldn't) set the values yourself — the pipeline supplies them at plan/apply time.
+    ```hcl
+    module "tags" {
+      source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
+      environment = var.env
+      product     = var.product
+      builtFrom   = var.builtFrom
+    }
+    ```
+
+    Your product needs an entry in the module's [team-config.yml](https://github.com/hmcts/terraform-module-common-tags/blob/master/team-config.yml) (or [cnp-jenkins-config's](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml)) for `application`/`businessArea` to resolve.
+
+Jenkins is the outlier here — tags come from the pipeline library rather than a module call — so in non-Jenkins pipelines you must explicitly compose and pass the tags yourself using the module above.
+
+However you get them, declare a `common_tags` variable (a `map(string)`) in your Terraform and pass it into the `common_tags`/`tags` input of every module and resource that accepts one — see any shared module's README (for example, [cnp-module-key-vault](https://github.com/hmcts/cnp-module-key-vault)) for the exact variable name it expects.
 
 ## Environment variables and tfvars
 
