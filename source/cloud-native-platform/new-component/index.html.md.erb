@@ -2,25 +2,87 @@
 title: Starting a new component
 last_reviewed_on: 2026-07-29
 review_in: 6 months
-weight: 4
+weight: 5
 ---
 
 # <%= current_page.data.title %>
 
-When you create a new component (such as a database, application or a combination of such resources), you will need to follow some or all of the following:
+When you create a new component (application, data store, or shared infrastructure), follow this workflow in order, from an empty repository through to a working deployment in a non-production environment.
 
-- Understand our [infrastructure as code](infrastructure-as-code.html) approach
-- Understand the [common pipeline](../common-pipeline/)
-- [Create new GitHub repo](github-repo.html)
-- [Add the repository to Jenkins](jenkins-repository.html)
-- Use our standard approach to [secrets management](secrets-management.html)
-- Configuration management
-- Logging and monitoring
-- Database schema management
+## Before you start
 
-If you are creating an application you will need:
+Make sure you have the required access and local setup in place before you begin the numbered flow below:
 
-- [Helm](helm-chart.html) for package management
-- [Flux](gitops-flux.html#application-config-in-flux) to automatically deploy pushed and merged code
+- GitHub repo access and team ownership for the product or component, as described in [Create a GitHub Repository](github-repo.html)
+- Jenkins access and the repository topic needed for the organisation scan, as described in [Jenkins setup](jenkins-repository.html)
+- Azure access, VPN access, and the relevant developer tools listed in [Onboarding](../onboarding/)
+- The repo for any shared infrastructure or central configuration that your component depends on
+- A clear target environment for the first deployment, usually preview or AAT
 
-If you are creating a new frontend or backend service, you should read [Path-to-live](../path-to-live/)
+## Step 1: Create a new GitHub repository
+
+[Create a new GitHub repository](github-repo.html).
+
+After completing runtime-specific setup, return to this page and continue with the common steps below.
+
+If you are creating infrastructure-only components, create the repository, skip the runtime-specific setup, and continue with [Step 2: Set up Jenkins](#step-2-set-up-jenkins-including-deployment-controls).
+
+Runtime-specific guidance:
+
+- [Python services](python.html)
+- [Java services](https://github.com/hmcts/spring-boot-template)
+- [Node.js services](https://github.com/hmcts/expressjs-template)
+- [Angular applications](/standards/standards/angular.html)
+
+## Step 2: Set up Jenkins, including deployment controls
+
+[Add the repository to Jenkins](jenkins-repository.html), including the GitHub topic that gets it picked up by the organisation scan and the CMP `deployment-controls.yml` entry that turns on build and deploy stages.
+
+## Step 3: Configure GitOps with Flux
+
+We use Flux to deploy applications to AKS. Follow this guidance to [configure GitOps with Flux](gitops-flux.html#application-config-in-flux) and deploy your app.
+
+## Step 4: Set up infrastructure
+
+If your component needs infrastructure such as databases or storage accounts, [add infrastructure as code](infrastructure-as-code.html).
+
+## Step 5: Set up secrets management
+
+If your component needs secrets, [set up secrets management](secrets-management.html).
+
+## Step 6: Configure TLS certificates
+
+If your component is exposed publicly, [configure TLS certificates](tls-certificates.html).
+
+## Step 7: Configure Public DNS
+
+[Configure Public DNS](public-dns.html).
+
+## Step 8: Configure load balancer
+
+[Configure load balancer](load-balancer-configuration.html) for backend services.
+
+## Step 9: Configure Front Door
+
+[Configure Front Door](front-door.html) for frontend services.
+
+## Step 10: Deploy to a non-production environment and validate
+
+[Deploy and validate your first build](first-deploy-validation.html) before moving on to [Path to Live](/cloud-native-platform/path-to-live/) for production readiness (environment approvals, OAT, shuttering and health probes).
+
+## Optional components
+
+Not every component needs these — add them if your component needs the capability:
+
+- [Python services](python.html) — if your runtime is Python rather than Java or Node.js
+- [Elasticsearch](elasticsearch.html) — if your component needs a search index
+- [Feature flags](feature-flags.html) — to decouple deployment from release
+
+## Supporting guidance
+
+- [Common pipeline overview](../standards/pipeline-libraries/)
+- [Helm charts](../standards/pipeline-libraries/helm-chart.html)
+- [Publishing libraries](../standards/publishing-libraries/) — for publishing a shared library rather than deploying a service
+
+<hr>
+
