@@ -1,0 +1,59 @@
+---
+title: Jenkins library versioning
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+[cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library) — the
+library behind the common pipeline — is released as semantic version tags
+(for example `2.7.1`). The available versions are listed on the
+[library tags page](https://github.com/hmcts/cnp-jenkins-library/tags).
+
+## Consume a pinned version
+
+Pin the library to a release in your `Jenkinsfile_CNP` (and `Jenkinsfile_nightly`):
+
+```groovy
+@Library("Infrastructure@2.7.1") _
+```
+
+Pinning to a released version is the default mechanism. A bare
+`@Library("Infrastructure")` follows a branch and picks up every change as
+soon as it merges — avoid it, so your pipeline only changes when you update
+the pin.
+
+See the [Jenkins library guide](/cloud-native-platform/shared-libraries/jenkins-library.html)
+for how to import and use the library itself.
+
+## Upgrade path
+
+You do not need to watch for new releases yourself. The
+[HMCTS global Renovate configuration](renovate.html) contains a custom manager
+that finds `@Library("Infrastructure@<version>")` pins in any `Jenkinsfile_*`
+file and tracks them against the library's GitHub tags:
+
+- **Minor and patch updates** are raised as pull requests and **automerge**
+  once your CI checks pass.
+- **Major updates** are raised as pull requests but are **never automerged** —
+  a major version signals a breaking change, so review the release notes
+  and test before merging.
+
+If your repository is not yet onboarded to Renovate, update the pin manually
+by editing the version in your Jenkinsfiles and letting the pull request
+build verify it.
+
+## Testing an unmerged library change
+
+To test a library branch before it is released, reference the branch:
+
+```groovy
+@Library("Infrastructure@my-feature-branch") _
+```
+
+Branches must first be added to the
+[allowed library branches list](https://github.com/hmcts/cnp-jenkins-library/blob/master/resources/uk/gov/hmcts/library/allowed-library-branches.yml)
+and that change merged, otherwise the pipeline will fail. Switch back to a
+pinned release once the change has been released.

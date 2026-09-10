@@ -5,6 +5,8 @@ aqda
 ard
 aso
 automerge
+automerged
+automerges
 AZCLI
 azcopy
 bpdq

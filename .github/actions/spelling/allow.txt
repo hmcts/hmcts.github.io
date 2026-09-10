@@ -120,6 +120,7 @@ haml
 hashie
 helmrelease
 hmcts
+hmctsprod
 hmctspublic
 hmi
 hotspot
@@ -259,6 +260,7 @@ sdshmcts
 sdsprod
 SDSPTL
 seccomp
+semver
 SEO
 servicebus
 servolux
