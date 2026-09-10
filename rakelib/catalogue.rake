@@ -102,7 +102,7 @@ def refresh_catalogue(repos, source:)
   final = discovered.sort_by { |e| e['name'].to_s }
   File.write(CATALOGUE_DATA_FILE, final.to_yaml)
 
-  puts "published #{discovered.length} discovered entrie(s), wrote #{final.length} total to #{CATALOGUE_DATA_FILE}"
+  puts "published #{discovered.length} discovered entry(s), wrote #{final.length} total to #{CATALOGUE_DATA_FILE}"
 end
 
 def validate_catalogue_entry(repo_name, entry)

@@ -230,6 +230,7 @@ placeholders
 platops
 plpgsql
 pls
+poc
 portile
 Portis
 Postgre
@@ -337,6 +338,7 @@ versioned
 Versioning
 viewpage
 vmss
+vnd
 vnet
 Vnets
 vsts
