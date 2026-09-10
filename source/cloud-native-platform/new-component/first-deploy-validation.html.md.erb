@@ -1,0 +1,56 @@
+---
+title: Deploy and validate your first build
+last_reviewed_on: 2026-09-07
+review_in: 3 months
+weight: 12
+---
+
+# <%= current_page.data.title %>
+
+Use this checklist to validate that your first deployment is healthy before you move on to [Path to Live](/cloud-native-platform/path-to-live/).
+
+## Check the deployment landed in the expected environment
+
+Once your pull request has built successfully in Jenkins:
+
+1. Confirm the application deployed to the correct non-production target, usually preview or AAT.
+2. Check the values file overrides used for that environment, as described in [Helm chart](../standards/pipeline-libraries/helm-chart.html#what-are-values-template-yaml-for).
+3. Confirm the release includes the correct image tag and that the associated Kubernetes resources are present in the cluster.
+
+## Check the app is reachable
+
+1. Use the ingress host created for the environment and confirm the application responds over HTTPS.
+2. Check the expected route or homepage loads without a 500 error.
+3. Confirm any login flow or required startup checks for the service are working as expected.
+
+## Check health and readiness signals
+
+Confirm the app is passing the health checks used by the platform. In most cases this means:
+
+- the application responds to the expected health endpoint,
+- the service is ready to receive traffic,
+- the application does not crash or restart repeatedly after startup.
+
+For production readiness guidance, see [Health probes](/cloud-native-platform/path-to-live/health-endpoints.html).
+
+## Check the supporting platform config
+
+The earlier setup steps are part of the deployment, so verify the following are all healthy:
+
+- the relevant infrastructure has been provisioned without errors,
+- the expected secret values are available from Key Vault,
+- the certificate and custom domain are valid,
+- the public DNS record is present and resolving correctly,
+- any Front Door or load balancer rules are pointing at the correct backend.
+
+## If something is wrong
+
+Check the pipeline logs first, then review the application logs and the platform configuration for the environment. If you still cannot resolve it, see [Troubleshooting](/cloud-native-platform/troubleshooting/) or ask in [#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help).
+
+## Sign-off before moving on
+
+Do not move to [Path to Live](/cloud-native-platform/path-to-live/) until the application is reachable, healthy, and the supporting configuration for DNS, TLS, secrets, and infrastructure is working in the non-production environment.
+
+<hr>
+
+<strong>Next step in Creating a New Component:</strong> [Path to Live](/cloud-native-platform/path-to-live/)

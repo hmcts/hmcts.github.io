@@ -1,0 +1,106 @@
+---
+title: Jenkins library
+last_reviewed_on: 2026-09-08
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+## Purpose
+
+[cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library) is a
+[Jenkins shared library](https://www.jenkins.io/doc/book/pipeline/shared-libraries/)
+that defines the HMCTS [common pipeline](../standards/pipeline-libraries/jenkins/common-pipeline.html):
+an opinionated Continuous Delivery pipeline that builds, tests and deploys code
+to production while enforcing a standard set of checks — unit tests, security
+checks, Sonar scanning, container builds, smoke and functional tests.
+
+## When to use it
+
+Use this library if your repository builds on HMCTS Jenkins. It provides:
+
+- `withPipeline(type, product, component)` — the opinionated application
+  pipeline for `java`, `nodejs`, `angular` and `python` services
+- `withInfraPipeline(product)` — the opinionated infrastructure pipeline for
+  Terraform-only repositories, such as shared infrastructure
+- `withNightlyPipeline(type, product, component)` — the nightly pipeline for
+  scheduled tests such as security scans, fortify and performance tests
+
+Before using it, your repository must be
+[added to Jenkins](../new-component/jenkins-repository.html).
+
+## How to import it
+
+Jenkins is already configured with this library under the name
+`Infrastructure`, so there is nothing to install. Import it at the top of your
+`Jenkinsfile_CNP`, pinned to a release:
+
+```groovy
+#!groovy
+
+@Library("Infrastructure@2.7.1") _
+
+def type = "java"        // "java", "nodejs", "angular" or "python"
+def product = "rhubarb"
+def component = "recipe-backend"
+
+withPipeline(type, product, component) {
+  enableSlackNotifications('#my-team-builds')
+}
+```
+
+The application pipeline deploys branches to environments as follows:
+
+| Branch | Environment |
+| --- | --- |
+| `master` | `aat` then `prod` |
+| `demo` | `demo` |
+| `perftest` | `perftest` |
+| PR branch | `preview` |
+
+The full set of options — Key Vault secrets, high level data setup, API gateway
+tests, pact contract testing and more — is documented in the
+[library README](https://github.com/hmcts/cnp-jenkins-library#readme).
+
+## Versioning
+
+The library is released as version tags, and pinning to a release is the
+default way to consume it:
+
+```groovy
+@Library("Infrastructure@2.7.1") _
+```
+
+A bare `@Library("Infrastructure")` follows the library's `master` branch and
+picks up every change as soon as it merges. Avoid this — pin to a release so
+your pipeline only changes when you choose to update it.
+
+Pinned repositories do not receive new pipeline features, fixes or security
+updates until the pin is updated, so review and update your pin regularly. The
+available versions are listed on the
+[library releases page](https://github.com/hmcts/cnp-jenkins-library/tags).
+
+To test an unmerged library change, reference the branch instead:
+
+```groovy
+@Library("Infrastructure@my-feature-branch") _
+```
+
+Branches must first be added to the
+[allowed library branches list](https://github.com/hmcts/cnp-jenkins-library/blob/master/resources/uk/gov/hmcts/library/allowed-library-branches.yml)
+and that change merged to `master`, otherwise the pipeline will fail.
+
+## Real examples
+
+- [cnp-plum-recipes-service](https://github.com/hmcts/cnp-plum-recipes-service/blob/master/Jenkinsfile_CNP)
+  — a Java application using `withPipeline` with Key Vault secrets and API
+  gateway tests
+- [bulk-scan-shared-infrastructure](https://github.com/hmcts/bulk-scan-shared-infrastructure/blob/master/Jenkinsfile_CNP)
+  — an infrastructure repository using `withInfraPipeline`
+
+## Related pages
+
+- [The common pipeline](../standards/pipeline-libraries/jenkins/common-pipeline.html)
+- [Jenkins agents](../standards/pipeline-libraries/jenkins/jenkins-agents.html)
+- [Adding a repository to Jenkins](../new-component/jenkins-repository.html)

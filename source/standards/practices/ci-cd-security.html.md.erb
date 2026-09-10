@@ -1,0 +1,62 @@
+---
+title: CI/CD Security
+last_reviewed_on: 2026-08-20
+review_in: 12 months
+weight: 6
+---
+
+# <%= current_page.data.title %>
+
+Pipelines have broad access to source code, secrets and deployment environments, which makes them a high-value target. See [pipeline best practices](/standards/principles/pipeline-best-practices.html) for the wider design principles pipelines should follow, including the "Secure" pipeline goal.
+
+### Least privilege
+
+Pipeline credentials should be scoped to only what a given stage needs.
+
+- Use [Azure Workload Identity](/cloud-native-platform/new-component/secrets-management.html) rather than long-lived credentials where possible.
+- Avoid using personal access tokens or an individual's credentials in pipeline configuration.
+- Production deployment credentials should not be usable from, or accessible to, non-production stages.
+
+### Secrets management
+
+Never hard-code secrets in pipeline configuration, scripts or source code. Store secrets in [Azure Key Vault](/cloud-native-platform/new-component/secrets-management.html) and inject them at runtime.
+
+Ensure pipeline logs do not print secret values, and mask secrets where the CI platform supports it.
+
+### Protecting pipeline configuration
+
+Pipeline definitions should be covered by the same [branch protections](github-security.html#branch-protections) as application code, since a change to pipeline configuration can grant an attacker access to secrets or deployment environments. Require pull request review before changes to pipeline files are merged.
+
+### Supply chain security
+
+- **Pin GitHub Actions, plugins and base images to a digest**: a tag, including a version tag such as `v4`, can be repointed to different code by a compromised or malicious maintainer without any visible change to your pipeline. A digest (for example `actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f`) is immutable. Tools such as Renovate can keep pinned digests up to date automatically, avoiding manual maintenance.
+- **npm and Maven don't support digest pinning** - pin to an exact version instead of a range (avoid `^`, `~`), and install from a committed lockfile in CI (`npm ci`), which records an integrity hash per package and fails the install on mismatch. For Maven, use exact versions and enable strict checksum verification.
+- Prefer actions, plugins and pipeline steps from verified publishers, and review changes before upgrading them. See [selecting pipeline components](#selecting-github-actions-jenkins-plugins-and-azure-pipeline-tasks) below.
+
+#### Selecting GitHub Actions, Jenkins plugins and Azure Pipeline tasks
+
+Before adopting a third-party action, plugin or pipeline task:
+
+- Check it's published by a verified or otherwise trusted publisher or organisation.
+- Check it's actively maintained, with recent releases and no long-outstanding, unpatched vulnerabilities.
+- Check the permissions or credentials it requests are the minimum needed - be cautious of anything requesting broad repository, secret or write access.
+- For anything requesting broad access, review the source rather than trusting the marketplace or plugin listing alone.
+
+For GitHub Actions specifically, see the [GDS Way guidance on using GitHub Actions](https://gds-way.digital.cabinet-office.gov.uk/standards/source-code/using-github-actions.html).
+
+#### Verifying NPM package signatures
+
+npm supports signed package provenance, which lets you verify that an installed package matches what was published to the registry rather than being tampered with in transit or compromised at the registry. Run `npm audit signatures` as a pipeline step to verify the signatures of installed packages, and fail the build if any are missing or invalid:
+
+```yaml
+- run: npm audit signatures
+```
+
+### Installation script isolation
+
+Installing packages (`npm install`, `postinstall` scripts, `curl | sh` style installers) executes third-party code. 
+If this happens in the same context as a stage that holds deployment credentials or other secrets, a compromised dependency can extract them.
+
+- Run installation and build steps in a context or job with no access to deployment secrets or push credentials.
+- Only introduce privileged secrets in a later, separate stage that performs the deployment itself.
+- Avoid `curl | sh` style installers where possible; where unavoidable, pin to a specific version and verify a checksum before executing.

@@ -1,0 +1,109 @@
+---
+title: GitHub Security
+last_reviewed_on: 2026-08-18
+review_in: 12 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+guidance on applying secure principles to your teams GitHub repositories.
+
+### Access control
+
+Manage access through [GitHub teams](/cloud-native-platform/onboarding/team/github-repositories.html), not individual collaborators.
+
+Review team member and role assignments regularly (every 6 months).
+
+For outside contributions follow the contribution guidelines and ask contributors to fork the repositories and do pull requests.
+
+### CODEOWNERS
+
+The `CODEOWNERS` file is the primary mechanism for establishing clear code ownership and accountability and is one of the [minimum standards for public systems](https://www.gov.uk/guidance/ai-open-code-and-vulnerability-risk-in-the-public-sector#minimum-standard-for-publicly-accessible-systems).
+By explicitly defining ownership at the file and directory level, we ensure that every component is actively managed by a designated team.
+
+#### File location
+
+The file must reside in the root directory, a `.github/` directory or `docs/` directory.
+
+#### Syntax examples
+
+The following example shows code ownership of different paths to different teams.
+
+```markdown
+apps/neuvector/ @hmcts/platform-operations
+apps/admin/ @hmcts/platform-operations
+
+## Bulk Print
+apps/bsp/rpe-send-letter-service/ @hmcts/bulk-print
+
+## CCD
+apps/ccd/ @hmcts/cdm
+apps/slack-help-bot/ccd-slack-help-bot/ @hmcts/cdm
+apps/slack-help-bot/cs-slack-help-bot/ @hmcts/cdm
+```
+
+#### Require expert review
+
+When integrated with [Pull request branch protections](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#codeowners-and-branch-protection), `CODEOWNERS` ensures that the designated experts provide the final approval before any changes are merged into protected and default (master) branches.
+
+#### Securing critical infrastructure files
+
+A critical strategic function of CODEOWNERS is the protection of CI/CD configuration files. Targets such as GitHub Actions, Jenkinsfiles, and Azure pipelines are commonly exploited in supply chain attacks to inject malicious code into the build process. By designating owner teams for these files, we can enforce branch protections that prevent unauthorized modifications to our deployment logic.
+
+### Branch protections
+
+Pull Request (PR) controls ensure that code is reviewed by at least one other person, providing a critical gate against both human error and malicious intent.
+
+For setting up base protection see [creating a GitHub repository](/cloud-native-platform/new-component/github-repo.html#create-a-github-repository).
+
+#### 2 reviewers
+
+Where team size and structure allow it, requiring reviews from 2 people per PR is advised.
+Where contributions are merged from outside the organisation, for instance merging an external fork, having 2 PR reviewers becomes especially important.
+
+#### Integrity controls
+
+The PR process can be further strengthened by requiring domain-expert validation and ensuring commit integrity:
+For information on expert review see [require expert review](#require-expert-review).
+
+**Re-approval on new commits**: This rule can be enforced to prevent the introduction of unchecked code. Any new commits pushed to a branch after an initial review immediately void the previous approval, requiring a fresh audit.
+
+**Signed commits**: Git's default authentication methods do not prevent impersonation, meaning anyone inside the organisation can impersonate a colleague. See [commit signing](#commit-signing) for more information.
+
+### Commit signing
+
+#### The SSH key misconception
+
+It is a common misconception that using SSH keys for repository access provides identity verification for code. This is incorrect. SSH keys authenticate your permission to push data to a GitHub repository; they provide zero cryptographic proof of who actually authored the specific lines of code within that push. Author identity is metadata that can be easily forged unless the commit is cryptographically signed.
+
+#### Requiring signed commits
+
+Repository admins are urged to discuss this change with their teams and "Require signed commits" within the GitHub repository settings under Branch Protection Rules.
+
+#### Developer setup
+
+To set this up for developers see [Signing commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits).
+
+#### Repository admins
+
+To enable this for repositories see [Require signed commits](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-signed-commits).
+
+### Vulnerability reporting
+
+A central [SECURITY](https://github.com/hmcts/hmcts.github.io/blob/main/security.md) file has been added to GitHub to show a Security Policy link inside all repositories.
+If this requires changing for your application, you can add a SECURITY.md to your own repository to overwrite the content.
+
+### Dependency management
+
+Renovate is by default enabled for new repositories to manage dependency updates. For more information see [Automated dependency updates](/cloud-native-platform/guides/security/automated-dependency-updates.html).
+
+If Pull Requests are blocked due to requiring CODEOWNERS review see the CODEOWNERS section on the [Automated dependency updates page](/cloud-native-platform/guides/security/automated-dependency-updates.html#codeowners), or ensure pull requests from Renovate are regularly reviewed.
+
+Teams should pay close attention to Dependabot where alerts are received for cases where dependencies have not yet been updated.
+
+Set a `minimumReleaseAge` of at least 14 days in Renovate configuration so newly published package versions are not adopted immediately. Supply chain worm attacks (such as npm packages compromised and used to auto-publish further malicious versions) tend to be caught and removed within days of publication, so a minimum age gives that window to pass before a new version reaches your dependencies.
+
+### Archiving code
+
+Repositories should be archived where they are not actively maintained.

@@ -1,0 +1,84 @@
+---
+title: Local development
+last_reviewed_on: 2026-08-18
+review_in: 6 months
+weight: 10
+hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+Pipeline checks should be reproducible on a developer's machine. Running checks locally provides several benefits:
+
+- Faster feedback: Identify issues quicker than waiting for a CI run.
+- Higher productivity: Iterate quickly without repeatedly committing changes to trigger pipelines.
+- Greater confidence: Validate changes before opening a pull request.
+
+## What should be runnable locally
+
+As a minimum, developers should be able to run:
+
+- Linting and formatting
+- Static analysis
+- Security scans
+- Dependency checks
+- Terraform validation
+- Build/package steps
+- Unit tests
+- Integration tests (where practical)
+
+## How to run locally
+
+Use the examples below to run the same types of checks locally before opening a PR.
+
+| Stack | Build/package steps | Unit tests | Linting and formatting | Static analysis | Security and dependency checks |
+|---|---|---|---|---|---|---|---|
+| Node.js | Follow the instructions in the [Express template](https://github.com/hmcts/expressjs-template#running-the-application) | Follow the [Running tests for Express](https://github.com/hmcts/expressjs-template#running-the-tests) guidance | `yarn lint` | `yarn lint --fix`<br>`yarn prettier --write src/`<br>`yarn lint` | Follow the [SonarQube for frontend](#running-sonarqube-scan-locally) guidance | `yarn audit` |
+| Java (Gradle) | Follow the instructions in the [Spring Boot template](https://github.com/hmcts/spring-boot-template#building-and-deploying-the-application) | Follow the [Plugins for Spring Boot](https://github.com/hmcts/spring-boot-template#plugins) guidance | `./gradlew --no-daemon check` | Follow the [SonarQube for backend](#running-sonarqube-scan-locally) guidance | Follow the [OWASP Dependency Checks for backend](#running-dependency-checks-locally) guidance |
+> **Advice:**  If you are troubleshooting a pipeline failure, commands can often be copied from your Jenkins step and run locally.
+
+## Running SonarQube Scan Locally
+
+### For frontend (Node.js)
+
+1. [Create a user token](https://docs.sonarsource.com/sonarqube-server/10.0/user-guide/user-account/generating-and-using-tokens) in SonarQube.
+2. Navigate to your project root in the terminal and run the following command to set the token in your environment variables:
+
+    ```bash
+    export SONAR_TOKEN='user-token-value'
+    ```
+3. Run the SonarQube scan:
+
+    ```bash
+    yarn sonar-scan
+    ```
+
+### For backend (Java)
+1. [Create a user token](https://docs.sonarsource.com/sonarqube-server/10.0/user-guide/user-account/generating-and-using-tokens) in SonarQube.
+2. Navigate to your project root in the terminal and run the following command to set the token in your environment variables:
+
+    ```bash
+    export SONAR_TOKEN='user-token-value'
+    ```
+3. Run the SonarQube scan:
+
+    ```bash
+    ./gradlew --no-daemon sonarqube
+    ```
+
+## Running Dependency Checks Locally
+
+### For backend (Java)
+
+You will need to generate an NVD API key to run the OWASP Dependency Check locally, else they will take a long time to run. You can generate a key by following the instructions on the [NVD website](https://nvd.nist.gov/developers/request-an-api-key).
+
+To run a dependency check locally, execute the following command in the project root in your terminal:
+
+```bash
+./gradlew \
+  --no-daemon \
+  -PnvdApiKey=your-api-key \
+  dependencyCheckAggregate
+```
+
+This runs the OWASP Dependency Check without connecting to the OWASP database, the Jenkins pipeline scan will connect to to the OWASP database which includes more specific rules.

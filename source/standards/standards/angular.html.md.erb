@@ -210,7 +210,7 @@ Long functions generally indicate that they are doing too many things. Small fun
 Avoid change the DOM directly
 -----------------------------
 
-It's important to know that Angular uses Lifecycle Hooks that determine how and when components will be rendered and updated. Direct DOM access or manipulation can corrupt these lifecycle hooks, leading to unexpected behavior of the whole app. Direct access to the DOM can make our application more vulnerable to [XSS attacks](https://owasp.org/www-community/attacks/xss/). Use [ElementRef](https://angular.io/api/core/ElementRef) as the last resort when direct access to DOM is needed. Use templating and data-binding provided by Angular instead. Alternatively we can take a look at [Renderer2](https://angular.io/api/core/Renderer2) which provides API that can safely be used even when direct access to native elements is not supported.
+It's important to know that Angular uses Lifecycle Hooks that determine how and when components will be rendered and updated. Direct DOM access or manipulation can corrupt these lifecycle hooks, leading to unexpected behavior of the whole app. Direct access to the DOM can make our application more vulnerable to [XSS attacks](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html). Use [ElementRef](https://angular.io/api/core/ElementRef) as the last resort when direct access to DOM is needed. Use templating and data-binding provided by Angular instead. Alternatively we can take a look at [Renderer2](https://angular.io/api/core/Renderer2) which provides API that can safely be used even when direct access to native elements is not supported.
 
 Avoid computing values in the template
 --------------------------------------

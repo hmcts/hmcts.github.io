@@ -1,0 +1,111 @@
+---
+title: Azure DevOps libraries
+last_reviewed_on: 2026-09-08
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+## Purpose
+
+[cnp-azuredevops-libraries](https://github.com/hmcts/cnp-azuredevops-libraries)
+is a set of reusable YAML templates for Azure DevOps pipelines. It provides the
+standard Terraform workflow — init, plan, apply and destroy — along with remote
+state management, a precheck stage, and Terraform plan output posted to pull
+requests via tfcmt.
+
+## When to use it
+
+Use this library for repositories that deploy Terraform through Azure DevOps
+rather than Jenkins. This is the standard for platform infrastructure
+repositories such as
+[azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform).
+
+The templates expect your repository to follow this structure:
+
+```
+Repo
+├── components
+│   └── <component>          # group of .tf files, e.g. network
+│       └── *.tf
+├── environments
+│   └── <env>
+│       └── *.tfvars         # environment specific variables
+├── azure_pipeline.yaml
+├── .terraform-version       # terraform version, read by tfenv
+```
+
+Terraform state is stored in storage accounts in the `HMCTS-CONTROL`
+subscription, under a path derived from location, product, repository,
+environment and component.
+
+## How to import it
+
+Declare the library as a repository resource in your pipeline, then reference
+its templates with the `@cnp-azuredevops-libraries` suffix:
+
+```yaml
+resources:
+  repositories:
+    - repository: cnp-azuredevops-libraries
+      type: github
+      ref: refs/heads/master
+      name: hmcts/cnp-azuredevops-libraries
+      endpoint: 'hmcts (1)'
+```
+
+Add the common variables template to your pipeline variables:
+
+```yaml
+variables:
+  - name: product
+    value: cft-platform
+  - name: terraformInitSubscription
+    value: <init-subscription-id>
+  - template: vars/input-variables.yaml@cnp-azuredevops-libraries
+```
+
+Then use the step templates in your stages:
+
+- `steps/terraform-precheck.yaml@cnp-azuredevops-libraries` in a `Precheck` stage
+- `steps/terraform.yaml@cnp-azuredevops-libraries` in a `TerraformPlanApply` stage
+
+```yaml
+- template: steps/terraform.yaml@cnp-azuredevops-libraries
+  parameters:
+    overrideAction: ${{ parameters.overrideAction }}
+    environment: ${{ deployment.environment }}
+    component: ${{ deployment.component }}
+    serviceConnection: ${{ deployment.service_connection }}
+    terraformInitSubscription: ${{ variables.terraformInitSubscription }}
+    product: ${{ variables.product }}
+```
+
+The templates support optional parameters for non-standard setups — including
+`multiRegion` for per-region tfvars files, `tfVarsFile` for custom tfvars
+locations, and `baseDirectory` for monorepos. See the
+[library README](https://github.com/hmcts/cnp-azuredevops-libraries#readme)
+for the full list.
+
+## Versioning
+
+The `ref` in the repository resource controls which version of the templates
+your pipeline uses:
+
+- `ref: refs/heads/master` — tracks the latest templates. This is what most
+  repositories use and is the recommended default.
+- `ref: refs/tags/<tag>` — pins to a tagged release if you need a fixed
+  version.
+- `ref: refs/heads/<branch>` — points at a feature branch of the library. Use
+  this to test an unmerged library change from your own pipeline, and change it
+  back to `master` once the library change is merged.
+
+## Real examples
+
+- [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform/blob/master/azure_pipeline.yaml)
+  — the reference example of the precheck and plan/apply stages
+- [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform)
+  — uses `multiRegion` with per-region tfvars files
+- [aks-cft-deploy](https://github.com/hmcts/aks-cft-deploy/blob/main/azure-pipelines.yml)
+  — uses a custom `tfVarsFile` location

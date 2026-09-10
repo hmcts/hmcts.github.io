@@ -231,6 +231,7 @@ prebuild
 prebuilds
 prioritisation
 prioritise
+productionise
 privatelink
 Protips
 ptl
@@ -349,3 +350,19 @@ finops
 Codespaces
 Customisation
 devcontainers
+DSIT
+bsp
+cdm
+neuvector
+Qube
+Danalyzer
+Ddata
+Ddependency
+Dnvd
+ossindex
+OWASPDB
+Pnvd
+Qube
+retirejs
+tfenv
+validforhours

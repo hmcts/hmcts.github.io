@@ -1,0 +1,31 @@
+---
+title: Load balancer configuration
+last_reviewed_on: 2025-12-03
+review_in: 6 months
+weight: 10
+old_paths:
+  - /cloud-native-platform/path-to-live/load-balancer-configuration.html
+---
+
+# <%= current_page.data.title %>
+
+This guidance applies to non-production and production environments where relevant. Production approvals and readiness checks remain part of [Path to Live](/cloud-native-platform/path-to-live/).
+
+In all our Path to Live environments we run two clusters for high availability
+and zero down-time upgrades. We load balance across these clusters using an
+[Azure Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview) which has a health probe for each application
+deployed to an environment.
+
+For backend applications a couple of lines of config need to be added:
+
+- CFT Platform: [load balancer configuration](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/prod/backend_lb_config.yaml)
+- SDS Platform: [load balancer configuration](https://github.com/hmcts/sds-azure-platform/blob/master/environments/prod/backend_lb_config.yaml)
+
+Frontend applications are automatically handled as part of the
+[Front Door configuration](front-door.html),
+that config provides all the information we need for setting up the load balancer,
+so frontend applications skip the above step.
+
+<hr>
+
+<strong>Next step in Creating a New Component:</strong> [Configure Front Door](front-door.html)
