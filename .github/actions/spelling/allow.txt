@@ -120,6 +120,7 @@ haml
 hashie
 helmrelease
 hmcts
+hmctsprod
 hmctspublic
 hmi
 hotspot
@@ -198,6 +199,7 @@ nsenter
 nslookup
 nta
 NVMe
+oci
 offboarding
 Offboarding
 onboarded
@@ -260,6 +262,7 @@ sdshmcts
 sdsprod
 SDSPTL
 seccomp
+semver
 SEO
 servicebus
 servolux
@@ -287,6 +290,7 @@ ssl
 sso
 stackoverflow
 stakeholders
+standalone
 Staticfile
 statuspage
 styleguide
