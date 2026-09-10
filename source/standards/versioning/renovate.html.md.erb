@@ -1,0 +1,101 @@
+---
+title: Renovate
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 4
+---
+
+# <%= current_page.data.title %>
+
+[Renovate](https://docs.renovatebot.com/) automates dependency updates: it
+scans your repository for pinned versions and raises pull requests when new
+versions are released. Combined with [pinned versions](./) everywhere, it is
+how HMCTS keeps dependencies current without teams watching upstream
+repositories.
+
+## Onboarding
+
+Add a `renovate.json` (or `.github/renovate.json`) to your repository that
+extends the HMCTS global configuration:
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>hmcts/.github:renovate-config"
+  ]
+}
+```
+
+## What the global configuration gives you
+
+The global configuration lives in
+[hmcts/.github:renovate-config.json](https://github.com/hmcts/.github/blob/master/renovate-config.json)
+and provides:
+
+- **A schedule** — updates run on weekday mornings (7am–11am, London time),
+  to minimise disruption and to raise pull requests while non-production
+  environments are running
+- **A dependency dashboard** — an issue in your repository listing every
+  pending and open update
+- **Labelling** — every Renovate pull request gets the `dependencies` label
+- **Jenkins library pin tracking** — `@Library("Infrastructure@<version>")`
+  pins in `Jenkinsfile_*` files are tracked against the library's tags;
+  minor and patch updates automerge when CI passes, majors are raised for
+  review (see [Jenkins library versioning](jenkins-library.html))
+- **Helm chart support** — `Chart.yaml` dependencies resolve against the
+  HMCTS chart registries (`hmctspublic` and `hmctsprod`), with your chart's
+  patch version bumped on each update
+- **Dockerfile version tracking** — versions declared in Dockerfiles are
+  managed via the standard Renovate regex support
+
+## Automerge presets
+
+The base configuration on its own only automerges the Jenkins library pin —
+every other update waits for a person to merge it. Most repositories don't
+stop there: hundreds across the estate extend one of the automerge presets
+so routine updates merge themselves. Choose based on how much you trust your
+test coverage:
+
+[`automerge-minor`](https://github.com/hmcts/.github/blob/master/renovate/automerge-minor.json)
+— automerges minor and patch updates when CI passes; majors always wait for
+review:
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>hmcts/.github:renovate-config",
+    "local>hmcts/.github//renovate/automerge-minor"
+  ]
+}
+```
+
+[`automerge-all`](https://github.com/hmcts/.github/blob/master/renovate/automerge-all.json)
+— automerges every update that passes CI, including majors. Only use this
+where test coverage is strong enough to catch a breaking change.
+
+Automerge only merges when your CI checks pass, so the value of these presets
+is directly tied to the quality of your tests.
+
+## Specialised presets
+
+The [renovate directory in hmcts/.github](https://github.com/hmcts/.github/tree/master/renovate)
+also contains targeted presets:
+
+- `cpp-terraform-azurerm-key-vault` — automerges minor and patch updates of
+  the [key-vault Terraform module](terraform-modules.html), majors raised
+  for review
+- `cnp-jenkins-library` — the Jenkins library pin rules as a standalone
+  preset, for repositories that do not extend the full global configuration
+- `flux` — specialised managers for Flux configuration repositories
+
+## Safe upgrade policy
+
+Whatever presets you use, the pattern is the same across the estate:
+
+- **Minor and patch** updates are low risk — let them automerge when CI
+  passes
+- **Major** updates signal breaking changes — they are never automerged;
+  read the release notes, check the plan or a pull request deployment, and
+  merge deliberately

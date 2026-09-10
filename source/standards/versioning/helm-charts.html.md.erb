@@ -1,0 +1,57 @@
+---
+title: Helm chart versioning
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+The base Helm charts — such as
+[chart-java](https://github.com/hmcts/chart-java) and
+[chart-nodejs](https://github.com/hmcts/chart-nodejs) — are semantically
+versioned and published to Azure Container Registry as OCI artifacts.
+
+## How base charts are released
+
+Base charts use Release Drafter, as described in the
+[release automation section](./#release-automation): merging a pull request
+creates or updates a draft release, and publishing the release tags the
+repository (for example `v6.1.0`). The tag triggers the release build, which
+lints and tests the chart and publishes it to ACR on success.
+
+## Consume a pinned version
+
+Your application chart declares the base chart as a dependency with an exact
+version in `Chart.yaml`:
+
+```yaml
+apiVersion: v2
+name: my-app
+version: 0.1.0
+dependencies:
+  - name: java
+    version: 6.1.0
+    repository: 'oci://hmctsprod.azurecr.io/helm'
+```
+
+As with every other shared dependency, pin an exact version — your deployment
+then only changes when you choose to update it.
+
+## Upgrade path
+
+The [HMCTS global Renovate configuration](renovate.html) understands
+`Chart.yaml` files and the HMCTS chart registries, so new base chart versions
+arrive as Renovate pull requests. When Renovate updates a chart dependency it
+also bumps your own chart's patch version, keeping your chart version moving
+with its contents.
+
+Major base chart versions can change values structure or deployment behaviour
+— review the base chart's release notes before merging a major update, and
+verify the change on a pull request deployment before it reaches production.
+
+## Related pages
+
+- [Helm chart setup for a new component](/cloud-native-platform/standards/pipeline-libraries/helm-chart.html)
+- [chart-java release documentation](https://github.com/hmcts/chart-java#releases)
+- [Drafting a release runbook](https://hmcts.github.io/ops-runbooks/Testing-Changes/drafting-a-release.html)
