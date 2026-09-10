@@ -51,9 +51,11 @@ and provides:
 
 ## Automerge presets
 
-By default only the Jenkins library rules automerge. To reduce the work of
-merging routine updates, extend one of the automerge presets — choose based
-on how much you trust your test coverage:
+The base configuration on its own only automerges the Jenkins library pin —
+every other update waits for a person to merge it. Most repositories don't
+stop there: hundreds across the estate extend one of the automerge presets
+so routine updates merge themselves. Choose based on how much you trust your
+test coverage:
 
 [`automerge-minor`](https://github.com/hmcts/.github/blob/master/renovate/automerge-minor.json)
 — automerges minor and patch updates when CI passes; majors always wait for
