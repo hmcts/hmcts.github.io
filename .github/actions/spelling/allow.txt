@@ -199,6 +199,7 @@ nsenter
 nslookup
 nta
 NVMe
+oci
 offboarding
 Offboarding
 onboarded
@@ -288,6 +289,7 @@ ssl
 sso
 stackoverflow
 stakeholders
+standalone
 Staticfile
 statuspage
 styleguide
