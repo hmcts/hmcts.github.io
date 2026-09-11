@@ -1,0 +1,71 @@
+---
+title: Versioning and dependency management
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+This section explains how HMCTS versions shared code — the Jenkins pipeline
+library, Terraform modules, Helm charts and GitHub Actions — and how teams
+consume those versions and keep them up to date safely.
+
+## The philosophy
+
+Shared code is released as **immutable version tags** following
+[Semantic Versioning](https://semver.org/#summary) (`MAJOR.MINOR.PATCH`):
+
+| Segment | Increments when | Action for consumers |
+| --- | --- | --- |
+| MAJOR | A backwards-incompatible change is made | Review the release notes before upgrading |
+| MINOR | New backwards-compatible functionality is added | Safe to adopt |
+| PATCH | A backwards-compatible bug fix or maintenance change is made | Safe to adopt |
+
+Consumers **pin an exact version** of everything they depend on. Your pipeline,
+infrastructure or chart then only changes when you choose to update the pin, and
+every change is visible as a commit in your own repository.
+
+**Never consume a branch.** A branch reference is not immutable: it moves every
+time someone pushes, changes silently under every consumer on a force-push, and
+breaks every consumer when it is deleted. We have found module branches consumed
+directly by dozens of repositories across the estate, receiving commits that had
+never been through a pull request. Tags do not have this problem — pin tags.
+
+Pinning has a cost: a pinned dependency does not receive features, fixes or
+security updates until the pin is updated. We manage that cost with automation —
+[Renovate](renovate.html) raises the update pull requests, and low-risk updates
+can merge themselves.
+
+## Release automation
+
+Shared repositories cut releases with
+[Release Drafter](https://github.com/release-drafter/release-drafter): when a
+pull request merges, a draft release is created or updated, and the version
+number is resolved from the labels on the merged pull requests:
+
+| Label | Version bump |
+| --- | --- |
+| `breaking-change` | major |
+| `enhancement` | minor |
+| `bug`, `dependencies`, `documentation`, `chore` | patch |
+| `skip-changelog` | excluded from release notes |
+
+A label check can enforce that every pull request carries one of these labels,
+and changelog automation prepends each published release to `CHANGELOG.md`.
+Both are available as reusable workflows in the
+[GitHub Actions library](/cloud-native-platform/shared-libraries/github-actions-library.html),
+and the release process is described in the
+[drafting a release runbook](https://hmcts.github.io/ops-runbooks/Testing-Changes/drafting-a-release.html).
+
+Publishing the release creates the version tag, which is what consumers pin.
+
+## Guides
+
+- [Jenkins library versioning](jenkins-library.html)
+- [Terraform module versioning](terraform-modules.html)
+- [Helm chart versioning](helm-charts.html)
+- [Renovate](renovate.html)
+
+See also the [shared libraries guides](/cloud-native-platform/shared-libraries/)
+for how to import each library in the first place.
