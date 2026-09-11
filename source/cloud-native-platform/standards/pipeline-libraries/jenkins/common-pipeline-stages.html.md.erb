@@ -59,7 +59,7 @@ Stages below form the standard application delivery path.
 Those marked as conditional are part of the pipeline implementation but only run when their branch, repository, or deployment conditions are met.
 
 | Stage | Status | What it does |
-|-|-|-|-|
+|-|-|-|
 | Checkout | Mandatory |  Checks out the application source. |
 | ACR Migration Check | Mandatory |  Checks for outdated Azure Container Registry references. |
 | Build | Mandatory for buildable applications |  Builds the application using the configured language builder. |
@@ -85,7 +85,7 @@ Following stages are disabled by default but can be optionally enabled.
 Refer to [cnp-jenkins-library for more details and up-to-date examples](https://github.com/hmcts/cnp-jenkins-library/blob/master/README.md) 
 
 | Stage or capability | Library definition |
-|-|-|-|-|
+|-|-|
 | API gateway tests | Runs after smoke tests. The application must provide the `apiGateway` task. |
 | E2E tests | Runs on master after deployment; can also be requested on a pull request with the `enable_e2e_test` label. |
 | Cross-browser tests | Runs on master after deployment. A browser list can be supplied to run selected browsers. |
