@@ -19,6 +19,8 @@ ISP
 jml
 keyring
 mdv
+mmd
+^mermaid\.js$
 mpd
 nameserver
 nfunction
