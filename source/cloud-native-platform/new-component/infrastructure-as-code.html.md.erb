@@ -1,144 +1,131 @@
 ---
 title: Infrastructure as Code
-last_reviewed_on: 2026-07-29
+last_reviewed_on: 2026-09-10
 review_in: 6 months
 weight: 6
 ---
 
 # <%= current_page.data.title %>
 
-<!-- Lots of acronyms all at once, provide examples/explanation here instead of wikipedia? -->
+Infrastructure as code (IaC) means infrastructure is defined in version-controlled configuration rather than created by hand. In CNP that configuration is managed the same way as application code: it lives in GitHub, changes go through pull requests, and it is built and deployed by a standard pipeline.
 
-We prefer [Software as a Service](https://en.wikipedia.org/wiki/Software_as_a_service) (SaaS)
-over [Platform as a Service](https://en.wikipedia.org/wiki/Platform_as_a_service) (PaaS)
-over [Infrastructure as a Service](https://en.wikipedia.org/wiki/Infrastructure_as_a_service) (IaaS).
+We prefer Software as a Service (SaaS) over Platform as a Service (PaaS) over Infrastructure as a Service (IaaS) — use the highest-level managed offering that meets the need before provisioning raw infrastructure. In practice, "infrastructure as code" in CNP covers configuration for SaaS offerings, and provisioning and configuration of PaaS and IaaS resources.
 
-With this in mind, "infrastructure as code" refers to:
+All our infrastructure is public cloud-based (Azure). We use [Terraform](https://www.terraform.io/docs/index.html) to manage it as code.
 
-* Configuration for SaaS offerings.
-* Provisioning and configuration of PaaS offerings.
-* Provisioning and configuration of IaaS devices.
-
-All our infrastructure is public cloud-based. We use [Terraform](https://www.terraform.io/docs/index.html) to manage infrastructure as code.
-
-Service and common component teams are responsible for defining their own infrastructure for their products and components.
-
-All configuration code is managed under source control in GitHub and should be public as described in the [GDS Service Manual](https://www.gov.uk/service-manual/technology/making-source-code-open-and-reusable).
-
-Sensitive information such as passwords and key pairs should neither be managed by Terraform nor present in GitHub and instead retrieved from a Key Vault. See [secrets management](secrets-management.html) for more information.
-
-The infrastructure code will be used to provision and configure **one set of infrastructure in each environment**.
+Sensitive values such as passwords and key pairs must not be managed by Terraform or stored in GitHub — they belong in Key Vault. See [secrets management](secrets-management.html).
 
 ## Infrastructure levels
 
-Infrastructure is layered into the following levels:
-
-* Platform
-* Product
-* Component
-
-Each level builds on lower levels, so the platform-level infrastructure must be provisioned before the
-product-level infrastructure, which in turn must be provisioned before the component-level infrastructure.
-
-In each environment, there will be **exactly one set** of all platform-level infrastructure and **exactly one set** of each of the product and component-level infrastructure configurations.
-
-Taken together, these infrastructure levels fully constitute an application.
-
-The following diagram shows the layers and the types of infrastructure that might be found in a given environment.
+Every application in CNP is made up of infrastructure at three levels: platform, product and component (see the [glossary](/cloud-native-platform/glossary/) for what these terms mean generally). Levels are additive and provisioned in order — platform, then product, then component — and each environment has exactly one set of platform-level infrastructure and one set of each relevant product and component configuration.
 
 <img src="/images/infrastructure-levels.png"/>
 
 ### Platform-level infrastructure
 
-This is the base-level infrastructure you can expect to find in each environment. It's managed by the Platform Operations team.
-Service and common component teams can assume that this infrastructure already exists in every environment.
+The base-level infrastructure present in every environment, managed by Platform Operations. Service and common component teams can assume it already exists and consume it — they don't provision it themselves.
 
-The code is managed in various repositories in GitHub. For some configuration, service and common component teams may need to update
-these repositories with their specific values. These updates should be requested in the form of GitHub Pull Requests which can then
-be reviewed and approved appropriately. Examples of this can be found in the [starting a new component documentation](../new-component/).
+Where platform-level configuration needs a team-specific value, that's requested as a pull request to the relevant platform repository, reviewed and approved by Platform Operations.
 
-### Product- and component-level infrastructure
+### Product-level infrastructure
 
-These levels of infrastructure are provisioned by service and common component teams. It is often called "shared infrastructure" and that
-is the naming convention that has been adopted for repositories.
+Infrastructure provisioned by a product team and shared between all components in that product — also referred to as "shared infrastructure", which is why it follows this repository convention:
 
-There are no hard rules around what infrastructure belongs in product-level or component-level but, in general,
-if something can be shared between components within a product then it should belong in the product-level infrastructure.
-The diagram above shows the types of things that might exist in each level.
+- Repository name: `{product}-shared-infrastructure`
+- Terraform `.tf` files go in the root of the repository
 
-#### Product-level (shared) infrastructure
+### Component-level infrastructure
 
-This is infrastructure provisioned by the product team and is shared between all components within the product.
+Infrastructure specific to a single component within a product.
 
-The infrastructure code must be managed in a GitHub repository. The repository should be named `{product}-shared-infrastructure`.
+- Terraform `.tf` files go in the `/infrastructure` directory of the component's GitHub repository
+- The [draft-store](https://github.com/hmcts/draft-store/tree/master/infrastructure) component is a good example
 
-Terraform `.tf` files must be placed in the root of the repository.
+There's no hard rule for what belongs at product vs component level — if it's shared between components in a product, it usually belongs at product level.
 
-The [common build pipeline](../standards/pipeline-libraries/) must be used to build the infrastructure.
+## Pipeline and repository setup
 
-#### Component-level infrastructure
+Both product- and component-level infrastructure are built with the [common CNP pipeline](../standards/pipeline-libraries/), which enforces the standards below. To onboard a new infrastructure repository:
 
-This is infrastructure provisioned by the product team and is specific to a single component within the product.
+1. Add a `.terraform-version` file to the repository root so Jenkins uses an explicit Terraform version. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version).
+2. Add a `Jenkinsfile_CNP` to the repository root to define the build/deploy pipeline. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP).
 
-The infrastructure code must be managed in the component GitHub repository.
+## Terraform modules
 
-Terraform `.tf` files must be placed in the `/infrastructure` directory in the repository.
+Use shared HMCTS Terraform modules instead of building resources from scratch where one exists — they come with sensible defaults, mandated security settings, and less boilerplate to maintain.
 
-The [draft-store](https://github.com/hmcts/draft-store/tree/master/infrastructure) component is a good example.
+Some frequently used modules:
 
-The [common build pipeline](../standards/pipeline-libraries/) must be used to build the infrastructure.
+- [PostgreSQL Flexible Server](https://github.com/hmcts/terraform-module-postgresql-flexible)
+- [Azure Key Vault](https://github.com/hmcts/cnp-module-key-vault)
+- [Azure Cache for Redis](https://github.com/hmcts/cnp-module-redis)
 
-## Infrastructure modules
+Find the full set in GitHub:
 
-For infrastructure resources commonly used by teams, a set of pre-packaged Terraform modules is provided to make it easier to provision them.
-These modules provide sensible defaults for many configuration options and also include mandated security settings enabling faster
-development.
+- [cnp-module-*](https://github.com/hmcts?q=cnp-module)
+- [terraform-module-*](https://github.com/hmcts?q=terraform-module)
 
-Some frequently used modules are:
+### Shared vs platform-internal modules
 
-* [Postgresql Flexible Server](https://github.com/hmcts/terraform-module-postgresql-flexible)
-* [Azure Key Vault](https://github.com/hmcts/cnp-module-key-vault)
-* [Azure Cache for Redis](https://github.com/hmcts/cnp-module-redis)
+Not every module is meant for product/component teams to consume directly. Some (typically under `cnp-module-*` and `terraform-module-*`) are shared modules intended for teams to use in their own infrastructure, such as the ones listed above. Others exist to build the underlying platform itself and are maintained and consumed by Platform Operations rather than product teams.
 
-A full list of modules can be found in GitHub using the below links:
+Before adopting a module, check its README for its intended audience and required inputs. If it's not clear whether a module is meant for team consumption, ask in `#cloud-native` or `#sds-cloud-native` before building on it.
 
-* [cnp-module-*](https://github.com/hmcts?q=cnp-module)
-* [terraform-module-*](https://github.com/hmcts?q=terraform-module)
+### Approved resources and modules only
 
-## Whitelisted infrastructure
+Only a pre-defined set of Azure resources and Terraform modules can be used in CNP environments. This whitelist is managed in [cnp-jenkins-config](https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder), and the common CNP pipeline enforces it — a build fails if it uses a non-approved resource or module. Additional resources can be whitelisted for a specific product or component with appropriate approval.
 
-To maintain integrity and security of our environments, service and common component teams may only use
-a pre-defined set of Azure resources and Terraform infrastructure modules. The whitelist is managed in [a GitHub repository](https://github.com/hmcts/cnp-jenkins-config/tree/master/terraform-infra-approvals#terraform--whitelists-folder).
-It is possible to add additional whitelisted resources for specific products and components with appropriate approval.
+## Tagging
 
-The [common build pipeline](../standards/pipeline-libraries/) will enforce the whitelist and will halt with an error if non-approved resources or modules are used.
+All infrastructure should apply the HMCTS common tag set consistently. These tags are used for cost attribution, support ownership, automation (for example auto-shutdown/expiry in non-prod), and auditability.
 
-## Environment-specific variables
+This is how we support:
 
-The [common build pipeline](../standards/pipeline-libraries/) supports environment-specific values for Terraform variables. The values can be defined in files named `{environment}.tfvars` (e.g. `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files. The appropriate `.tfvars` file will be passed into Terraform when the pipeline builds infrastructure.
+- **cost attribution** — knowing which team and product a resource's spend belongs to
+- **operational ownership** — knowing who to page and which Slack channel to contact when something goes wrong
+- **automated lifecycle management** — non-production resources are shut down and sandbox resources are expired based on their tags
+- **compliance and audit** — resources can be traced back to the change and pipeline run that created them
 
-You do not need to specify the value of the environment variables provided by Jenkins such as `env` (see below). However you do need to create an empty variable ready to accept the variables Jenkins injects.
+How tags are supplied depends on your delivery pipeline:
 
-## Environment variables provided by Jenkins
+- **Jenkins (common CNP pipeline):** tags are injected automatically as a `common_tags` variable, built by the [`spinInfra`](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/spinInfra.groovy) step in [cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library), into every `terraform plan`/`apply`. It includes things like the environment, the owning team, the business area, and the build/change that created the resource, plus environment-specific tags such as `autoShutdown` outside production and `expiresAfter` in sandbox. You don't need to (and shouldn't) set the values yourself — the pipeline supplies them at plan/apply time.
+- **Azure DevOps or other Terraform-based delivery:** use the [terraform-module-common-tags](https://github.com/hmcts/terraform-module-common-tags) module directly and pass its `common_tags` output into your resources/modules — same variable name and shape as the Jenkins-injected one:
 
-Jenkins will inject a number of variables into your deployments. You do not need to specify their values in the infrastructure code, but you do need to create an empty variable ready to accept them if you want to use them:
+    ```hcl
+    module "tags" {
+      source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
+      environment = var.env
+      product     = var.product
+      builtFrom   = var.builtFrom
+    }
+    ```
+
+    Your product needs an entry in the module's [team-config.yml](https://github.com/hmcts/terraform-module-common-tags/blob/master/team-config.yml) (or the CFT/SDS equivalents, [cnp-jenkins-config's](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml) or [sds-jenkins-config's](https://github.com/hmcts/sds-jenkins-config/blob/master/team-config.yml)) for `application`/`businessArea` to resolve.
+
+Jenkins is the outlier here — tags come from the pipeline library rather than a module call — so in non-Jenkins pipelines you must explicitly compose and pass the tags yourself using the module above.
+
+However you get them, declare a `common_tags` variable (a `map(string)`) in your Terraform and pass it into the `common_tags`/`tags` input of every module and resource that accepts one — see any shared module's README (for example, [cnp-module-key-vault](https://github.com/hmcts/cnp-module-key-vault)) for the exact variable name it expects.
+
+## Environment variables and tfvars
+
+The common CNP pipeline supports environment-specific Terraform values via `{environment}.tfvars` files (for example, `prod.tfvars`, `sandbox.tfvars`) placed alongside your `.tf` files — the matching file is passed to Terraform automatically for each environment.
+
+Jenkins also injects some variables directly at plan/apply time. You don't need to (and shouldn't) set their values, but you do need to declare empty Terraform variables so they can be received:
 
 - `env`
-- `product` (name of the product)
-- `subscription` (applicable Azure subscription)
+- `product`
+- `subscription`
 
-For [Azure Key Vault](https://github.com/hmcts/cnp-module-key-vault), you need to create empty variables for:
+If you're using the [Key Vault module](https://github.com/hmcts/cnp-module-key-vault), also declare:
 
 - `tenant_id`
 - `jenkins_AAD_objectId`
 
-## Terraform version
+## Related documentation
 
-You must specify what version of terraform you want Jenkins to use with a `.terraformversion` file in the root directory of your repository. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/.terraform-version).
-
-## Jenkinsfile_CNP
-
-You must add a `Jenkinsfile_CNP` to the root directory of your repository in order to define a build pipeline for it. [Example](https://github.com/hmcts/tax-tribunals-shared-infrastructure/blob/master/Jenkinsfile_CNP).
+- [CNP runbooks and standards](https://hmcts.github.io/ops-runbooks/)
+- [GoldenPath PlatOps](https://hmcts.github.io/goldenpath-platops/) — hands-on onboarding to the platform's core technologies
+- [BCDR runbooks](https://turbo-lamp-2q21n6z.pages.github.io/) — where resilience/disaster recovery concerns apply
 
 <hr>
 
