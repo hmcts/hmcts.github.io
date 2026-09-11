@@ -13,9 +13,8 @@ For the canonical setup sequence, follow [Starting a new component](../../../new
 
 After onboarding, use these references to understand and operate the pipeline:
 
-- [The common pipeline overview](common-pipeline-overview.html)
-- [The common pipeline stages](common-pipeline-stages.html)
-- [Jenkins FAQ](jenkins-faq.html)
-- [Jenkins Troubleshooting](jenkins-troubleshooting.html)
-- [Jenkins agents](jenkins-agents.html)
-
+<% current_page.children.sort_by { |page| page.data.weight || Float::INFINITY }.each do |page| %>
+<% if page.data.title && !page.data.title.strip.empty? %>
+- [<%= page.data.title %>](<%= page.url %>)
+<% end %>
+<% end %>
