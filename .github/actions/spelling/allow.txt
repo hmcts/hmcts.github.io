@@ -102,6 +102,8 @@ frontdoor
 Frontdoors
 frontends
 fsevent
+fullscreen
+fullscreenchange
 getenv
 gitops
 gitpod
@@ -182,6 +184,7 @@ microservices
 microsoft
 microsoftentra
 microtask
+mmd
 mswin
 multipage
 myaccess
@@ -212,6 +215,7 @@ owasp
 paa
 PaaS
 palo
+panzoom
 parslet
 pcq
 perftest
