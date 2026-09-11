@@ -100,7 +100,7 @@ How tags are supplied depends on your delivery pipeline:
     }
     ```
 
-    Your product needs an entry in the module's [team-config.yml](https://github.com/hmcts/terraform-module-common-tags/blob/master/team-config.yml) (or [cnp-jenkins-config's](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml)) for `application`/`businessArea` to resolve.
+    Your product needs an entry in the module's [team-config.yml](https://github.com/hmcts/terraform-module-common-tags/blob/master/team-config.yml) (or the CFT/SDS equivalents, [cnp-jenkins-config's](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml) or [sds-jenkins-config's](https://github.com/hmcts/sds-jenkins-config/blob/master/team-config.yml)) for `application`/`businessArea` to resolve.
 
 Jenkins is the outlier here — tags come from the pipeline library rather than a module call — so in non-Jenkins pipelines you must explicitly compose and pass the tags yourself using the module above.
 
