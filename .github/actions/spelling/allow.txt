@@ -33,6 +33,7 @@ azurerm
 azurewebsites
 backports
 barrelsby
+BCDR
 bfaac
 bigdecimal
 bitnami
@@ -61,6 +62,7 @@ CIDRs
 CJS
 cleardown
 cloudapp
+cmc
 cnp
 codeowners
 commonmarker
@@ -70,6 +72,8 @@ crawlability
 crictl
 customise
 cyclomatic
+datasource
+datasources
 datastore
 dba
 DBaa
@@ -83,6 +87,7 @@ dport
 dra
 dts
 dtspo
+dtsse
 dynatrace
 entra
 envsubst
@@ -118,6 +123,7 @@ gotk
 govuk
 gradle
 gradlew
+grafana
 Grigsby
 gsub
 hackernoon
@@ -162,6 +168,7 @@ keyvault
 keyvaults
 killall
 klu
+kql
 kramdown
 krew
 kubectl
@@ -262,6 +269,7 @@ roadmap
 rpe
 rse
 rubygems
+runbook
 runbooks
 rvm
 SaaS
