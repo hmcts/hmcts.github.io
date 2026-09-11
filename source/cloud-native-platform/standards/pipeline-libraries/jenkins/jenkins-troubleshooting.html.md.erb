@@ -90,9 +90,9 @@ Try a re-run of the pipeline. This may simply be an intermittent issue caused by
 
 ## Using branches to troubleshoot issues
 
-TODO: Check how can this be done with new deployment controls
-
 If your pipeline is throwing an error, you may be able to more easily troubleshoot the issue by using a branch in the `cnp-jenkins-library` repo.
+
+Make sure to add the branch to the whitelist first as [instructed here](/cloud-native-platform/shared-libraries/jenkins-library.html#versioning)
 
 #### Example 1
 Gradle is failing because a plugin cannot be found in artifactory. You've checked the plugin exists and there are no typos in your code.
