@@ -1,0 +1,168 @@
+---
+title: Grafana Observability Platform
+last_reviewed_on: 2026-09-11
+review_in: 6 months
+weight: 20
+hide_in_navigation: true
+---
+
+# <%= current_page.data.title %>
+
+Grafana is the observability platform for CNP. It gives teams dashboards for infrastructure and application metrics, delivery/pipeline health, and security scan results, so they can monitor their services, set up alerts, and troubleshoot issues in production.
+
+This is the DTSSE-managed [Azure Managed Grafana](https://learn.microsoft.com/en-us/azure/managed-grafana/overview) instance used across CNP — not a self-hosted deployment you run yourself. There are two environments:
+
+- **AAT** — instance `dtsse-grafana-aat` in the `dtsse-aat` resource group
+- **Production** — instance `dtsse-grafana10-prod` in the `dtsse-prod` resource group (the `10` reflects the version at creation; the instance has since been upgraded to Grafana major version 12, so don't read the name as the current version)
+
+## Getting started
+
+### Access levels
+
+Access is role-based, backed by Entra ID (Azure AD) group membership rather than individual user grants:
+
+| Role | What you can do | Azure AD group |
+|---|---|---|
+| Viewer | View dashboards | `DTS CFT Developers`, `DTS SDS Developers`, `DTS SE - Grafana Readers` |
+| Editor | View and edit dashboards, manage datasources | `DTS Grafana Editors` |
+| Admin | Full instance administration | `DTS Platform Operations` |
+
+Most CFT and SDS developers already have Viewer access through the `DTS CFT Developers`/`DTS SDS Developers` groups. If you need Editor access to build or amend dashboards, it's self-service: group membership is managed as code in [hmcts/azure-access](https://github.com/hmcts/azure-access) (`users/groups.yml` and `users/prod_users.yml`) — the same PR-based pattern used for other [platform-level infrastructure requests](/cloud-native-platform/new-component/infrastructure-as-code.html). `justice.gov.uk` accounts need a guest invite (also handled in that repo) before they can be added to a group.
+
+If you're not sure which group you need, or you can't see a dashboard you'd expect to, ask in `#cloud-native`/`#sds-cloud-native` first — it's often a quick answer. Raise it in `#platops-help` if it turns out to need Platform Operations to act on it directly.
+
+### Signing in
+
+1. Get the instance URL for your environment from the Grafana resource in the Azure Portal (`dtsse-prod` or `dtsse-aat` resource group), or ask in `#cloud-native`/`#sds-cloud-native` if you don't have portal access to look it up — someone on the channel will usually have it to hand.
+2. Sign in with your HMCTS Entra ID credentials — there's no separate Grafana login.
+3. Your role (Viewer/Editor/Admin) is applied automatically based on your group membership above.
+
+### Finding dashboards
+
+- Use the **Dashboards** panel in the left-hand navigation to browse by folder, or use search to find a dashboard by name.
+- Star dashboards you use regularly so they're quick to find again from **Dashboards → Starred**.
+
+## Dashboard navigation guide
+
+Dashboards are organised into folders, generally by team or subject area. Folders currently in use include `azure-monitor`, `pipeline-health`, `platops`, `microsoft-defender-for-cloud`, `live-dashboards`, `work-allocation`, and individual `team` folders, alongside product-specific folders such as `cmc`. If your team doesn't have a folder yet, an Editor can create one.
+
+A couple of concrete examples: the `pipeline-health` folder has the `jenkins-pipelines` dashboard, and `platops` has dashboards covering Jenkins agent costs, controller health, and shared-library branch usage.
+
+Delivery-metrics dashboards attribute each GitHub repository to a team via a `team_id` value in the dashboard database — this is what groups a repo's data under your team on shared dashboards. If your repository is showing under the wrong team (or not at all), there's a dedicated Azure DevOps pipeline in [hmcts/dtsse-dashboard-ingestion](https://github.com/hmcts/dtsse-dashboard-ingestion) to update it — see that repo's README for the current list of valid `team_id` values. Check with your own team first if you're not sure which one applies; raise it in `#platops-help` if you need someone to action the pipeline for you.
+
+Within a dashboard:
+
+- The **time range picker** (top right) controls the window shown across every panel — useful presets like "Last 24 hours" or "Last 7 days", plus a custom range.
+- **Variables/filters**, where a dashboard defines them, appear as dropdowns along the top and let you scope panels to a specific service, repo, or environment without editing the dashboard.
+- Hover over a panel for exact values at a point in time; click a legend entry to isolate or hide that series; click-drag across a graph to zoom into that time window.
+- The three-dot menu on a panel lets you view/edit its query, inspect the raw data, or export it as CSV/JSON.
+
+## Common queries and metrics reference
+
+### Datasources
+
+What query language a dashboard uses depends on its datasource. The datasources currently configured include:
+
+| Datasource | Query language | Used for |
+|---|---|---|
+| `azure-monitor` | KQL | Azure resource metrics and Application Insights telemetry |
+| `postgresql-dashboard` | SQL | Delivery/pipeline metrics collected from Jenkins, GitHub, SonarQube and related systems (see [Integration with platform services](#integration-with-platform-services)) |
+| `sds-prometheus` | PromQL | SDS platform/Kubernetes metrics |
+
+### Finding what metrics are available
+
+- **Azure Monitor:** open your resource in the Azure Portal → **Metrics**, or in a Grafana panel set the datasource to `azure-monitor` and use the metric browser (resource type → resource → metric) rather than hand-writing KQL — it lists every metric that resource actually emits.
+- **Application Insights:** the **Metrics** and **Logs** blades on your Application Insights resource show the standard tables (`requests`, `exceptions`, `dependencies`, `customEvents`, `traces`) and let you run/preview KQL before pasting it into a Grafana panel.
+- **PostgreSQL (`postgresql-dashboard`):** tables are namespaced by source — `jenkins_impl.*`, `github.*`, `azure.*`, and so on (see below). To see the full set for yourself, query `information_schema.tables`, or check `components/grafana-config/config/<environment>/datasources-json/postgresql-dashboard.json` in [hmcts/grafana-infrastructure](https://github.com/hmcts/grafana-infrastructure) for the connection details and browse it with a SQL client.
+- **Prometheus (`sds-prometheus`):** use Grafana's metric browser on that datasource (the "Metrics explorer" in the query editor) to search available metric names rather than guessing them.
+
+### Example queries
+
+These are starting points to adapt, not a full reference — see [Finding what metrics are available](#finding-what-metrics-are-available) above for how to discover the rest.
+
+**Application Insights (KQL)** — request latency and volume for the last 24 hours, using the standard `requests` table Application Insights populates for every instrumented app:
+
+```kql
+requests
+| where timestamp > ago(24h)
+| summarize count(), avg(duration), percentile(duration, 95) by name
+| order by count_ desc
+```
+
+**PostgreSQL (`postgresql-dashboard`)** — recent Jenkins build/stage events, using the confirmed `jenkins_impl.steps` table and its `stage_timestamp` column:
+
+```sql
+SELECT *
+FROM jenkins_impl.steps
+WHERE stage_timestamp > now() - interval '1 day'
+ORDER BY stage_timestamp DESC
+LIMIT 50;
+```
+
+Beyond these, the most reliable way to find a real, currently-working query is to look at an existing panel rather than write one from scratch:
+
+- Open any panel's three-dot menu → **Edit** to see its live query, editable in place.
+- Every dashboard is also version-controlled as JSON in [hmcts/grafana-infrastructure](https://github.com/hmcts/grafana-infrastructure) (`components/grafana-config/config/<environment>/dashboard-json/`), with each panel's query stored in its `rawSql` (or equivalent) field. This is a good way to find a similar existing query to adapt.
+- That repo ships a Copilot agent skill, `/explain-dashboard-query`, specifically for explaining a dashboard JSON's queries — see [`.github/skills/explain-dashboard-query`](https://github.com/hmcts/grafana-infrastructure/tree/main/.github/skills/explain-dashboard-query) if you have Copilot agent mode available.
+
+## Integration with platform services
+
+Dashboard data reaches Grafana through two different paths depending on the datasource:
+
+**Live metrics** (Azure Monitor, Application Insights, SDS Prometheus) are queried directly by Grafana at view time — there's no intermediate store, so this data is close to real-time.
+
+**Delivery and pipeline metrics** go through a purpose-built pipeline before they reach Grafana:
+
+1. Jenkins publishes build, stage, performance and CVE-scan events into Cosmos DB as they happen, via [hmcts/cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library) (`MetricsPublisher.groovy`, `CVEPublisher.groovy`, `publishPerformanceReports.groovy`).
+2. A scheduled job, [hmcts/dtsse-dashboard-ingestion](https://github.com/hmcts/dtsse-dashboard-ingestion), reads from those Cosmos containers — and is also configured with credentials for GitHub, SonarQube, Jira, ServiceNow and Azure cost/FinOps data — and writes normalised rows into the `postgresql-dashboard` PostgreSQL database that Grafana queries.
+3. The job (the `dtsse-dashboard-ingestion-job` CronJob) runs every 10 minutes in both AAT and production, and is deployed to AKS via Flux — see [hmcts/cnp-flux-config](https://github.com/hmcts/cnp-flux-config) (`apps/dtsse/dtsse-dashboard-ingestion/`).
+
+If a delivery-metrics dashboard looks stale, this ingestion job is the most likely place to check — see [Troubleshooting](#troubleshooting) below.
+
+## Technical notes
+
+### Architecture and ownership
+
+| Component | Repo | Notes |
+|---|---|---|
+| Grafana instance | [hmcts/grafana-infrastructure](https://github.com/hmcts/grafana-infrastructure) | `components/grafana/` — Terraform for the Managed Grafana resource, its Postgres backend, and role assignments |
+| Dashboards, folders, datasources (as code) | [hmcts/grafana-infrastructure](https://github.com/hmcts/grafana-infrastructure) | `components/grafana-config/` — the control plane for everything you see in the UI |
+| Delivery data ingestion job | [hmcts/dtsse-dashboard-ingestion](https://github.com/hmcts/dtsse-dashboard-ingestion) | Reads Cosmos DB/APIs, writes to PostgreSQL — runs as the `dtsse-dashboard-ingestion-job` CronJob in the `dtsse` AKS namespace |
+| Ingestion job deployment | [hmcts/cnp-flux-config](https://github.com/hmcts/cnp-flux-config) + [hmcts/hmcts-charts](https://github.com/hmcts/hmcts-charts) | Flux/Helm config running the job on AKS |
+| Access/group membership | [hmcts/azure-access](https://github.com/hmcts/azure-access) | Who gets Viewer/Editor/Admin |
+
+The instance, ingestion pipeline, and dashboard-as-code config are owned by Platform Operations. Individual dashboards and folders are generally owned by whichever team created them.
+
+### Creating or editing a dashboard
+
+Dashboards are dashboard-as-code, so changes made directly in the UI don't persist on their own:
+
+1. Create or edit the dashboard in the Grafana **AAT** UI (Editor role required) and confirm it looks right.
+2. Export the dashboard JSON (dashboard settings → **JSON Model**, or the export option in the dashboard menu).
+3. Commit it to `components/grafana-config/config/aat/dashboard-json/<folder>/` in [hmcts/grafana-infrastructure](https://github.com/hmcts/grafana-infrastructure). If it's a new folder, add a matching entry under `folders-json/` for both `aat` and `prod`.
+4. Raise a PR, review the Terraform plan, merge, and confirm the dashboard still applies cleanly in AAT.
+5. Promote the same JSON to `components/grafana-config/config/prod/dashboard-json/<folder>/` via the same PR process to publish it to production.
+
+### Troubleshooting
+
+**Can't sign in, or signed in but missing expected access**
+Confirm you're in the right Entra ID group for the access level you need (see [Access levels](#access-levels)). Group changes go through a PR in `hmcts/azure-access` and can take a little while to sync — check with `#platops-help` if it's been a while.
+
+**Dashboard panel is empty or shows an error**
+Open the panel's three-dot menu → **Edit** and check the query runs on its own — this usually shows the underlying datasource error (auth, timeout, bad query) directly.
+
+**Delivery/pipeline dashboard data looks stale**
+This data is written by the `dtsse-dashboard-ingestion-job` CronJob on a 10-minute schedule, not live — a few minutes' lag is expected. If it's stale well beyond that, the job itself may be failing (common causes: an expired GitHub/SonarQube/Jira token, or the job not running); this is owned by Platform Operations, so raise it in `#platops-help` with the dashboard name and roughly how stale the data is.
+
+**Grafana itself, or a whole environment, is down**
+This is beyond self-service troubleshooting — raise it in `#platops-help` (or as an incident if it's production and urgent). Platform Operations recover the instance, its PostgreSQL backend, and the ingestion job from a dedicated BCDR runbook; don't attempt to recreate or restore any of these resources yourself.
+
+**Something else**
+See [Asking for help](/cloud-native-platform/asking-for-help/) — `#platops-help` for support requests, `#cloud-native`/`#sds-cloud-native` for general questions.
+
+## Related documentation
+
+- [DTSSE Grafana Installation and Management](https://hmcts.github.io/ops-runbooks/monitoring/dtsse-grafana.html) — deeper operational reference for the instance, Postgres backend, and ingestion job
+- [Grafana Recovery (DTSSE)](https://turbo-lamp-2q21n6z.pages.github.io/domains/developer-enablement/grafana-recovery.html) — Platform Operations' BCDR runbook for recovering the instance, database, and ingestion job (access-gated; not a self-service guide)
+- [CNP runbooks and standards](https://hmcts.github.io/ops-runbooks/)
+- [Infrastructure as Code](/cloud-native-platform/new-component/infrastructure-as-code.html) — the PR-based pattern used for platform-level access requests
