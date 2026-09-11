@@ -30,6 +30,7 @@ azuredevops
 azureedge
 azurefd
 azurerm
+azurewebsites
 backports
 barrelsby
 bfaac
@@ -39,6 +40,8 @@ blobstorage
 blockquote
 blogs
 burstable
+catalogued
+cataloguing
 ccd
 cdk
 cdn
@@ -171,6 +174,7 @@ kvaps
 launchdarkly
 letsencrypt
 lifecycle
+lifecycles
 linting
 liskov
 lvc
@@ -202,6 +206,7 @@ nsenter
 nslookup
 nta
 NVMe
+observability
 oci
 offboarding
 Offboarding
@@ -229,6 +234,7 @@ placeholders
 platops
 plpgsql
 pls
+poc
 portile
 Portis
 Postgre
@@ -297,6 +303,8 @@ stakeholders
 standalone
 Staticfile
 statuspage
+stewarded
+stewardship
 styleguide
 subdomain
 suppport
@@ -324,6 +332,7 @@ TTI
 ttl
 typescriptlang
 uksouth
+uniq
 unsubscribe
 unsubscriptions
 urlencode
@@ -333,6 +342,7 @@ versioned
 Versioning
 viewpage
 vmss
+vnd
 vnet
 Vnets
 vsts

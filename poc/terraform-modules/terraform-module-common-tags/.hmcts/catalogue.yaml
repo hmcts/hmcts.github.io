@@ -1,0 +1,33 @@
+apiVersion: catalogue.hmcts.gov.uk/v1
+id: common-tags
+name: Common Tags
+type: terraform-module
+category: governance
+description: Produces the standard tags applied to HMCTS Azure resources.
+owner: platform-operations
+lifecycle: supported
+maturity: production
+consumption:
+  model: self-service
+  deployed_by: consuming team
+platform:
+  approved: true
+usage:
+  new_deployments: allowed
+  existing_deployments: allowed
+version:
+  recommended: 1.0.0
+terraform:
+  minimum_version: 1.6.0
+providers: {}
+repository:
+  url: https://github.com/hmcts/terraform-module-common-tags
+  default_branch: main
+  archived: false
+  topics: [terraform-module]
+supported_environments: [sandbox, development, test, production]
+links:
+  documentation: https://github.com/hmcts/terraform-module-common-tags#readme
+  examples: https://github.com/hmcts/terraform-module-common-tags/tree/main/examples/basic
+support:
+  contact: '#platops'

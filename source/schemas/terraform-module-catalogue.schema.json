@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://hmcts.github.io/schemas/terraform-module-catalogue.schema.json",
+  "title": "HMCTS Terraform module catalogue metadata",
+  "description": "Contract for the .hmcts/catalogue.yaml file a Terraform module repo publishes so it can be picked up by the HMCTS Way Platform Catalogue. Repos are discovered via the 'terraform-module' GitHub topic.",
+  "type": "object",
+  "required": ["apiVersion", "id", "name", "type", "category", "description", "owner", "lifecycle", "consumption", "version", "terraform", "providers", "repository", "links"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "catalogue.hmcts.gov.uk/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable module name, e.g. 'PostgreSQL Flexible Server'."
+    },
+    "type": {
+      "type": "string",
+      "const": "terraform-module"
+    },
+    "category": {
+      "type": "string",
+      "description": "Grouping used to sort the catalogue, e.g. 'database', 'networking', 'compute'."
+    },
+    "description": {
+      "type": "string",
+      "description": "One or two sentences on what the module provisions."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Group best placed to review and support the module, e.g. 'data-domain'. This is stewardship rather than exclusive ownership: anyone can propose a change through a normal pull request, per the HMCTS Way pull request standards."
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": ["supported", "deprecated", "experimental"]
+    },
+    "maturity": {
+      "type": "string",
+      "enum": ["production", "beta", "alpha"]
+    },
+    "platform": {
+      "type": "object",
+      "properties": {
+        "approved": { "type": "boolean" }
+      }
+    },
+    "consumption": {
+      "type": "object",
+      "required": ["model", "deployed_by"],
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": ["self-service", "contribution-required"]
+        },
+        "deployed_by": { "type": "string" },
+        "contribution_repository": { "type": "string", "format": "uri" },
+        "contribution_guidance": { "type": "string", "format": "uri" },
+        "request_guidance": { "type": "string", "format": "uri" }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "new_deployments": {
+          "type": "string",
+          "enum": ["allowed", "restricted", "blocked"]
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "recommended": { "type": "string" }
+      }
+    },
+    "terraform": {
+      "type": "object",
+      "properties": {
+        "minimum_version": { "type": "string" }
+      }
+    },
+    "providers": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Provider name to required version constraint, e.g. { azurerm: '>= 4.0' }."
+    },
+    "repository": {
+      "type": "object",
+      "required": ["url", "default_branch", "archived", "topics"],
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "default_branch": { "type": "string" },
+        "archived": { "type": "boolean" },
+        "topics": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "required": ["documentation", "examples"],
+      "properties": {
+        "documentation": { "type": "string", "format": "uri" },
+        "examples": { "type": "string", "format": "uri" }
+      }
+    },
+    "replacement": {
+      "type": ["string", "null"],
+      "description": "Name or repo of the module to migrate to. Required when lifecycle is 'deprecated'."
+    }
+  },
+  "if": {
+    "properties": { "lifecycle": { "const": "deprecated" } }
+  },
+  "then": {
+    "required": ["replacement"]
+  }
+}

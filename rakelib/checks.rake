@@ -46,6 +46,8 @@ CRITICAL_PAGES = %w[
   cloud-native-platform/index.html
   hmcts-overview/index.html
   standards/index.html
+  platform-catalogue/index.html
+  platform-catalogue/terraform-modules/index.html
 ].freeze
 
 # A floor rather than an exact figure, so adding pages needs no edit here while
