@@ -1,0 +1,76 @@
+---
+title: Terraform module versioning
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+> **This guidance is in preview and subject to change.** The versioned approach
+> described here has not been fully agreed yet, although it is the direction we
+> expect to adopt. Check back before making large-scale changes based on it.
+
+Shared Terraform modules are versioned with semantic version Git tags of the
+form `vMAJOR.MINOR.PATCH` (for example `v2.0.1`).
+[cpp-module-terraform-azurerm-key-vault](https://github.com/hmcts/cpp-module-terraform-azurerm-key-vault)
+is the reference example of the full pattern — versioned releases, label-driven
+release automation, and automated consumer updates.
+
+## Consume a pinned version
+
+Reference the module with an explicit `?ref=` pointing at a version tag:
+
+```hcl
+module "key_vault" {
+  source = "git@github.com:hmcts/cpp-module-terraform-azurerm-key-vault.git?ref=v2.0.1"
+
+  # ... see the module's variables.tf for the full list of inputs
+}
+```
+
+Never point `?ref=` at a branch. A branch moves underneath every consumer with
+no commit in the consuming repository to show it, and deleting the branch
+breaks `terraform init` for everyone still referencing it. A tag is immutable:
+what you plan against today is what you apply tomorrow.
+
+## What the versions mean
+
+| Segment | Increments when | Action for consumers |
+| --- | --- | --- |
+| MAJOR | A backwards-incompatible change: renamed or removed inputs or outputs, or behaviour that forces resource replacement | Review the release notes before upgrading; may need state changes |
+| MINOR | New backwards-compatible functionality, such as a new optional input | Safe to adopt |
+| PATCH | A backwards-compatible bug fix or maintenance change | Safe to adopt |
+
+## Upgrade path
+
+Renovate's Terraform manager detects new module tags and raises update pull
+requests, so consumers do not need to watch module repositories. For the
+key-vault module there is a ready-made preset,
+[cpp-terraform-azurerm-key-vault](https://github.com/hmcts/.github/blob/master/renovate/cpp-terraform-azurerm-key-vault.json),
+which automerges minor and patch updates once CI passes and raises major
+updates as pull requests for review. See the [Renovate guide](renovate.html)
+for how to enable it.
+
+When taking a major update, read the release notes first — a major bump can
+mean changed inputs or resource replacement, so always review the Terraform
+plan before applying.
+
+## Releasing a module
+
+Module releases are automated with Release Drafter and pull request labels,
+as described in the [release automation section](./#release-automation):
+
+1. Every pull request must carry one of the standard labels
+   (`breaking-change`, `enhancement`, `bug`, `dependencies`, `documentation`,
+   `chore`) — enforced by the label check workflow.
+2. On merge, Release Drafter creates or updates a draft release, resolving
+   the next version from the labels of the merged pull requests.
+3. Publishing the release creates the `vX.Y.Z` tag that consumers pin, and
+   the changelog workflow records it in `CHANGELOG.md`.
+
+The workflows are reusable — see the
+[GitHub Actions library guide](/cloud-native-platform/shared-libraries/github-actions-library.html)
+and the key-vault module's
+[workflow definitions](https://github.com/hmcts/cpp-module-terraform-azurerm-key-vault/tree/main/.github/workflows)
+for a working setup to copy.
