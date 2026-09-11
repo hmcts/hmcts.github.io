@@ -1,0 +1,43 @@
+name: Refresh Platform Catalogue
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      # The repository GITHUB_TOKEN can read every public hmcts repository,
+      # which covers all currently catalogued modules. If private module
+      # repositories ever need cataloguing, switch to an organisation
+      # GitHub App token (actions/create-github-app-token) with read access
+      # to those repositories. Note the refresh PR is opened with
+      # GITHUB_TOKEN, so CI checks do not start on it automatically -
+      # close and reopen the PR (or push to it) to trigger them.
+      - name: Refresh Terraform module catalogue
+        run: bundle exec rake catalogue:refresh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Open PR with any changes
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'Refresh Platform Catalogue data'
+          title: 'Refresh Platform Catalogue'
+          body: >
+            Automated refresh of the Terraform module catalogue, scanned from
+            `.hmcts/catalogue.yaml` in repos tagged `terraform-module` across
+            the `hmcts` organisation.
+          branch: catalogue-refresh
+          delete-branch: true
+          add-paths: data/terraform_modules.yml

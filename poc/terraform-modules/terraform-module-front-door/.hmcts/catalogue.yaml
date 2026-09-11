@@ -1,0 +1,35 @@
+apiVersion: catalogue.hmcts.gov.uk/v1
+id: front-door
+name: Front Door
+type: terraform-module
+category: networking
+description: Creates an Azure Front Door profile, endpoint, origins, routes, custom domains and rule sets. DNS CNAME records remain consumer-managed.
+owner: HMCTS platform contributors
+lifecycle: supported
+maturity: production
+consumption:
+  model: contribution-required
+  deployed_by: shared platform pipeline
+  contribution_repository: https://github.com/hmcts/terraform-module-frontdoor
+platform:
+  approved: true
+usage:
+  new_deployments: restricted
+  existing_deployments: allowed
+version:
+  recommended: 2.1.0
+terraform:
+  minimum_version: 1.6.0
+providers:
+  azurerm: '>= 4.0, < 5.0'
+repository:
+  url: https://github.com/hmcts/terraform-module-frontdoor
+  default_branch: master
+  archived: false
+  topics: [terraform-module]
+supported_environments: [development, test, production]
+links:
+  documentation: https://github.com/hmcts/terraform-module-frontdoor#readme
+  examples: https://github.com/hmcts/terraform-module-frontdoor/tree/master/example
+support:
+  contact: '#platops'

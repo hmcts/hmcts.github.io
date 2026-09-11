@@ -188,3 +188,56 @@ $govuk-font-family: nta, Helvetica, sans-serif;
 .platform-selector {
   margin-bottom: 1rem;
 }
+
+// =========================================================
+// Platform Catalogue filters
+// =========================================================
+
+.catalogue-filters {
+  margin-bottom: govuk-spacing(6);
+  padding: govuk-spacing(3);
+  border: 1px solid $govuk-border-colour;
+  background: govuk-colour("light-grey");
+}
+
+.catalogue-filters__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: govuk-spacing(2);
+
+  .govuk-button-group {
+    margin: 0;
+  }
+
+  .govuk-button {
+    margin-bottom: 0;
+  }
+}
+
+.catalogue-filters__label {
+  @include govuk-font(19, $weight: "bold");
+  margin-right: govuk-spacing(2);
+}
+
+.catalogue-filters__count {
+  @include govuk-font(16);
+  margin: govuk-spacing(2) 0 0;
+  color: $govuk-secondary-text-colour;
+}
+
+.catalogue-module {
+  padding-bottom: govuk-spacing(4);
+  margin-bottom: govuk-spacing(4);
+  border-bottom: 1px solid $govuk-border-colour;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+.catalogue-module__sample-note {
+  @include govuk-font(16);
+  margin-left: govuk-spacing(2);
+  color: $govuk-secondary-text-colour;
+}

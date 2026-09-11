@@ -1,0 +1,36 @@
+apiVersion: catalogue.hmcts.gov.uk/v1
+id: legacy-private-dns
+name: Legacy Private DNS
+type: terraform-module
+category: networking
+description: A retired example module retained only to demonstrate lifecycle guidance in the catalogue.
+owner: platform-operations
+lifecycle: deprecated
+maturity: production
+consumption:
+  model: contribution-required
+  deployed_by: shared platform pipeline
+  contribution_repository: https://github.com/hmcts/terraform-module-legacy-private-dns
+platform:
+  approved: false
+usage:
+  new_deployments: blocked
+  existing_deployments: allowed
+version:
+  recommended: 0.8.0
+terraform:
+  minimum_version: 1.6.0
+providers:
+  azurerm: '>= 4.0, < 5.0'
+repository:
+  url: https://github.com/hmcts/terraform-module-legacy-private-dns
+  default_branch: main
+  archived: true
+  topics: [terraform-module]
+supported_environments: [sandbox, development, test, production]
+links:
+  documentation: https://github.com/hmcts/terraform-module-legacy-private-dns#readme
+  examples: https://github.com/hmcts/terraform-module-legacy-private-dns/tree/main/examples/basic
+support:
+  contact: '#platops'
+replacement: azure-managed-redis
