@@ -37,6 +37,23 @@ gem install bundler
 bundle install
 ```
 
+## Pre-commit checks
+
+Catch the fast checks CI runs — page frontmatter, secrets, oversized files —
+before you push, instead of waiting on a build. Set up once:
+
+```bash
+gem install bundler && bundle install   # if you haven't already
+pip install pre-commit                  # or: brew install pre-commit
+pre-commit install
+```
+
+It then runs automatically on `git commit`, in about a second. Two of the
+hooks (trailing whitespace, missing end-of-file newline) fix the file in
+place rather than just flagging it — re-stage and commit again if one fires.
+See [`.pre-commit-config.yaml`](.pre-commit-config.yaml) for what's checked
+and why the slower checks (build, link-checking, spelling) are left to CI.
+
 ## Making changes
 
 Edit the source files in the `source` folder. Each section of the site is an `.html.md.erb` file.
