@@ -114,7 +114,7 @@ Dashboard data reaches Grafana through two different paths depending on the data
 
 1. Jenkins publishes build, stage, performance and CVE-scan events into Cosmos DB as they happen, via [hmcts/cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library) (`MetricsPublisher.groovy`, `CVEPublisher.groovy`, `publishPerformanceReports.groovy`).
 2. A scheduled job, [hmcts/dtsse-dashboard-ingestion](https://github.com/hmcts/dtsse-dashboard-ingestion), reads from those Cosmos containers — and is also configured with credentials for GitHub, SonarQube, Jira, ServiceNow and Azure cost/FinOps data — and writes normalised rows into the `postgresql-dashboard` PostgreSQL database that Grafana queries.
-3. The job (the `dtsse-dashboard-ingestion-job` CronJob) runs every 10 minutes in both AAT and production, and is deployed to AKS via Flux — see [hmcts/cnp-flux-config](https://github.com/hmcts/cnp-flux-config) (`apps/dtsse/dtsse-dashboard-ingestion/`).
+3. The job (the `dtsse-dashboard-ingestion-job` CronJob) runs every 10 minutes per cluster, and is deployed to AKS via Flux — see [hmcts/cnp-flux-config](https://github.com/hmcts/cnp-flux-config) (`apps/dtsse/dtsse-dashboard-ingestion/`). In production it runs on two AKS clusters with schedules offset by 5 minutes from each other, so in practice delivery-metrics data refreshes roughly every 5 minutes there.
 
 If a delivery-metrics dashboard looks stale, this ingestion job is the most likely place to check — see [Troubleshooting](#troubleshooting) below.
 
@@ -142,6 +142,9 @@ Dashboards are dashboard-as-code, so changes made directly in the UI don't persi
 4. Raise a PR, review the Terraform plan, merge, and confirm the dashboard still applies cleanly in AAT.
 5. Promote the same JSON to `components/grafana-config/config/prod/dashboard-json/<folder>/` via the same PR process to publish it to production.
 
+**Before merging, verify the dashboard's uid in the JSON — don't use the AAT uid in production.** Copying the file straight from the AAT folder can carry AAT's `uid` over it and silently overwrite/replace the production dashboard's identity — compare against what's already in `config/prod/` rather than assuming a straight copy is safe. Grafana assigns different IDs to AAT and prod dashboards, so copying the AAT export directly will use the wrong ID in prod.
+
+
 ### Troubleshooting
 
 **Can't sign in, or signed in but missing expected access**
@@ -151,7 +154,7 @@ Confirm you're in the right Entra ID group for the access level you need (see [A
 Open the panel's three-dot menu → **Edit** and check the query runs on its own — this usually shows the underlying datasource error (auth, timeout, bad query) directly.
 
 **Delivery/pipeline dashboard data looks stale**
-This data is written by the `dtsse-dashboard-ingestion-job` CronJob on a 10-minute schedule, not live — a few minutes' lag is expected. If it's stale well beyond that, the job itself may be failing (common causes: an expired GitHub/SonarQube/Jira token, or the job not running); this is owned by Platform Operations, so raise it in `#platops-help` with the dashboard name and roughly how stale the data is.
+This data is written by the `dtsse-dashboard-ingestion-job` CronJob on a ~5–10 minute schedule (see [Integration with platform services](#integration-with-platform-services)), not live — a few minutes' lag is expected. If it's stale well beyond that, the job itself may be failing (common causes: an expired GitHub/SonarQube/Jira token, or the job not running); this is owned by Platform Operations, so raise it in `#platops-help` with the dashboard name and roughly how stale the data is.
 
 **Grafana itself, or a whole environment, is down**
 This is beyond self-service troubleshooting — raise it in `#platops-help` (or as an incident if it's production and urgent). Platform Operations recover the instance, its PostgreSQL backend, and the ingestion job from a dedicated BCDR runbook; don't attempt to recreate or restore any of these resources yourself.
