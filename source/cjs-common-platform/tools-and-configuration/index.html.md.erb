@@ -1,0 +1,71 @@
+---
+title: Tools and configuration
+last_reviewed_on: 2026-09-14
+review_in: 6 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+CPP has separate delivery tooling and environment configuration from the Cloud Native Platform. Start with the existing repository that owns the concern instead of creating a second source of truth.
+
+| Concern | Source of truth |
+|---|---|
+| Service source | The repository named by the service owner. Existing application repositories are not all in one source-control system. |
+| Central image builds for established context services | [cpp-docker-images](https://github.com/hmcts/cpp-docker-images/tree/main) |
+| Helmsman-managed CCM AKS image versions | [`cpp.pipeline/aks-pipeline.versions.yml`](https://codereview.mdv.cpp.nonlive/plugins/gitiles/cpp.pipeline/+/master/aks-pipeline.versions.yml) |
+| Helmsman-managed CCM AKS deployment | [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) |
+| Flux-managed CCM AKS deployment | [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) |
+| Reusable Azure DevOps pipeline steps | [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates/tree/main) |
+| Reusable Kubernetes charts | [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main) |
+| AKS operational automation | [cpp-aks-ops](https://github.com/hmcts/cpp-aks-ops/tree/main) |
+| Virtual-machine automation | [cpp-automation-ansible](https://github.com/hmcts/cpp-automation-ansible/tree/main) |
+| Legacy Terraform automation | [cpp-automation-terraform](https://github.com/hmcts/cpp-automation-terraform/tree/main) |
+| Build-agent and virtual-machine images | [cpp-packer-pipeline](https://github.com/hmcts/cpp-packer-pipeline/tree/main) |
+
+## Pipeline configuration
+
+The Helmsman CCM AKS deployment job is [`CPP-AKS-DEPLOY`](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary). Azure DevOps definition 333 reads [`aks-deploy.yaml`](https://github.com/hmcts/cpp-aks-deploy/blob/main/aks-deploy.yaml) from `cpp-aks-deploy`. Its selectable environments are `dev`, `sit`, `ste`, `nft`, `prp`, `prd` and `prx`. The `deploy-service` option controls whether it stops after the Helmsman plan or also applies the plan.
+
+The pipeline chooses its live or non-live agent pool, service connection and Vault variable group from repository-controlled variables. Do not enter credentials as parameters.
+
+Every non-pull-request run enters a manual-validation job. The current non-live configuration resumes after one minute if nobody responds. The current live configuration requires the `CPP DevOps SC` approver group and rejects the run after five minutes without approval.
+
+Some established CPP components use different Azure DevOps or Jenkins jobs. Definition 333 is not the deployment job for virtual-machine services, Alfresco or AMP. Use the job named in that component's release runbook.
+
+Flux-managed CCM applications do not use definition 333 for application changes. A reviewed merge to `cpp-flux-config` is reconciled by Flux. See that repository's `docs/runbooks/onboard-a-service.md` and `docs/runbooks/deploy-images-across-environments.md`.
+
+## Image builds
+
+`cpp-docker-images` is part of the established context-service build route. `metadata-contexts.json` maps the image job to its service repository, and `seed.groovy` creates the Jenkins jobs. The generated job builds the service's `docker/Dockerfile_*` files, pushes the image to non-live ACR and updates its `cpp.pipeline` image tag by default.
+
+ADO definition 345 is also named [`docker-images`](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=345&_a=summary), but its current YAML builds standalone and shared base images held in `cpp-docker-images`. It is not the context-service Jenkins job.
+
+A service with its own image-build pipeline does not need an entry in `cpp-docker-images`. Record the actual route during onboarding rather than adding the service to both.
+
+## Helm charts
+
+Both Helmsman and Flux consume versioned charts from [`cpp-helm-chart`](https://github.com/hmcts/cpp-helm-chart/tree/main). Its pipeline validates charts, publishes them to the non-live ACR and imports released versions into the live ACR.
+
+For an application-only change, select an existing chart and put the service configuration in `cpp-aks-deploy` or `cpp-flux-config`. Change `cpp-helm-chart` only when the application needs a reusable Kubernetes capability that the selected chart does not provide; do not put one service's environment values in the shared chart.
+
+## Artefacts and deployment configuration
+
+For CCM AKS, `cpp-aks-deploy` is the source for the Helmsman application entry and the common, environment and stack values. `cpp.pipeline/aks-pipeline.versions.yml` supplies image tags. `CPP-AKS-DEPLOY` combines those two repositories, renders the values with Ansible, shows a Helmsman plan and applies it only when `deploy-service` is selected.
+
+The internal [Deploy to AKS](https://hmcts.atlassian.net/wiki/spaces/EI/pages/279160706/Deploy+to+AKS) page contains the detailed pipeline and Helmsman runbook. Live deployments are governed by [Crime Release Management](https://hmcts.atlassian.net/wiki/display/RSTR/Crime+-+Release+Management), not by this repository alone.
+
+## Secrets
+
+CPP CCM AKS has two secret integrations. They are selected per service, not simply per environment.
+
+- **HashiCorp Vault:** Ansible `lookup('vault', ...)` expressions in [`cpp-aks-deploy` values files](https://github.com/hmcts/cpp-aks-deploy/tree/main/ansible/group_vars) read secrets while the deployment values are rendered. The ADO pipeline receives Vault connection details from its live or non-live variable group.
+- **Azure Key Vault:** a service with `secretProvider.create: true` declares Key Vault secret mappings in its values. The shared [`springboot-app`](https://github.com/hmcts/cpp-helm-chart/blob/main/springboot-app/templates/secretProviderClass.yaml) and [`wildfly-app`](https://github.com/hmcts/cpp-helm-chart/blob/main/wildfly-app/templates/secretProviderClass.yaml) charts create a Secrets Store CSI `SecretProviderClass` so the pod can receive the mapped secrets at runtime.
+
+Existing CCM services use both mechanisms. The required secret, identity and access must exist before deployment. Store only the lookup or mapping in Git. Never put the secret value in Git, a pipeline parameter or documentation.
+
+## Sources checked
+
+This page was checked on 14 September 2026 against the current `cpp-docker-images`, `cpp-aks-deploy`, `cpp-flux-config` and `cpp-helm-chart` sources, the `cpp.pipeline` image manifest, the internal [Deploy to AKS runbook](https://hmcts.atlassian.net/wiki/spaces/EI/pages/279160706/Deploy+to+AKS), the [Platform Operations release-process page](https://hmcts.atlassian.net/wiki/spaces/DTSPO/pages/277284486/Crime+Platform+Programe+Release+Process) and the current [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note).
+
+The internal AKS runbook contains some older Gerrit and Jenkins examples. The pipeline source and the approved release note supply the branch, cluster and other parameter values for an actual deployment.

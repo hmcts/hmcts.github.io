@@ -83,6 +83,7 @@ dce
 deno
 deserialise
 devcontainer
+devccm
 dport
 dra
 dts
@@ -205,6 +206,7 @@ nfrs
 ngmodules
 ngrx
 nokogiri
+nft
 NONINFRINGEMENT
 nonprod
 noopener
@@ -250,6 +252,9 @@ prebuild
 prebuilds
 prioritisation
 prioritise
+prd
+prdccm
+prpccm
 productionise
 privatelink
 Protips
@@ -301,7 +306,9 @@ sonarcloud
 sonarqube
 spective
 spellcheck
+springboot
 springframework
+ste
 sscs
 sscscor
 ssl
@@ -363,11 +370,13 @@ webrick
 website
 websites
 wikipedia
+wildfly
 workflows
 workspaces
 xss
 xui
 xuimanag
+prx
 yamls
 yml
 zalando
