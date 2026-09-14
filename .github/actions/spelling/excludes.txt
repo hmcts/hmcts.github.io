@@ -2,6 +2,7 @@ ignore$
 \.png$
 \.svg$
 \.drawio$
+\.mmd$
 \.t$
 ^LICENSE\.txt$
 ^\.github/
@@ -18,6 +19,8 @@ ISP
 jml
 keyring
 mdv
+mmd
+^mermaid\.js$
 mpd
 nameserver
 nfunction

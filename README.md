@@ -49,6 +49,32 @@ Content is split across multiple markdown files and manually included in `source
 <%= partial 'documentation/agile/scrum' %>
 ```
 
+### Diagrams
+
+Mermaid rendering has been added to this site - this means if you use Mermaid you do not have to export it into a non-editable image form before displaying it.
+
+It also means you are now able to edit the diagrams directly from the local development execution of this documentation site if you wish so, although you may wish to use Mermaid preview anyway as it offers faster refresh.
+
+To render your Mermaid diagram on any documentation page simply create a Mermaid diagram file within the `diagrams` directory:
+
+```
+- diagrams
+  - diagram.mmd
+```
+
+Then add a mermaid pre-tag and load the file contents within it, this has been done to avoid polluting the text only pages with long mermaid code:
+
+```
+<pre class="mermaid">
+<%= File.read(File.join(File.dirname(current_page.source_file), 'images', 'diagram.mmd')) %>
+</pre>
+```
+
+This will render your diagram wherever you placed it on the page.
+
+It can be clicked to switch the view to full-screen and you can pan around by dragging with the mouse and zoom-in with the scroll-wheel/mouse pad.
+
+
 ### Adding a new page
 
 Create a file with a `.html.md` extension anywhere in the `source` directory. For example, `source/about.html.md` will be served at <http://localhost:4567/about.html>.

@@ -1,0 +1,95 @@
+---
+title: Common Pipeline Overview
+last_reviewed_on: 2026-09-10
+review_in: 6 months
+weight: 2
+old_paths:
+  - /cloud-native-platform/common-pipeline/common-pipeline.html
+  - /cloud-native-platform/standards/pipeline-libraries/jenkins/common-pipeline.html.md.erb
+---
+
+# <%= current_page.data.title %>
+
+## Table of Contents
+
+- [Overview](#overview)
+    - [Deploying applications using the common pipeline](#deploying-applications-using-the-common-pipeline)
+    - [How it works end-to-end](#how-it-works-end-to-end)
+
+> To get onboarded to the common pipeline please see:</br>
+    - [Jenkins setup](/cloud-native-platform/new-component/jenkins-repository.html) on how to add your repository to Jenkins</br>
+    - [Starting a new component](../../../new-component/) for onboarding workflow</br>
+    - [Path to Live](/cloud-native-platform/path-to-live/) for production readiness workflow
+
+## Overview
+
+The common pipeline is a Jenkins pipeline defined by [code](https://github.com/hmcts/cnp-jenkins-library)
+which implements Continuous Delivery to production while enforcing a standard set of
+checks on the code processed.
+
+It enables HMCTS Reform to deploy changes to the platform in a well defined
+manner providing the confidence that all the test and verification
+stages have been executed in a structured and repeatable sequence.
+This allows for fast feedback to developers to improve code development velocity.
+
+The delivery pipeline combines infrastructure and database schema changes with the
+application deployment, therefore taking advantage of the microservices architecture
+in use at HMCTS.
+
+The entire Delivery Pipeline is a hands-off, automated process, triggered at the point of change. Code merged
+to master is deployed to production without any further human intervention. For this reason:
+
+- **PRs need to be carefully reviewed**
+- Feature Flagging, to separate the deployment of changes from their activation, is a practical necessity for all apps.
+
+### Deploying applications using the common pipeline
+
+[Helm](https://helm.sh) is the package manager for Kubernetes.
+We deploy all of our applications using a helm chart to Kubernetes.
+For more information about Helm, please see the related new component
+[docs](../../../new-component/helm-chart.html)
+
+![The Common Pipeline](/images/common-pipeline.png) *Figure 1 - Simplified pipeline flow*
+
+The diagram below *(Figure 2)* shows the end to end workflow of how an application is deployed throughout the SDLC, Perftest is an example of an environment outside Path to Live that is _optionally_ deployed to.
+
+An application consists of the different infrastructure levels of platform, product and component as detailed in [Infrastructure levels](/cloud-native-platform/new-component/infrastructure-as-code.html#infrastructure-levels).
+
+The product and component levels are combined to define the name of the application, denoted by app-name in the diagram below. The values for product and component should be defined in the Jenkinsfile within the github repo.
+
+Example: [cnp-plum-frontend](https://github.com/hmcts/cnp-plum-frontend/blob/master/Jenkinsfile_CNP#L6)
+
+The environments shown in the diagram *(Figure 2)* reflect CFT. Review the table below to see the corresponding SDS environment names.
+
+|CFT Environment|SDS Environment|
+|-|-|
+|AAT|Staging|
+|Perftest|Test|
+|Preview|Dev|
+|Prod|Prod|
+
+![AKS Release](/images/aks-release.png) *Figure 2 - AKS Release flow*
+
+### How it works end-to-end:
+
+1. Commit changes to feature branch
+2. Create a pull request
+3. Jenkins will push an image with tag
+4. Jenkins will force a new Helm release to AKS
+5. Jenkins will run automated tests
+6. Merging and closing the PR will merge the feature with master
+7. The merge with master will trigger a webhook to start the Jenkins pipeline
+8. Jenkins will push an image with tag
+9. Jenkins will force a new Helm release to AKS
+10. Jenkins will run automated tests
+11. Jenkins will destroy the pod
+12. Jenkins will promote the image by:
+    - retagging the image in ACR
+    - updating the github flux repo with the new image name
+13. Flux will see new changes and deploy new pod
+
+> For more information on:</br>
+    - Jenkins Agents and how Jenkins works see [jenkins-agents](jenkins-agents.html) page.</br>
+    - Common pipeline stages see [Common Pipeline Stages](common-pipeline-stages.html) page.</br>
+    - Frequently Asked Questions see [Jenkins FAQ](jenkins-faq.html) page.</br>
+    - Troubleshooting see [Jenkins Troubleshooting](jenkins-troubleshooting.html) page.

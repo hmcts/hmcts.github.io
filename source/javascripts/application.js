@@ -1,4 +1,5 @@
 //= require govuk_tech_docs
+//= require mermaid
 
 var tabsItemClass = 'app-tabs__item';
 var tabsItemCurrentClass = tabsItemClass + '--current';
