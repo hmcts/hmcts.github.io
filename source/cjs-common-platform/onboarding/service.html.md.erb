@@ -1,0 +1,49 @@
+---
+title: Onboard a service
+last_reviewed_on: 2026-09-14
+review_in: 6 months
+weight: 12
+---
+
+# <%= current_page.data.title %>
+
+This checklist is for a new service in a CPP CCM AKS stack. Current CCM services use either the Helmsman deployment route in `cpp-aks-deploy` or the GitOps route in `cpp-flux-config`. Record the route for each environment before creating deployment configuration.
+
+Do not use this checklist for a virtual-machine service, Alfresco or an AMP workload. Those workloads have different deployment jobs. Stop here until Platform Operations has supplied the exact runbook and deployment-job link.
+
+## Record ownership and dependencies
+
+- name the team that owns the source code and will respond to incidents
+- record the service's APIs, events, databases and external network connections
+- check the [architecture model](https://hmcts.github.io/cp-c4-architecture/) for an existing component or integration that already meets the need
+
+The architecture model is an orientation to intended structure, not proof of what is deployed. If it disagrees with the service design or the running platform, use the deployment configuration and running system as evidence and raise a correction in the [`cp-c4-architecture` repository](https://github.com/hmcts/cp-c4-architecture).
+
+## Confirm the CCM AKS route
+
+Platform Operations must confirm that the service belongs in a CCM AKS namespace and name the first stack in which it can be tested. CPP environments are shared. Do not deploy to a stack until its owner has agreed to the work in the `Infra Releases Chat` Teams channel.
+
+Before continuing, obtain exact values for all of the following:
+
+- the source repository and owning team
+- whether the image is built centrally by `cpp-docker-images` or by the service repository, and the exact build-job URL
+- the image repository and tag format produced by that build
+- the Helm chart the service will use; existing CCM application patterns include `springboot-app` and `wildfly-app`
+- whether the service is deployed by Helmsman from `cpp-aks-deploy` or by Flux from `cpp-flux-config` in each environment
+- the first non-live environment and CCM stack, for example `dev` and `devccm08`
+- whether each application secret will be read from HashiCorp Vault during deployment or mounted from Azure Key Vault at runtime
+
+See [tools and configuration](../tools-and-configuration/index.html) for the exact repositories, pipeline and secret mechanisms.
+
+## Prepare evidence for release management
+
+Before asking for a live release, provide:
+
+- a health endpoint used by the selected Helm chart
+- a service smoke test and the integration tests listed for the release
+- service logs and access to Dynatrace for post-deployment checks
+- service-specific implementation, verification and rollback steps for the CPP release note
+
+The [Crime Release Management page](https://hmcts.atlassian.net/wiki/display/RSTR/Crime+-+Release+Management) owns the live release process. The application team supplies its evidence and steps; the release manager schedules and controls the release.
+
+Continue with [starting a new component](../new-component/index.html).
