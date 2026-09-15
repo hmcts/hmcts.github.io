@@ -1,0 +1,96 @@
+---
+title: CNP Artifactory
+last_reviewed_on: 2026-09-15
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+## Table of Contents
+
+<!-- - [Overview](#overview)
+    - [Deploying applications using the common pipeline](#deploying-applications-using-the-common-pipeline)
+    - [How it works end-to-end](#how-it-works-end-to-end) -->
+
+
+Cloud Native Platform uses [JFrog Artifactory OSS](https://jfrog.com/community/download-artifactory-oss/) primarily to perform on-demand caching of upstream dependencies from public repositories consumed by Java Gradle CI builds.
+
+This brings the artefacts closer to the build agents and significantly reduces impact of upstream issues or limitations (e.g. eliminates potential API rate limiting problems).
+
+It can also be used to store build dependencies/inputs and outputs in a similar fashion to its counterpart in the Crime Platform but this use is currently very limited.
+
+## How does it work?
+
+### Java dependency caching
+
+<pre class="mermaid">
+<%= File.read(File.join(File.dirname(current_page.source_file), 'diagrams', 'artifactory-ondemand.mmd')) %>
+</pre>
+
+Artifactory performs lazy / on-demand cache - this means it will only cache a dependency once it has actually been requested by a consumer at least once. Cache is saved internally by Artifactory (which works out to be an Azure disk provisioned by the PVC).
+
+Caching functionality itself is part of a [Gradle Java builder](https://github.com/hmcts/cnp-jenkins-library/blob/0affc126bf21f8edb0246cec3a3ffed327c29585/resources/uk/gov/hmcts/gradle/init.gradle#L3) in [CNP Jenkins Library](../pipeline-libraries/jenkins/common-pipeline-overview.html).
+
+**Caching for other application builders such as Node JS or Python is not currently supported.**
+
+
+### Where does it run?
+
+> **Note:** While the PVC is not ephemeral and data within it will remain for as long as the Artifactory Stateful Set exists within the AKS, redundant backup is currently not implemented.</br>
+**Please contact Platform Operations if you would like to start storing critical artefacts which cannot be easily recovered, resynced or rebuilt within it.**
+
+
+Platform Operations runs and maintains the self-hosted Open Source (OSS) version of the artifactory within the `PTL-Sandbox` and `PTL AKS` clusters.
+
+This is managed through the [CNP-Flux-Config](https://github.com/hmcts/cnp-flux-config) repository that is also used by all other AKS apps in the CNP - if you followed [our onboarding guide](http://localhost:4567/cloud-native-platform/new-component/) then your application is likely configured in there as well.
+
+<pre class="mermaid">
+<%= File.read(File.join(File.dirname(current_page.source_file), 'diagrams', 'artifactory-arch.mmd')) %>
+</pre>
+
+| Which Jenkins | Build URL | Which Artifactory | Artifactory URL |
+| --- | --- | --- | --- |
+| CNP Jenkins | https://build.hmcts.net/* | Production Artifactory | https://artifactory.platform.hmcts.net/* |
+| CNP Sandbox Jenkins | https://sandbox-build.hmcts.net/* | Sandbox Artifactory | https://artifactory.sandbox.platform.hmcts.net/* |
+| SDS Jenkins | https://sds-build.hmcts.net/* | Production Artifactory | https://artifactory.platform.hmcts.net/* |
+| SDS Sandbox Jenkins | https://sds-sandbox-build.hmcts.net/* | Sandbox Artifactory | https://artifactory.sandbox.platform.hmcts.net/* |
+
+### How do I use it?
+
+Artifactory cache is enabled by default / mandatory for all Java Gradle builds within Jenkins through [CNP Jenkins Library](../pipeline-libraries/jenkins/common-pipeline-overview.html).
+If you would like to use Artifactory cache when building on your local development machine you can configure Gradle to do this with:
+
+```
+pluginManagement {
+  repositories {
+    maven {
+      url "https://artifactory.platform.hmcts.net/artifactory/maven-remotes"
+    }
+  }
+}
+```
+
+Keep in mind that configuring gradle repositories will only have an effect locally, within Jenkins this is always automatically reset to Artifactory cache url.
+
+## Accessing Artifactory
+
+> **Note:** Local repositories are not visible unless logged in as an admin and Platform Operations does not currently offer non-anonymous accounts / logic to teams.</br>
+**If you require a local repository to be added and / or access to it please contact us.**
+
+You can access Artifactory using URLs in the table above as long as you are connected to the [F5 VPN](http://localhost:4567/cloud-native-platform/onboarding/person/vpn.html).
+
+This does not require a login and will allow you to browse artifacts available within the mirrors.
+
+## Caching issues and other build problems
+
+*If there is a genuine issue with the Artifactory which is causing your builds to fail Platform Operations can temporarily disable Artifactory caching in order to unblock your team while the issue is being fixed.*
+
+If you are having issues with your build check these first:
+
+- Jenkins - [Frequently Asked Questions](../pipeline-libraries/jenkins/jenkins-faq.html)
+- Jenkins - [Troubleshooting](../pipeline-libraries/jenkins/jenkins-troubleshooting.html)
+
+If the issue is specifically related to Artifactory caching - for example, if you think Artifactory is down check `#cloud-native-announce` to see if maintenance / regular patching is underway. 
+
+You can also request support by creating a support ticket with the Platform Operations BAU team - simply use `/Platops Help Request` to summon the support bot which will guide you through the process.
