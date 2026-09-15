@@ -1,0 +1,251 @@
+---
+title: SonarCloud code quality and security scanning
+last_reviewed_on: 2026-09-15
+review_in: 6 months
+weight: 15
+---
+
+# <%= current_page.data.title %>
+
+[SonarCloud](https://sonarcloud.io/organizations/hmcts/projects) is the static code analysis platform used across CNP for code quality, maintainability, and security scanning. HMCTS has an organisation set up there (sign in with your GitHub account) — you'll sometimes see it referred to internally as "SonarQube" too, since SonarCloud is the hosted SaaS version of the same SonarQube product; both names refer to the same scans and the same organisation.
+
+Scanning runs automatically as part of the shared CNP Jenkins pipeline — there's no separate tool to install or trigger by hand.
+
+## Getting started
+
+### Project setup
+
+Per-project scan settings live in your repository, not in your Jenkinsfile. Where they go depends on your build tool:
+
+- **Java (Gradle):** a `sonarqube { properties { ... } }` block in `build.gradle`. The [spring-boot-template](https://github.com/hmcts/spring-boot-template) shows the minimum needed:
+
+  ```groovy
+  sonarqube {
+    properties {
+      property "sonar.projectName", "Reform :: my-project"
+      property "sonar.projectKey", "uk.gov.hmcts.reform:my-project"
+    }
+  }
+  ```
+
+- **Node/TypeScript (Yarn):** a `sonar-project.properties` file at the repo root. The [expressjs-template](https://github.com/hmcts/expressjs-template) shows a working example:
+
+  ```properties
+  sonar.projectName=my-team :: my-project
+  sonar.projectKey=my-team-my-project
+  sonar.sources=src/main
+  sonar.tests=src/test
+  sonar.test.exclusions=test/coverage/**
+  sonar.javascript.lcov.reportPaths=coverage/lcov.info
+  sonar.exclusions=src/main/app.ts,src/main/development.ts
+  ```
+
+Both templates are a good starting point if you're setting this up on a new repository rather than writing the config from scratch.
+
+### First scan
+
+Once your project has a `Jenkinsfile_CNP` set up against the [shared CNP pipeline](/cloud-native-platform/standards/pipeline-libraries/) and the config above is in place, a "Sonar Scan" stage runs automatically on every pipeline run — nothing further to trigger manually. The first scan creates the project in the HMCTS SonarCloud organisation if it doesn't already exist there.
+
+## CI/CD integration
+
+### Jenkins (the common case)
+
+The shared pipeline's `sonarScan()` step (in [hmcts/cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library)) runs the scan for you — for Gradle projects it's `gradle sonarqube`, for Yarn projects it's `sonar-scanner`, both using the project settings above. On a pull request, the pipeline also automatically adds PR-decoration properties (`sonar.pullrequest.key`/`base`/`branch`) so results get posted back to the PR.
+
+SonarCloud then calls back to a webhook on your Jenkins instance to report success/failure, and the pipeline proceeds or fails accordingly — see [Troubleshooting](#troubleshooting) if that callback isn't arriving.
+
+### Azure DevOps
+
+For Azure DevOps pipelines, use the shared job templates in [hmcts/azure-devops-templates](https://github.com/hmcts/azure-devops-templates) rather than adding SonarCloud tasks by hand — for example `jobs/angularDotNetCore.yml` already wires in `templates/sonarCloud/prepare.yml` and `templates/sonarCloud/runAnalysis.yml` (`SonarCloudPrepare@3` / `SonarCloudAnalyze@3` / `SonarCloudPublish@3`, against the `HMCTS_SonarCloud` service endpoint). A minimal consuming pipeline looks like:
+
+```yaml
+resources:
+  repositories:
+    - repository: azureDevOpsTemplates
+      type: github
+      name: hmcts/azure-devops-templates
+      endpoint: 'GitHub connection 1'
+
+jobs:
+  - template: jobs/angularDotNetCore.yml@azureDevOpsTemplates
+    parameters:
+      sonarCloudExtraProperties: $(sonarCloudExtraProperties)
+```
+
+Check the [templates repo](https://github.com/hmcts/azure-devops-templates/tree/master/jobs) for the job template matching your stack, and its parameters, rather than reimplementing the SonarCloud tasks yourself.
+
+## Understanding results
+
+SonarCloud evaluates every scan against a **quality gate** — a set of pass/fail conditions. Unless your project has a custom gate, it inherits SonarCloud's default "Sonar way" gate, which centres on your *new* code (the lines changed in this scan), not the whole codebase — broadly: no new bugs or vulnerabilities, no new security hotspots left unreviewed, and a minimum test coverage on new code. This is why fixing a long-standing issue elsewhere in the file won't affect your gate result, but a small new bug will.
+
+Results are visible in two places:
+- **On the pull request** — a check/comment from SonarCloud with the gate result and a summary of new issues.
+- **On the [project dashboard](https://sonarcloud.io/organizations/hmcts/projects)** — bugs, vulnerabilities, code smells, coverage and duplication, with trends over time.
+
+### Terminology
+
+| Term | Meaning |
+|---|---|
+| Bug | A coding mistake SonarCloud is confident will cause incorrect behaviour |
+| Vulnerability | A confirmed, exploitable security weakness in the code |
+| Security hotspot | Security-sensitive code that needs a *human* to review and judge whether it's actually exploitable in context — not automatically a problem, unlike a vulnerability |
+| Code smell | A maintainability issue — doesn't break anything today, but makes the code harder to change safely |
+| Technical debt | SonarCloud's estimate of the effort needed to clear all outstanding code smells |
+| Duplication | Blocks of near-identical code that could be extracted into shared logic |
+| Coverage | Percentage of lines/branches exercised by your test suite |
+
+Each project also carries three letter ratings (A best, E worst): **Reliability** (driven by bugs), **Security** (driven by vulnerabilities), and **Maintainability** (driven by code smells relative to lines of code). These are whole-codebase ratings, separate from the quality gate — a project can sit on a C maintainability rating overall and still pass every quality gate, because the gate only ever looks at new code.
+
+## Fixing common issues
+
+SonarCloud groups findings into three types. The examples below are illustrative, not a full catalogue — SonarCloud's own explanation on each specific finding (click into the issue) is always the authoritative one for that rule.
+
+### Security vulnerabilities and hotspots
+
+Exploitable patterns, or code that needs review to confirm whether it's exploitable. Fix at the source rather than suppressing the finding.
+
+**Hardcoded credentials** — move to Key Vault (see [secrets management](/cloud-native-platform/new-component/secrets-management.html)) rather than the code:
+
+```javascript
+// Flagged
+const apiKey = "REPLACE-WITH-YOUR-OWN-KEY";
+
+// Fixed
+const apiKey = process.env.API_KEY;
+```
+
+**SQL built by string concatenation** — use parameterised queries so user input can't change the query structure:
+
+```java
+// Flagged
+String query = "SELECT * FROM users WHERE id=" + userId;
+
+// Fixed
+PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE id=?");
+stmt.setInt(1, userId);
+```
+
+### Code smells
+
+Maintainability issues that aren't bugs yet. These raise your technical debt but won't fail a build on their own unless they push a *new-code* metric past the quality gate's threshold.
+
+**Duplicated logic** — extract the shared behaviour into one place:
+
+```java
+// Flagged - the same query shape repeated
+List<User> users = database.query("SELECT * FROM users WHERE status='active'");
+List<Admin> admins = database.query("SELECT * FROM admins WHERE status='active'");
+
+// Fixed
+List<T> getActiveItems(Class<T> type) {
+    return database.query("SELECT * FROM " + type.getName() + " WHERE status='active'");
+}
+```
+
+**Deeply nested conditionals** — prefer early returns:
+
+```java
+// Flagged
+if (user != null) {
+    if (user.isActive()) {
+        if (user.hasPermission("admin")) {
+            // do something
+        }
+    }
+}
+
+// Fixed
+if (user == null || !user.isActive() || !user.hasPermission("admin")) {
+    return;
+}
+// do something
+```
+
+### Bugs
+
+Patterns SonarCloud is confident will cause incorrect behaviour — these are the ones most likely to actually break something in production, so prioritise them over smells.
+
+**Null dereference:**
+
+```java
+// Flagged
+User user = getUserById(id);
+String email = user.getEmail(); // could throw NPE
+
+// Fixed
+User user = getUserById(id);
+String email = user != null ? user.getEmail() : null;
+```
+
+**Unclosed resource** (file handles, connections, streams) — use try-with-resources so it's closed even if an exception is thrown:
+
+```java
+// Flagged
+FileInputStream in = new FileInputStream(path);
+// ... use in, but an exception here leaks the handle
+
+// Fixed
+try (FileInputStream in = new FileInputStream(path)) {
+    // ... use in
+}
+```
+
+### If it's a false positive
+
+Use SonarCloud's own "Mark as..." resolution on the issue (with a reason) rather than editing scan config to exclude it — that keeps the reasoning visible to the next person who looks at it, instead of silently hiding the code from future scans too.
+
+## Best practices
+
+- Install [SonarLint](https://www.sonarsource.com/products/sonarlint/) in your IDE — it flags the same rules SonarCloud will, inline as you type, so issues get caught before you even open a PR.
+- Run the scanner locally before pushing where practical — for Gradle, `./gradlew --no-daemon sonarqube`; for Yarn, `yarn sonar-scan`. Both need a personal SonarQube/SonarCloud user token first — see [Running SonarQube Scan Locally](/cloud-native-platform/guides/local-development.html#running-sonarqube-scan-locally) for the token setup and exact steps.
+- Treat new findings as part of the PR, not a follow-up — the quality gate is scoped to new code specifically so this is realistic to keep on top of.
+- Don't widen `sonar.exclusions` to make a gate pass — exclude generated code and test fixtures, not code you don't want reviewed.
+- If the default quality gate genuinely doesn't fit your project (e.g. a legacy codebase you're incrementally improving), discuss a custom gate with your team first — it's a project-wide setting, not something to loosen for a single PR.
+- Dependency vulnerabilities are a related but separate concern, handled by [automated dependency updates](automated-dependency-updates.html) rather than SonarCloud.
+
+## Troubleshooting
+
+**Quality gate failing and you're not sure why**
+Open the SonarCloud comment/check on your PR — it links straight to the new issues that caused the fail. Fixing those and pushing again re-triggers analysis.
+
+**Pipeline hangs or times out at the Sonar scan stage**
+This is almost always the SonarCloud→Jenkins webhook callback not arriving, not the scan itself failing. Check:
+
+1. SonarCloud's [webhook recent deliveries](https://sonarcloud.io/organizations/hmcts/webhooks) (three-dot menu → **Show recent deliveries**) for red/failed entries — click one to see the error (a `502` typically points at Azure App Proxy, since the Jenkins webhook is exposed through it).
+2. Jenkins logs: `kubectl logs jenkins-0 -n jenkins | grep sonar`, or **Manage Jenkins → System Log → SonarQube Logs** in the UI.
+3. Whether other services behind App Proxy are also failing — if so it's a wider App Proxy issue, not SonarCloud-specific.
+
+The webhook URLs are (each **requires** a trailing slash — a missing one is a known recurring cause of this failure mode). These are POST-only endpoints, so visiting one in a browser is expected to error — that's not itself a sign anything's wrong:
+
+- CFT PTL: `https://cft-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
+- CFT PTLSBOX: `https://cft-sandbox-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
+- SDS PTL: `https://sds-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
+- SDS PTLSBOX: `https://sds-sandbox-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
+
+See the [How SonarQube works on Jenkins](https://hmcts.github.io/ops-runbooks/jenkins/sonarqube.html) runbook for the full incident walkthrough this is summarised from.
+
+**Scanner step itself fails (an actual scan error, not a gate failure)**
+Distinguish this from a quality gate failure — that's the scan reporting real findings; this is the scan not completing at all. Check:
+
+- The project key in `build.gradle`/`sonar-project.properties` doesn't collide with another project's key in the organisation.
+- Any explicit `sonar.sources`/`sonar.tests` paths actually exist in the repo — a typo'd path makes the scanner error rather than just find nothing.
+- The scanner log itself (Jenkins console output for that stage) for the specific error — scanner failures are usually explicit about what's wrong, unlike the webhook symptom above which just hangs.
+
+**Coverage showing as 0% or missing entirely**
+This is almost always an ordering or path problem, not SonarCloud itself:
+
+- The coverage report has to exist *before* the Sonar scan stage runs — if your tests and coverage generation happen after `sonarScan()` in the pipeline, or don't run at all on that branch, there's nothing for Sonar to read.
+- The report path SonarCloud is told to read (`sonar.javascript.lcov.reportPaths` for JS/TS, the Jacoco path for Gradle) has to match where your test task actually writes it — check the two agree rather than assuming the template default is right for your project layout.
+
+**Need admin access in SonarCloud (managing quality gates, project settings, etc.)**
+This is held by Platform Operations — ask in `#platops-help` rather than assuming who currently has it, since that list changes.
+
+**Something else**
+See [Asking for help](/cloud-native-platform/asking-for-help/) — `#platops-help` for support requests, `#cloud-native`/`#sds-cloud-native` for general questions.
+
+## Related documentation
+
+- [How SonarQube works on Jenkins](https://hmcts.github.io/ops-runbooks/jenkins/sonarqube.html) — the operational runbook this page's troubleshooting section is drawn from
+- [Pipeline libraries](/cloud-native-platform/standards/pipeline-libraries/) — how the shared Jenkins pipeline (including the Sonar Scan stage) gets set up
+- [Automated dependency updates](automated-dependency-updates.html) — for dependency-level vulnerabilities, a separate concern from SonarCloud's code analysis
+- [Secrets management](/cloud-native-platform/new-component/secrets-management.html) — where credentials belong instead of in code

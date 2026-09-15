@@ -149,6 +149,7 @@ IntelliJ
 intsvc
 ithc
 itnext
+jacoco
 jattach
 jayne
 jcmd
@@ -179,6 +180,7 @@ kustomizations
 kustomize
 kvaps
 launchdarkly
+lcov
 letsencrypt
 lifecycle
 lifecycles
@@ -298,6 +300,7 @@ slf
 snyk
 SOGs
 sonarcloud
+sonarlint
 sonarqube
 spective
 spellcheck
