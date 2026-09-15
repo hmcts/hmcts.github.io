@@ -1,0 +1,62 @@
+---
+title: Path to Live
+last_reviewed_on: 2026-09-14
+review_in: 6 months
+weight: 4
+---
+
+# <%= current_page.data.title %>
+
+This page explains how a CCM AKS service joins a CPP release after it has been deployed and tested in an approved non-live stack. Crime Release Management controls the release; an application team does not deploy a new service to live on its own. Use the deployment controller recorded for the service and environment: Helmsman or Flux.
+
+## 1. Prove the change in non-live
+
+- deploy the image tag in the non-live CCM environment and stack named by the environment owner, using either `CPP-AKS-DEPLOY` or the reviewed `cpp-flux-config` change
+- record the image tag and either the `cpp-aks-deploy` and `cpp.pipeline` branches plus pipeline run, or the `cpp-flux-config` commit plus Flux reconciliation result
+- give AMS QA the environment and test instructions for its functional testing
+- arrange NFT testing through the release process if the release note contains an NFT test step
+
+CPP environments are shared. Obtain permission in the `Infra Releases Chat` Teams channel before a deployment or configuration change that can affect another user of the stack. The platform process lists DEV, STE, SIT and NFT as lower environments, but it does not require every change to visit all four. Record the environments and tests in the release note.
+
+## 2. Join a managed CPP release
+
+Contact Crime Release Management. Work with the release manager to complete the [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note), update the release calendar and coordinate the participating teams.
+
+Any production-affecting work requires an approved RFC. Start it while the non-live proof is being prepared. Put the following service-specific information in the release note and RFC:
+
+- the exact image and configuration versions to deploy
+- the implementation steps and the owner of each step
+- the checks to run after PRP and PRD deployment
+- the point at which the release must stop and the exact rollback steps
+
+Do not copy rollback steps from another service. The current release-note template requires an explicit rollback plan for the change.
+
+## 3. Deploy through PRP and PRD
+
+### Helmsman-managed service
+
+For a Helmsman-managed CCM AKS service, the release runbook uses [`CPP-AKS-DEPLOY`](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary) for both PRP and PRD. Copy every parameter from the approved release note. The current template contains these fields:
+
+- a release branch from `cpp-aks-deploy`
+- `Environment` set to `prp` and `Stack` set to `prpccm01` for pre-production
+- `Environment` set to `prd` and `Stack` set to `prdccm01` for production
+- the release branch from `cpp.pipeline`
+- `deploy-service` selected
+
+The person assigned to the AKS implementation step in the release note runs it in the scheduled window and completes the pipeline approval. Do not substitute `main`, invent a cluster name or change another parameter when it differs from the approved release note.
+
+The pipeline also accepts `prx`, but the current standard CPP release template deploys the application to PRP and PRD. Use PRX only when the approved release note contains a PRX step.
+
+### Flux-managed service
+
+Use reviewed changes in [`cpp-flux-config`](https://github.com/hmcts/cpp-flux-config/tree/main), not `CPP-AKS-DEPLOY`, to change the Flux-managed application or image tag. The PRD check in that repository requires the pull-request description to contain the RFC number, change window and rollback plan.
+
+Put the PRP and PRD pull requests, merge or reconciliation step, exact image tag, verification and revert step in the CPP release note. The person assigned to each step performs it in the scheduled release window. A merge is the deployment instruction: Flux reconciles the cluster to the committed state.
+
+## 4. Verify and close or roll back
+
+The current release template requires the release teams to check AKS pods, run AMS smoke testing, run any service-specific tests and monitor Dynatrace. The application team must be available to interpret its logs and test results.
+
+If a stop condition in the release note is met, tell the release manager, stop progression and follow that release's rollback section. Do not start an unrecorded rollback from a workstation.
+
+The source process is [Crime Release Management](https://hmcts.atlassian.net/wiki/display/RSTR/Crime+-+Release+Management). The [Platform Operations release-process page](https://hmcts.atlassian.net/wiki/spaces/DTSPO/pages/277284486/Crime+Platform+Programe+Release+Process) explains the shared-environment and lower-environment steps. For the repositories and deployment pipeline, see [tools and configuration](../tools-and-configuration/index.html).
