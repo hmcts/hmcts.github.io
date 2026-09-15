@@ -44,13 +44,17 @@ Both templates are a good starting point if you're setting this up on a new repo
 
 ### First scan
 
-Once your project has a `Jenkinsfile_CNP` set up against the [shared CNP pipeline](/cloud-native-platform/standards/pipeline-libraries/) and the config above is in place, a "Sonar Scan" stage runs automatically on every pipeline run — nothing further to trigger manually. The first scan creates the project in the HMCTS SonarCloud organisation if it doesn't already exist there.
+Once your project has a `Jenkinsfile_CNP` set up against the [shared CNP pipeline](/cloud-native-platform/standards/pipeline-libraries/) and the config above is in place, a "Sonar Scan" stage runs automatically on every pipeline run — nothing further to trigger manually.
+
+The project is created in the HMCTS SonarCloud organisation the first time a scan runs on `master`. If your very first scan happens on a pull request instead (i.e. before anything has merged to `master`), it will fail because the project doesn't exist yet — merge to `master` first, or expect that initial PR scan to fail.
 
 ## CI/CD integration
 
 ### Jenkins (the common case)
 
-The shared pipeline's `sonarScan()` step (in [hmcts/cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library)) runs the scan for you — for Gradle projects it's `gradle sonarqube`, for Yarn projects it's `sonar-scanner`, both using the project settings above. On a pull request, the pipeline also automatically adds PR-decoration properties (`sonar.pullrequest.key`/`base`/`branch`) so results get posted back to the PR.
+The shared pipeline's `sonarScan()` step (in [hmcts/cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library)) runs the scan for you — for Gradle projects it's `gradle sonarqube`, for Yarn projects it's `sonar-scanner`, both using the project settings above. On a pull request, the pipeline also passes PR-decoration properties (`sonar.pullrequest.key`/`base`/`branch`) to SonarCloud.
+
+That alone doesn't get you a comment on the PR, though — SonarCloud only posts PR comments for repositories that have been manually linked to a SonarCloud/GitHub connection, which isn't set up by default. The scan itself still runs and the quality gate result still applies either way; without that link you'll just need to check the [project dashboard](https://sonarcloud.io/organizations/hmcts/projects) directly rather than the PR itself.
 
 SonarCloud then calls back to a webhook on your Jenkins instance to report success/failure, and the pipeline proceeds or fails accordingly — see [Troubleshooting](#troubleshooting) if that callback isn't arriving.
 
@@ -78,9 +82,7 @@ Check the [templates repo](https://github.com/hmcts/azure-devops-templates/tree/
 
 SonarCloud evaluates every scan against a **quality gate** — a set of pass/fail conditions. Unless your project has a custom gate, it inherits SonarCloud's default "Sonar way" gate, which centres on your *new* code (the lines changed in this scan), not the whole codebase — broadly: no new bugs or vulnerabilities, no new security hotspots left unreviewed, and a minimum test coverage on new code. This is why fixing a long-standing issue elsewhere in the file won't affect your gate result, but a small new bug will.
 
-Results are visible in two places:
-- **On the pull request** — a check/comment from SonarCloud with the gate result and a summary of new issues.
-- **On the [project dashboard](https://sonarcloud.io/organizations/hmcts/projects)** — bugs, vulnerabilities, code smells, coverage and duplication, with trends over time.
+The [project dashboard](https://sonarcloud.io/organizations/hmcts/projects) always shows results — bugs, vulnerabilities, code smells, coverage and duplication, with trends over time. You'll only see a comment/check on the pull request itself if your repository has been manually linked to a SonarCloud/GitHub connection (see [CI/CD integration](#jenkins-the-common-case) above) — most repos aren't, so the dashboard is the reliable place to check.
 
 ### Terminology
 
@@ -206,23 +208,12 @@ Use SonarCloud's own "Mark as..." resolution on the issue (with a reason) rather
 ## Troubleshooting
 
 **Quality gate failing and you're not sure why**
-Open the SonarCloud comment/check on your PR — it links straight to the new issues that caused the fail. Fixing those and pushing again re-triggers analysis.
+Check the [project dashboard](https://sonarcloud.io/organizations/hmcts/projects) (or the PR comment/check, if your repo has PR decoration set up — see [Understanding results](#understanding-results)) — it links straight to the new issues that caused the fail. Fixing those and pushing again re-triggers analysis.
 
 **Pipeline hangs or times out at the Sonar scan stage**
-This is almost always the SonarCloud→Jenkins webhook callback not arriving, not the scan itself failing. Check:
+This is almost always the SonarCloud→Jenkins webhook callback not arriving, not the scan itself failing. 
 
-1. SonarCloud's [webhook recent deliveries](https://sonarcloud.io/organizations/hmcts/webhooks) (three-dot menu → **Show recent deliveries**) for red/failed entries — click one to see the error (a `502` typically points at Azure App Proxy, since the Jenkins webhook is exposed through it).
-2. Jenkins logs: `kubectl logs jenkins-0 -n jenkins | grep sonar`, or **Manage Jenkins → System Log → SonarQube Logs** in the UI.
-3. Whether other services behind App Proxy are also failing — if so it's a wider App Proxy issue, not SonarCloud-specific.
-
-The webhook URLs are (each **requires** a trailing slash — a missing one is a known recurring cause of this failure mode). These are POST-only endpoints, so visiting one in a browser is expected to error — that's not itself a sign anything's wrong:
-
-- CFT PTL: `https://cft-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
-- CFT PTLSBOX: `https://cft-sandbox-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
-- SDS PTL: `https://sds-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
-- SDS PTLSBOX: `https://sds-sandbox-sonarqube-webhook.hmcts.net/sonarqube-webhook/`
-
-See the [How SonarQube works on Jenkins](https://hmcts.github.io/ops-runbooks/jenkins/sonarqube.html) runbook for the full incident walkthrough this is summarised from.
+Diagnosing the webhook delivery itself (SonarCloud's webhook admin page, App Proxy errors, etc.) needs Platform Operations access that developers don't have by default — raise it in `#platops-help` rather than trying to chase it yourself. 
 
 **Scanner step itself fails (an actual scan error, not a gate failure)**
 Distinguish this from a quality gate failure — that's the scan reporting real findings; this is the scan not completing at all. Check:
