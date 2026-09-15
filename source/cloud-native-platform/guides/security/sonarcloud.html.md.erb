@@ -228,7 +228,7 @@ See the [How SonarQube works on Jenkins](https://hmcts.github.io/ops-runbooks/je
 Distinguish this from a quality gate failure — that's the scan reporting real findings; this is the scan not completing at all. Check:
 
 - The project key in `build.gradle`/`sonar-project.properties` doesn't collide with another project's key in the organisation.
-- Any explicit `sonar.sources`/`sonar.tests` paths actually exist in the repo — a typo'd path makes the scanner error rather than just find nothing.
+- Any explicit `sonar.sources`/`sonar.tests` paths actually exist in the repo — a mistyped path makes the scanner error rather than just find nothing.
 - The scanner log itself (Jenkins console output for that stage) for the specific error — scanner failures are usually explicit about what's wrong, unlike the webhook symptom above which just hangs.
 
 **Coverage showing as 0% or missing entirely**
