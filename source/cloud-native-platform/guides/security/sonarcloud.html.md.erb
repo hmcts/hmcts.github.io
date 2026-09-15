@@ -82,7 +82,7 @@ Check the [templates repo](https://github.com/hmcts/azure-devops-templates/tree/
 
 SonarCloud evaluates every scan against a **quality gate** — a set of pass/fail conditions. Unless your project has a custom gate, it inherits SonarCloud's default "Sonar way" gate, which centres on your *new* code (the lines changed in this scan), not the whole codebase — broadly: no new bugs or vulnerabilities, no new security hotspots left unreviewed, and a minimum test coverage on new code. This is why fixing a long-standing issue elsewhere in the file won't affect your gate result, but a small new bug will.
 
-The [project dashboard](https://sonarcloud.io/organizations/hmcts/projects) always shows results — bugs, vulnerabilities, code smells, coverage and duplication, with trends over time. You'll only see a comment/check on the pull request itself if your repository has been manually linked to a SonarCloud/GitHub connection (see [CI/CD integration](#jenkins-the-common-case) above) — most repos aren't, so the dashboard is the reliable place to check.
+The [project dashboard](https://sonarcloud.io/organizations/hmcts/projects) always shows results — bugs, vulnerabilities, code smells, coverage and duplication with trends over time. You'll only see a comment/check on the pull request itself if your repository has been manually linked to a SonarCloud/GitHub connection (see [CI/CD integration](#jenkins-the-common-case) above) — most repos aren't, so the dashboard is the reliable place to check.
 
 ### Terminology
 
