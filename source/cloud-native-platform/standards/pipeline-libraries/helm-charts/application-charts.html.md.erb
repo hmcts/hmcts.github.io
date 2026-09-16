@@ -11,7 +11,7 @@ Every CNP service repository has its own small Helm chart, alongside its code, t
 
 ## Where it lives
 
-The shared Jenkins pipeline expects a `charts/` directory at your repo root, containing exactly one chart named `<product>-<component>` — the same product/component naming used elsewhere in your pipeline config. A real example, from [fastapi-template-github](https://github.com/hmcts/fastapi-template-github):
+The shared Jenkins pipeline expects your chart at `charts/<product>-<component>/` at your repo root — the same product/component naming used elsewhere in your pipeline config; that's the only path it looks for. A real example, from [fastapi-template-github](https://github.com/hmcts/fastapi-template-github):
 
 ```
 charts/myproduct-mycomponent/
@@ -78,7 +78,7 @@ python:
 
 ## Which values files get used
 
-The pipeline (`helmInstall` in [hmcts/cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library)) builds up the `helm upgrade --install` values stack for you, checking for these files under `charts/<product>-<component>/` and skipping any that don't exist:
+The pipeline ([`helmInstall`](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/helmInstall.groovy) in `hmcts/cnp-jenkins-library`) builds up the `helm upgrade --install` values stack for you, checking for these files under `charts/<product>-<component>/` and skipping any that don't exist:
 
 | File | Required? | Purpose |
 |---|---|---|

@@ -67,7 +67,7 @@ Despite the name, this isn't for Azure Functions — it's a [KEDA](https://keda.
 - `ScaledJob` — runs as discrete Kubernetes Jobs, one per unit of work
 - `ScaledObject` — scales a regular Deployment up and down
 
-Supported triggers include Azure Service Bus (queue or topic/subscription), Azure Blob Storage, and Azure Pipelines. A Service Bus trigger looks like:
+Supported triggers include Azure Service Bus (queue or topic/subscription), Azure Blob Storage, and Azure Pipelines — see the [chart-function README](https://github.com/hmcts/chart-function#supported-triggers) for the complete, current list. A Service Bus trigger looks like:
 
 ```yaml
 scaleType: Job
@@ -102,7 +102,7 @@ Run `helm dependency build` in your chart directory to pull it down — see [Tes
 
 ## Publishing and testing a base chart
 
-Unlike your own application chart (published automatically by Jenkins — see [Application charts](application-charts.html)), base charts and other non-application charts are published via Azure DevOps: on a tag, the pipeline lints, installs, tests, packages and publishes the chart to the `hmctsprod` ACR. See the [chart-java pipeline](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) for a working example to base a new one on.
+Unlike your own application chart (published automatically by Jenkins — see [Application charts](application-charts.html)), base charts and other non-application charts are published via Azure DevOps: on a tag, the pipeline lints, installs, tests, packages and publishes the chart to the `hmctsprod` ACR. You trigger this by bumping `version:` in `Chart.yaml` in your PR, then — once merged — creating a GitHub release tagged with that same version number. See the [chart-java pipeline](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) for a working example to base a new one on.
 
 If a base chart needs to provision real Azure resources to test itself against (Postgres, Blob Storage, Service Bus), there's a shared `chart-tests` namespace/resource group set up for exactly this — check the relevant chart's README (e.g. [chart-postgresql](https://github.com/hmcts/chart-postgresql)) for the exact values to point at it. To get an Azure DevOps chart pipeline set up, join the `dcd_group_ado_user_v2` Entra group for access, then ask in `#platops-help` for someone to configure it.
 
