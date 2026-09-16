@@ -27,6 +27,7 @@ It can also be used to store build dependencies/inputs and outputs in a similar 
 <pre class="mermaid">
 <%= File.read(File.join(File.dirname(current_page.source_file), 'diagrams', 'artifactory-ondemand.mmd')) %>
 </pre>
+*Figure 1 - Flow shows when caching happens*
 
 Artifactory performs lazy / on-demand cache - this means it will only cache a dependency once it has actually been requested by a consumer at least once. Cache is saved internally by Artifactory (which works out to be an Azure disk provisioned by the PVC).
 
@@ -48,6 +49,7 @@ This is managed through the [CNP-Flux-Config](https://github.com/hmcts/cnp-flux-
 <pre class="mermaid">
 <%= File.read(File.join(File.dirname(current_page.source_file), 'diagrams', 'artifactory-arch.mmd')) %>
 </pre>
+*Figure 2 - Diagram shows which components artifactory interacts with*
 
 | Which Jenkins | Build URL | Which Artifactory | Artifactory URL |
 | --- | --- | --- | --- |
@@ -71,12 +73,12 @@ pluginManagement {
 }
 ```
 
-Keep in mind that configuring gradle repositories will only have an effect locally, within Jenkins this is always automatically reset to Artifactory cache url.
+Keep in mind that configuring gradle repositories will only have an effect locally, within Jenkins this is always overriden to use Artifactory cache anyway.
 
 ## Accessing Artifactory
 
-> **Note:** Local repositories are not visible unless logged in as an admin and Platform Operations does not currently offer non-anonymous accounts / logic to teams.</br>
-**If you require a local repository to be added and / or access to it please contact us.**
+> **Note:** Local repositories are not visible unless logged in as an admin and Platform Operations does not currently offer non-anonymous accounts / login to teams.</br>
+**If you require a local repository to be added and / or authenticated access please contact us.**
 
 You can access Artifactory using URLs in the table above as long as you are connected to the [F5 VPN](http://localhost:4567/cloud-native-platform/onboarding/person/vpn.html).
 
