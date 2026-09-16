@@ -25,7 +25,7 @@ It can also be used to store build dependencies/inputs and outputs in a similar 
 ### Java dependency caching
 
 <pre class="mermaid">
-<%= File.read(File.join(File.dirname(current_page.source_file), 'diagrams', 'artifactory-ondemand.mmd')) %>
+<%= File.read(File.join(File.dirname(current_page.source_file), 'diagrams', 'artifactory-on-demand.mmd')) %>
 </pre>
 *Figure 1 - Flow shows when caching happens*
 
@@ -39,7 +39,7 @@ Caching functionality itself is part of a [Gradle Java builder](https://github.c
 ### Where does it run?
 
 > **Note:** While the PVC is not ephemeral and data within it will remain for as long as the Artifactory Stateful Set exists within the AKS, redundant backup is currently not implemented.</br>
-**Please contact Platform Operations if you would like to start storing critical artefacts which cannot be easily recovered, resynced or rebuilt within it.**
+**Please contact Platform Operations if you would like to start storing critical artefacts which cannot be easily recovered, re-synced or rebuilt within it.**
 
 
 Platform Operations runs and maintains the self-hosted Open Source (OSS) version of the artifactory within the `PTL-Sandbox` and `PTL AKS` clusters.
@@ -73,7 +73,7 @@ pluginManagement {
 }
 ```
 
-Keep in mind that configuring gradle repositories will only have an effect locally, within Jenkins this is always overriden to use Artifactory cache anyway.
+Keep in mind that configuring gradle repositories will only have an effect locally, within Jenkins this is always overridden to use Artifactory cache anyway.
 
 ## Accessing Artifactory
 
