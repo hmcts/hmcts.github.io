@@ -1,0 +1,169 @@
+---
+title: Application Charts
+last_reviewed_on: 2026-09-16
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Every CNP service repository has its own small Helm chart, alongside its code, that describes how that specific service gets deployed. This is your "application chart" — distinct from the [base charts](base-charts.html) it depends on, which provide the actual Deployment/Service/Ingress/etc. templates.
+
+## Where it lives
+
+The shared Jenkins pipeline expects a `charts/` directory at your repo root, containing exactly one chart named `<product>-<component>` — the same product/component naming used elsewhere in your pipeline config. A real example, from [fastapi-template-github](https://github.com/hmcts/fastapi-template-github):
+
+```
+charts/myproduct-mycomponent/
+├── Chart.yaml
+├── values.yaml
+├── values.preview.template.yaml
+└── values.aat.template.yaml
+```
+
+### Chart.yaml
+
+Declares your chart and its one dependency — the base chart for your language:
+
+```yaml
+apiVersion: v2
+name: myproduct-mycomponent
+description: A Helm chart for mycomponent
+version: 0.0.1
+appVersion: "1.0"
+dependencies:
+  - name: python
+    version: 0.1.0
+    repository: oci://hmctsprod.azurecr.io/helm
+```
+
+### values.yaml
+
+Because the base chart is a *dependency*, every value for it has to be nested under the dependency's name (`python:` here) — a flat `applicationPort: 8000` at the top level would be silently ignored:
+
+```yaml
+python:
+  applicationPort: 8000
+  image: 'hmctsprod.azurecr.io/myproduct/mycomponent:latest'
+  ingressHost: myproduct-mycomponent-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+  environment:
+  # keyVaults:
+  #   myproduct:
+  #     secrets:
+  #       - name: AppInsightsConnectionString
+  #         alias: APPLICATIONINSIGHTS_CONNECTION_STRING
+  # postgresql:
+  #   enabled: true
+```
+
+Note the `{{ .Values.global.environment }}` inside `ingressHost` — that's genuine Helm templating, evaluated by Helm itself when the chart renders. It's a different mechanism from the `.template.yaml` files below, which are resolved *before* Helm ever runs.
+
+## Two layers of templating — don't mix them up
+
+This is the easiest thing to get wrong on this chart, so it's worth being explicit:
+
+1. **`values.<x>.template.yaml` files use shell-style `${VAR}` placeholders**, not Helm's `{{ }}` syntax. The pipeline runs `envsubst` on them to produce a plain `values.<x>.yaml` file *before* Helm is invoked at all.
+2. **Values already inside a resolved `values.yaml` can separately contain Helm's own `{{ }}` templating** (like `ingressHost` above) — that gets evaluated later, by Helm itself, when your chart's templates render.
+
+A real environment template, again from `fastapi-template-github`:
+
+```yaml
+# values.aat.template.yaml — don't hand-edit, this is only for the pipeline to fill in
+python:
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
+```
+
+`${IMAGE_NAME}` and `${SERVICE_FQDN}` are populated by the pipeline itself at deploy time — you don't set these.
+
+## Which values files get used
+
+The pipeline (`helmInstall` in [hmcts/cnp-jenkins-library](https://github.com/hmcts/cnp-jenkins-library)) builds up the `helm upgrade --install` values stack for you, checking for these files under `charts/<product>-<component>/` and skipping any that don't exist:
+
+| File | Required? | Purpose |
+|---|---|---|
+| `values.yaml` | Yes | Base defaults for every environment |
+| `values.template.yaml` | No | `envsubst`'d into `values.yaml` before use, if present |
+| `values.<environment>.yaml` / `.template.yaml` | No | Overrides for one specific environment (`preview`, `aat`, etc.) |
+| `values.<pr-label>.<environment>.template.yaml` | No | Only on PR builds carrying a matching `pr-values:<name>` GitHub label |
+
+It deploys into your team's AKS namespace (`TEAM_NAMESPACE`) — there's no separate GitOps/Flux step for product-team services; the pipeline runs Helm directly. The `.template.yaml` files only matter to that pipeline run — for local testing (see [Testing locally](#testing-locally) below) you work with `values.yaml` directly and don't need to touch them.
+
+## Optional features
+
+Most of what you'd want to switch on is already a flag in the base chart, set as commented-out values above:
+
+- **Key Vault secrets** — `keyVaults` maps a vault name to a list of secrets to mount, each with a `name` (the Key Vault secret name) and `alias` (the environment variable name your app sees).
+- **A bundled PostgreSQL instance** — `postgresql.enabled: true` turns on the `hmcts-postgresql` dependency that `chart-python` (and others) already declare, conditioned on exactly this flag.
+- **IDAM redirect URI registration for previews** — [chart-idam-pr](https://github.com/hmcts/chart-idam-pr) is a job that registers your `redirect_uri` with IDAM for a PR's preview environment, so OAuth callbacks work without manual setup per PR.
+
+Check your base chart's own README for the full set — see [Base charts](base-charts.html).
+
+### Adding your own conditional dependency
+
+For anything not already built into your base chart — a Redis cache used only in preview, for example — add it as its own dependency, gated behind a flag so it's off everywhere except where you explicitly enable it:
+
+`Chart.yaml`:
+
+```yaml
+dependencies:
+  - name: redis
+    version: 10.6.18
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled
+```
+
+`values.yaml` (off by default):
+
+```yaml
+redis:
+  enabled: false
+```
+
+`values.preview.template.yaml` (on for preview only):
+
+```yaml
+redis:
+  enabled: true
+  master:
+    persistence:
+      enabled: false
+```
+
+## Testing locally
+
+```bash
+helm dependency build charts/myproduct-mycomponent
+helm lint charts/myproduct-mycomponent
+helm template myproduct-mycomponent charts/myproduct-mycomponent -f charts/myproduct-mycomponent/values.yaml
+```
+
+`helm template` renders the final manifests without touching a cluster — useful for checking a values change did what you expected before pushing.
+
+If `helm dependency build` fails with a `401 Unauthorized` pulling from `hmctsprod.azurecr.io`, your local Helm registry session isn't logged in — Helm's OCI support uses its own credential store, separate from `docker login`/`az acr login` on their own:
+
+```bash
+az acr login --name hmctsprod --expose-token --output tsv --query accessToken \
+  | helm registry login hmctsprod.azurecr.io \
+      --username 00000000-0000-0000-0000-000000000000 \
+      --password-stdin
+```
+
+## Publishing your application chart
+
+Unlike base charts (published via Azure DevOps — see [Base charts](base-charts.html)), your application chart is published automatically by Jenkins, since it lives alongside your code and is tested by the same pipeline everyone uses:
+
+- On a `master` build, once functional testing has passed, Jenkins publishes the chart to [hmcts-charts](https://github.com/hmcts/hmcts-charts) if that version hasn't already been published.
+- To publish a new version deliberately, bump `version:` in `Chart.yaml` as part of your PR.
+- If you change `values.yaml` and forget to bump the version, Jenkins will bump it for you automatically — so this isn't something to worry about too much, just something to be aware of if you notice an unexpected version change.
+
+## Keeping your base chart dependency current
+
+Renovate raises a PR against your repo whenever the base chart you depend on ships a new version, bumping the `version:` in `Chart.yaml`. Because base charts gate new/changed behaviour behind feature flags (see [Base charts](base-charts.html)), most of these PRs are safe to merge without any other changes on your side — but check the chart's release notes if you're not sure. See [Helm chart versioning](/standards/versioning/helm-charts.html) for the full detail on pinning and upgrading.
+
+## Related documentation
+
+- [Base charts](base-charts.html) — the charts your application chart depends on
+- [Helm chart versioning](/standards/versioning/helm-charts.html) — pinning an exact version and handling upgrades
+- [Pipeline libraries](/cloud-native-platform/standards/pipeline-libraries/) — the shared Jenkins pipeline that runs `helmInstall`
+- [fastapi-template-github](https://github.com/hmcts/fastapi-template-github) — a complete real example using `chart-python`
