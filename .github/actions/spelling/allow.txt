@@ -150,6 +150,7 @@ IntelliJ
 intsvc
 ithc
 itnext
+jacoco
 jattach
 jayne
 jcmd
@@ -180,6 +181,7 @@ kustomizations
 kustomize
 kvaps
 launchdarkly
+lcov
 letsencrypt
 lifecycle
 lifecycles
@@ -210,6 +212,7 @@ nft
 NONINFRINGEMENT
 nonprod
 noopener
+NPE
 npmjs
 nsenter
 nslookup
@@ -230,6 +233,7 @@ paa
 PaaS
 palo
 panzoom
+parameterised
 parslet
 pcq
 perftest
@@ -260,6 +264,7 @@ privatelink
 Protips
 ptl
 ptlsbox
+pullrequest
 QAs
 racc
 Rawstorne
@@ -303,6 +308,7 @@ slf
 snyk
 SOGs
 sonarcloud
+sonarlint
 sonarqube
 spective
 spellcheck
