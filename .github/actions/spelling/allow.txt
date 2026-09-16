@@ -24,6 +24,7 @@ apps
 artifactory
 autoconfigure
 autoscaler
+autoscaling
 azuread
 azurecr
 azuredevops
@@ -66,6 +67,7 @@ cmc
 cnp
 codeowners
 commonmarker
+configmap
 contino
 cppdev
 crawlability
@@ -165,6 +167,7 @@ jsonpath
 Jumpbox
 jumpboxes
 jvm
+KEDA
 keyvalue
 keyvault
 keyvaults
