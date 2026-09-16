@@ -44,7 +44,7 @@ Caching functionality itself is part of a [Gradle Java builder](https://github.c
 
 Platform Operations runs and maintains the self-hosted Open Source (OSS) version of the artifactory within the `PTL-Sandbox` and `PTL AKS` clusters.
 
-This is managed through the [CNP-Flux-Config](https://github.com/hmcts/cnp-flux-config) repository that is also used by all other AKS apps in the CNP - if you followed [our onboarding guide](http://localhost:4567/cloud-native-platform/new-component/) then your application is likely configured in there as well.
+This is managed through the [CNP-Flux-Config](https://github.com/hmcts/cnp-flux-config) repository that is also used by all other AKS apps in the CNP - if you followed [our onboarding guide](/cloud-native-platform/new-component/) then your application is likely configured in there as well.
 
 <pre class="mermaid">
 <%= File.read(File.join(File.dirname(current_page.source_file), 'diagrams', 'artifactory-arch.mmd')) %>
@@ -80,7 +80,7 @@ Keep in mind that configuring gradle repositories will only have an effect local
 > **Note:** Local repositories are not visible unless logged in as an admin and Platform Operations does not currently offer non-anonymous accounts / login to teams.</br>
 **If you require a local repository to be added and / or authenticated access please contact us.**
 
-You can access Artifactory using URLs in the table above as long as you are connected to the [F5 VPN](http://localhost:4567/cloud-native-platform/onboarding/person/vpn.html).
+You can access Artifactory using URLs in the table above as long as you are connected to the [F5 VPN](/cloud-native-platform/onboarding/person/vpn.html).
 
 This does not require a login and will allow you to browse artifacts available within the mirrors.
 
