@@ -4,6 +4,10 @@ ignore$
 \.drawio$
 \.mmd$
 \.t$
+\.js$
+\.mmd$
+*.mmd
+*.js
 ^LICENSE\.txt$
 ^\.github/
 CBAC
@@ -19,8 +23,6 @@ ISP
 jml
 keyring
 mdv
-mmd
-^mermaid\.js$
 mpd
 nameserver
 nfunction

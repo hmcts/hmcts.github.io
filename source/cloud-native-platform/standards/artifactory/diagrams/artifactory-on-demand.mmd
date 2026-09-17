@@ -1,0 +1,39 @@
+---
+config:
+    theme: 'base'
+    themeVariables:
+        primaryColor: '#087ebf'
+        primaryTextColor: white
+        secondaryColor: 'grey'
+        tertiaryColor: 'white'
+---
+flowchart LR
+    subgraph caching[ ]
+        direction TB
+        artifact_cached{Is artifact requested for the first time?}
+        uncached[Yes]
+        cached[No]
+        uncached
+        upstream[Example: Maven Central]
+        cache[Cache on PVC Disk]
+    end
+    subgraph build[ ]
+        direction TB
+        merge[ PR Merged]
+        jenkins-ci-master[Jenkins CI Master]
+        jenkins-ci-agent[Jenkins CI Agent]
+        gradle-build[Gradle Build]
+        artifactory[Artifactory]
+    end
+
+    merge --> jenkins-ci-master
+    jenkins-ci-master -->|Use / Spawn Agent| jenkins-ci-agent
+    jenkins-ci-agent -->|Run build| gradle-build
+    gradle-build --> |Fetch dependencies| artifactory
+
+    artifact_cached --> uncached
+    artifact_cached --> cached
+    cached -->|Fetch cache| cache
+    uncached -->|Fetch upstream| upstream
+
+    build --> caching
