@@ -58,9 +58,9 @@ python:
 
 Note the `{{ .Values.global.environment }}` inside `ingressHost` — that's genuine Helm templating, evaluated by Helm itself when the chart renders. It's a different mechanism from the `.template.yaml` files below, which are resolved *before* Helm ever runs.
 
-## Two layers of templating — don't mix them up
+## Two layers of templating
 
-This is the easiest thing to get wrong on this chart, so it's worth being explicit:
+These are easy to mix up, so it's worth being explicit:
 
 1. **`values.<x>.template.yaml` files use shell-style `${VAR}` placeholders**, not Helm's `{{ }}` syntax. The pipeline runs `envsubst` on them to produce a plain `values.<x>.yaml` file *before* Helm is invoked at all.
 2. **Values already inside a resolved `values.yaml` can separately contain Helm's own `{{ }}` templating** (like `ingressHost` above) — that gets evaluated later, by Helm itself, when your chart's templates render.
