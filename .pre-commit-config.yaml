@@ -1,0 +1,56 @@
+# Fast, file-scoped checks that mirror a slice of build.yaml (the "Build and
+# Test" job) so problems surface before a push, not after CI runs. What is
+# NOT here, and why:
+#   - `bundle exec middleman build`, `rake check_pages`, `rake check_urls`:
+#     these need a full site build (and check_urls hits the network) - far
+#     too slow for a commit hook. Left to CI.
+#   - the spellcheck job: it's a GitHub Action (check-spelling) with custom
+#     dictionaries, not a local CLI - also left to CI.
+# Install once with `pre-commit install`; `check_frontmatter` needs
+# `bundle install` to have been run so `bundle exec rake` resolves.
+minimum_pre_commit_version: "3.5.0"
+default_install_hook_types: [pre-commit]
+
+repos:
+  # Generic hygiene and syntax validation.
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        name: Block files larger than 5 MB
+        args: ["--maxkb=5120"]
+      - id: detect-private-key
+        name: Detect private keys
+      - id: check-yaml
+        name: Validate YAML syntax
+      - id: check-json
+        name: Validate JSON syntax
+      - id: check-merge-conflict
+        name: Check for merge conflict markers
+      - id: end-of-file-fixer
+        name: Fix missing end-of-file newline
+        # Mutating: rewrites a file in place if it doesn't end in exactly one
+        # newline. Re-stage and re-commit if it fires.
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+        # Mutating, with a carve-out: pages here use two trailing spaces as a
+        # deliberate markdown hard line break (e.g.
+        # source/cjs-common-platform/onboarding/03-get-approved.html.md.erb
+        # line 18). --markdown-linebreak-ext tells the hook to keep exactly
+        # two trailing spaces on non-blank lines in .md and .erb files -
+        # everything else still gets trimmed. The `erb` entry is what covers
+        # this repo's pages, whose final extension is `.erb`.
+        args: ["--markdown-linebreak-ext=erb,md"]
+
+  # The same frontmatter check CI runs (bundle exec rake check_frontmatter),
+  # at the same pinned dependency versions from Gemfile.lock. It only reads
+  # YAML frontmatter out of source/**/*.html.md.erb, so it doesn't need a
+  # site build - measured at under a second on the 111 pages in this repo.
+  - repo: local
+    hooks:
+      - id: check-frontmatter
+        name: Check page frontmatter (rake check_frontmatter)
+        entry: bundle exec rake check_frontmatter
+        language: system
+        files: '\.html\.md\.erb$'
+        pass_filenames: false
