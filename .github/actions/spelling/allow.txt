@@ -71,6 +71,7 @@ configmap
 contino
 cppdev
 crawlability
+CRDs
 crictl
 customise
 cyclomatic
