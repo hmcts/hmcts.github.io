@@ -101,7 +101,11 @@ Check your base chart's own README for the full set — see [Base charts](base-c
 
 ### Adding your own conditional dependency
 
-For anything not already built into your base chart — a Redis cache used only in preview, for example — add it as its own dependency, gated behind a flag so it's off everywhere except where you explicitly enable it:
+For anything not already provided by your base chart — a Redis cache used only in preview, for example — add it as its own dependency, gated behind a value so it's only rendered and deployed in the environments where it's enabled.
+
+`condition` controls whether the dependency is enabled when Helm renders or installs the chart — it does **not** prevent Helm from downloading the dependency or including it in the packaged parent chart.
+
+> **Keep dependencies small.** A disabled dependency is still downloaded and normally bundled into the packaged chart. Use `enabled` to control deployment, not to exclude the dependency from the package — a large disabled dependency still costs you package size.
 
 `Chart.yaml`:
 
@@ -113,14 +117,16 @@ dependencies:
     condition: redis.enabled
 ```
 
-`values.yaml` (off by default):
+> The Redis version shown here is illustrative — check the chart repository and your platform's approved dependency versions before using it.
+
+`values.yaml`:
 
 ```yaml
 redis:
   enabled: false
 ```
 
-`values.preview.template.yaml` (on for preview only):
+`values.preview.template.yaml`:
 
 ```yaml
 redis:
@@ -129,6 +135,8 @@ redis:
     persistence:
       enabled: false
 ```
+
+Only add conditional dependencies when they're genuinely needed — check current Helm and platform limits before adding large or multiple dependencies.
 
 ## Testing locally
 
