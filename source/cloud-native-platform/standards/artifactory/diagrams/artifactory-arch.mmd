@@ -1,0 +1,30 @@
+---
+config:
+  architecture:
+    idealEdgeLengthMultiplier: 2
+---
+architecture-beta
+    group platform(cloud)[Cloud Native Platform (AKS / Flux CD)]
+    group ptl-sandbox-ci(cloud)[PTL Sandbox CI] in platform
+    group ptl-ci(cloud)[PTL CI] in platform
+    group upstream-repos(internet)[Upstream]
+
+    align column upstream-maven artifactory-sbox
+
+    align row upstream-maven upstream-gradle-plugins upstream-other
+    service upstream-maven(database)[Maven Central] in upstream-repos
+    service upstream-gradle-plugins(database)[Gradle Plugins] in upstream-repos
+    service upstream-other(database)[Other upstreams...] in upstream-repos
+
+    align row artifactory-prod artifactory-sbox
+    service artifactory-prod(disk)[Production Artifactory] in platform
+    service artifactory-sbox(disk)[Sandbox Artifactory] in platform
+
+    service sbox-agent(server)[Jenkins Agents] in ptl-sandbox-ci
+
+    service ptl-agent(server)[Jenkins Agents] in ptl-ci
+
+    upstream-maven{group}:B --> T:artifactory-sbox
+    upstream-maven{group}:B --> T:artifactory-prod
+    artifactory-sbox:B --> T:sbox-agent
+    artifactory-prod:B --> T:ptl-agent
