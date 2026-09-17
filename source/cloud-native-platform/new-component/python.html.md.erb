@@ -125,7 +125,7 @@ Your application's Helm chart lives in `charts/{product}-{component}/` in the ap
 
 The `values.preview.template.yaml` is a good place to point preview deployments at fixed AAT instances of upstream services your component depends on.
 
-See the [chart-python README](https://github.com/hmcts/chart-python) for the full list of configurable values, including environment variables, Key Vault secret mounting, health check configuration, and HPA.
+See the [chart-python README](https://github.com/hmcts/chart-python) for the full list of configurable values, including environment variables, Key Vault secret mounting, health check configuration, and HPA. See [Application charts](../standards/pipeline-libraries/helm-charts/application-charts.html) for the general (non-Python-specific) version of this — how these values files are structured, and the difference between `envsubst` template substitution and Helm's own templating.
 
 ### Registering in flux for AKS deployment
 

@@ -45,7 +45,10 @@ and provides:
   review (see [Jenkins library versioning](jenkins-library.html))
 - **Helm chart support** — `Chart.yaml` dependencies resolve against the
   HMCTS chart registries (`hmctspublic` and `hmctsprod`), with your chart's
-  patch version bumped on each update
+  patch version bumped on each update (see
+  [Application charts](/cloud-native-platform/standards/pipeline-libraries/helm-charts/application-charts.html)
+  for the `Chart.yaml` structure this applies to, and
+  [Helm chart versioning](helm-charts.html) for the release process behind it)
 - **Dockerfile version tracking** — versions declared in Dockerfiles are
   managed via the standard Renovate regex support
 

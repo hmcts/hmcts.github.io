@@ -1,0 +1,259 @@
+---
+title: Base Charts
+last_reviewed_on: 2026-09-16
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+CNP applications aren't deployed from hand-written Kubernetes YAML — they're deployed via Helm charts built on a small set of centrally-maintained "base" charts, each covering a common application shape (a Python service, a Java service, an event-driven worker, and so on). Your own service has its own small [application chart](application-charts.html) that depends on one of these.
+
+All of them ultimately depend on [chart-library](https://github.com/hmcts/chart-library) — HMCTS's foundational Helm library chart. It isn't installable on its own; it's a set of [named templates](https://helm.sh/docs/chart_template_guide/named_templates/) (Deployment, Service, Ingress, HPA, Key Vault CSI secret volumes, Pod Disruption Budget, startup probes, and more) that the base charts below pick and choose from.
+
+## Available base charts
+
+| Chart | Purpose |
+|---|---|
+| [chart-python](https://github.com/hmcts/chart-python) | Simple Python microservices |
+| [chart-java](https://github.com/hmcts/chart-java) | Java microservices |
+| [chart-nodejs](https://github.com/hmcts/chart-nodejs) | Node.js applications |
+| [chart-function](https://github.com/hmcts/chart-function) | Event-driven scaled jobs/workers (KEDA) — not Azure Functions |
+| [chart-job](https://github.com/hmcts/chart-job) | One-off/scheduled Kubernetes Jobs |
+| [chart-base](https://github.com/hmcts/chart-base) | Generic fallback when no language-specific chart fits |
+| [chart-postgresql](https://github.com/hmcts/chart-postgresql) | Creates PostgreSQL databases on an existing PostgreSQL Flexible Server |
+| [chart-blobstorage](https://github.com/hmcts/chart-blobstorage) | Azure Blob Storage resources |
+| [chart-servicebus](https://github.com/hmcts/chart-servicebus) | Azure Service Bus resources |
+| [chart-neuvector](https://github.com/hmcts/chart-neuvector) | NeuVector security agent |
+
+All HMCTS Helm charts follow the naming convention `chart-<name>` — search the GitHub organisation for `chart-` to see the full current list, since new ones get added over time.
+
+Each is covered below — its purpose, when to reach for it, and a representative slice of its configuration. These are illustrative, not exhaustive: the chart's own README is always the authoritative, current reference for the full set of values.
+
+### chart-python
+
+For simple Python microservices. Your service must implement two endpoints, which the chart wires health/readiness probes to:
+
+- `GET /health/readiness` — HTTP 200 once the service is ready for traffic (a good place to check dependencies like a database connection)
+- `GET /health/liveness` — HTTP 200 while the process is alive; keep this cheap, since a failure here restarts the pod
+
+A representative configuration (this is what you'd set, namespaced under the chart's dependency name, when consuming it from your own application chart — see [Application charts](application-charts.html)):
+
+```yaml
+applicationPort: 8000
+environment:
+  REFORM_TEAM: cnp
+  REFORM_SERVICE_NAME: my-python-service
+  REFORM_ENVIRONMENT: preview
+configmap:
+  VAR_A: VALUE_A
+keyVaults:
+  "my-vault":
+    secrets:
+      - my-secret-key
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  cpu:
+    enabled: true
+    averageUtilization: 80
+```
+
+### chart-function
+
+Despite the name, this isn't for Azure Functions — it's a [KEDA](https://keda.sh/)-based chart for **event-driven scaled jobs and objects**: background workers that scale based on a trigger, such as messages arriving on a queue. It supports two scale types:
+
+- `ScaledJob` — runs as discrete Kubernetes Jobs, one per unit of work
+- `ScaledObject` — scales a regular Deployment up and down
+
+Supported triggers include Azure Service Bus (queue or topic/subscription), Azure Blob Storage, and Azure Pipelines — see the [chart-function README](https://github.com/hmcts/chart-function#supported-triggers) for the complete, current list. A Service Bus trigger looks like:
+
+```yaml
+scaleType: Job
+triggers:
+  - type: azure-servicebus
+    queueName: my-queue
+    serviceBusName: my-namespace
+    messageCount: 1
+triggerAuth:
+  triggerPodIdentityProvider: azure-workload
+```
+
+### chart-java
+
+For simple Java microservices, including Spring Boot applications. Readiness and liveness checks use the standard `/health/readiness` and `/health/liveness` endpoints exposed by [Spring Boot's actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-kubernetes-probes) — no extra wiring needed if you're on Spring Boot.
+
+```yaml
+applicationPort: 8080
+environment:
+  REFORM_TEAM: cnp
+  REFORM_SERVICE_NAME: my-java-service
+  REFORM_ENVIRONMENT: preview
+keyVaults:
+  "my-vault":
+    secrets:
+      - my-secret-key
+postgresql:
+  enabled: true
+```
+
+`postgresql.enabled: true` deploys a Postgres instance alongside your chart for testing — useful for preview environments (see [chart-postgresql](#chart-postgresql) for connecting to a real, provisioned database instead). The chart also supports startup probes and scheduled smoke/functional test jobs; see the [spring-boot-template](https://github.com/hmcts/spring-boot-template) for a complete real example.
+
+### chart-nodejs
+
+For Node.js applications. Readiness and liveness checks use `/health/readiness` and `/health/liveness`, typically provided by the [nodejs-healthcheck](https://github.com/hmcts/nodejs-healthcheck) package.
+
+```yaml
+nodejs:
+  applicationPort: 8080
+  environment:
+    REFORM_TEAM: cnp
+    REFORM_SERVICE_NAME: my-node-service
+    REFORM_ENVIRONMENT: preview
+  keyVaults:
+    my-vault:
+      secrets:
+        - my-secret-key
+```
+
+Like `chart-python`/`chart-java`, it also supports startup probes and HPA — see the [chart-nodejs README](https://github.com/hmcts/chart-nodejs) for the full set.
+
+### chart-job
+
+For one-off Kubernetes `Job`s and scheduled `CronJob`s — batch processing, scheduled maintenance, and similar non-continuous workloads. It doesn't support parallelism or multiple jobs from the same release, so keep it to one task per chart install.
+
+```yaml
+image: hmctssandbox.azurecr.io/hmcts/my-batch-job:latest
+environment:
+  TEST_VAR: test
+global:
+  jobKind: CronJob
+schedule: "*/15 * * * *"
+```
+
+`global.jobKind` picks `Job` or `CronJob` (default `Job`); `schedule` is a standard cron expression and only applies when `jobKind` is `CronJob`.
+
+### chart-base
+
+The generic fallback when no language-specific chart fits — or when you want to pick language-specific defaults explicitly via the `language` value:
+
+```yaml
+language: java
+```
+
+The gotcha: language-specific values must be nested under **both** the `base` dependency name and the language key, not set as siblings of `language`. Given a chart default of `java: { memoryRequests: '512Mi' }`, this does **not** override it:
+
+```yaml
+base:
+  language: java
+  memoryRequests: '1024Mi'   # ignored — still 512Mi
+```
+
+This does:
+
+```yaml
+base:
+  language: java
+  java:
+    memoryRequests: '1024Mi'   # takes effect
+```
+
+If a language-specific chart (`chart-python`, `chart-java`, `chart-nodejs`) already fits, prefer it — it gives you a simpler interface and more appropriate defaults than `chart-base` with `language` set.
+
+### chart-postgresql
+
+Creates PostgreSQL databases on a PostgreSQL Flexible Server that already exists — this chart doesn't provision the server itself.
+
+```yaml
+flexibleserver: "your-flexible-server"
+location: uksouth
+setup:
+  databases:
+    - name: "your-database"
+```
+
+See [chart-ccd's real usage](https://github.com/hmcts/chart-ccd/pull/278) for a complete example, including the separate step of generating the database credentials as an encrypted Kubernetes secret (see the chart-postgresql README's prerequisites).
+
+### chart-blobstorage
+
+Creates an Azure Blob Storage account and containers via [Azure Service Operator](https://github.com/Azure/azure-service-operator). Requires a resource group to already exist.
+
+```yaml
+resourceGroup: "your-application-resource-group"
+setup:
+  containers:
+    - first-container
+```
+
+Once provisioned, the chart writes Kubernetes secrets with the storage account name, blob endpoint, and access key — map them into your application chart's own `secrets:` block:
+
+```yaml
+java:
+  secrets:
+    STORAGE_ACCOUNT_NAME:
+      secretRef: storage-account-{{ .Release.Name }}-blobstorage
+      key: storage_account_name
+    STORAGE_URL:
+      secretRef: storage-secret-{{ .Release.Name }}-blobstorage
+      key: blobEndpoint
+```
+
+### chart-servicebus
+
+Creates Azure Service Bus queues and topics (with optional subscriptions) via Azure Service Operator. Requires a resource group and Service Bus namespace to already exist.
+
+```yaml
+resourceGroup: "your-application-resource-group"
+sbNamespace: "your-servicebus-namespace"
+setup:
+  queues:
+    - name: your-queue
+  topics:
+    - name: your-topic
+```
+
+The queue/topic names actually created in Azure are prefixed with your release name (`{{ .Release.Name }}-servicebus-your-queue`) — see the [chart-servicebus README](https://github.com/hmcts/chart-servicebus) for subscription rules and message-retention settings.
+
+### chart-neuvector
+
+The HMCTS-specific wrapper around the upstream NeuVector security agent — Azure Key Vault integration for its admin credentials/license/Slack webhook, plus admission control, response rules, and network rules expressed as CRDs in your values rather than configured by hand in the NeuVector UI.
+
+**If you touch its rule values, one behaviour is easy to get badly wrong:** a rule's `target.policymode` controls enforcement (`Discover` = observe only, `Monitor` = log/alert without blocking, `Protect` = block, `N/A` = leave the group's current mode unchanged). If you set `policymode` to `Monitor` or `Protect` before the target group has any running workloads, NeuVector's controller **silently deletes the CRD** — `kubectl apply` reports success, but the object disappears within seconds, with no error. Always leave `policymode: N/A` in Helm/Flux values (the chart's own default) until workloads are running and NeuVector has discovered the group, then change the mode via the NeuVector portal and update your values to match afterwards.
+
+This chart is security/platform infrastructure rather than a per-service application dependency — see the [chart-neuvector README](https://github.com/hmcts/chart-neuvector) in full before changing any rule values.
+
+## Consuming a base chart
+
+Every base chart is published as a semantically-versioned OCI Helm chart. Your own application chart depends on it the same way `chart-python` itself depends on `chart-library`:
+
+```yaml
+dependencies:
+  - name: python          # or java, nodejs, function, etc.
+    version: 0.1.0
+    repository: oci://hmctsprod.azurecr.io/helm
+```
+
+Run `helm dependency build` in your chart directory to pull it down — see [Testing locally](application-charts.html#testing-locally) if that fails with a `401 Unauthorized`. See [Application charts](application-charts.html) for the full picture of how this fits into your own repo.
+
+## Extending or customising a base chart
+
+- **Prefer a values.yaml setting over a fork.** Base charts expose most behaviour as feature-flagged values (e.g. `autoscaling.cpu.enabled`, `postgresql.enabled` on `chart-python`) — check the chart's README before assuming you need something custom.
+- **Add extra Kubernetes resources in your own application chart's `templates/` directory** if the base chart genuinely doesn't cover your need — these render alongside the base chart's own templates.
+- **Don't fork a base chart to change its behaviour.** If something is missing, raise it (or a PR) against the chart itself so every consumer benefits, rather than diverging.
+- **Test chart-library or base-chart changes with a pre-release.** Chart repos use [Release Drafter](https://github.com/hmcts/chart-library/blob/master/.github/workflows/release-drafter.yml) for semantic-versioned GitHub releases. You can point a consuming chart at an `-alpha`/`-beta` pre-release to test a change on a real AKS namespace before it goes out to everyone.
+
+## Publishing and testing a base chart
+
+Unlike your own application chart (published automatically by Jenkins — see [Application charts](application-charts.html)), base charts and other non-application charts are published via Azure DevOps: on a tag, the pipeline lints, installs, tests, packages and publishes the chart to the `hmctsprod` ACR. You trigger this by bumping `version:` in `Chart.yaml` in your PR, then — once merged — creating a GitHub release tagged with that same version number. See the [chart-java pipeline](https://github.com/hmcts/chart-java/blob/master/azure-pipelines.yaml) for a working example to base a new one on.
+
+If a base chart needs to provision real Azure resources to test itself against (Postgres, Blob Storage, Service Bus), there's a shared `chart-tests` namespace/resource group set up for exactly this — check the relevant chart's README (e.g. [chart-postgresql](https://github.com/hmcts/chart-postgresql)) for the exact values to point at it. To get an Azure DevOps chart pipeline set up, join the `dcd_group_ado_user_v2` Entra group for access, then ask in `#platops-help` for someone to configure it.
+
+For version bumps and the release process itself, see [Helm chart versioning](/standards/versioning/helm-charts.html) — this page covers how to extend or use a chart, not how its own releases are cut.
+
+## Related documentation
+
+- [Application charts](application-charts.html) — how your own service's chart consumes one of these
+- [Helm chart versioning](/standards/versioning/helm-charts.html) — pinning, upgrading, and how base chart releases are cut
+- [chart-library](https://github.com/hmcts/chart-library) — the underlying template library and its full documentation
+- [Pipeline libraries](/cloud-native-platform/standards/pipeline-libraries/) — the shared Jenkins pipeline that deploys your chart

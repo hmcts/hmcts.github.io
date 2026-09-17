@@ -24,6 +24,7 @@ apps
 artifactory
 autoconfigure
 autoscaler
+autoscaling
 azuread
 azurecr
 azuredevops
@@ -66,9 +67,11 @@ cmc
 cnp
 codeowners
 commonmarker
+configmap
 contino
 cppdev
 crawlability
+CRDs
 crictl
 customise
 cyclomatic
@@ -104,6 +107,7 @@ fastimage
 ffi
 Firefox
 firewalls
+flexibleserver
 flushdns
 fluxcd
 flywaydb
@@ -165,6 +169,7 @@ jsonpath
 Jumpbox
 jumpboxes
 jvm
+KEDA
 keyvalue
 keyvault
 keyvaults
@@ -248,6 +253,7 @@ platops
 plpgsql
 pls
 poc
+policymode
 portile
 Portis
 Postgre
@@ -284,6 +290,7 @@ runbooks
 rvm
 SaaS
 sassc
+sbnamespace
 sbox
 screenshot
 sdshmcts

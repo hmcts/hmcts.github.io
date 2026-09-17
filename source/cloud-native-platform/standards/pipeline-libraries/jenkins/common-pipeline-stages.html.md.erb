@@ -73,7 +73,7 @@ Those marked as conditional are part of the pipeline implementation but only run
 | AKS deploy | Conditional |  Installs or upgrades the application Helm release in Preview, AAT, Production, or another configured environment. |
 | Smoke Test | Conditional |  Runs non-destructive smoke tests after an AKS deployment for service applications. |
 | Functional Test | Conditional |  Runs functional tests in configured functional-test environments. |
-| Publish Helm chart | Conditional | Publishes the Helm chart for Preview and the master deployment path. |
+| [Publish Helm chart](../helm-charts/application-charts.html#publishing-your-application-chart) | Conditional | Publishes the Helm chart for Preview and the master deployment path. |
 | Prod build promotion | Conditional | Promotes the image to the production tag and reconciles the Flux image repository after production verification. |
 | Branch synchronisation | Conditional | Synchronises configured branches after the master deployment path. |
 
