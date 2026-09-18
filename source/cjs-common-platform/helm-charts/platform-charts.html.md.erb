@@ -1,0 +1,77 @@
+---
+title: Platform and supporting charts
+last_reviewed_on: 2026-09-18
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Beyond the [application charts](application-charts.html), [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main) holds the charts that build and support the platform itself. These are operated by the platform teams — service teams rarely change them, but you will see their releases in every cluster and their names in `cpp-aks-deploy` and `cpp-flux-config`, so it helps to know what each one is.
+
+Many wrap a well-known upstream chart (istio, kube-prometheus-stack, Velero and so on), pinned and configured for CPP; the rest are CPP-specific. Each links to its directory in the repository, which is the authoritative reference for its values.
+
+## Cluster infrastructure
+
+| Chart | Purpose |
+|---|---|
+| [istio-base](https://github.com/hmcts/cpp-helm-chart/tree/main/istio-base), [istiod](https://github.com/hmcts/cpp-helm-chart/tree/main/istiod), [istio-ingress](https://github.com/hmcts/cpp-helm-chart/tree/main/istio-ingress), [istio-egress](https://github.com/hmcts/cpp-helm-chart/tree/main/istio-egress) | The [istio](https://istio.io) service mesh: cluster resources and CRDs, the control plane, and the ingress/egress gateways |
+| [istio-config](https://github.com/hmcts/cpp-helm-chart/tree/main/istio-config) | istio configuration for an application or context namespace |
+| [istio-authorization-policies](https://github.com/hmcts/cpp-helm-chart/tree/main/istio-authorization-policies) | AuthorizationPolicy resources controlling which workloads may talk to which |
+| [flux-operator](https://github.com/hmcts/cpp-helm-chart/tree/main/flux-operator), [flux-instance](https://github.com/hmcts/cpp-helm-chart/tree/main/flux-instance) | The [Flux](https://fluxcd.io) operator and the Flux instance it manages — the foundation of the GitOps route |
+| [keda](https://github.com/hmcts/cpp-helm-chart/tree/main/keda) | [KEDA](https://keda.sh) event-driven autoscaling |
+| [gatekeeper](https://github.com/hmcts/cpp-helm-chart/tree/main/gatekeeper) | OPA Gatekeeper policy enforcement |
+| [azure-service-operator](https://github.com/hmcts/cpp-helm-chart/tree/main/azure-service-operator) | [Azure Service Operator](https://github.com/Azure/azure-service-operator), which lets charts declare Azure resources (for example federated identity credentials) as Kubernetes objects |
+| [aks-rbac](https://github.com/hmcts/cpp-helm-chart/tree/main/aks-rbac) | Cluster-level RBAC for AKS |
+| [ccm-namespace](https://github.com/hmcts/cpp-helm-chart/tree/main/ccm-namespace) | Creates and configures CCM namespaces |
+| [cpp-platform-priming](https://github.com/hmcts/cpp-helm-chart/tree/main/cpp-platform-priming) | Primes a cluster with CPP platform prerequisites |
+| [overprovisioning](https://github.com/hmcts/cpp-helm-chart/tree/main/overprovisioning) | Headroom pods that keep spare capacity available for fast scale-up |
+| [dynatrace-operator](https://github.com/hmcts/cpp-helm-chart/tree/main/dynatrace-operator) | Dynatrace observability agent operator |
+| [kiali-operator](https://github.com/hmcts/cpp-helm-chart/tree/main/kiali-operator) | Kiali service-mesh observability for istio |
+| [velero](https://github.com/hmcts/cpp-helm-chart/tree/main/velero) | [Velero](https://velero.io) cluster backup and restore |
+
+## Monitoring and dashboards
+
+| Chart | Purpose |
+|---|---|
+| [kube-prometheus-stack](https://github.com/hmcts/cpp-helm-chart/tree/main/kube-prometheus-stack), [kube-prometheus-stack-v3](https://github.com/hmcts/cpp-helm-chart/tree/main/kube-prometheus-stack-v3) | Prometheus Operator, Prometheus rules and Grafana dashboards for cluster monitoring |
+| [prometheus-adapter](https://github.com/hmcts/cpp-helm-chart/tree/main/prometheus-adapter), [prometheus-adapter-v3](https://github.com/hmcts/cpp-helm-chart/tree/main/prometheus-adapter-v3) | Exposes Prometheus metrics through the Kubernetes metrics APIs, so autoscalers can use them |
+| [prometheus-node-exporter](https://github.com/hmcts/cpp-helm-chart/tree/main/prometheus-node-exporter) | Node-level metrics |
+| [kube-state-metrics](https://github.com/hmcts/cpp-helm-chart/tree/main/kube-state-metrics) | Cluster-object metrics |
+| [grafana](https://github.com/hmcts/cpp-helm-chart/tree/main/grafana) | Grafana on its own, where the full stack is not wanted |
+| [filebeat](https://github.com/hmcts/cpp-helm-chart/tree/main/filebeat) | Ships container logs to Elasticsearch |
+| [smashing](https://github.com/hmcts/cpp-helm-chart/tree/main/smashing) | Smashing status dashboards |
+
+Where a `-v3` variant exists it is maintained in parallel with the original — check which of the two your target cluster consumes in `cpp-aks-deploy` or `cpp-flux-config` before changing either.
+
+## Products and data services
+
+| Chart | Purpose |
+|---|---|
+| [alfresco-content-services](https://github.com/hmcts/cpp-helm-chart/tree/main/alfresco-content-services), [alfresco-frontend-services](https://github.com/hmcts/cpp-helm-chart/tree/main/alfresco-frontend-services), [alfresco-search](https://github.com/hmcts/cpp-helm-chart/tree/main/alfresco-search) | The Alfresco document management stack |
+| [artemis-activemq](https://github.com/hmcts/cpp-helm-chart/tree/main/artemis-activemq) | ActiveMQ Artemis message broker |
+| [camunda-optimize](https://github.com/hmcts/cpp-helm-chart/tree/main/camunda-optimize) | Camunda Optimize process reporting |
+| [docmosis](https://github.com/hmcts/cpp-helm-chart/tree/main/docmosis) | Docmosis document generation |
+| [elasticsearch](https://github.com/hmcts/cpp-helm-chart/tree/main/elasticsearch), [elasticsearch-eck](https://github.com/hmcts/cpp-helm-chart/tree/main/elasticsearch-eck) | Elasticsearch — the Elastic chart, and an ECK-managed instance for validation stacks |
+| [postgresql](https://github.com/hmcts/cpp-helm-chart/tree/main/postgresql) | In-cluster PostgreSQL |
+| [pgadmin](https://github.com/hmcts/cpp-helm-chart/tree/main/pgadmin) | pgAdmin database administration UI |
+| [sonarqube](https://github.com/hmcts/cpp-helm-chart/tree/main/sonarqube) | SonarQube code quality server |
+| [idam-gateway](https://github.com/hmcts/cpp-helm-chart/tree/main/idam-gateway) | Gateway in front of IdAM |
+| [nowsce-complex](https://github.com/hmcts/cpp-helm-chart/tree/main/nowsce-complex) | Deploys the nowsce-complex service and the dependencies for its KEDA queue-based scaling |
+
+## Simulators and test tooling
+
+Deployed to non-live environments and validation stacks only:
+
+| Chart | Purpose |
+|---|---|
+| [azurite](https://github.com/hmcts/cpp-helm-chart/tree/main/azurite) | Azure Blob Storage emulator |
+| [idam-simulator](https://github.com/hmcts/cpp-helm-chart/tree/main/idam-simulator) | Simulates IdAM for testing |
+| [ftps-simulator](https://github.com/hmcts/cpp-helm-chart/tree/main/ftps-simulator) | Simulates FTPS endpoints |
+| [gob-simulator](https://github.com/hmcts/cpp-helm-chart/tree/main/gob-simulator) | Standalone SOAP server for staging enforcement testing |
+
+## Related documentation
+
+- [Application charts](application-charts.html) — the charts CPP services deploy with
+- [Using and customising charts](using-and-customising.html) — how chart changes are made, tested and released
+- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) — the repositories and pipelines that deploy these charts

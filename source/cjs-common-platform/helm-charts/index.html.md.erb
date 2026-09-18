@@ -1,0 +1,49 @@
+---
+title: Helm charts
+last_reviewed_on: 2026-09-18
+review_in: 6 months
+weight: 6
+---
+
+# <%= current_page.data.title %>
+
+Everything that runs on CPP's CCM AKS clusters is deployed with [Helm](https://helm.sh) — application services, the istio service mesh, monitoring, and the supporting products around them. The charts all live in one repository, [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main), with one directory per chart.
+
+This section is the catalogue of those charts: what exists, what each one is for, and how to use and change them.
+
+<% current_page.children.each do |page| %>
+- [<%= page.data.title %>](<%= page.url %>)
+<% end %>
+
+## How CPP charts differ from CNP charts
+
+CPP has its own chart set alongside the Cloud Native Platform's, and the two follow different models:
+
+- **CNP**: every service repository contains its own small application chart, which depends on a centrally-maintained base chart such as `chart-java` — see the [CNP Helm charts section](/cloud-native-platform/standards/pipeline-libraries/helm-charts/index.html).
+- **CPP**: services do not have a chart of their own. A small set of shared [application charts](application-charts.html) (`springboot-app`, `wildfly-app`, and friends) is maintained centrally in `cpp-helm-chart`, and each service supplies only its **values** — from `cpp-aks-deploy` when deployed by Helmsman, or from a `cpp-flux-config` HelmRelease when deployed by Flux.
+
+The intent is the same in both models — services describe configuration, not Kubernetes YAML — but on CPP the chart templates themselves are shared, so a template improvement lands in `cpp-helm-chart` once and every consuming service picks it up on its next chart version bump.
+
+## Where charts are published
+
+Each chart carries its own semantic version in `Chart.yaml`, and the repository's [Azure DevOps pipeline](https://github.com/hmcts/cpp-helm-chart/blob/main/azure-pipelines.yml) publishes charts to Azure Container Registry as OCI artifacts:
+
+- **On a pull request** — every changed chart is packaged as `<version>-PR<number>` and pushed to `oci://crmdvrepo01.azurecr.io/charts/pr-images`, so you can test a chart change against a real deployment before it merges. Changed charts are also linted, unit tested and dry-run installed against the dev cluster.
+- **On merge to `main`** — any chart whose `Chart.yaml` version is not yet in the registry is packaged and pushed to `oci://crmdvrepo01.azurecr.io/charts/<chart>`. Released versions are imported into the live ACR from there.
+
+Consumers always pin an exact chart version, so publishing a new version changes nothing until a consuming repository chooses to move to it.
+
+## How charts are deployed
+
+Both deployment routes consume the same published charts:
+
+- **Helmsman** — the established route for CCM services. [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) declares each release in its `helmsman.toml` files and renders per-environment values with Ansible.
+- **Flux** — the newer GitOps route, adopted recently for CCM applications. [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) declares a `HelmRelease` per service and Flux reconciles merged changes into the clusters.
+
+[Using and customising charts](using-and-customising.html) covers both routes in detail, and [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) explains which route a given service uses and which pipelines drive them.
+
+## Related documentation
+
+- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) — where CPP deployment configuration and pipelines live
+- [CNP Helm charts](/cloud-native-platform/standards/pipeline-libraries/helm-charts/index.html) — the Cloud Native Platform's equivalent section
+- [Helm chart versioning](/standards/versioning/helm-charts.html) — the HMCTS-wide approach to chart versioning and pinning

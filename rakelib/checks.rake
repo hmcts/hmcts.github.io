@@ -47,6 +47,7 @@ CRITICAL_PAGES = %w[
   cjs-common-platform/new-component/index.html
   cjs-common-platform/path-to-live/index.html
   cjs-common-platform/tools-and-configuration/index.html
+  cjs-common-platform/helm-charts/index.html
   cloud-native-platform/index.html
   hmcts-overview/index.html
   standards/index.html
