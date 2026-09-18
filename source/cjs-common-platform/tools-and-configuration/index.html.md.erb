@@ -45,7 +45,7 @@ A service with its own image-build pipeline does not need an entry in `cpp-docke
 
 ## Helm charts
 
-Both Helmsman and Flux consume versioned charts from [`cpp-helm-chart`](https://github.com/hmcts/cpp-helm-chart/tree/main). Its pipeline validates charts, publishes them to the non-live ACR and imports released versions into the live ACR.
+Both Helmsman and Flux consume versioned charts from [`cpp-helm-chart`](https://github.com/hmcts/cpp-helm-chart/tree/main). Its pipeline validates charts, publishes them to the non-live ACR and imports released versions into the live ACR. The [Helm charts](/cjs-common-platform/helm-charts/index.html) section catalogues the available charts and how to use and customise them.
 
 For an application-only change, select an existing chart and put the service configuration in `cpp-aks-deploy` or `cpp-flux-config`. Change `cpp-helm-chart` only when the application needs a reusable Kubernetes capability that the selected chart does not provide; do not put one service's environment values in the shared chart.
 

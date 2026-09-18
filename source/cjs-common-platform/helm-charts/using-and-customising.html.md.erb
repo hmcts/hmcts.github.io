@@ -1,0 +1,89 @@
+---
+title: Using and customising charts
+last_reviewed_on: 2026-09-18
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+CPP charts are shared: the same `springboot-app` chart deploys many services. Customisation therefore happens through **values**, held in the consuming repository — you should almost never need to change the chart itself, and one service's environment values never belong in the shared chart. This page covers both consumption routes, and what to do on the occasions the chart itself does need to change.
+
+## Consuming a chart with Helmsman
+
+The established route. [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) declares each release as an `[apps]` entry in a [Helmsman](https://github.com/Praqma/helmsman) desired-state file — [helmsman.toml](https://github.com/hmcts/cpp-aks-deploy/blob/main/helmsman.toml) and its variants:
+
+```toml
+[apps.istio-config]
+  name = "istio-config"
+  namespace = "$namespace"
+  enabled = true
+  chart = "oci://$acr_url/charts/istio-config"
+  version = "$istio_config_chart_version"
+  valuesFiles = [
+    "./ansible/group_vars/common.yml",
+    "./ansible/group_vars/$environment/common.yml",
+    "./ansible/group_vars/$environment/$stack/common.yml",
+  ]
+```
+
+The pieces that matter:
+
+- **Values are layered** from [`ansible/group_vars`](https://github.com/hmcts/cpp-aks-deploy/tree/main/ansible/group_vars): common values, then per-environment, then per-stack — rendered by Ansible before Helmsman runs, which is also where HashiCorp Vault lookups are resolved.
+- **Chart versions are variables**, resolved per environment, so environments can move to a new chart version independently.
+- Most charts are consumed straight from the OCI registry; the shared application charts are pulled and unpacked locally first by [helm_chart_pull.sh](https://github.com/hmcts/cpp-aks-deploy/blob/main/scripts/helm_chart_pull.sh) (so the pipeline can stamp the release's `appVersion`), which is why some entries reference `install/springboot-app` rather than an `oci://` URL.
+
+The deployment itself is run by the `CPP-AKS-DEPLOY` Azure DevOps pipeline — see [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html#pipeline-configuration) for the pipeline, its environments and its approval gates.
+
+## Consuming a chart with Flux
+
+The newer GitOps route. A service in [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) is a `HelmRelease` that names a chart and exact version from the shared OCI `HelmRepository`, with the service's values inline:
+
+```yaml
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: my-service
+spec:
+  releaseName: my-service
+  chart:
+    spec:
+      chart: springboot-app
+      version: "1.2.22"
+      sourceRef:
+        kind: HelmRepository
+        name: oci-repo
+        namespace: flux-system
+  values:
+    image:
+      repository: "${ACR_REPO}.azurecr.io/hmcts/my-service"
+      tag: "${my_service_image_tag}"
+```
+
+A reviewed merge to `cpp-flux-config` is all a deployment takes — Flux reconciles the change into the clusters; there is no deploy pipeline to run. Which environments and stacks a service reaches is controlled by the repository's overlay structure. That repository's own docs are the reference for this route:
+
+- [onboard-a-service.md](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/onboard-a-service.md) — adding a service, including an automated Issue Form route for non-production
+- [deploy-images-across-environments.md](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/deploy-images-across-environments.md) — promoting image versions
+- [ARCHITECTURE.md](https://github.com/hmcts/cpp-flux-config/blob/main/docs/ARCHITECTURE.md) — how the base/overlay layering fits together
+
+## Pin versions, upgrade deliberately
+
+Every consumer pins an exact chart version — a Helmsman version variable or a HelmRelease `version:`. Publishing a new chart version changes nothing by itself; a deployment only changes when its consuming repository's pin moves. When you take a chart upgrade, read the chart's recent commits for anything that changes values structure or rendered behaviour, and take it through a non-live environment first.
+
+## Changing a chart
+
+Change [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main) only when a service needs a reusable Kubernetes capability the chart does not provide. Prefer, in order: an existing value or feature flag; a new feature-gated value that benefits every consumer; and only then a new chart. Do not fork a chart, and do not put service- or environment-specific values into it.
+
+The mechanics of a chart PR:
+
+1. **Bump `version:` in the chart's `Chart.yaml`** — publishing is driven by the version, so a chart change without a bump will not be released on merge.
+2. **Add or update unit tests.** Charts are tested with [helm-unittest](https://github.com/helm-unittest/helm-unittest): a chart with a `tests/` directory of `*_test.yaml` suites is tested automatically, locally (`scripts/helm-unittest.sh <chart>`) and in CI. The repository's README covers the pre-commit and pre-push hook setup.
+3. **Raise the PR.** CI lints, unit tests and dry-run installs every changed chart, and pushes it as `<version>-PR<number>` to `oci://crmdvrepo01.azurecr.io/charts/pr-images` — point a non-live deployment at that version to prove the change against a real cluster before merging. Review is by the repository's code owners.
+4. **Merge.** The pipeline packages and publishes the new version to `oci://crmdvrepo01.azurecr.io/charts/<chart>`. Then raise the follow-up PR in the consuming repository moving its pin to the new version.
+
+## Related documentation
+
+- [Application charts](application-charts.html) — which chart to consume in the first place
+- [Platform and supporting charts](platform-charts.html) — the rest of the catalogue
+- [Helm chart versioning](/standards/versioning/helm-charts.html) — the HMCTS-wide versioning approach, including the CNP equivalent of this flow
+- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) — the pipelines and repositories named above
