@@ -7,15 +7,15 @@ task :check_urls do
         {
             :check_external_hash => false,
             :ignore_missing_alt => true,
-            # 303 is a redirect html-proofer reports as a timeout rather than
-            # following; 415 is bot defence rejecting the client, not a broken
-            # link. Both produced false failures on three consecutive runs, on
+            # 301 and 303 are redirects html-proofer reports as a timeout
+            # rather than following; 415 is bot defence rejecting the client,
+            # not a broken link. Both produced false failures on three consecutive runs, on
             # different hosts each time, blocking PRs that changed nothing
             # related. Verified by hand: every URL involved returns 200.
             # 502 is the server behind the link failing, not the link being
             # wrong - a tools.hmcts.net Confluence outage returned 502 for 25
             # pre-existing links at once, blocking every open PR.
-            :ignore_status_codes => [0, 303, 401, 403, 415, 429, 502],
+            :ignore_status_codes => [0, 301, 303, 401, 403, 415, 429, 502],
             :ignore_urls =>  [
                 # Ignore pulls/branches as these do not translate to raw content
                 %r{github\.com/hmcts/(?=.*(?:pull|tree|commit))},
