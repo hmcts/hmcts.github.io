@@ -1,0 +1,142 @@
+---
+title: Publishing and promoting artefacts
+last_reviewed_on: 2026-09-22
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Where a CPP build's output lands, and how it becomes available on live. Almost none of this is something you do by hand: the branch you commit to decides the repository, and live pulls artefacts through on demand. What follows is what the pipelines in [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates/tree/main) actually do, so you can predict where your artefact went and why.
+
+## Promotion happens on two axes
+
+Both are automatic, and they are independent of each other.
+
+1. **Branch to repository**, within the non-live instance. A team branch, `main` and a release branch deploy to three different repositories. This is the axis you control, by choosing where to commit.
+2. **Non-live to live**, between instances. Live's copies of the CPP repositories are remote repositories pointing at non-live, so a release becomes available on live the first time something asks for it. Nothing publishes to live.
+
+Do not look for a promotion pipeline or a "promote to live" button. There isn't one, and there does not need to be.
+
+## Axis 1: branch to repository
+
+### Context services
+
+Context services deploy through [`steps/common/maven-deploy.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/maven-deploy.yaml), called from the context validation pipeline.
+
+| Branch | Repository |
+|---|---|
+| `main` | `libs-snapshot-sp-azure` |
+| anything else — team, feature, `release/*` | `team-libs-snapshot-sp-azure` |
+
+The deploy itself is:
+
+```
+mvn -B -C -U -V clean deploy \
+  -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) \
+  -DaltDeploymentRepository=HASS::default::${artifactoryServer}/${ARTIFACTORY_REPO} \
+  -DskipTests -f pom.xml
+```
+
+Two things to note. `HASS` is a server id: the agent's `~/.m2/settings.xml` must carry a `<server>` entry under that id with the deploy credentials, which is why the pipeline downloads the `settings.xml` secure file before building. And `-DskipTests` is deliberate — tests ran earlier in the same pipeline, and this step only packages and uploads.
+
+Every deploy is wrapped in `run_with_retry 3`. A single failed upload is retried rather than failing the build.
+
+### Libraries
+
+Libraries go through [`pipelines/library-validation.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/pipelines/library-validation.yaml), which has a release-branch list rather than a single branch name:
+
+```
+RELEASE_BRANCHES: "main,release/8.x.x"
+```
+
+| Branch | Repository |
+|---|---|
+| Matches `RELEASE_BRANCHES` | `libs-release-sp-azure` |
+| Anything else | `team-libs-snapshot-sp-azure` |
+
+On a release branch the pipeline runs `release:prepare` then `release:perform`, pushes the tag, and bumps the version for the next iteration. Off a release branch it calls `perform_release` from [`scripts/build_and_release.sh`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/scripts/build_and_release.sh), which strips `-SNAPSHOT` from the version, deploys the resulting fixed version to `team-libs-snapshot-sp-azure`, tags it, and moves the branch on to the next development iteration.
+
+That is worth restating, because it surprises people: **a team branch publishes fixed, non-snapshot versions**, not rolling snapshots. Each team-branch build produces a version that will not change again. It lives in a snapshot-named repository, but what it holds is immutable.
+
+Java 11 and later builds also deploy once to `libs-snapshot-local` earlier in the same job, before the branch-routed deploy. That is a legacy step, not a second artefact you need to reason about.
+
+### Versions
+
+The scheme is documented in the pipeline itself and reproduced here in full.
+
+| Before release | Released version | Next dev iteration | Use case |
+|---|---|---|---|
+| `17.100.4` / `17.100.4-SNAPSHOT` | `17.100.4` | `17.100.5-SNAPSHOT` | Feature final release |
+| `17.100.4.1` / `17.100.4.1-SNAPSHOT` | `17.100.4.1` | `17.100.4.2-SNAPSHOT` | Hotfix final release |
+| `17.100.4-M1` / `17.100.4-M1-SNAPSHOT` | `17.100.4-M1` | `17.100.4-M2-SNAPSHOT` | Feature internal release |
+| `17.100.4.1-M1` / `17.100.4.1-M1-SNAPSHOT` | `17.100.4.1-M1` | `17.100.4.1-M2-SNAPSHOT` | Hotfix internal release |
+| `17.100.4-FRAMEWORK-SNAPSHOT` | `17.100.4-FRAMEWORK-SNAPSHOT` | `17.100.5-FRAMEWORK-SNAPSHOT` | Story-level release |
+| `17.100.4-FRAMEWORK-M1-SNAPSHOT` | `17.100.4-FRAMEWORK-M1-SNAPSHOT` | `17.100.4-FRAMEWORK-M2-SNAPSHOT` | Story-level release |
+
+The major component tracks the Java version, so a `17.x` artefact is a Java 17 build.
+
+### The release flow on `main`
+
+Context services on `main` run a jgitflow release across two steps, [`release-start.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release-start.yaml) and [`release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml):
+
+1. `jgitflow:release-start` opens the release branch from the triggering commit.
+2. `jgitflow:release-finish` completes it, with the `sign-maven-gpg-plugin` profile active so the artefacts are GPG-signed by the `devops-team@hmcts.net` key.
+3. The effective POM is checked for any remaining `SNAPSHOT`, and the build fails if one is found. A release cannot ship with a snapshot dependency.
+4. The version is bumped, committed as the `devops-team` user and pushed.
+5. The new version is written into `cpp.pipeline`, so the deployment configuration picks it up.
+
+Step 4 is why the pipelines check the last commit author and skip themselves when it is `devops-team@hmcts.net` or contains `azdevops`: without it, the pipeline's own version bump would trigger another run.
+
+### npm libraries
+
+UI libraries publish through [`pipelines/ui-library-validation.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/pipelines/ui-library-validation.yaml), and publish **twice**:
+
+1. `npm version` sets the release version and tags it. The registry is set from `npm config get registry_publish_local` and `npm run-script ci:publish` publishes to CPP Artifactory, through `npm-virtual`, whose default deployment target is `npm-release-local`.
+2. The `.npmrc` is then swapped for the `npmrc_frontend` secure file, authenticated with `npmAuthenticate`, and `ci:publish` runs again — this time to **Azure Artifacts**.
+
+So a CPP UI library exists in both registries at the same version. Which one a consumer gets depends on that repository's `.npmrc`. If you are chasing a version mismatch, check both.
+
+## Scanning and controls
+
+Library builds run a ClamAV scan over the built archives before the release deploy:
+
+```
+find "$(System.DefaultWorkingDirectory)/$(REPO_NAME)/" -type f -regex '.*/target/.*[wj]ar' \
+  -not -regex '.*/dependency/.*' -not -regex '.*/WEB-INF/.*' -exec echo {} >> FILE \;
+clamscan -f FILE
+```
+
+It covers top-level WARs and JARs, excluding bundled dependencies. The equivalent block in `release.yaml` is currently commented out, so context-service releases on `main` are not scanned by that step. Do not describe CPP publishing as universally malware-scanned.
+
+There is no Xray indexing (`xrayIndex` is false on every repository), no approval gate on a deploy, and no signature verification on resolution. GPG signing is applied on the `main` release path only.
+
+## Axis 2: non-live to live
+
+Live's `libs-release-sp-azure` and `team-libs-snapshot-sp-azure` are remote repositories whose upstream is `https://libraries-internal.mdv.cpp.nonlive/artifactory/…`, limited to `uk/gov/moj/cpp/**/*` and storing what they fetch. Live's `repocentral` aggregates the release repositories only.
+
+What that means in practice:
+
+- **You publish once, to non-live.** There is no second deploy.
+- **The first live request for a version is the slow one**, because it fetches from non-live. After that it is served from the live cache.
+- **Snapshots never reach live.** Live's `repocentral` contains no snapshot repository, by design.
+- **A brand-new release can 404 on live for up to 30 minutes.** A failed lookup is cached for 1800 seconds; repository metadata for 600. Wait, or Zap Caches on the repository.
+- **A stale live copy is a cache, not a lost artefact.** Compare **Last Modified** on both instances, then Zap Caches on live. See [CPP Artifactory](index.html#zap-caches).
+
+`repocentral-bae` is a second live virtual repository that also includes `team-libs-release-local` and `team-libs-snapshot-sp-azure`. It exists for a specific consumer; use `repocentral` unless you have been told otherwise.
+
+## What not to publish
+
+Artifactory is where CPP's release artefacts live, and it is nearly out of disk with 30 days of backup behind it. Before adding something new:
+
+- Publish build **outputs**, not build **inputs or scratch** — no test fixtures, no logs, no coverage reports, no large media.
+- Do not publish per-commit binaries that nothing will ever resolve. Team-branch builds already produce a permanent version each time; that is enough.
+- Container images go to ACR (`crmdvrepo01.azurecr.io`), not Artifactory. Helm charts go to ACR as OCI artefacts — see [Helm charts](/cjs-common-platform/helm-charts/index.html).
+- If something must stay resolvable for years, say so when you add it. Housekeeping prunes old versions, release repositories included.
+
+## Related documentation
+
+- [CPP Artifactory](index.html) — instances, repositories and access
+- [Consuming dependencies](consuming.html) — resolving what you have published
+- [CI/CD integration](ci-cd.html) — the templates, secure files and variable groups behind these steps
+- [Versioning](/standards/versioning/index.html) — the HMCTS-wide approach

@@ -1,0 +1,128 @@
+---
+title: CI/CD integration
+last_reviewed_on: 2026-09-22
+review_in: 6 months
+weight: 4
+---
+
+# <%= current_page.data.title %>
+
+Wiring an Azure DevOps pipeline to CPP Artifactory. In nearly every case this means extending a template from [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates/tree/main) rather than writing Maven or npm configuration yourself — the templates already handle credentials, the CA, caching and retries.
+
+## Extending the shared templates
+
+A consuming repository declares the template repository as a resource and extends a pipeline from it:
+
+```yaml
+resources:
+  repositories:
+    - repository: cppAzureDevOpsTemplates
+      type: github
+      name: hmcts/cpp-azure-devops-templates
+      endpoint: 'hmcts'
+
+extends:
+  template: pipelines/library-validation.yaml@cppAzureDevOpsTemplates
+  parameters:
+    serviceName: my-service
+```
+
+Pick the pipeline that matches what the repository produces.
+
+| Repository produces | Pipeline |
+|---|---|
+| A Java library | `pipelines/library-validation.yaml` |
+| A context service | `pipelines/context-validation.yaml` |
+| A UI library | `pipelines/ui-library-validation.yaml` |
+| A UI application | `pipelines/ui-validation.yaml` |
+| Terraform | `pipelines/terraform-ws-plan-and-apply.yaml` and friends |
+
+## The steps that touch Artifactory
+
+| Template | What it does |
+|---|---|
+| [`steps/common/download-files.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/download-files.yaml) | Downloads `settings.xml` and `settings-security.xml` into `~/.m2`, plus the GPG key. Run this before anything that resolves or deploys. |
+| [`steps/common/maven-deploy.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/maven-deploy.yaml) | Branch-routed `mvn deploy` for context services, with Maven caching and retries. |
+| [`steps/common/release-start.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release-start.yaml) | `jgitflow:release-start` on `main`. |
+| [`steps/common/release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml) | `jgitflow:release-finish`, GPG signing, snapshot check, version bump. |
+| [`steps/common/deploy-vld-stack.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/deploy-vld-stack.yaml) | Downloads the Helmsman and helm-diff binaries from the `helmsman-binaries` generic repository. |
+
+Each of these takes an `artifactoryServer` parameter defaulting to `https://libraries-internal.mdv.cpp.nonlive/artifactory`. Leave the default alone unless you are doing something genuinely unusual; pipelines publish to non-live.
+
+## Secure files
+
+Artifactory credentials and the CA are Azure DevOps secure files, not variables. They are downloaded per run with `DownloadSecureFile@1`.
+
+| Secure file | Used for |
+|---|---|
+| `settings.xml` | Maven resolution and the deploy credentials under the `HASS` server id |
+| `settings-security.xml` | Decrypts the encrypted passwords in `settings.xml` |
+| `npmrc` | npm registry pointing at `api/npm/npm-virtual` |
+| `npmrc_frontend` | The Azure Artifacts registry, for the second publish UI libraries do |
+| `cpp-nonlive-ca.pem` | Trusting the non-live internal CA |
+| `devops-team@hmcts.net.secret.asc` | GPG signing on the release path |
+
+Never put any of these in a repository, a pipeline variable or a parameter.
+
+## Variable groups
+
+| Group | Why a build needs it |
+|---|---|
+| `cpp-ghauth` | GitHub App credentials for the tag and version-bump pushes the release steps make |
+| `cpp-nonlive-vault-admin` | HashiCorp Vault access, where deployment values are rendered |
+| `cpp-nonlive-sonarqube-aks` / `-iaas` | SonarQube, on the same jobs |
+| `cpp-nonlive-slack-notifications` | Build notifications |
+
+## Variables the pipelines set
+
+| Variable | Typical value |
+|---|---|
+| `ARTIFACTORY_SERVER` | `https://libraries-internal.mdv.cpp.nonlive/artifactory` |
+| `artifactory_url` | `https://libraries.mdv.cpp.nonlive/` — the external name, used with `helmsman_artifactory_path` for generic downloads |
+| `NPM_REGISTRY_URL` | `$(ARTIFACTORY_URL)/api/npm/npm-virtual` |
+| `DEPLOY_SNAPSHOT_URL` / `DEPLOY_RELEASE_URL` | `$(ARTIFACTORY_URL)/libs-snapshot-local` / `libs-release-local` — the older repository pair, used by the Rota application |
+| `RELEASE_BRANCHES` | `main,release/8.x.x` in library validation |
+| `MAVEN_CACHE_FOLDER` | The local Maven repository the `Cache@2` task restores |
+
+## Caching and retries
+
+Maven builds use the Azure DevOps `Cache@2` task keyed on `maven | "$(Agent.OS)" | **/pom.xml`, restoring into `MAVEN_CACHE_FOLDER`. The cache is skipped when `mavenSharedCacheEnabled` is true, because a shared agent cache is already in use. npm builds cache `$(Pipeline.Workspace)/.npm` keyed on the lockfile.
+
+Every Maven deploy is wrapped in `run_with_retry 3` from [`scripts/run_with_retry.sh`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/scripts/run_with_retry.sh). Uploads to Artifactory fail intermittently often enough that this is standard, so a build log showing a retry is not by itself a problem.
+
+## Agents
+
+Artifactory is only reachable from the Crime network, so builds run on CPP-hosted agents — `ubuntu-ado-agents-mdv` for non-live, or the AKS-hosted ephemeral agents. A hosted Microsoft agent cannot resolve `*.cpp.nonlive` and will fail at the first dependency. If a job needs Artifactory, it needs a CPP pool.
+
+## Self-triggered builds
+
+The release steps commit the version bump back to the branch, which would re-trigger the pipeline. The templates guard against this by checking the author of the last commit and setting `shouldrun=false` when it is `devops-team@hmcts.net` or contains `azdevops`. Most Artifactory-facing steps are conditioned on `shouldrun`.
+
+If you add a step that pushes commits, follow the same pattern. If a pipeline mysteriously does nothing, check that variable before looking anywhere else.
+
+## Adding Artifactory to a new pipeline
+
+1. Extend an existing pipeline template if one fits. Most repositories should not need their own Artifactory steps.
+2. If you are writing steps, include `steps/common/download-files.yaml` before the first Maven command.
+3. Leave `artifactoryServer` at its default.
+4. Deploy with `-DaltDeploymentRepository=HASS::default::${ARTIFACTORY_SERVER}/${ARTIFACTORY_REPO}` and let branch routing choose the repository, as [Publishing and promoting artefacts](publishing.html) describes. Do not hardcode `libs-release-sp-azure`.
+5. Wrap the deploy in `run_with_retry 3`.
+6. Run on a CPP agent pool.
+7. For npm, download the `npmrc` secure file and set `cafile` from `cpp-nonlive-ca.pem`.
+
+## Things that catch people out
+
+- **Resolving works, deploying 401s.** The `HASS` server id is missing from the agent's `settings.xml`, or `settings-security.xml` was not copied alongside it.
+- **The build resolves from Maven Central.** The `securecentral` profile is not active. It overrides `central` on purpose; without it you are not testing what the pipeline tests.
+- **A snapshot dependency will not resolve.** The shared `securecentral` profile enables releases only.
+- **The image build fails on an `ADD`.** The artefact is not in Artifactory yet, or the version does not match. Check the deploy step, not Docker.
+- **`npm audit` fails.** Expected — the Artifactory version does not support it. CPP pipelines run it against the public advisory database and tolerate failure.
+- **A live deployment cannot find a package that exists on non-live.** The live pull-through cache. See [Publishing and promoting artefacts](publishing.html#axis-2-non-live-to-live).
+- **Certificate errors.** Trust `cpp-nonlive-ca.pem`. Do not add `-k` or `strict-ssl=false` to make it go away.
+
+## Related documentation
+
+- [CPP Artifactory](index.html) — instances, repositories and access
+- [Publishing and promoting artefacts](publishing.html) — branch routing and promotion to live
+- [Consuming dependencies](consuming.html) — the client configuration these templates apply
+- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) — the wider CPP pipeline and configuration estate

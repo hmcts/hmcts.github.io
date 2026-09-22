@@ -1,0 +1,162 @@
+---
+title: Consuming dependencies
+last_reviewed_on: 2026-09-22
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+How each CPP toolchain reads from Artifactory. In a pipeline this is already configured for you; these are the configurations that are applied, so you can reproduce them locally and recognise them when they go wrong.
+
+Everything here needs the CPP VPN. `*.cpp.nonlive` and `*.cp.cjs.hmcts.net` do not resolve off the Crime network.
+
+## Which endpoint to resolve from
+
+`repocentral` on the non-live instance, unless you have a specific reason not to:
+
+```
+https://libraries-internal.mdv.cpp.nonlive/artifactory/repocentral
+```
+
+It aggregates the CPP local repositories and the upstream proxies, so one URL covers both your colleagues' artefacts and Maven Central. There is a live equivalent at `https://libraries-internal.mpd.cp.cjs.hmcts.net/artifactory/repocentral`, but it carries releases only and is there for live-side deployment tooling. Builds resolve from non-live.
+
+Use `libraries-internal.*` rather than `libraries.*` in configuration. The external name goes through a proxy and is for browsing.
+
+## Maven
+
+The shared configuration is [`settings.xml`](https://github.com/hmcts/cp-build-settings/tree/main/settings.xml) in [cp-build-settings](https://github.com/hmcts/cp-build-settings/tree/main). Its `securecentral` profile deliberately overrides `central` from the Maven Super POM, for both repositories and plugin repositories:
+
+```xml
+<profile>
+  <id>securecentral</id>
+  <repositories>
+    <repository>
+      <id>securecentral</id>
+      <url>https://libraries-internal.mdv.cpp.nonlive/artifactory/repocentral</url>
+      <releases><enabled>true</enabled></releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>securecentral</id>
+      <url>https://libraries-internal.mdv.cpp.nonlive/artifactory/repocentral</url>
+      <releases><enabled>true</enabled></releases>
+    </pluginRepository>
+  </pluginRepositories>
+</profile>
+```
+
+Overriding `central` is the point: a CPP build should not reach Maven Central directly. If a dependency resolves for you locally but not in the pipeline, check whether you are silently falling back to `central`.
+
+Note that the profile enables releases but not snapshots. A build that needs a `-SNAPSHOT` from `repocentral` needs `<snapshots>` enabled too.
+
+On an Azure DevOps agent this file arrives as the `settings.xml` secure file, copied to `~/.m2/settings.xml` along with `settings-security.xml`. The secure file also carries the credentials the deploy step needs; the copy in `cp-build-settings` is the readable reference, not the file the agent uses.
+
+### The other Maven sources
+
+`settings.xml` also defines two profiles that are not Artifactory:
+
+| Profile | URL | Status |
+|---|---|---|
+| `cloudsmith` | `https://dl.cloudsmith.io/public/cjscommonplatform/maven-repository/maven` | Public Cloudsmith repository for open-sourced CJS Common Platform libraries. Authenticated for publishing with `CLOUDSMITH_API_KEY`. |
+| `jitpack.io` | `https://jitpack.io` | Legacy. Do not add new dependencies through it. |
+
+If you need to know whether a given library should come from Artifactory or Cloudsmith, ask CPP DevOps — the two overlap and the boundary is not recorded anywhere authoritative.
+
+## npm
+
+A one-line `.npmrc` at the repository root, matching the pattern used across the `crime-idam-*` front-end repositories:
+
+```
+registry=https://libraries-internal.mdv.cpp.nonlive/artifactory/api/npm/npm-virtual/
+```
+
+`npm-virtual` aggregates `npm-release-local` (CPP's own packages) and the npmjs mirror, and its default deployment target is `npm-release-local`. Pipelines get this from the `npmrc` secure file and also set the CA explicitly:
+
+```
+npm config set registry "$NPM_REGISTRY_URL"
+npm config set cafile "$REPO_DIR/cpp-nonlive-ca.pem"
+```
+
+Some CPP UI libraries are published to Azure Artifacts as well as to Artifactory, at the same version. Which registry a repository reads from is whichever its `.npmrc` names; both are valid, and a version present in one may not yet be in the other.
+
+`npm audit` against the registry does not work — the Artifactory version in use predates the support npm requires. CPP pipelines run it with `--userconfig=/dev/null` so it audits against the public advisory database instead, and tolerate its failure.
+
+## Docker builds
+
+Context-service images do not copy build output in from the workspace. They fetch it from Artifactory at image build time:
+
+```dockerfile
+ARG repo_loc=https://libraries-internal.mdv.cpp.nonlive/artifactory/repocentral
+ADD ${repo_loc}/uk/gov/moj/cpp/${context_group_name}/${context_name}-service/${version}/${context_name}-service-${version}.war \
+    ${wildfly_home}/standalone/deployments/
+```
+
+The same pattern brings in Liquibase JARs for the event store, framework and viewstore, each at its own version. The build pipeline passes the base URL in as `MAVEN_ARTIFACT_BASE_URL`, defaulting to the value above.
+
+The consequence is that **the artefact must already be in Artifactory before the image build runs**. An image build failing on an `ADD` is usually a deploy that did not happen, or a version that does not match, rather than a Docker problem.
+
+## Terraform — Azure Function packages
+
+Function apps deploy from a zip served by Artifactory. [cpp-functionapp-deployment](https://github.com/hmcts/cpp-functionapp-deployment/tree/main) picks the instance from the platform:
+
+```hcl
+base_url = var.platform == "nonlive" ?
+  "https://libraries-internal.mdv.cpp.nonlive" :
+  "https://libraries-internal.mpd.cp.cjs.hmcts.net"
+```
+
+and appends a path per function app, for example:
+
+```
+/artifactory/list/repocentral/uk/gov/moj/cpp/material/material-azure-functions/VERSION_PLACEHOLDER/
+```
+
+with the version substituted at plan time. The resulting `functionapp_package` value in a `.tfvars` file is a complete URL:
+
+```
+functionapp_package = "https://libraries-internal.mdv.cpp.nonlive/artifactory/list/repocentral/uk/gov/moj/cpp/material/material-azure-functions/8.0.4/material-azure-functions-8.0.4.zip"
+```
+
+`/artifactory/list/<repo>/…` is Artifactory's directory-listing path; it serves files as well as folders, which is why it appears in URLs rather than only in a browser.
+
+This is the one consumption route that points at the **live** instance for live deployments, and so the one most exposed to the live pull-through cache. A live function-app deployment failing to download a package that exists on non-live is usually the missed-retrieval cache — see [Publishing and promoting artefacts](publishing.html#axis-2-non-live-to-live).
+
+## Tooling and operating-system packages
+
+Artifactory also serves things that are not application dependencies:
+
+| What | Where |
+|---|---|
+| Helmsman and helm-diff binaries | `helmsman-binaries` generic repository, downloaded by the deployment pipelines |
+| Firefox ESR for UI end-to-end tests | `ftp.mozilla.org-generic`, pinned version |
+| ChromeDriver | `chromedriver` |
+| Azure CLI, CentOS, JBoss, Python, RubyGems, HashiCorp | yum and remote repositories, used by the Ansible-managed VMs |
+| Alfresco JARs | `alfresco` and the Alfresco deployment repositories |
+
+These are pinned by exact version in the pipeline or Ansible variable that fetches them. Bump the pin rather than fetching "latest".
+
+## TLS
+
+`*.cpp.nonlive` uses an internal CA. The right fix is to trust it:
+
+- **Pipelines** download the `cpp-nonlive-ca.pem` secure file and point the tool at it — `npm config set cafile`, or importing into the Java keystore.
+- **Locally**, add the same CA to your system or JVM trust store.
+
+You will find `-k`, `--no-check-certificate`, `strict-ssl=false`, `sslverify=0` and `-Dmaven.wagon.http.ssl.insecure=true` scattered through older CPP configuration. They work, and they are why certificate problems go unnoticed until something else breaks. Treat them as legacy, not as the pattern to copy.
+
+## Resolving locally
+
+1. Connect to the CPP VPN.
+2. Put the `securecentral` profile in your `~/.m2/settings.xml`, or copy the file from `cp-build-settings`.
+3. Trust the non-live CA.
+4. For npm, set the registry as above.
+
+Browsing at `https://libraries.mdv.cpp.nonlive/artifactory` is anonymous and is the quickest way to confirm a version exists before you debug a build. Local repositories are not visible to anonymous users in the UI, so check through `repocentral` rather than looking for `libs-release-sp-azure` in the tree.
+
+## Related documentation
+
+- [CPP Artifactory](index.html) — instances, repositories and access
+- [Publishing and promoting artefacts](publishing.html) — where the things you are resolving came from
+- [CI/CD integration](ci-cd.html) — how a pipeline is wired to all of the above
