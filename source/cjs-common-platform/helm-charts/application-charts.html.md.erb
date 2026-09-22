@@ -1,0 +1,139 @@
+---
+title: Application charts
+last_reviewed_on: 2026-09-18
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+CPP services deploy through a small set of shared application charts in [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main). You do not write a chart for your service — you pick the chart that matches your service's shape and supply its values, either in [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) (Helmsman) or in a [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) HelmRelease (Flux). See [Using and customising charts](using-and-customising.html) for how those values reach the chart.
+
+| Chart | Purpose |
+|---|---|
+| [springboot-app](https://github.com/hmcts/cpp-helm-chart/tree/main/springboot-app) | Spring Boot services |
+| [wildfly-app](https://github.com/hmcts/cpp-helm-chart/tree/main/wildfly-app) | Established WildFly context services |
+| [frontend-app](https://github.com/hmcts/cpp-helm-chart/tree/main/frontend-app) | CPP frontend web applications |
+| [runtime-agnostic-app](https://github.com/hmcts/cpp-helm-chart/tree/main/runtime-agnostic-app) | Non-JVM services (any runtime) |
+| [cronjobs](https://github.com/hmcts/cpp-helm-chart/tree/main/cronjobs) | Scheduled Kubernetes CronJobs |
+| [jmx-job](https://github.com/hmcts/cpp-helm-chart/tree/main/jmx-job) | Operational jobs against WildFly services |
+| [stream-retry-job](https://github.com/hmcts/cpp-helm-chart/tree/main/stream-retry-job) | Stream retry/reset jobs |
+| [dbsetup](https://github.com/hmcts/cpp-helm-chart/tree/main/dbsetup) | Standalone database setup job |
+| [pgdb-dump-restore-jobs](https://github.com/hmcts/cpp-helm-chart/tree/main/pgdb-dump-restore-jobs) | PostgreSQL dump and restore jobs |
+
+Each entry below covers the chart's purpose, when to reach for it, and a representative slice of its values. The slices are illustrative, not exhaustive — the chart's `values.yaml` and `templates/` directory in the repository are the authoritative reference, since most of these charts do not yet have a README.
+
+### springboot-app
+
+The chart for Spring Boot services. It renders a Deployment, Service and horizontal pod autoscaler, and feature-gates the platform integrations a CPP service typically needs:
+
+- an **istio VirtualService** routing one or more URI prefixes from the ingress gateway to the service, with optional rewrite
+- **Azure Key Vault secrets** through a Secrets Store CSI [`SecretProviderClass`](https://github.com/hmcts/cpp-helm-chart/blob/main/springboot-app/templates/secretProviderClass.yaml)
+- **Azure workload identity**, including creating the `FederatedIdentityCredential` for the release's service account
+- an optional **database setup job** and certificate/database ConfigMaps
+
+A representative HelmRelease values slice, from the real [idam-integration-service](https://github.com/hmcts/cpp-flux-config/blob/main/apps/base/services/idam-integration-service/helmrelease.yaml) deployment:
+
+```yaml
+services:
+  idam-integration-service:
+    route:
+      path:
+        - /idam-integration-service
+      rewrite: /idam-integration-service
+image:
+  repository: "${ACR_REPO}.azurecr.io/hmcts/cpp-mbd-idam-integration-service"
+  tag: "${idam_integration_service_image_tag}"
+env:
+  SPRING_APPLICATION_NAME: "cpp-mbd-idam-integration"
+  SERVER_PORT: "4550"
+```
+
+Routes are declared per service name under `services:`, plain environment variables go under `env:`, and secrets can be exposed as environment variables with `secretEnvs:` (each naming a Kubernetes secret and key).
+
+### wildfly-app
+
+The chart most established CCM context services deploy with. It is the most featureful of the application charts because it carries the platform's JVM conventions:
+
+- version-specific WildFly `standalone.xml`/`standalone.conf` ConfigMaps (10.0.0.Final and 26.1.2.Final are both supported)
+- **Liquibase** and database setup jobs for schema management
+- Key Vault secrets via `SecretProviderClass`, a managed-identity role binding, and a Pod Disruption Budget
+- JMX configuration, Camunda licence and Docmosis properties ConfigMaps for the services that need them
+
+If you are onboarding a JVM context service that follows the established CPP patterns, this is almost certainly your chart; check an existing service's entry in [helmsman.toml](https://github.com/hmcts/cpp-aks-deploy/blob/main/helmsman.toml) for a working values layout to start from.
+
+### frontend-app
+
+Deploys CPP frontend web applications behind the istio apps ingress gateway. Its values bind the gateway hosts and drive an application configuration ConfigMap (`appOverrideConfig`) covering the API root path and stub toggles used in non-live environments:
+
+```yaml
+gateway:
+  name: istio-ingress/istio-ingressgateway-apps
+  hosts:
+    - prosecuting.dev.cpp.nonlive
+appOverrideConfig:
+  environment: "production"
+  apiRoot: "/api"
+  idamStub: false
+```
+
+### runtime-agnostic-app
+
+The newest application chart: a generic Deployment + Service chart for **non-JVM services** on CPP AKS. Its values deliberately mirror `springboot-app` (image, env, route, `secretProvider`, `managedIdentity`) so onboarding feels familiar, without the JVM assumptions — and it adds an optional pre-upgrade **migration Job**, a NetworkPolicy and gateway authorization policy.
+
+```yaml
+image:
+  repository: example.azurecr.io/hmcts/crime-case-readiness-backend
+containerPort: 8080
+secretProvider:
+  enabled: true
+  keyVaults:
+    - kv_name: KV-EXAMPLE-01
+      secrets:
+        DATABASE_CONNECTION_STRING: EXAMPLE-DB-CONNSTRING
+route:
+  enabled: true
+  host: example.apps01.dev.cpp.nonlive
+  path:
+    - /
+```
+
+It is consumed from Flux — the Crime Case Readiness services in `cpp-flux-config` are the working example, and the [onboard-a-service runbook](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/onboard-a-service.md) walks through onboarding a service with a chart other than `springboot-app`.
+
+### cronjobs
+
+Deploys scheduled Kubernetes CronJobs: a schedule, an image, a command, and maps of plain and secret environment variables. The istio sidecar is disabled on the job pods by default (`sidecar.istio.io/inject: "false"`), and Azure workload identity can be enabled for jobs that need to reach Azure resources.
+
+```yaml
+schedule: "0 2 * * *"
+timeZone: "Etc/UTC"
+concurrencyPolicy: "Forbid"
+image:
+  repository: "crmdvrepo01.azurecr.io/hmcts/my-job-image"
+  tag: "1.0.0"
+config:
+  command: ["/bin/sh"]
+  args: ["-c", "run-my-task"]
+  env:
+    TARGET_ENV: "dev"
+```
+
+### jmx-job, stream-retry-job, dbsetup and pgdb-dump-restore-jobs
+
+Operational job charts, deployed when the corresponding task needs running rather than continuously:
+
+- **jmx-job** — runs JMX operations against WildFly services: event catch-up, database drop and database setup jobs, driven by ConfigMaps of the target service's configuration.
+- **stream-retry-job** — a curl-based job that resets or retries event streams.
+- **dbsetup** — the standalone database setup job (the same job `springboot-app` and `wildfly-app` can render inline), for when database preparation is needed on its own.
+- **pgdb-dump-restore-jobs** — dumps and restores PostgreSQL databases from a list supplied in a ConfigMap, using a PersistentVolumeClaim for the dump storage and a managed identity for access.
+
+## Real examples
+
+- **Flux**: every file under [`apps/base/services/`](https://github.com/hmcts/cpp-flux-config/tree/main/apps/base/services) in cpp-flux-config is a HelmRelease consuming one of these charts — `idam-integration-service` (springboot-app) is a good first read.
+- **Helmsman**: the `[apps]` entries in [helmsman.toml](https://github.com/hmcts/cpp-aks-deploy/blob/main/helmsman.toml) in cpp-aks-deploy show every Helmsman-managed release, with values layered from `ansible/group_vars`.
+
+## Related documentation
+
+- [Using and customising charts](using-and-customising.html) — how values reach a chart, version pinning, and testing chart changes
+- [Platform and supporting charts](platform-charts.html) — the rest of the chart catalogue
+- [Onboarding a service](/cjs-common-platform/onboarding/service.html) — the wider CPP service onboarding process
