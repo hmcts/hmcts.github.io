@@ -76,7 +76,7 @@ Two further profiles, `sonar-travis-skip` and `sonar-travis-PR`, are also in `se
 
 ## npm
 
-A one-line `.npmrc` at the repository root, matching the pattern used across the `crime-idam-*` front-end repositories:
+A one-line `.npmrc` at the repository root, matching the pattern used across the `crime-idam-*` repositories (front-end and test alike):
 
 ```
 registry=https://libraries-internal.mdv.cpp.nonlive/artifactory/api/npm/npm-virtual/
@@ -140,7 +140,7 @@ Artifactory also serves things that are not application dependencies:
 | What | Where |
 |---|---|
 | Helmsman and helm-diff binaries | `helmsman-binaries` generic repository, downloaded by the deployment pipelines |
-| Firefox ESR for UI end-to-end tests | `ftp.mozilla.org-generic`, pinned version |
+| Firefox ESR for UI end-to-end tests | `ftp.mozilla.org-generic`, pinned to `68.1.0esr` |
 | ChromeDriver | `chromedriver` |
 | Azure CLI, CentOS, JBoss, Python, RubyGems, HashiCorp | yum and remote repositories, used by the Ansible-managed VMs |
 | Alfresco JARs | `alfresco` and the Alfresco deployment repositories |

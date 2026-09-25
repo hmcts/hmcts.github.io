@@ -61,7 +61,7 @@ Artifactory credentials and the CA are Azure DevOps secure files, not variables.
 |---|---|
 | `settings.xml` | Maven resolution and the deploy credentials, under whatever server id the calling step's deploy command uses (`HASS` in the templates above) |
 | `settings-security.xml` | Decrypts the encrypted passwords in `settings.xml` |
-| `npmrc` | The npm registry configuration. Repository-committed `.npmrc` files in front-end repositories point at `api/npm/npm-virtual`; the secure file's exact content is not visible in any repository, but presumably follows the same pattern (see [Consuming dependencies](consuming.html#npm)). |
+| `npmrc` | The npm registry configuration. Repository-committed `.npmrc` files in the `crime-idam-*` repositories point at `api/npm/npm-virtual`; the secure file's exact content is not visible in any repository, but presumably follows the same pattern (see [Consuming dependencies](consuming.html#npm)). |
 | `npmrc_frontend` | The Azure Artifacts registry, for the second publish UI libraries do |
 | `cpp-nonlive-ca.pem` | Trusting the non-live internal CA |
 | `devops-team@hmcts.net.secret.asc` | GPG signing on the release path |

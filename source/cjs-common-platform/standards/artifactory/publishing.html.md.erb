@@ -63,7 +63,7 @@ On a release branch the pipeline runs `release:prepare` then `release:perform`, 
 
 That is worth restating, because it surprises people: **a team branch publishes fixed, non-snapshot versions**, not rolling snapshots. Each team-branch build produces a version that will not change again. It lives in a snapshot-named repository, but what it holds is immutable.
 
-Java 11 and later builds also deploy once to `libs-snapshot-local` earlier in the same job, before the branch-routed deploy. That is a legacy step, not a second artefact you need to reason about.
+Java 11 and later builds also deploy once to `libs-snapshot-local` earlier in the same job, before the branch-routed deploy. Nothing in the pipeline explains why, and `libs-snapshot-local` is the older repository pair rather than the `sp-azure` set everything else uses, so treat it as a leftover rather than a second artefact you need to reason about, but do not assume it is dead until someone confirms it.
 
 ### Versions
 
@@ -139,7 +139,7 @@ Artifactory is where CPP's release artefacts live, and it is nearly out of disk 
 - Publish build **outputs**, not build **inputs or scratch**: no test fixtures, no logs, no coverage reports, no large media.
 - Do not publish per-commit binaries that nothing will ever resolve. Team-branch builds already produce a permanent version each time; that is enough.
 - Container images go to ACR (`crmdvrepo01.azurecr.io`), not Artifactory. Helm charts go to ACR as OCI artefacts: see [Helm charts](/cjs-common-platform/helm-charts/index.html).
-- If something must stay resolvable for years, say so when you add it. Housekeeping prunes old versions, release repositories included.
+- If something must stay resolvable for years, say so when you add it. Housekeeping prunes old versions; today's defaults cover snapshot repositories only, but that is configuration, not a guarantee. See [CPP Artifactory](index.html#limits-you-should-design-around).
 
 ## Related documentation
 
