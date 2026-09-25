@@ -40,6 +40,7 @@ DLRM
 Dmaven
 DNAT
 dnc
+Dno
 dnsmasq
 Dockerfiles
 dockerised
@@ -54,6 +55,7 @@ ejdt
 enhbenftckhu
 ercybwaubzbmfn
 erubi
+esr
 fastapi
 fasterxml
 FBD
@@ -92,7 +94,9 @@ jboss
 jcenter
 Jenkinsfiles
 JFrog
+jfrog
 jgitflow
+jitpack
 jmx
 keyring
 keystore
@@ -107,6 +111,7 @@ moj
 mozilla
 MQBFZ
 mvn
+mvnw
 mycomponent
 myproduct
 myregistry
