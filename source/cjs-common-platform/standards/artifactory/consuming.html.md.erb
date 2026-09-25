@@ -51,18 +51,28 @@ Overriding `central` is the point: a CPP build should not reach Maven Central di
 
 Note that the profile enables releases but not snapshots. A build that needs a `-SNAPSHOT` from `repocentral` needs `<snapshots>` enabled too.
 
-On an Azure DevOps agent this file arrives as the `settings.xml` secure file, copied to `~/.m2/settings.xml` along with `settings-security.xml`. The secure file also carries the credentials the deploy step needs; the copy in `cp-build-settings` is the readable reference, not the file the agent uses.
+On an Azure DevOps agent, a `settings.xml` and `settings-security.xml` secure file are downloaded and copied to `~/.m2` before the build (see [CI/CD integration](ci-cd.html)). Secure files are not stored in any repository, so their exact content cannot be checked here; `cp-build-settings/settings.xml` is a build-local copy used by some repositories directly via `mvnw`, and while it is a good guide to the profiles in play, do not assume it is byte-for-byte what a given ADO pipeline downloads.
 
 ### The other Maven sources
 
-`settings.xml` also defines two profiles that are not Artifactory:
+`cp-build-settings/settings.xml` activates three profiles by default, not just `securecentral`:
+
+```xml
+<activeProfiles>
+  <activeProfile>cloudsmith</activeProfile>
+  <activeProfile>jitpack.io</activeProfile>
+  <activeProfile>securecentral</activeProfile>
+</activeProfiles>
+```
 
 | Profile | URL | Status |
 |---|---|---|
-| `cloudsmith` | `https://dl.cloudsmith.io/public/cjscommonplatform/maven-repository/maven` | Public Cloudsmith repository for open-sourced CJS Common Platform libraries. Authenticated for publishing with `CLOUDSMITH_API_KEY`. |
-| `jitpack.io` | `https://jitpack.io` | Legacy. Do not add new dependencies through it. |
+| `cloudsmith` | `https://dl.cloudsmith.io/public/cjscommonplatform/maven-repository/maven` | Active by default. Public Cloudsmith repository for open-sourced CJS Common Platform libraries. Authenticated for publishing with `CLOUDSMITH_API_KEY`, against the `cjscommonplatform-maven-repository` server id. |
+| `jitpack.io` | `https://jitpack.io` | Active by default, despite being the older of the two. Do not rely on this: build a case for moving off it rather than adding new dependencies through it. |
 
-If you need to know whether a given library should come from Artifactory or Cloudsmith, ask CPP DevOps: the two overlap and the boundary is not recorded anywhere authoritative.
+Both are active on every build alongside `securecentral`, not optional extras. If you need to know whether a given library should come from Artifactory or Cloudsmith, ask CPP DevOps: the two overlap and the boundary is not recorded anywhere authoritative.
+
+Two further profiles, `sonar-travis-skip` and `sonar-travis-PR`, are also in `settings.xml` but only toggle SonarQube behaviour; they define no repositories and are not part of dependency resolution.
 
 ## npm
 

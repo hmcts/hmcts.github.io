@@ -39,15 +39,19 @@ Pick the pipeline that matches what the repository produces.
 
 ## The steps that touch Artifactory
 
-| Template | What it does |
-|---|---|
-| [`steps/common/download-files.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/download-files.yaml) | Downloads `settings.xml` and `settings-security.xml` into `~/.m2`, plus the GPG key. Run this before anything that resolves or deploys. |
-| [`steps/common/maven-deploy.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/maven-deploy.yaml) | Branch-routed `mvn deploy` for context services, with Maven caching and retries. |
-| [`steps/common/release-start.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release-start.yaml) | `jgitflow:release-start` on `main`. |
-| [`steps/common/release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml) | `jgitflow:release-finish`, GPG signing, snapshot check, version bump. |
-| [`steps/common/deploy-vld-stack.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/deploy-vld-stack.yaml) | Downloads the Helmsman and helm-diff binaries from the `helmsman-binaries` generic repository. |
+| Template | What it does | Takes `artifactoryServer`? |
+|---|---|---|
+| [`steps/common/download-files.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/download-files.yaml) | Downloads `settings.xml` and `settings-security.xml` into `~/.m2` and the GPG key; also logs in to the non-live ACR and, unless told not to, sets up Gerrit access. Run this before anything that resolves or deploys. | No |
+| [`steps/common/maven-deploy.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/maven-deploy.yaml) | Branch-routed `mvn deploy` for context services, with Maven caching and retries. | Yes |
+| [`steps/common/release-start.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release-start.yaml) | `jgitflow:release-start` on `main`. | Yes |
+| [`steps/common/release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml) | `jgitflow:release-finish`, GPG signing, snapshot check, version bump, and, separately, the release deploy to `libs-release-sp-azure`. See [Publishing and promoting artefacts](publishing.html#the-release-flow-on-main). | Both (see below) |
+| [`steps/common/deploy-vld-stack.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/deploy-vld-stack.yaml) | Downloads the Helmsman and helm-diff binaries from the `helmsman-binaries` generic repository, among other validation-stack setup. | No |
 
-Each of these takes an `artifactoryServer` parameter defaulting to `https://libraries-internal.mdv.cpp.nonlive/artifactory`. Leave the default alone unless you are doing something genuinely unusual; pipelines publish to non-live.
+`maven-deploy.yaml` and `release-start.yaml` take a single `artifactoryServer` parameter, defaulting to `https://libraries-internal.mdv.cpp.nonlive/artifactory`. Leave the default alone unless you are doing something genuinely unusual; pipelines publish to non-live.
+
+`release.yaml` is inconsistent with itself: it takes a required `ARTIFACTORY_SERVER` (no default, the calling pipeline must supply it: used by the `main`-branch deploy) **and** an optional `artifactoryServer` with the same default as above (used by the `release/*`-branch deploy). Both need to resolve to the same URL in practice; do not assume changing one changes the other.
+
+`download-files.yaml` and `deploy-vld-stack.yaml` take no Artifactory URL parameter at all: they either need none, or read it from a pipeline variable set elsewhere.
 
 ## Secure files
 
@@ -55,9 +59,9 @@ Artifactory credentials and the CA are Azure DevOps secure files, not variables.
 
 | Secure file | Used for |
 |---|---|
-| `settings.xml` | Maven resolution and the deploy credentials under the `HASS` server id |
+| `settings.xml` | Maven resolution and the deploy credentials, under whatever server id the calling step's deploy command uses (`HASS` in the templates above) |
 | `settings-security.xml` | Decrypts the encrypted passwords in `settings.xml` |
-| `npmrc` | npm registry pointing at `api/npm/npm-virtual` |
+| `npmrc` | The npm registry configuration. Repository-committed `.npmrc` files in front-end repositories point at `api/npm/npm-virtual`; the secure file's exact content is not visible in any repository, but presumably follows the same pattern (see [Consuming dependencies](consuming.html#npm)). |
 | `npmrc_frontend` | The Azure Artifacts registry, for the second publish UI libraries do |
 | `cpp-nonlive-ca.pem` | Trusting the non-live internal CA |
 | `devops-team@hmcts.net.secret.asc` | GPG signing on the release path |

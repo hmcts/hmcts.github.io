@@ -22,14 +22,16 @@ Do not look for a promotion pipeline or a "promote to live" button. There isn't 
 
 ### Context services
 
-Context services deploy through [`steps/common/maven-deploy.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/maven-deploy.yaml), called from the context validation pipeline.
+Context services deploy **twice** in the same pipeline run, from two different steps in [context-validation.yaml](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/pipelines/context-validation.yaml).
+
+First, [`steps/common/maven-deploy.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/maven-deploy.yaml) deploys the current, pre-release build:
 
 | Branch | Repository |
 |---|---|
 | `main` | `libs-snapshot-sp-azure` |
 | anything else (team, feature, `release/*`) | `team-libs-snapshot-sp-azure` |
 
-The deploy itself is:
+The deploy itself, trimmed to the flags that matter:
 
 ```
 mvn -B -C -U -V clean deploy \
@@ -38,7 +40,9 @@ mvn -B -C -U -V clean deploy \
   -DskipTests -f pom.xml
 ```
 
-Two things to note. `HASS` is a server id: the agent's `~/.m2/settings.xml` must carry a `<server>` entry under that id with the deploy credentials, which is why the pipeline downloads the `settings.xml` secure file before building. And `-DskipTests` is deliberate: tests ran earlier in the same pipeline, and this step only packages and uploads.
+`HASS` is a server id: the agent's `~/.m2/settings.xml` must carry a `<server>` entry under that id with the deploy credentials. Where that entry comes from is covered in [CI/CD integration](ci-cd.html). `-DskipTests` is deliberate: tests ran earlier in the same pipeline, and this step only packages and uploads.
+
+Second, later in the same run, [`steps/common/release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml) runs (see [The release flow on `main`](#the-release-flow-on-main) below). On `main` it deploys again, this time the finished release version, to **`libs-release-sp-azure`**. `context-validation.yaml` passes `deployArtifacts: true` unconditionally for every context service (`cp-cake-shop` excepted), so this second deploy is not optional or occasional: it happens on every `main` build. `libs-release-sp-azure` is not library-only.
 
 Every deploy is wrapped in `run_with_retry 3`. A single failed upload is retried rather than failing the build.
 
@@ -81,12 +85,15 @@ The major component tracks the Java version, so a `17.x` artefact is a Java 17 b
 Context services on `main` run a jgitflow release across two steps, [`release-start.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release-start.yaml) and [`release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml):
 
 1. `jgitflow:release-start` opens the release branch from the triggering commit.
-2. `jgitflow:release-finish` completes it, with the `sign-maven-gpg-plugin` profile active so the artefacts are GPG-signed by the `devops-team@hmcts.net` key.
-3. The effective POM is checked for any remaining `SNAPSHOT`, and the build fails if one is found. A release cannot ship with a snapshot dependency.
-4. The version is bumped, committed as the `devops-team` user and pushed.
-5. The new version is written into `cpp.pipeline`, so the deployment configuration picks it up.
+2. `jgitflow:release-finish` completes it, with `-DnoDeploy` (git-flow's own build/tag/merge, not an artefact push) and with the `sign-maven-gpg-plugin` profile active so the artefacts are GPG-signed by the `devops-team@hmcts.net` key.
+3. The pipeline checks out `main` again, at the now-released, non-snapshot version, and inspects the effective POM for any remaining `SNAPSHOT`. If one is found, the build fails. A release cannot ship with a snapshot dependency.
+4. **A separate `mvn clean deploy` then runs**, deploying that release version to `libs-release-sp-azure`. This is the deploy `-DnoDeploy` in step 2 does not do: `jgitflow:release-finish` finishes the git-flow branching and tagging, and this later command is what actually publishes the artefact.
+5. The version on `main` is bumped for the next development iteration, committed as the `devops-team` user and pushed.
+6. The new version is written into `cpp.pipeline`, so the deployment configuration picks it up.
 
-Step 4 is why the pipelines check the last commit author and skip themselves when it is `devops-team@hmcts.net` or contains `azdevops`: without it, the pipeline's own version bump would trigger another run.
+Step 5 is why the pipelines check the last commit author and skip themselves when it is `devops-team@hmcts.net` or contains `azdevops`: without it, the pipeline's own version bump would trigger another run.
+
+The same template also handles `release/*` branches for context services, with its own branch-routed deploy (`main` → `libs-snapshot-sp-azure`, anything else → `team-libs-snapshot-sp-azure`) before bumping the version (a third routing rule, separate from both the one above and from `maven-deploy.yaml`'s). If you are tracing where a context-service artefact came from, check which of the three deploy points in `context-validation.yaml` actually ran for that build.
 
 ### npm libraries
 
