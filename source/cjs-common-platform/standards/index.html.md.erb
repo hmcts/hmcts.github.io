@@ -1,0 +1,16 @@
+---
+title: Standards
+last_reviewed_on: 2026-09-22
+review_in: 6 months
+weight: 7
+---
+
+# <%= current_page.data.title %>
+
+Shared platform services and conventions that apply across CPP components, rather than to one service or one deployment route.
+
+<% current_page.children.each do |page| %>
+- [<%= page.data.title %>](<%= page.url %>)
+<% end %>
+
+HMCTS-wide standards that apply to CPP as well as every other platform — versioning, security, accessibility and the rest — are in the [standards](/standards/index.html) section. Where a CPP page and an HMCTS-wide page disagree, the CPP page describes what the platform actually does today; raise the difference rather than assuming either is wrong.
