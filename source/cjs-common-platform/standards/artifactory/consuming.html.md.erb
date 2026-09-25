@@ -62,7 +62,7 @@ On an Azure DevOps agent this file arrives as the `settings.xml` secure file, co
 | `cloudsmith` | `https://dl.cloudsmith.io/public/cjscommonplatform/maven-repository/maven` | Public Cloudsmith repository for open-sourced CJS Common Platform libraries. Authenticated for publishing with `CLOUDSMITH_API_KEY`. |
 | `jitpack.io` | `https://jitpack.io` | Legacy. Do not add new dependencies through it. |
 
-If you need to know whether a given library should come from Artifactory or Cloudsmith, ask CPP DevOps — the two overlap and the boundary is not recorded anywhere authoritative.
+If you need to know whether a given library should come from Artifactory or Cloudsmith, ask CPP DevOps: the two overlap and the boundary is not recorded anywhere authoritative.
 
 ## npm
 
@@ -81,7 +81,7 @@ npm config set cafile "$REPO_DIR/cpp-nonlive-ca.pem"
 
 Some CPP UI libraries are published to Azure Artifacts as well as to Artifactory, at the same version. Which registry a repository reads from is whichever its `.npmrc` names; both are valid, and a version present in one may not yet be in the other.
 
-`npm audit` against the registry does not work — the Artifactory version in use predates the support npm requires. CPP pipelines run it with `--userconfig=/dev/null` so it audits against the public advisory database instead, and tolerate its failure.
+`npm audit` against the registry does not work: the Artifactory version in use predates the support npm requires. CPP pipelines run it with `--userconfig=/dev/null` so it audits against the public advisory database instead, and tolerate its failure.
 
 ## Docker builds
 
@@ -97,7 +97,7 @@ The same pattern brings in Liquibase JARs for the event store, framework and vie
 
 The consequence is that **the artefact must already be in Artifactory before the image build runs**. An image build failing on an `ADD` is usually a deploy that did not happen, or a version that does not match, rather than a Docker problem.
 
-## Terraform — Azure Function packages
+## Terraform: Azure Function packages
 
 Function apps deploy from a zip served by Artifactory. [cpp-functionapp-deployment](https://github.com/hmcts/cpp-functionapp-deployment/tree/main) picks the instance from the platform:
 
@@ -121,7 +121,7 @@ functionapp_package = "https://libraries-internal.mdv.cpp.nonlive/artifactory/li
 
 `/artifactory/list/<repo>/…` is Artifactory's directory-listing path; it serves files as well as folders, which is why it appears in URLs rather than only in a browser.
 
-This is the one consumption route that points at the **live** instance for live deployments, and so the one most exposed to the live pull-through cache. A live function-app deployment failing to download a package that exists on non-live is usually the missed-retrieval cache — see [Publishing and promoting artefacts](publishing.html#axis-2-non-live-to-live).
+This is the one consumption route that points at the **live** instance for live deployments, and so the one most exposed to the live pull-through cache. A live function-app deployment failing to download a package that exists on non-live is usually the missed-retrieval cache: see [Publishing and promoting artefacts](publishing.html#axis-2-non-live-to-live).
 
 ## Tooling and operating-system packages
 
@@ -141,7 +141,7 @@ These are pinned by exact version in the pipeline or Ansible variable that fetch
 
 `*.cpp.nonlive` uses an internal CA. The right fix is to trust it:
 
-- **Pipelines** download the `cpp-nonlive-ca.pem` secure file and point the tool at it — `npm config set cafile`, or importing into the Java keystore.
+- **Pipelines** download the `cpp-nonlive-ca.pem` secure file and point the tool at it: `npm config set cafile`, or importing into the Java keystore.
 - **Locally**, add the same CA to your system or JVM trust store.
 
 You will find `-k`, `--no-check-certificate`, `strict-ssl=false`, `sslverify=0` and `-Dmaven.wagon.http.ssl.insecure=true` scattered through older CPP configuration. They work, and they are why certificate problems go unnoticed until something else breaks. Treat them as legacy, not as the pattern to copy.
@@ -157,6 +157,6 @@ Browsing at `https://libraries.mdv.cpp.nonlive/artifactory` is anonymous and is 
 
 ## Related documentation
 
-- [CPP Artifactory](index.html) — instances, repositories and access
-- [Publishing and promoting artefacts](publishing.html) — where the things you are resolving came from
-- [CI/CD integration](ci-cd.html) — how a pipeline is wired to all of the above
+- [CPP Artifactory](index.html): instances, repositories and access
+- [Publishing and promoting artefacts](publishing.html): where the things you are resolving came from
+- [CI/CD integration](ci-cd.html): how a pipeline is wired to all of the above

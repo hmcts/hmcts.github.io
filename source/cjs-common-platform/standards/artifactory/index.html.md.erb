@@ -9,7 +9,7 @@ weight: 1
 
 > **This is not the CNP Artifactory.** CPP runs its own Artifactory, on its own hosts, with its own repositories and its own access. Nothing published to one appears in the other. For the Cloud Native Platform's instance see [CNP Artifactory](/cloud-native-platform/standards/artifactory/index.html).
 
-CPP Artifactory is the platform's artefact repository. Every CPP Maven artefact — service WARs, library JARs, Liquibase migrations, Azure Function packages — is published there, and almost everything CPP builds or deploys reads from it: Maven builds, npm builds, `Dockerfile` `ADD` lines, Terraform function-app deployments, and the yum repositories on CPP virtual machines.
+CPP Artifactory is the platform's artefact repository. Every CPP Maven artefact (service WARs, library JARs, Liquibase migrations, Azure Function packages) is published there, and almost everything CPP builds or deploys reads from it: Maven builds, npm builds, `Dockerfile` `ADD` lines, Terraform function-app deployments, and the yum repositories on CPP virtual machines.
 
 This is the main difference from CNP. CNP's Artifactory is primarily a pull-through cache of public repositories, and its own artefacts are published elsewhere. **CPP Artifactory is where CPP's own build outputs live.** It also proxies upstream registries, but that is the secondary job.
 
@@ -30,11 +30,11 @@ The two names are not old and new. `libraries.*` is the browsing and general-ser
 
 Both are on the Crime network. You need the CPP VPN to reach either; neither is on the internet. See [onboarding](/cjs-common-platform/onboarding/index.html) for VPN access.
 
-**Non-live is where publishing happens.** No CPP pipeline deploys artefacts to the live instance. Live gets them by pulling from non-live — see [Publishing and promoting artefacts](publishing.html).
+**Non-live is where publishing happens.** No CPP pipeline deploys artefacts to the live instance. Live gets them by pulling from non-live: see [Publishing and promoting artefacts](publishing.html).
 
 ## Repositories
 
-Repositories are provisioned as JSON definitions through the Artifactory API by the `artifactory` Ansible role in [crime-idam-ansible](https://github.com/hmcts/crime-idam-ansible/tree/main/sp-ansible/roles/artifactory). The full per-instance list is in [`sp-ansible/group_vars/10_platform_nlv/artifactory.yml`](https://github.com/hmcts/crime-idam-ansible/tree/main/sp-ansible/group_vars/10_platform_nlv/artifactory.yml) and its `10_platform_lv` equivalent — about seventy repositories on non-live. These are the ones you will meet.
+Repositories are provisioned as JSON definitions through the Artifactory API by the `artifactory` Ansible role in [crime-idam-ansible](https://github.com/hmcts/crime-idam-ansible/tree/main/sp-ansible/roles/artifactory). The full per-instance list is in [`sp-ansible/group_vars/10_platform_nlv/artifactory.yml`](https://github.com/hmcts/crime-idam-ansible/tree/main/sp-ansible/group_vars/10_platform_nlv/artifactory.yml) and its `10_platform_lv` equivalent (about seventy repositories on non-live). These are the ones you will meet.
 
 ### Read from these
 
@@ -62,7 +62,7 @@ Because `repocentral` includes the upstream proxies, a CPP build that resolves f
 
 ## How non-live and live relate
 
-On non-live, `libs-release-sp-azure` and `team-libs-snapshot-sp-azure` are **local** repositories — real storage that builds deploy into.
+On non-live, `libs-release-sp-azure` and `team-libs-snapshot-sp-azure` are **local** repositories: real storage that builds deploy into.
 
 On live, repositories with the same names are **remote** repositories pointing back at the non-live instance, restricted to `uk/gov/moj/cpp/**/*` and caching what they fetch. The live host trusts the non-live CA and has a hosts entry for it, both set up by the Ansible role.
 
@@ -71,7 +71,7 @@ So an artefact reaches live by being requested there, not by being pushed there.
 - **Live resolves releases only.** Live's `repocentral` aggregates `libs-release-sp-azure`, `libs-release-local`, `libs-release-ukcloud`, `alfresco`, `maven2`, `bintray-cjscommonplatform` and `ext-release-ukcloud`. No snapshot repository is in it. A `-SNAPSHOT` version cannot be deployed to live.
 - **A newly published artefact can 404 on live for a while.** The remote repositories cache a failed lookup for 1800 seconds and repository metadata for 600. If a release that definitely exists on non-live is missing on live, that is usually this, not a fault.
 
-Both are cleared the same way — Zap Caches, described below.
+Both are cleared the same way: Zap Caches, described below.
 
 ## Access
 
@@ -92,7 +92,7 @@ Teams do not get individual logins as a matter of course. Most work needs none: 
 
 **Housekeeping deletes old versions.** An Ansible role prunes to a `versions_to_keep` limit and then runs garbage collection. Old versions do go away, release repositories included. If a version has to remain resolvable indefinitely, say so rather than assuming.
 
-**It is Artifactory 6.x.** Some newer client features are unavailable — `npm audit` against the registry is one, which is why CPP pipelines run `npm audit` with `--userconfig=/dev/null` to bypass it.
+**It is Artifactory 6.x.** Some newer client features are unavailable: `npm audit` against the registry is one, which is why CPP pipelines run `npm audit` with `--userconfig=/dev/null` to bypass it.
 
 ## Common problems
 
@@ -103,7 +103,7 @@ Teams do not get individual logins as a matter of course. Most work needs none: 
 | **A release is on non-live but 404s on live** | The 1800-second missed-retrieval cache. Wait it out or Zap Caches. |
 | **A `-SNAPSHOT` version will not resolve on live** | Working as configured. Live carries no snapshot repositories. Release it. |
 | **TLS errors against `*.cpp.nonlive`** | Trust the CA rather than disabling verification. Pipelines get it from the `cpp-nonlive-ca.pem` secure file; see [CI/CD integration](ci-cd.html). |
-| **HTTP 500s across the board** | Often the filestore filling up. This is an incident, not a build problem — see the recovery runbook. |
+| **HTTP 500s across the board** | Often the filestore filling up. This is an incident, not a build problem: see the recovery runbook. |
 
 ### Zap Caches
 
@@ -130,12 +130,12 @@ This only expires cached entries; the next request re-fetches from non-live. It 
 
 ## Related documentation
 
-- [Publishing and promoting artefacts](publishing.html) — where a build's output lands, and how it reaches live
-- [Consuming dependencies](consuming.html) — Maven, npm, Docker, Terraform and tooling configuration
-- [CI/CD integration](ci-cd.html) — the Azure DevOps templates, secure files and variable groups
-- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) — where CPP deployment configuration and pipelines live
-- [CNP Artifactory](/cloud-native-platform/standards/artifactory/index.html) — the other platform's instance
-- [CPP Artifactory recovery runbook](https://hmcts.github.io/platops-bcdr-runbooks/domains/developer-enablement/artifactory-cpp-recovery.html) — internal; what to do when the service is down
+- [Publishing and promoting artefacts](publishing.html): where a build's output lands, and how it reaches live
+- [Consuming dependencies](consuming.html): Maven, npm, Docker, Terraform and tooling configuration
+- [CI/CD integration](ci-cd.html): the Azure DevOps templates, secure files and variable groups
+- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html): where CPP deployment configuration and pipelines live
+- [CNP Artifactory](/cloud-native-platform/standards/artifactory/index.html): the other platform's instance
+- [CPP Artifactory recovery runbook](https://hmcts.github.io/platops-bcdr-runbooks/domains/developer-enablement/artifactory-cpp-recovery.html): internal, what to do when the service is down
 
 ## Sources checked
 

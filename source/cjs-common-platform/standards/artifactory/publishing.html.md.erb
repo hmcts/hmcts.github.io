@@ -27,7 +27,7 @@ Context services deploy through [`steps/common/maven-deploy.yaml`](https://githu
 | Branch | Repository |
 |---|---|
 | `main` | `libs-snapshot-sp-azure` |
-| anything else — team, feature, `release/*` | `team-libs-snapshot-sp-azure` |
+| anything else (team, feature, `release/*`) | `team-libs-snapshot-sp-azure` |
 
 The deploy itself is:
 
@@ -38,7 +38,7 @@ mvn -B -C -U -V clean deploy \
   -DskipTests -f pom.xml
 ```
 
-Two things to note. `HASS` is a server id: the agent's `~/.m2/settings.xml` must carry a `<server>` entry under that id with the deploy credentials, which is why the pipeline downloads the `settings.xml` secure file before building. And `-DskipTests` is deliberate — tests ran earlier in the same pipeline, and this step only packages and uploads.
+Two things to note. `HASS` is a server id: the agent's `~/.m2/settings.xml` must carry a `<server>` entry under that id with the deploy credentials, which is why the pipeline downloads the `settings.xml` secure file before building. And `-DskipTests` is deliberate: tests ran earlier in the same pipeline, and this step only packages and uploads.
 
 Every deploy is wrapped in `run_with_retry 3`. A single failed upload is retried rather than failing the build.
 
@@ -93,7 +93,7 @@ Step 4 is why the pipelines check the last commit author and skip themselves whe
 UI libraries publish through [`pipelines/ui-library-validation.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/pipelines/ui-library-validation.yaml), and publish **twice**:
 
 1. `npm version` sets the release version and tags it. The registry is set from `npm config get registry_publish_local` and `npm run-script ci:publish` publishes to CPP Artifactory, through `npm-virtual`, whose default deployment target is `npm-release-local`.
-2. The `.npmrc` is then swapped for the `npmrc_frontend` secure file, authenticated with `npmAuthenticate`, and `ci:publish` runs again — this time to **Azure Artifacts**.
+2. The `.npmrc` is then swapped for the `npmrc_frontend` secure file, authenticated with `npmAuthenticate`, and `ci:publish` runs again, this time to **Azure Artifacts**.
 
 So a CPP UI library exists in both registries at the same version. Which one a consumer gets depends on that repository's `.npmrc`. If you are chasing a version mismatch, check both.
 
@@ -129,14 +129,14 @@ What that means in practice:
 
 Artifactory is where CPP's release artefacts live, and it is nearly out of disk with 30 days of backup behind it. Before adding something new:
 
-- Publish build **outputs**, not build **inputs or scratch** — no test fixtures, no logs, no coverage reports, no large media.
+- Publish build **outputs**, not build **inputs or scratch**: no test fixtures, no logs, no coverage reports, no large media.
 - Do not publish per-commit binaries that nothing will ever resolve. Team-branch builds already produce a permanent version each time; that is enough.
-- Container images go to ACR (`crmdvrepo01.azurecr.io`), not Artifactory. Helm charts go to ACR as OCI artefacts — see [Helm charts](/cjs-common-platform/helm-charts/index.html).
+- Container images go to ACR (`crmdvrepo01.azurecr.io`), not Artifactory. Helm charts go to ACR as OCI artefacts: see [Helm charts](/cjs-common-platform/helm-charts/index.html).
 - If something must stay resolvable for years, say so when you add it. Housekeeping prunes old versions, release repositories included.
 
 ## Related documentation
 
-- [CPP Artifactory](index.html) — instances, repositories and access
-- [Consuming dependencies](consuming.html) — resolving what you have published
-- [CI/CD integration](ci-cd.html) — the templates, secure files and variable groups behind these steps
-- [Versioning](/standards/versioning/index.html) — the HMCTS-wide approach
+- [CPP Artifactory](index.html): instances, repositories and access
+- [Consuming dependencies](consuming.html): resolving what you have published
+- [CI/CD integration](ci-cd.html): the templates, secure files and variable groups behind these steps
+- [Versioning](/standards/versioning/index.html): the HMCTS-wide approach

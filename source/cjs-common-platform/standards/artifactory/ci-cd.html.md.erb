@@ -7,7 +7,7 @@ weight: 4
 
 # <%= current_page.data.title %>
 
-Wiring an Azure DevOps pipeline to CPP Artifactory. In nearly every case this means extending a template from [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates/tree/main) rather than writing Maven or npm configuration yourself — the templates already handle credentials, the CA, caching and retries.
+Wiring an Azure DevOps pipeline to CPP Artifactory. In nearly every case this means extending a template from [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates/tree/main) rather than writing Maven or npm configuration yourself: the templates already handle credentials, the CA, caching and retries.
 
 ## Extending the shared templates
 
@@ -78,9 +78,9 @@ Never put any of these in a repository, a pipeline variable or a parameter.
 | Variable | Typical value |
 |---|---|
 | `ARTIFACTORY_SERVER` | `https://libraries-internal.mdv.cpp.nonlive/artifactory` |
-| `artifactory_url` | `https://libraries.mdv.cpp.nonlive/` — the external name, used with `helmsman_artifactory_path` for generic downloads |
+| `artifactory_url` | `https://libraries.mdv.cpp.nonlive/` (the external name, used with `helmsman_artifactory_path` for generic downloads) |
 | `NPM_REGISTRY_URL` | `$(ARTIFACTORY_URL)/api/npm/npm-virtual` |
-| `DEPLOY_SNAPSHOT_URL` / `DEPLOY_RELEASE_URL` | `$(ARTIFACTORY_URL)/libs-snapshot-local` / `libs-release-local` — the older repository pair, used by the Rota application |
+| `DEPLOY_SNAPSHOT_URL` / `DEPLOY_RELEASE_URL` | `$(ARTIFACTORY_URL)/libs-snapshot-local` / `libs-release-local` (the older repository pair, used by the Rota application) |
 | `RELEASE_BRANCHES` | `main,release/8.x.x` in library validation |
 | `MAVEN_CACHE_FOLDER` | The local Maven repository the `Cache@2` task restores |
 
@@ -92,7 +92,7 @@ Every Maven deploy is wrapped in `run_with_retry 3` from [`scripts/run_with_retr
 
 ## Agents
 
-Artifactory is only reachable from the Crime network, so builds run on CPP-hosted agents — `ubuntu-ado-agents-mdv` for non-live, or the AKS-hosted ephemeral agents. A hosted Microsoft agent cannot resolve `*.cpp.nonlive` and will fail at the first dependency. If a job needs Artifactory, it needs a CPP pool.
+Artifactory is only reachable from the Crime network, so builds run on CPP-hosted agents: `ubuntu-ado-agents-mdv` for non-live, or the AKS-hosted ephemeral agents. A hosted Microsoft agent cannot resolve `*.cpp.nonlive` and will fail at the first dependency. If a job needs Artifactory, it needs a CPP pool.
 
 ## Self-triggered builds
 
@@ -116,13 +116,13 @@ If you add a step that pushes commits, follow the same pattern. If a pipeline my
 - **The build resolves from Maven Central.** The `securecentral` profile is not active. It overrides `central` on purpose; without it you are not testing what the pipeline tests.
 - **A snapshot dependency will not resolve.** The shared `securecentral` profile enables releases only.
 - **The image build fails on an `ADD`.** The artefact is not in Artifactory yet, or the version does not match. Check the deploy step, not Docker.
-- **`npm audit` fails.** Expected — the Artifactory version does not support it. CPP pipelines run it against the public advisory database and tolerate failure.
+- **`npm audit` fails.** Expected: the Artifactory version does not support it. CPP pipelines run it against the public advisory database and tolerate failure.
 - **A live deployment cannot find a package that exists on non-live.** The live pull-through cache. See [Publishing and promoting artefacts](publishing.html#axis-2-non-live-to-live).
 - **Certificate errors.** Trust `cpp-nonlive-ca.pem`. Do not add `-k` or `strict-ssl=false` to make it go away.
 
 ## Related documentation
 
-- [CPP Artifactory](index.html) — instances, repositories and access
-- [Publishing and promoting artefacts](publishing.html) — branch routing and promotion to live
-- [Consuming dependencies](consuming.html) — the client configuration these templates apply
-- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) — the wider CPP pipeline and configuration estate
+- [CPP Artifactory](index.html): instances, repositories and access
+- [Publishing and promoting artefacts](publishing.html): branch routing and promotion to live
+- [Consuming dependencies](consuming.html): the client configuration these templates apply
+- [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html): the wider CPP pipeline and configuration estate
