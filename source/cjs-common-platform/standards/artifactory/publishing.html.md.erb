@@ -139,7 +139,7 @@ Artifactory is where CPP's release artefacts live, and it is nearly out of disk 
 - Publish build **outputs**, not build **inputs or scratch**: no test fixtures, no logs, no coverage reports, no large media.
 - Do not publish per-commit binaries that nothing will ever resolve. Team-branch builds already produce a permanent version each time; that is enough.
 - Container images go to ACR (`crmdvrepo01.azurecr.io`), not Artifactory. Helm charts go to ACR as OCI artefacts: see [Helm charts](/cjs-common-platform/helm-charts/index.html).
-- If something must stay resolvable for years, say so when you add it. Housekeeping prunes old versions; today's defaults cover snapshot repositories only, but that is configuration, not a guarantee. See [CPP Artifactory](index.html#limits-you-should-design-around).
+- If something must stay resolvable for years, say so when you add it. Housekeeping prunes old versions; today's defaults cover snapshot repositories only, but that is configuration, not a guarantee.
 
 ## Related documentation
 
