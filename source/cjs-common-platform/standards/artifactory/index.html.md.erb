@@ -83,7 +83,7 @@ Both are cleared the same way: Zap Caches, described below.
 |---|---|
 | Browsing and downloading | CPP VPN, then the `libraries.*` UI |
 | Build credentials | Already in the Azure DevOps secure files `settings.xml` and `settings-security.xml`; you do not handle them |
-| Admin login | HashiCorp Vault, `secret/mgmt/artifactory_admin_login_password` |
+| Admin login | HashiCorp Vault; ask CPP DevOps for the path |
 | A new named account or a new repository | Raise a ticket with Technical Services |
 
 Teams do not get individual logins as a matter of course. Most work needs none: resolving is anonymous and publishing is done by the pipeline.
@@ -114,7 +114,7 @@ This only expires cached entries; the next request re-fetches from non-live. It 
 
 | | CPP | CNP |
 |---|---|---|
-| Edition | JFrog Artifactory Pro, 6.6.5 | JFrog Artifactory OSS |
+| Edition | JFrog Artifactory Pro | JFrog Artifactory OSS |
 | Hosting | Azure VMs, configured by Ansible | AKS (`PTL` / `PTL-Sandbox`), managed by Flux |
 | Primary purpose | Stores CPP's own artefacts | Caches upstream dependencies |
 | Published to by | Azure DevOps pipelines, via Maven and npm | Rarely written to; CNP Java libraries go to [Azure Artifacts](/cloud-native-platform/standards/publishing-libraries/java.html) instead |
