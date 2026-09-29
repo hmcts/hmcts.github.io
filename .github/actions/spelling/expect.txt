@@ -94,7 +94,6 @@ jboss
 jcenter
 Jenkinsfiles
 JFrog
-jfrog
 jgitflow
 jitpack
 jmx
