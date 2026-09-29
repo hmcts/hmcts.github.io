@@ -88,16 +88,6 @@ Both are cleared the same way: Zap Caches, described below.
 
 Teams do not get individual logins as a matter of course. Most work needs none: resolving is anonymous and publishing is done by the pipeline.
 
-## Limits you should design around
-
-**It is not an archive.** The [CPP Artifactory recovery runbook](https://hmcts.github.io/platops-bcdr-runbooks/domains/developer-enablement/artifactory-cpp-recovery.html) records 30-day backup retention, no long-term restore points and a single region. Artifactory holds the only copy of most released CPP artefacts, and that copy is 30 days deep. Anything that has to survive longer than a month needs a plan that does not rely on Artifactory alone.
-
-**Storage is close to full.** The same runbook records the non-live filestore at roughly 97% of a 20TB disk as of September 2026, with disk exhaustion a recurring cause of HTTP 500s. Publish build outputs, not build scratch: no test fixtures, no logs, no large media, no per-commit binaries you will never resolve.
-
-**Housekeeping prunes snapshots, by default not releases.** An Ansible role (`artifactory_house_keep`) deletes old versions of configured repositories to a `versions_to_keep` limit and then runs garbage collection. Only `libs-snapshot-local` is enabled by default; pruning a release repository such as `libs-release-local` is possible but has to be turned on deliberately, and the recovery runbook warns against it, since it can remove artefacts a team still needs. Do not assume a release repository is safe from pruning forever, but also do not assume today's default config prunes one.
-
-**It is Artifactory Pro, version 6.x** (`jfrog-artifactory-pro-6.6.5` in the Ansible role defaults). Some newer client features are unavailable: `npm audit` against the registry is one, which is why CPP pipelines run `npm audit` with `--userconfig=/dev/null` to bypass it.
-
 ## Common problems
 
 | Symptom | What it usually is |
