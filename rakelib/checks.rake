@@ -46,6 +46,9 @@ CRITICAL_PAGES = %w[
   cjs-common-platform/architecture/index.html
   cjs-common-platform/new-component/index.html
   cjs-common-platform/path-to-live/index.html
+  cjs-common-platform/live-service/index.html
+  cjs-common-platform/live-service/egress.html
+  cjs-common-platform/live-service/auto-shutdown.html
   cjs-common-platform/tools-and-configuration/index.html
   cjs-common-platform/helm-charts/index.html
   cjs-common-platform/standards/artifactory/index.html
