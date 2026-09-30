@@ -1,0 +1,51 @@
+---
+title: Egress IP addresses
+last_reviewed_on: 2026-09-30
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+An external provider may ask for the public IP addresses from which a CPP service connects. Confirm the addresses for the service's **environment and workload** before giving the provider an allow list. The [CNP egress IP list](../../cloud-native-platform/live-service/egress.html) does not describe CPP traffic.
+
+## Production CCM AKS
+
+CCM contexts in `K8-PRD-CS01-CL01`, namespace `ns-prd-ccm-01`, use the Barracuda DMZ firewall pair for default internet egress.
+
+| Public egress IP | Azure Public IP resource | Resource group | Subscription |
+| --- | --- | --- | --- |
+| `51.140.24.220` | [`IP-MPD-DMZ-NGF`](https://portal.azure.com/#resource/subscriptions/9ab65d81-930d-4cc0-a93d-367e14676bc0/resourceGroups/RG-MPD-DMZ-01/providers/Microsoft.Network/publicIPAddresses/IP-MPD-DMZ-NGF/overview) | `RG-MPD-DMZ-01` | Strategic Platform - live |
+
+The outbound path is:
+
+1. The application subnet `SN-PRD-APP-01` uses route table `UR-PRD-GATEWAY-CS01-CL01`. Its default route (`0.0.0.0/0`) sends traffic to `10.200.32.100`.
+2. `10.200.32.100` is the private frontend of `LB-MPD-NGF-IN-01`.
+3. That load balancer forwards traffic to the Barracuda appliances `MPDDMZBNGF001` and `MPDDMZBNGF101`.
+4. Both appliances are also backends of `LB-MPD-NGF-OUT-01`. Its public frontend uses the static Public IP resource `IP-MPD-DMZ-NGF`, address `51.140.24.220`.
+
+This mapping was verified on 30 September 2026 against the live Azure configuration and HTTPS requests to `https://checkip.amazonaws.com` from the application containers of three contexts on different AKS nodes: `applicationscourtorders`, `archiving` and `audit2dls`. All three returned `51.140.24.220`.
+
+To check the current Azure address:
+
+```sh
+az network public-ip show \
+  --subscription "Strategic Platform - live" \
+  --resource-group RG-MPD-DMZ-01 \
+  --name IP-MPD-DMZ-NGF \
+  --query ipAddress --output tsv
+```
+
+Reconfirm the address before updating an external provider's allow list and after a change to the firewall or outbound routing. For destinations with a more specific route, confirm the path for that destination separately.
+
+## Other environments and workloads
+
+The [`cpp-terraform-azurerm-aks`](https://github.com/hmcts/cpp-terraform-azurerm-aks/tree/main/vars) repository contains CCM AKS egress route configuration. Check the route table attached to the running cluster's workload subnet in Azure when confirming another environment. The next-hop gateway address is private; an external service sees the public address used after that gateway.
+
+To obtain an allow list for another CPP workload:
+
+1. Identify the service's CPP environment, stack and cluster from its [deployment configuration](../tools-and-configuration/index.html), and confirm that it runs on CCM AKS.
+2. Check the workload subnet's route table in Azure and trace its default next hop to the firewall and public frontend. Ask CPP Platform Operations to confirm the outbound addresses for any route that has not been documented here. Include the destination and whether it needs non-live, live or both.
+3. Verify the observed source address from the running workload when the external provider requires an exact allow list. Record the confirmed addresses and the date in the service's integration or release documentation. Reconfirm them when network routing changes.
+
+For virtual-machine services, trace the route table attached to the VM's subnet and confirm the public address from that workload.

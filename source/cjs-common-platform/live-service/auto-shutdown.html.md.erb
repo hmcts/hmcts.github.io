@@ -1,0 +1,28 @@
+---
+title: Auto shutdown
+last_reviewed_on: 2026-09-30
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+CPP uses scheduled Azure DevOps pipelines to start and shut down environments.
+
+## STE, DEV, SIT and NFT
+
+The [CPP automatic startup and shutdown pipeline](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=416) manages stacks in STE, DEV, SIT and NFT. It reads the default timings and each stack's schedule from [EA Environment management](https://hmcts.atlassian.net/wiki/spaces/EA/pages/278888544/EA+Environment+management).
+
+The current default timings are **05:00 startup and 19:00 shutdown, UK time**. The automation uses `Europe/London`, so these times follow British Summer Time. Startup takes time to complete; 05:00 is the start of the process, rather than a guarantee that a service is available then.
+
+A stack can use the default schedule, a custom schedule within a specified date window, or an all-day schedule. Weekend running is controlled separately by the stack's weekend setting. Check the stack's entry on EA Environment management before planning work outside its normal hours, and arrange schedule changes with the stack owner there. Starting a stack manually does not change its automatic schedule.
+
+The pipeline calls [cpp-full-environment-start](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=402) and [cpp-full-environment-shutter](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=404). Stacks marked as fully on AKS use the AKS action; other stacks also include their PaaS and IaaS resources. Check the relevant child pipeline result when confirming that startup or shutdown completed.
+
+The [schedule definition](https://github.com/hmcts/cpp-aks-ops/blob/main/run_custom_auto_startup_shutdown.yaml) and [schedule reader](https://github.com/hmcts/cpp-aks-ops/blob/main/scripts/generateCustomStartupShutdownLimit.py) are maintained in `cpp-aks-ops`.
+
+## PRP
+
+PRP has separate weekday schedules for `prpccm01`: [startup](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=417) at **06:00 UTC** and [shutdown](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=440) at **20:00 UTC**, Monday to Friday. [Azure DevOps cron schedules use UTC](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops). These correspond to 07:00 and 21:00 during British Summer Time, and 06:00 and 20:00 during Greenwich Mean Time.
+
+The [startup definition](https://github.com/hmcts/cpp-aks-ops/blob/main/prp_controlled_environment_start.yaml) includes PaaS, IaaS and AKS. The [shutdown definition](https://github.com/hmcts/cpp-aks-ops/blob/main/prp_controlled_environment_shutter.yaml) includes IaaS and AKS, with PaaS disabled.
