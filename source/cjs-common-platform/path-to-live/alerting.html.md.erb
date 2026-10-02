@@ -1,0 +1,32 @@
+---
+title: Alerting
+last_reviewed_on: 2026-10-02
+review_in: 6 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+Provide the alert configuration and response instructions for the service being released. A working health endpoint or a Kubernetes probe does not configure an alert recipient.
+
+## Verify the service's alerts
+
+For each alert used to support the service, record:
+
+- the monitored service, dependency or condition
+- the configured threshold, duration and severity
+- the alert definition or monitor link
+- the notification destination and the team responsible for responding
+- the investigation and recovery instructions used by that team
+
+Check the service's configured Dynatrace monitors and notification settings with its support team. Verify delivery using an agreed non-live test that exercises the monitored condition. Record the triggered alert, notification and recovery result. Do not introduce a fault into production to perform this test.
+
+Give AMS and SRE the alert and runbook links in the release's operational evidence. Escalate a missing notification route or unowned alert to the release manager before implementation; a monitor showing an error is not evidence that someone received a notification.
+
+## Release maintenance windows
+
+The [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note) records Dynatrace maintenance-window setup, pre-deployment checks and checks for alerts missed by the window. Record its affected services, start/end times and implementation owner in the approved release note.
+
+SRE checks the maintenance-window timing before the release and checks the Dynatrace problems view during the work. An alert for a service intentionally stopped by the release can indicate that the window's scope or timing is wrong; investigate it rather than treating all alerts as expected.
+
+After restoration, complete the release's smoke and monitoring checks and investigate new alerts. The template specifies a ten-minute Dynatrace observation step before closure and cancellation of the maintenance window when the release finishes before its planned end. Confirm monitoring and notification delivery are active again before closing the release.

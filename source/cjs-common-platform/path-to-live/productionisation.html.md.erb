@@ -1,0 +1,45 @@
+---
+title: Productionisation
+last_reviewed_on: 2026-10-02
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+Prepare these items before the service's PRP and PRD deployment steps are scheduled with Crime Release Management. This guide covers CPP CCM AKS services using Helmsman or Flux.
+
+## Fix the deployment versions and route
+
+Record the container image repository and versioned tag, chart version, configuration commit or release branch, and deployment controller for each target environment. Confirm the selected image and chart are available in the registry used by that environment. Publishing to non-live alone does not establish availability in live.
+
+- For Helmsman, record the release branches from `cpp-aks-deploy` and `cpp.pipeline` and the approved parameters for [CPP-AKS-DEPLOY](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333).
+- For Flux, record the PRP and PRD changes in [cpp-flux-config](https://github.com/hmcts/cpp-flux-config) and the merge/reconciliation steps in the release note. Its [PRD check](https://github.com/hmcts/cpp-flux-config/blob/main/.github/workflows/prd-check.yml) requires the literal fields `RFC Number:`, `Change Window:` and `Rollback Plan:` in the pull-request description. This check tests for the field labels; it does not validate the RFC's approval or the contents of those fields.
+
+Use the [Path to Live deployment instructions](index.html#3-deploy-through-prp-and-prd) for the selected controller. The approved release note supplies the actual branches, stack and pipeline options.
+
+## Prepare production dependencies
+
+Confirm the following against the PRP and PRD configuration:
+
+- required databases, schema migrations and application permissions
+- the secret references, runtime identities and access grants the service uses
+- the hostname, gateway route, TLS configuration and authentication required by its callers
+- any outbound firewall rules or third-party IP allow-list entries
+- resource requests, limits, replica and autoscaling settings, and the service's health probes
+
+The [infrastructure and connectivity guide](../new-component/infrastructure-and-connectivity.html) identifies the CPP provisioning repositories and secret mechanisms. Use [CPP egress guidance](../live-service/egress.html) for an outbound allow-list and [monitoring and health](monitoring-and-health.html) for the probe settings.
+
+For persistent data, record the backup settings, restore procedure and data-recovery owner. Keep database migration and rollback steps with the application release instructions. A previous application image is not a database rollback plan.
+
+## Complete the release instructions
+
+Use the [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note) with Crime Release Management and obtain the RFC approval for production-affecting work. Record:
+
+- implementation steps, their order and the person responsible for each step
+- the tests and expected results after PRP and PRD deployment
+- the need for shuttering, the services affected and the restoration steps
+- the Dynatrace maintenance window and the monitoring checks after deployment
+- the failure conditions that stop the release, the decision owner and the exact rollback steps
+
+Provide the evidence from [operational acceptance and release testing](operational-acceptance.html). Follow the release's recorded stop and rollback conditions during implementation; any change to the plan must be coordinated with the release manager.

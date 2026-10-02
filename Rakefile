@@ -45,6 +45,9 @@ task :check_urls do
                 request.base_url = request.base_url.gsub("/blob", "")
                 request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
             end
+        elsif request.base_url.start_with?("https://github.com/") && request.base_url.include?("/blob/")
+            # Check public file content directly, as for HMCTS file links above.
+            request.base_url = request.base_url.sub("/blob/", "/").sub("github.com", "raw.githubusercontent.com")
         end
     end
     # Run HTML Proofer against built HTML files

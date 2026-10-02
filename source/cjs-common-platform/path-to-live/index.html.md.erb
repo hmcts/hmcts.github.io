@@ -1,6 +1,6 @@
 ---
 title: Path to Live
-last_reviewed_on: 2026-09-30
+last_reviewed_on: 2026-10-02
 review_in: 6 months
 weight: 3
 ---
@@ -8,6 +8,16 @@ weight: 3
 # <%= current_page.data.title %>
 
 This page explains how a CCM AKS service joins a CPP release after it has been deployed and tested in an approved non-live stack. Crime Release Management controls the release; an application team does not deploy a new service to live on its own. Use the deployment controller recorded for the service and environment: Helmsman or Flux.
+
+## Prepare the service for release
+
+Complete [starting a new component](../new-component/index.html) before entering this process. Use these CPP readiness guides to prepare the service-specific implementation and verification steps:
+
+- [Productionisation](productionisation.html): image and configuration versions, runtime dependencies, release approvals and rollback.
+- [Operational acceptance and release testing](operational-acceptance.html): OAT scope, AMS testing, SRE checks and release evidence.
+- [Shuttering](shutter.html): public entry-point closure, stack shutdown and restoration during a release.
+- [Monitoring and health](monitoring-and-health.html): CPP chart probes, Dynatrace and post-deployment checks.
+- [Alerting](alerting.html): alert ownership, delivery checks and release maintenance windows.
 
 ## 1. Prove the change in non-live
 
@@ -55,7 +65,7 @@ Put the PRP and PRD pull requests, merge or reconciliation step, exact image tag
 
 ## 4. Verify and close or roll back
 
-The current release template requires the release teams to check AKS pods, run AMS smoke testing, run any service-specific tests and monitor Dynatrace. The application team must be available to interpret its logs and test results.
+The CPP release template includes AKS pod checks, AMS smoke testing, release-specific tests and Dynatrace monitoring. The application team must be available to interpret its logs and test results. Follow the [operational acceptance](operational-acceptance.html), [monitoring](monitoring-and-health.html) and [alerting](alerting.html) steps recorded for the release.
 
 If a stop condition in the release note is met, tell the release manager, stop progression and follow that release's rollback section. Do not start an unrecorded rollback from a workstation.
 
