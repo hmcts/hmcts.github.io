@@ -317,6 +317,9 @@ SOGs
 sonarcloud
 sonarlint
 sonarqube
+SRE
+statefulsets
+productionisation
 spective
 spellcheck
 springboot

@@ -1,0 +1,43 @@
+---
+title: Shuttering
+last_reviewed_on: 2026-10-02
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+CPP uses the word shuttering for both closing public entry points and stopping platform workloads. Record which actions the release needs, the services affected, their order and the person responsible for each action in the [CPP release note](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note).
+
+## Public entry points
+
+The CPP release-note template contains WAF shutter and unshutter steps for Common Platform, the API Gateway and Online Plea. It assigns those steps to SRE and asks for screenshots of the shuttered and restored URLs in the release channel.
+
+Use the release's WAF implementation instructions for the affected entry points. Verify the response seen by callers after shuttering, and verify the restored URL after reopening it. Scaling an AKS deployment to zero does not create a maintenance page at the WAF.
+
+## Stop and restart a stack
+
+The CPP pipelines are:
+
+- [cpp-full-environment-shutter](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=404) to stop selected platform resource types
+- [cpp-full-environment-start](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=402) to start them again
+
+The [shutter pipeline source](https://github.com/hmcts/cpp-azure-devops-templates/blob/main/pipelines/full-environment-shutter.yaml) exposes `platform`, `project`, `env`, `stack`, `resource_groups`, `runPAAS`, `runIAAS` and `runAKS`. Copy their values from the approved release note. The switches select different operations:
+
+| Switch | Operation in the shutter pipeline |
+|---|---|
+| `runAKS` | Runs the Kubernetes scale-down step for namespaces carrying the selected stack label. |
+| `runIAAS` | Runs the Ansible shutter/stop operations and powers off the selected virtual machines. |
+| `runPAAS` | Runs the PostgreSQL stop step. |
+
+The [AKS scale-down step](https://github.com/hmcts/cpp-azure-devops-templates/blob/main/steps/common/k8s-scale-down.yaml) selects namespaces using `stack=...`, then scales Deployments and StatefulSets to zero with the defaults used by the shutter pipeline. This is a stack operation, so its scope can include several services and namespaces. Confirm that scope before the run. The current pipeline has a manual approval stage for a live PRD shutdown.
+
+For Flux-managed services, include the committed desired state and the planned reconciliation/restoration steps in the release instructions. Direct Kubernetes scaling changes the live resources; it does not change `cpp-flux-config`.
+
+## Restore and verify
+
+Run the restoration steps in the order specified by the release note. Verify the resource startup results, expected replicas, pod readiness, application health, AMS smoke tests and the external URLs being reopened.
+
+The release template also contains conditional Artemis/Camunda checks when the environment is shuttered. Use the checks assigned to the affected release; do not reopen an entry point before its recorded restoration checks have passed.
+
+Configure the release's [Dynatrace maintenance window and alert checks](alerting.html#release-maintenance-windows). For the separate scheduled shutdown of non-live and PRP environments, see [auto shutdown](../live-service/auto-shutdown.html).
