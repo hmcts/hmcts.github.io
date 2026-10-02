@@ -1,0 +1,45 @@
+---
+title: Monitoring and health
+last_reviewed_on: 2026-10-09
+review_in: 6 months
+weight: 4
+---
+
+# <%= current_page.data.title %>
+
+Configure and test application health probes before the first live deployment. Record the health URLs, expected responses, logs and Dynatrace views used by AMS and PlatOps BAU in the service's release instructions.
+
+## Configure the CPP chart probes
+
+The shared CPP charts use different values keys:
+
+| Chart | Liveness values | Readiness values |
+|---|---|---|
+| [springboot-app](https://github.com/hmcts/cpp-helm-chart/blob/main/springboot-app/templates/deployment.yaml) | `livenessProbe` | `readinessProbe` |
+| [wildfly-app](https://github.com/hmcts/cpp-helm-chart/blob/main/wildfly-app/templates/deployment.yaml) | `application.livenessProbe` | `application.readinessProbe` |
+
+Set these values in the service's `cpp-aks-deploy` values files. Use the application's implemented health endpoint, port and startup timing. Check the rendered Deployment before deployment and the running workload afterwards.
+
+The [Spring Boot default values](https://github.com/hmcts/cpp-helm-chart/blob/main/springboot-app/values.yaml) probe `/` on the named `http` port. That default does not establish that `/` is the right health endpoint for a particular service. The WildFly Deployment sends `Host: api` with its HTTP probes; preserve that behaviour when testing the configured endpoint.
+
+[Kubernetes liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) can trigger a container restart after the configured failure threshold. Readiness failures remove a pod from matching Service endpoints. Test both behaviours in non-live and choose thresholds that allow the service's measured startup time.
+
+## Verify the workload and the service
+
+Check the cluster selected for the release before running Kubernetes commands. For the standard production CCM stack, these read-only checks identify the selected context, stack namespaces and workloads:
+
+```shell
+kubectl config current-context
+kubectl get namespaces -l stack=prdccm01
+kubectl -n ns-prd-ccm-01 get deployments,statefulsets,pods
+```
+
+Confirm the expected replicas are available and pods are Ready. Request the configured health URL and run the service's smoke test through its intended gateway or API route. A successful deployment job does not establish that the service's business behaviour works.
+
+## Dynatrace and logs
+
+Both PRD cluster configurations, [`prd-cs01cl01.tfvars`](https://github.com/hmcts/cpp-terraform-azurerm-aks-config/blob/main/vars/prd-cs01cl01.tfvars) and [`prd-cs01cl02.tfvars`](https://github.com/hmcts/cpp-terraform-azurerm-aks-config/blob/main/vars/prd-cs01cl02.tfvars), declare the Dynatrace API for the [CPP tenant](https://ebe20728.live.dynatrace.com) and the network zone `azure.uksouth.crime`. These settings do not identify the cluster hosting a particular service; use the deployment pipeline's target or the Flux cluster Kustomization to identify it.
+
+Confirm that the deployed service appears in the expected Dynatrace view and that its test traffic is visible. Record the entity or dashboard link, the time range and the service/configuration version with the test results. Check application logs while running the smoke and integration tests.
+
+The [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note) includes Dynatrace checks before implementation and after restoration, plus a ten-minute observation step before closure. PlatOps BAU checks the problems view: record each new problem's link and affected service against the monitoring step in the release note, and tell the release manager if it meets a recorded stop condition. Follow the [alerting guide](alerting.html) for notification checks and maintenance windows.

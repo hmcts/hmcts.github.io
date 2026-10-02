@@ -1,13 +1,13 @@
 ---
 title: Starting a new component
-last_reviewed_on: 2026-09-30
+last_reviewed_on: 2026-10-09
 review_in: 6 months
 weight: 2
 ---
 
 # <%= current_page.data.title %>
 
-This guide takes a new component from its initial design to a tested deployment and a managed CPP release. It covers CCM AKS applications using Helmsman or Flux. For virtual-machine, Alfresco or AMP workloads, obtain the component-specific deployment runbook from Platform Operations during [service onboarding](../onboarding/service.html).
+This guide takes a new component from its initial design to a tested deployment and a managed CPP release. It covers CCM AKS applications deployed through Helmsman or Flux. For virtual-machine, Alfresco or AMP workloads, obtain the component-specific deployment runbook from Platform Operations during [service onboarding](../onboarding/service.html).
 
 ## From an idea to a working service
 
@@ -15,12 +15,12 @@ Follow these steps in order for a new application in a CPP CCM AKS stack. Infras
 
 | Step | What to do | What you need before continuing |
 |---|---|---|
-| 1. Agree the component | Complete [service onboarding](../onboarding/service.html): name the owner, check the architecture, identify dependencies and agree the first non-live stack and deployment controller. | An agreed service name, owning team, target stack and Helmsman or Flux route. |
+| 1. Agree the component | Complete [service onboarding](../onboarding/service.html): name the owner, check the architecture, identify dependencies and agree the first non-live stack. | An agreed service name, owning team, target stack and deployment controller. |
 | 2. Create the repository | Follow [repository and build setup](repository-and-build.html#prepare-the-source-repository). | Source ownership, a README, reviewed changes and a build that runs locally. |
 | 3. Build and publish | Configure the [CPP build pipeline](repository-and-build.html#configure-continuous-integration) and [publish the deployment image](repository-and-build.html#publish-the-image). | Passing checks, published dependencies and the exact container image repository and tag. |
 | 4. Provision dependencies | Set up [infrastructure, secrets and connectivity](infrastructure-and-connectivity.html). Start provisioning while developing the service. | Required databases, identities, secrets and network access exist in the target stack. |
 | 5. Deploy and test | Follow [deployment steps below](#1-select-the-image-build-route) for the selected controller. | Ready pods, a responding health endpoint, smoke and integration test results, logs and monitoring. |
-| 6. Take the service live | Follow [Path to Live](../path-to-live/index.html) with Crime Release Management. | Release evidence, approved RFC, deployment and rollback steps for PRP and PRD. |
+| 6. Take the service live | Follow [Path to Live](../path-to-live/index.html) with Crime Release Management. | Release evidence, a separate approved Halo RFC for each of PRP, PRX and PRD being changed, deployment and rollback steps. |
 | 7. Operate the service | Use [live service](../live-service/index.html) for environment availability and outbound IP configuration. | The owning team can support the service and its external connections. |
 
 Use the [CPP onboarding steps](../onboarding/index.html) to obtain personal access before starting. [Tools and configuration](../tools-and-configuration/index.html), [Helm charts](../helm-charts/index.html) and [CPP Artifactory](../standards/artifactory/index.html) provide supporting reference material throughout this journey.
@@ -38,12 +38,9 @@ Whichever route is used, record the exact image tag. The deployment controller c
 
 ## 2. Select the deployment route
 
-Check the configuration for the target environment:
+Check [deployment ownership](../tools-and-configuration/index.html) for the service's environment and stack. For an existing service, trace its Helmsman entry and enablement guard, or its Flux HelmRelease and environment/stack overlay. Agree the controller with Platform Operations during onboarding for a new service. Do not configure both controllers to manage the same release.
 
-- a service represented by an application entry in [`cpp-aks-deploy/helmsman.toml`](https://github.com/hmcts/cpp-aks-deploy/blob/main/helmsman.toml) is deployed through the Helmsman route below
-- a service represented by a `HelmRelease` under [`cpp-flux-config/apps`](https://github.com/hmcts/cpp-flux-config/tree/main/apps) is deployed by Flux
-
-A service can be under migration and use Flux in one environment while Helmsman still manages it elsewhere. Record the controller for every target environment; do not enable the same Kubernetes release through both controllers in the same environment and stack.
+For **Helmsman**, use [`cpp-aks-deploy`](https://github.com/hmcts/cpp-aks-deploy) for Helm and environment configuration, `cpp.pipeline` for image versions and the `cpp-aks-deploy` pipeline to run Helmsman. Follow steps 3A–6A below. For **Flux**, follow the [Flux route](#flux-route).
 
 ## Helmsman route
 
@@ -72,14 +69,14 @@ The `cpp.pipeline` branch containing this change is passed to the deployment pip
 
 Put non-secret settings in the values files described in step 3A. CPP CCM AKS currently supports two different secret mechanisms:
 
-- **HashiCorp Vault:** put an Ansible lookup such as `lookup('vault', 'secret/<environment>/<stack>/<secret-name>')` in the [common, environment or stack `.yaml.j2` values file](https://github.com/hmcts/cpp-aks-deploy/tree/main/ansible/group_vars) described in step 3A. `CPP-AKS-DEPLOY` receives its Vault address and token from an Azure DevOps variable group and resolves the lookup while rendering the Helm values.
+- **HashiCorp Vault:** put an Ansible lookup such as `lookup('vault', 'secret/<environment>/<stack>/<secret-name>')` in the [common, environment or stack `.yaml.j2` values file](https://github.com/hmcts/cpp-aks-deploy/tree/main/ansible/group_vars) described in step 3A. `cpp-aks-deploy` receives its Vault address and token from an Azure DevOps variable group and resolves the lookup while rendering the Helm values.
 - **Azure Key Vault:** set `secretProvider.create: true` and list the provisioned Key Vault and secret mappings under `secretProvider.keyVaults` in the service values. The shared charts contain [Secrets Store CSI `SecretProviderClass` templates](https://github.com/hmcts/cpp-helm-chart/blob/main/springboot-app/templates/secretProviderClass.yaml), and the pod receives those secrets at runtime. This route also requires the workload identity and Key Vault access to have been created for the service.
 
 Do not choose a secret mechanism from the environment name. Use HashiCorp Vault only when its path has been provisioned, or Azure Key Vault only when the vault entry, workload identity and access have been provisioned. Do not put a secret value in Git, a pipeline parameter or documentation. A reference to a secret is safe to commit; its value is not.
 
 ### 6A. Deploy to non-live
 
-Use the [`CPP-AKS-DEPLOY` Azure DevOps pipeline](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary). Queue it with:
+Use the [`cpp-aks-deploy` Azure DevOps pipeline](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary). Queue it with:
 
 - **Branch/tag:** the `cpp-aks-deploy` branch containing the new service configuration
 - **Environment:** the approved non-live environment: `dev`, `ste`, `sit` or `nft`
@@ -90,35 +87,36 @@ Use the [`CPP-AKS-DEPLOY` Azure DevOps pipeline](https://dev.azure.com/hmcts-cpp
 
 Leave `delete_ns`, `deploy_idam` and `create_db` clear unless the approved change explicitly requires them. They are separate platform operations, not normal application-deployment options.
 
-First run with `deploy-service` clear and review the complete Helmsman plan. Helmsman compares the desired state for the stack, so confirm that the plan does not contain an unrelated service change. Then run with `deploy-service` selected.
+First run with `deploy-service` clear and review the complete Helmsman plan. Earlier pipeline setup can still change namespace-related Helm releases, so [a plan-only run is not entirely side-effect free](../tools-and-configuration/index.html). Helmsman compares the desired state for the stack, so confirm that the plan does not contain an unrelated service change. Then run with `deploy-service` selected.
 
 A non-pull-request run enters the manual-validation job before the deployment job. For non-live, the current job resumes automatically after one minute if nobody responds; it is not a blocking approval gate.
 
+<span id="flux-route"></span>
+<span id="3b-add-the-service-to-cpp-flux-config"></span>
+
 ## Flux route
 
-### 3B. Add the service to `cpp-flux-config`
+Follow the [`cpp-flux-config` onboarding runbook](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/onboard-a-service.md):
 
-Follow the [`cpp-flux-config` onboarding runbook](https://github.com/hmcts/cpp-flux-config/tree/main/docs/runbooks). It defines the current file layout and includes worked examples. In summary:
+1. Add the service's HelmRelease and `kustomization.yaml` under `apps/base/services`, pinning the chart version and image repository.
+2. Reference it from `apps/base/kustomization.yaml` only if it must reach every configured environment. For one environment, reference it from that environment's `apps/environments` kustomization instead. Add environment values there and stack overrides under `apps/overlays/stacks`.
+3. Set the image-tag substitution in the target cluster's `clusters/<environment>/<cluster>/flux-cluster-vars.yaml`, or override it for a single stack in that cluster's `apps.yaml`. Check the Kustomization's path and `targetNamespace` to confirm the scope.
+4. Render each affected environment and stack overlay with `kustomize build`, run the repository's pre-commit checks and obtain the required reviews. PRD changes require an RFC number, change window and rollback plan for the repository's `prd-check` workflow.
+5. Merge the approved non-live change, then verify the target Flux Kustomization and HelmRelease are Ready and run the application checks below. For PRP, PRX or PRD, follow [Path to Live](../path-to-live/index.html) and obtain the environment's separate Halo RFC before merging in the approved window.
 
-- add the base `HelmRelease` and its `kustomization.yaml` under `apps/base/services/<service>/`
-- reference it from `apps/base` only if it must run in every configured environment; otherwise reference it from the required environment or stack overlay
-- put environment-specific settings and Azure Key Vault mappings in an environment patch
-- add the image-tag variable to each target cluster's `flux-cluster-vars.yaml`, with a stack override only when one stack must use a different tag
-- run `kustomize build` for every affected environment and stack before raising the PR
+Provision the service's databases, identities, secrets and network access before reconciliation. A manifest that renders successfully does not establish that those dependencies exist.
 
-The repository's automated onboarding workflow is a non-production proof of concept. It covers DEV, NFT and SIT, and STE stack 50 only. It does not create Key Vault secrets or onboard a service to PRP or PRD.
+<span id="verify-either-route"></span>
 
-After merge, Flux reconciles the committed configuration on its configured interval. The current repository sets this to five minutes. An operator with access can request an immediate reconciliation with the exact command in the repository runbook.
+## Verify the deployment
 
-## Verify either route
-
-After deployment, record the image tag and either the pipeline run link or the Flux commit and reconciliation result. Confirm:
+After deployment, record the image tag and either the pipeline run link or the Flux configuration commit and reconciliation result. Confirm:
 
 - the deployed workload is available and its pods are Ready
 - the service health endpoint responds
 - the service smoke test and required integration tests pass
 - logs show no new error from the service while the recorded smoke and integration tests run, and Dynatrace shows the expected service activity without a new alert
 
-A successful Helmsman pipeline or Flux reconciliation proves that the deployment controller completed without reporting an error. It does not prove that the pods are Ready or that the service's business behaviour works; the checks above provide that evidence.
+A successful `cpp-aks-deploy` run or Flux reconciliation does not by itself confirm application health or business behaviour. Verify pod readiness, the health endpoint and the service tests described above.
 
 Once the component works in non-live, continue with [Path to Live](../path-to-live/index.html).

@@ -1,13 +1,13 @@
 ---
 title: Infrastructure and connectivity
-last_reviewed_on: 2026-09-30
+last_reviewed_on: 2026-10-07
 review_in: 6 months
 weight: 2
 ---
 
 # <%= current_page.data.title %>
 
-Identify dependencies during [service onboarding](../onboarding/service.html) and provision them before the first deployment. An application values file or Flux `HelmRelease` does not create every dependency a service needs.
+Identify dependencies during [service onboarding](../onboarding/service.html) and provision them before the first deployment. An application values file does not create every dependency a service needs.
 
 ## Infrastructure and data
 
@@ -19,13 +19,13 @@ Use the CPP repository that owns the resource. Existing Terraform roots include 
 
 For a database-backed service, provision the application database and permissions, define the schema migration step and test it against the non-live database. Keep migration and rollback instructions with the service. Confirm connectivity using the service's runtime identity, not an administrator's credentials.
 
-A service that needs a new namespace also needs its namespace configuration, identity and permissions. For Flux, follow [add a stack or environment](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/add-a-stack-or-environment.md) and the workload-specific identity settings in [onboard a service](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/onboard-a-service.md).
+A service that needs a new namespace also needs its namespace configuration, identity and permissions.
 
 ## Secrets and identity
 
 Record which secrets the application needs and how it receives each one. CPP supports HashiCorp Vault lookups while Ansible renders deployment values and Azure Key Vault secrets mounted through the Secrets Store CSI integration. Follow the selected mechanism in [tools and configuration](../tools-and-configuration/index.html#crime-aks-application-secrets) and the [deployment instructions](index.html#5a-add-runtime-configuration).
 
-For HashiCorp Vault, provision the secret path and deployment access before adding its lookup to the values file. For Azure Key Vault, provision the secret, workload identity, federated credential and Key Vault access before enabling its chart mappings. Flux's workload identity settings must be wired into both the Helm release and the stack configuration as its runbook describes.
+For HashiCorp Vault, provision the secret path and deployment access before adding its lookup to the values file. For Azure Key Vault, provision the secret, workload identity, federated credential and Key Vault access before enabling its chart mappings.
 
 Commit only secret references and non-secret configuration. Confirm that the running application can read its secrets as part of the first deployment checks.
 
@@ -33,7 +33,7 @@ Commit only secret references and non-secret configuration. Confirm that the run
 
 Agree whether the service is called only inside the stack or needs access through a CPP gateway. Record its hostname, URL paths, port, authentication requirements and permitted callers. For an external connection, also record the destination and any firewall or IP allow-list requirement.
 
-The [CPP application charts](../helm-charts/application-charts.html) provide service routing. For example, the [springboot-app VirtualService template](https://github.com/hmcts/cpp-helm-chart/blob/main/springboot-app/templates/virtualservice.yaml) reads `gateway.name`, `gateway.namespace`, `gateway.host` and each service's `route.path` and optional `route.rewrite`. Set these in the Helmsman values or Flux release for the target environment, using the agreed gateway and stack hostname.
+The [CPP application charts](../helm-charts/application-charts.html) provide service routing. For example, the [springboot-app VirtualService template](https://github.com/hmcts/cpp-helm-chart/blob/main/springboot-app/templates/virtualservice.yaml) reads `gateway.name`, `gateway.namespace`, `gateway.host` and each service's `route.path` and optional `route.rewrite`. Set these in the `cpp-aks-deploy` values for the target environment, using the agreed gateway and stack hostname.
 
 When a new hostname or public entry point is required, arrange the DNS record, TLS certificate and gateway or application-gateway change with Platform Operations. Supply the hostname, route, backend port and target environments. Confirm which repository owns each change and complete those changes before testing the URL. A chart route alone does not provision public DNS or a certificate.
 
@@ -51,4 +51,4 @@ Before deploying, confirm that:
 - the intended hostname, route and TLS configuration are ready for the tests that need them
 - the service values define its port, health probes, resource requests and limits using the [selected chart](../helm-charts/using-and-customising.html)
 
-Continue with the [Helmsman or Flux deployment steps](index.html#2-select-the-deployment-route), then verify the service through its intended route as well as its health endpoint.
+Continue with the [CCM deployment steps](index.html#2-select-the-deployment-route), then verify the service through its intended route as well as its health endpoint.
