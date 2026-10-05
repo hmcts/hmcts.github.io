@@ -1,0 +1,48 @@
+---
+title: Monitoring
+last_reviewed_on: 2026-10-05
+review_in: 6 months
+weight: 30
+---
+
+# <%= current_page.data.title %>
+
+Before going live you need to be able to see what your application is doing in production: whether it is up, how it is performing, and what it is logging. This page covers what the platform provides and what your team needs to set up.
+
+## Health probes
+
+Kubernetes decides whether your application receives traffic, and whether it needs restarting, based on its readiness and liveness probes. Get these right first — see [Health probes](health-endpoints.html).
+
+## Application Insights
+
+Application telemetry — requests, exceptions, dependencies and traces — goes to Application Insights. Teams provision an Application Insights instance in their shared infrastructure using [terraform-module-application-insights](https://github.com/hmcts/terraform-module-application-insights).
+
+Things to check before go-live:
+
+- Your application reads the Application Insights connection string from a production Key Vault secret. The [plum prod overlay](https://github.com/hmcts/cnp-flux-config/blob/master/apps/cnp/plum-fastapi-backend/prod.yaml) shows the pattern: the secret is mounted from the team vault and passed to the application as an environment variable.
+- If several applications share one Application Insights instance, each must set a distinct `cloud_roleName` so their telemetry can be told apart.
+- Production logging level should default to `INFO`, be controllable through an environment variable, and must not include customer information without a business justification and Security Operations approval. The [Operational Acceptance Testing](oat.html) page lists the full logging criteria.
+- The module creates a daily cap alert by default, so your team is notified in Slack if your instance stops accepting telemetry — see [alerting](alerting.html).
+
+## Dashboards
+
+[Grafana is the observability platform for CNP](/cloud-native-platform/guides/grafana-observability-platform.html). There are AAT and production instances, access is role-based, and most CFT and SDS developers already have viewer access. Use it to build a dashboard for your service before go-live so that you are not assembling queries during your first incident.
+
+## Platform-level monitoring
+
+Cluster and infrastructure monitoring is managed by the platform rather than by service teams:
+
+- The CFT production clusters run the [Dynatrace operator](https://github.com/hmcts/cnp-flux-config/tree/master/apps/dynatrace).
+- The SDS clusters run [kube-prometheus-stack](https://github.com/hmcts/sds-flux-config/tree/master/apps/monitoring), whose metrics back the SDS Grafana dashboards.
+
+You do not need to set these up, but it is useful to know they exist when Platform Operations asks about your service during an incident or an [OAT](oat.html).
+
+## Monitoring readiness checklist
+
+Before your first production release you should be able to answer yes to all of these:
+
+- Readiness and liveness probes are configured and tested.
+- Application telemetry is arriving in Application Insights, with a distinct `cloud_roleName` per application.
+- You have a dashboard showing your service's health in production.
+- You can find your application logs and query them.
+- Your Service Operations Guide documents where monitoring lives — see [Operational Acceptance Testing](oat.html).

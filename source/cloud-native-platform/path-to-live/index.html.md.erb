@@ -1,7 +1,7 @@
 ---
 title: Path to Live
-last_reviewed_on: 2026-01-15
-review_in: 8 months
+last_reviewed_on: 2026-10-05
+review_in: 6 months
 weight: 7
 ---
 
@@ -9,11 +9,13 @@ weight: 7
 
 This section covers production-only concerns. Complete [Starting a new component](../new-component/) first to get your application running in a non-production environment, then come back here before going live.
 
-## Operational readiness guidance
+Work through it in this order:
 
-- [Productionise your application](productionise-your-application.html)
-- [Health probes](health-endpoints.html)
-- [Operational Acceptance Testing](oat.html)
-- [Shuttering](shutter.html)
+1. [Productionise your application](productionise-your-application.html) — get approved for production, prepare your production configuration, and understand what happens before, during and after a deployment.
+2. [Health probes](health-endpoints.html) — configure the readiness and liveness checks the platform uses to keep your application available.
+3. [Monitoring](monitoring.html) — make sure you can see what your application is doing in production.
+4. [Alerting](alerting.html) — make sure the right people find out when something goes wrong.
+5. [Operational Acceptance Testing](oat.html) — check whether your release needs an OAT and how to prepare for one.
+6. [Shuttering](shutter.html) — set up and test a shutter page for user-facing services.
 
 There may be other business processes you need to go through, but they are out of scope of this section.

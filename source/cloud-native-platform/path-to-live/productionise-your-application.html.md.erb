@@ -1,19 +1,74 @@
 ---
 title: Productionise your application
-last_reviewed_on: 2026-01-15
+last_reviewed_on: 2026-10-05
 review_in: 6 months
-weight: 6
+weight: 10
 ---
 
 # <%= current_page.data.title %>
 
-This covers details on how to deploy your application to production, including the steps to take before and after deployment.
+This covers how your application reaches production, and the steps to take before and after a deployment.
 
-## Environment approvals
+## Before your first production deployment
 
-To allow Jenkins to deploy to production, add your GitHub repository to the approved repositories list.
+### Get your repository approved for production
 
-CFT: [hmcts/cnp-jenkins-config/environment-approvals.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
+To allow Jenkins to deploy to production, add your GitHub repository to the `prod` list in the approved repositories file:
 
-SDS: [hmcts/sds-jenkins-config/environment-approvals.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/environment-approvals.yml)
+- CFT: [hmcts/cnp-jenkins-config/environment-approvals.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/environment-approvals.yml)
+- SDS: [hmcts/sds-jenkins-config/environment-approvals.yml](https://github.com/hmcts/sds-jenkins-config/blob/master/environment-approvals.yml)
 
+Production is the only environment that requires approval. If your repository is not on the list, the pipeline skips the production stages and prints a warning banner in the build log instead — see [approvedEnvironmentRepository](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/approvedEnvironmentRepository.groovy).
+
+### Check your team configuration
+
+Build and deployment notifications go to the Slack channels registered for your product in [team-config.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml) (CFT) or the equivalent file in [sds-jenkins-config](https://github.com/hmcts/sds-jenkins-config) (SDS). Check that `contact_channel`, `channel_id` and `build_notices_channel` are correct for your team — [alerting](alerting.html) uses these values too.
+
+### Prepare your production configuration
+
+- **Infrastructure**: if your repository has an `infrastructure` folder, the pipeline runs Terraform against the production subscription on merges to `master`, so your production variables must exist. Pull requests that change infrastructure also run a Terraform plan against production, unless the pull request has the `not-plan-on-prod` label or topic — see [withPipeline](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/withPipeline.groovy).
+- **Flux configuration**: add a production overlay for your application — `apps/<team>/<component>/prod.yaml` in [cnp-flux-config](https://github.com/hmcts/cnp-flux-config) (CFT) or [sds-flux-config](https://github.com/hmcts/sds-flux-config) (SDS) — with your production ingress host, Key Vault secrets, environment variables and scaling values. The [plum prod overlay](https://github.com/hmcts/cnp-flux-config/blob/master/apps/cnp/plum-fastapi-backend/prod.yaml) from the platform's test service is a worked example.
+- **Secrets**: any Key Vault secrets your production configuration references must exist in the production vault before the first deployment.
+- **Database changes**: if your pipeline enables database migrations (`enableDbMigration` in your Jenkinsfile), the migration runs as a pipeline stage in each environment, including production. Read the [database schema change standards](/cloud-native-platform/standards/db-schema-change.html) before you rely on this for production changes.
+
+### Operational readiness
+
+Before go-live, make sure:
+
+- [Health probes](health-endpoints.html) are configured.
+- [Monitoring](monitoring.html) is in place.
+- [Alerting](alerting.html) is in place.
+- [Shuttering](shutter.html) is configured and tested, for user-facing services.
+- Your release is sized correctly and, if needed, an [Operational Acceptance Test](oat.html) is arranged — see [Release Categorisation](/cloud-native-platform/guides/release-sizing.html).
+
+## What happens when you deploy
+
+A merge to `master` runs the stages below, in this order — see [withPipeline](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/withPipeline.groovy):
+
+1. Build and test.
+2. Infrastructure build and optional database migration against staging (AAT).
+3. Deploy to the staging cluster — smoke tests and functional tests run here.
+4. The Helm chart is published.
+5. Infrastructure build and optional database migration against production. This is gated by the environment approvals above, and a lock allows only one production deployment per application at a time.
+6. The Docker image that passed every stage is promoted: it is re-tagged in the container registry as `prod-<commit>-<timestamp>` — see [sectionPromoteBuildToStage](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/sectionPromoteBuildToStage.groovy). Older production tags are purged at the same time.
+
+Pipelines can also run optional stages, such as high level data setup, where a repository configures them.
+
+The production rollout itself is GitOps, not a pipeline stage. Flux watches the container registry: when a new production tag appears, the image automation commits the new tag to the Flux configuration repository (the commit message is the image reference — you can see these on the repository's `master` branch), and the Flux controllers then upgrade your application on the production clusters. The `# {"$imagepolicy": ...}` marker comment next to the image in your `prod.yaml` is what allows the automation to rewrite the tag.
+
+Two consequences of this are worth understanding:
+
+- **A green Jenkins build does not mean the rollout has finished.** Image promotion is the last pipeline step; the production rollout happens asynchronously after it.
+- **The pipeline does not run smoke tests against production.** Smoke and functional tests run in preview and staging only, so you need to verify production yourself after each release.
+
+## After a deployment
+
+- Confirm the image update commit has appeared in the Flux configuration repository — the commit message is the image tag you expect.
+- Confirm your application upgraded and is healthy. Deployment failures in your namespace are posted to your team's Slack channel — see [alerting](alerting.html).
+- Check your dashboards and logs for errors and unusual patterns — see [monitoring](monitoring.html).
+
+### Rolling back
+
+The Flux image policy always selects the newest production-tagged image, and older tags are purged, so you cannot roll back by deleting a tag or re-deploying an old one. To roll back application code, revert the change in GitHub and let the pipeline build and promote a new image from the reverted code.
+
+Database changes need their own rollback plan — a reverted application image does not undo a schema migration. See the [database schema change standards](/cloud-native-platform/standards/db-schema-change.html).
