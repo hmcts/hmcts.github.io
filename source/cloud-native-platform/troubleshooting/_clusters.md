@@ -64,7 +64,8 @@
   az aks get-credentials --resource-group ss-sbox-00-rg --name ss-sbox-00-aks --subscription DTS-SHAREDSERVICES-SBOX
   az aks get-credentials --resource-group ss-sbox-01-rg --name ss-sbox-01-aks --subscription DTS-SHAREDSERVICES-SBOX
 
-  # Dev
+  # Dev (only one cluster is active at a given time)
+  az aks get-credentials --resource-group ss-dev-00-rg --name ss-dev-00-aks --subscription DTS-SHAREDSERVICES-DEV
   az aks get-credentials --resource-group ss-dev-01-rg --name ss-dev-01-aks --subscription DTS-SHAREDSERVICES-DEV
   
   # Staging
