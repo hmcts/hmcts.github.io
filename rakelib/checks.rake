@@ -55,6 +55,7 @@ CRITICAL_PAGES = %w[
   cjs-common-platform/helm-charts/index.html
   cjs-common-platform/standards/artifactory/index.html
   cloud-native-platform/index.html
+  cloud-native-platform/path-to-live/index.html
   hmcts-overview/index.html
   standards/index.html
   platform-catalogue/index.html

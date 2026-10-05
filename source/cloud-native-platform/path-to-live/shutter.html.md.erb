@@ -2,7 +2,7 @@
 title: Shutter Implementation and Design
 last_reviewed_on: 2026-08-10
 review_in: 12 months
-weight: 5
+weight: 60
 ---
 
 # <%= current_page.data.title %>
@@ -162,6 +162,12 @@ Service teams should be tagging any new records with the appropriate platform ta
 ```
 kubectl get ingress -A | grep -v '.internal'
 ```
+
+## Shuttering all SDS services
+
+SDS services shutter the same way as CFT services. To shutter every SDS service at once, use the `shutter_all_sds` option in [shutter_by_platform.yml](https://github.com/hmcts/azure-public-dns/blob/master/shuttering/prod/shutter_by_platform.yml) — it shutters any A or CNAME record tagged with `platform: "sds"`. To unshutter, set `shutter_all_sds` back to `false`.
+
+As with CFT, any new A or CNAME records must be tagged with the appropriate platform tag for them to be included in the platform-wide options.
 
 ## How to access your application when it is shuttered (For testing purposes only)
 
