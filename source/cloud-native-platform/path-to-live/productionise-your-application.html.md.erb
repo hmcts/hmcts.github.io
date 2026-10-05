@@ -46,11 +46,11 @@ Before go-live, make sure:
 A merge to `master` runs the stages below, in this order — see [withPipeline](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/withPipeline.groovy):
 
 1. Build and test.
-1. Infrastructure build and optional database migration against staging (AAT).
-1. Deploy to the staging cluster — smoke tests and functional tests run here.
-1. The Helm chart is published.
-1. Infrastructure build and optional database migration against production. This is gated by the environment approvals above, and a lock allows only one production deployment per application at a time.
-1. The Docker image that passed every stage is promoted: it is re-tagged in the container registry as `prod-<commit>-<timestamp>` — see [sectionPromoteBuildToStage](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/sectionPromoteBuildToStage.groovy). Older production tags are purged at the same time.
+2. Infrastructure build and optional database migration against staging (AAT).
+3. Deploy to the staging cluster — smoke tests and functional tests run here.
+4. The Helm chart is published.
+5. Infrastructure build and optional database migration against production. This is gated by the environment approvals above, and a lock allows only one production deployment per application at a time.
+6. The Docker image that passed every stage is promoted: it is re-tagged in the container registry as `prod-<commit>-<timestamp>` — see [sectionPromoteBuildToStage](https://github.com/hmcts/cnp-jenkins-library/blob/master/vars/sectionPromoteBuildToStage.groovy). Older production tags are purged at the same time.
 
 Pipelines can also run optional stages, such as high level data setup, where a repository configures them.
 
