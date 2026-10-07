@@ -1,0 +1,48 @@
+---
+title: Alerting
+last_reviewed_on: 2026-10-05
+review_in: 6 months
+weight: 40
+---
+
+# <%= current_page.data.title %>
+
+Monitoring tells you what your application is doing; alerting makes sure the right people find out when something goes wrong, without anyone watching a dashboard. This page covers the alerts the platform already sends on your behalf, and the alerts your team is responsible for creating.
+
+## Alerts the platform provides
+
+### Deployment failures, to your team's Slack channel
+
+Every team namespace in the Flux configuration gets a `team-alerts` object that posts an error to Slack when a Helm release in your namespace fails — see [alert.yaml](https://github.com/hmcts/cnp-flux-config/blob/master/apps/base/alert.yaml) and [provider.yaml](https://github.com/hmcts/cnp-flux-config/blob/master/apps/base/provider.yaml) in cnp-flux-config; sds-flux-config uses the same pattern. The destination channel is your team's notification channel, set per team in `apps/<team>/base/kustomize.yaml` in the Flux configuration repository. If a production rollout fails after the pipeline has gone green, this is where you find out — make sure your team actually watches that channel.
+
+### Build failures, to your build notices channel
+
+Jenkins posts build failure and recovery notifications to the `build_notices_channel` registered for your product in [team-config.yml](https://github.com/hmcts/cnp-jenkins-config/blob/master/team-config.yml) (CFT) or the equivalent in [sds-jenkins-config](https://github.com/hmcts/sds-jenkins-config) (SDS).
+
+### Application Insights daily cap
+
+The [Application Insights Terraform module](https://github.com/hmcts/terraform-module-application-insights) creates an alert that fires when your instance reaches its daily telemetry cap — meaning telemetry is being dropped. It routes through a platform-maintained action group to the Slack channel registered as your product's `channel_id` in `team-config.yml`.
+
+Because all three of these resolve your team's channels from configuration, keeping `team-config.yml` and your Flux team configuration up to date is part of being production-ready.
+
+## Alerts you create
+
+The platform does not know what "unhealthy" means for your service — error rates, queue backlogs, failed payments, overnight jobs that did not run. Alerts on those are your team's responsibility.
+
+### Application Insights log query alerts
+
+[cnp-module-metric-alert](https://github.com/hmcts/cnp-module-metric-alert) creates an Azure alert from a log query against your Application Insights instance. You provide the query, the threshold, the evaluation frequency and severity, and the action group to notify. Define these in your shared infrastructure Terraform alongside the Application Insights instance they query.
+
+### Action groups
+
+An alert needs an action group to deliver it. [cnp-module-action-group](https://github.com/hmcts/cnp-module-action-group) creates one for your team — for example, to send email. The platform also maintains shared action groups that post to your team's Slack channel (resolved from `team-config.yml`), which is how the daily cap alert above reaches you.
+
+### SDS: Prometheus rules
+
+The SDS clusters run [kube-prometheus-stack](https://github.com/hmcts/sds-flux-config/tree/master/apps/monitoring), and alert rules can be defined as `PrometheusRule` objects in sds-flux-config.
+
+## Alerting readiness checklist
+
+- Your team's channels in `team-config.yml` and the Flux team configuration are correct, and the team watches them.
+- You have alerts covering the failure modes that matter for your service, not just the ones the platform sends for free.
+- Someone is accountable for responding — an alert nobody owns is noise. Your support model and alert routing should be documented in your Service Operations Guide — see [Operational Acceptance Testing](oat.html).

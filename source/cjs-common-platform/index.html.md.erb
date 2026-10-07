@@ -1,6 +1,6 @@
 ---
 title: CJS Common Platform
-last_reviewed_on: 2026-09-10
+last_reviewed_on: 2026-09-30
 review_in: 6 months
 weight: 4
 ---
@@ -11,12 +11,20 @@ The CJS Common Platform (CPP) supports the criminal courts in England and Wales.
 
 New joiners should read and follow the [onboarding](onboarding/index.html) process to obtain access.
 
-If you are adding a service, start with [onboarding a service](onboarding/service.html), then follow the [new component](new-component/index.html) and [Path to Live](path-to-live/index.html) guides.
+## Service lifecycle
 
-For an orientation to how the platform is put together, the language it uses and where
-the authoritative documentation lives, start with [architecture](architecture/index.html).
-It links the published [architecture model](https://hmcts.github.io/cp-c4-architecture/).
+Follow the lifecycle stages in order when bringing a new component onto CPP:
 
-The [tools and configuration](tools-and-configuration/index.html) page explains where CPP service versions, deployment configuration and shared platform tooling live.
+1. [Onboarding](onboarding/index.html): obtain personal access and complete [service onboarding](onboarding/service.html) to agree ownership, dependencies and the first target stack.
+2. [Starting a new component](new-component/index.html): create the repository, configure the build, provision dependencies, deploy to non-live and validate the service.
+3. [Path to Live](path-to-live/index.html): prepare release evidence and deploy through PRP and PRD with Crime Release Management.
+4. [Live service](live-service/index.html): check environment availability and outbound network configuration for running services.
 
-The [Helm charts](helm-charts/index.html) section catalogues the shared charts every CPP deployment uses, and how to use and customise them.
+## Platform reference
+
+Use these sections throughout the lifecycle:
+
+- [Architecture](architecture/index.html): platform structure, terminology and the published [architecture model](https://hmcts.github.io/cp-c4-architecture/).
+- [Tools and configuration](tools-and-configuration/index.html): service versions, deployment configuration and shared platform tooling.
+- [Helm charts](helm-charts/index.html): the shared chart catalogue and how to use and customise charts.
+- [Standards](standards/index.html): shared platform services, including [CPP Artifactory](standards/artifactory/index.html) for publishing and resolving artefacts.

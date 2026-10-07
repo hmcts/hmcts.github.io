@@ -1,13 +1,29 @@
 ---
 title: Starting a new component
-last_reviewed_on: 2026-09-14
+last_reviewed_on: 2026-09-30
 review_in: 6 months
-weight: 3
+weight: 2
 ---
 
 # <%= current_page.data.title %>
 
-This guide takes a new service through its first deployment to a CPP CCM AKS stack. It covers the current Helmsman and Flux deployment routes. It does not cover CPP virtual machines, Alfresco or AMP deployments. Complete [service onboarding](../onboarding/service.html) first.
+This guide takes a new component from its initial design to a tested deployment and a managed CPP release. It covers CCM AKS applications using Helmsman or Flux. For virtual-machine, Alfresco or AMP workloads, obtain the component-specific deployment runbook from Platform Operations during [service onboarding](../onboarding/service.html).
+
+## From an idea to a working service
+
+Follow these steps in order for a new application in a CPP CCM AKS stack. Infrastructure changes and shared libraries use the relevant build and provisioning steps; they do not need an application deployment.
+
+| Step | What to do | What you need before continuing |
+|---|---|---|
+| 1. Agree the component | Complete [service onboarding](../onboarding/service.html): name the owner, check the architecture, identify dependencies and agree the first non-live stack and deployment controller. | An agreed service name, owning team, target stack and Helmsman or Flux route. |
+| 2. Create the repository | Follow [repository and build setup](repository-and-build.html#prepare-the-source-repository). | Source ownership, a README, reviewed changes and a build that runs locally. |
+| 3. Build and publish | Configure the [CPP build pipeline](repository-and-build.html#configure-continuous-integration) and [publish the deployment image](repository-and-build.html#publish-the-image). | Passing checks, published dependencies and the exact container image repository and tag. |
+| 4. Provision dependencies | Set up [infrastructure, secrets and connectivity](infrastructure-and-connectivity.html). Start provisioning while developing the service. | Required databases, identities, secrets and network access exist in the target stack. |
+| 5. Deploy and test | Follow [deployment steps below](#1-select-the-image-build-route) for the selected controller. | Ready pods, a responding health endpoint, smoke and integration test results, logs and monitoring. |
+| 6. Take the service live | Follow [Path to Live](../path-to-live/index.html) with Crime Release Management. | Release evidence, approved RFC, deployment and rollback steps for PRP and PRD. |
+| 7. Operate the service | Use [live service](../live-service/index.html) for environment availability and outbound IP configuration. | The owning team can support the service and its external connections. |
+
+Use the [CPP onboarding steps](../onboarding/index.html) to obtain personal access before starting. [Tools and configuration](../tools-and-configuration/index.html), [Helm charts](../helm-charts/index.html) and [CPP Artifactory](../standards/artifactory/index.html) provide supporting reference material throughout this journey.
 
 ## 1. Select the image-build route
 

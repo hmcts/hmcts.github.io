@@ -1,0 +1,47 @@
+---
+title: Repository and build setup
+last_reviewed_on: 2026-09-30
+review_in: 6 months
+weight: 1
+---
+
+# <%= current_page.data.title %>
+
+Complete [service onboarding](../onboarding/service.html) first. This page covers source code, continuous integration and publishing an image for a CPP CCM AKS service.
+
+## Prepare the source repository
+
+Agree the repository name and source-control location with the owning team. CPP has application repositories in both GitHub and Gerrit; the deployment repositories use GitHub. A new component does not need a repository in both systems.
+
+Create a GitHub repository in the HMCTS organisation and grant access through the owning GitHub team. For a Gerrit repository, request creation and access from Crime SRE / DevOps, the capability owner identified in the [Gerrit BCDR runbook](https://github.com/hmcts/platops-bcdr-runbooks/blob/master/source/domains/developer-enablement/gerrit-recovery.html.md.erb). Protect the default branch with reviewed changes and the checks from the component's own pipeline. Use the branch and check names configured in that repository.
+
+Choose an existing CPP component with the same runtime as a reference for the project layout and build configuration. For example, [cpp-context-sjp](https://github.com/hmcts/cpp-context-sjp) shows a Java context service and its [Azure DevOps pipeline](https://github.com/hmcts/cpp-context-sjp/blob/main/azure-pipelines.yaml). Adapt the service name, package names, test modules and dependencies to the new component. The CNP application templates include CNP deployment configuration; they do not configure a CPP service.
+
+Commit the source, dependency manifests and build scripts. Add a README with the owning team, purpose, local build and test commands, configuration names, health endpoint and integration-test instructions. Include tests for the component's behaviour and its API or event contracts.
+
+Use the runtime versions required by the chosen CPP application and chart. Configure dependency access using [CPP Artifactory consuming guidance](../standards/artifactory/consuming.html), connect to the CPP VPN and run the repository's documented build and tests locally. Keep credentials and local secret files out of Git.
+
+## Configure continuous integration
+
+For a service-owned Azure DevOps build, create the pipeline in the [CPP applications project](https://dev.azure.com/hmcts-cpp/cpp-apps) using the repository's YAML file. Configure the GitHub service connection, CPP agent pool and access to the secure files and variable groups used by its templates with Platform Operations.
+
+CPP Azure Resource Manager service connections are created and maintained manually by CPP DevOps / Platform Operations. Committing pipeline YAML does not provision a connection or grant it Azure access. Confirm the connection's target subscription and pipeline permissions before the first run; the [CPP Azure DevOps BCDR runbook](https://github.com/hmcts/platops-bcdr-runbooks/blob/master/source/domains/developer-enablement/azure-devops-cpp-recovery.html.md.erb) documents this ownership and the identity dependencies.
+
+Use [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates) for the component's build type. The [CPP Artifactory CI/CD guide](../standards/artifactory/ci-cd.html) maps Java context, library and UI builds to the templates and explains dependency credentials and agent access.
+
+For a Java context service, the SJP pipeline demonstrates separate `context-verify.yaml` checks for pull requests and `context-validation.yaml` for continuous integration. Set the new service's SonarQube project, service name and integration-test folder. Review its triggers, template parameters and deployment stages before enabling it: context validation can deploy a validation stack. Obtain the stack owner's agreement for that work.
+
+Run a pull request through the configured checks before making those checks mandatory on the default branch. Run the build that publishes the component's artefacts and record its URL and source commit. A passing verification job alone does not publish a deployable image.
+
+## Publish the image
+
+Select the image route recorded during onboarding:
+
+- **Central context-service image build:** add the service-to-repository mapping to [cpp-docker-images/metadata-contexts.json](https://github.com/hmcts/cpp-docker-images/blob/main/metadata-contexts.json) in a reviewed change. Provide the service repository's `docker/Dockerfile_*` files and publish the application artefacts they consume first. The [seed job definition](https://github.com/hmcts/cpp-docker-images/blob/main/seed.groovy) generates the Jenkins image jobs. Arrange the seed run with Platform Operations, then select the job named by the metadata key in the `Build Docker Images` view of [CPP non-live Jenkins](https://build.mdv.cpp.nonlive).
+- **Service-owned image build:** configure the service pipeline to build its Dockerfile and publish to the CPP Azure Container Registry through its approved service connection. Record the image repository and the tag produced by that run. The pipeline must make the image available in each registry used by the target environments before deployment.
+
+For either route, confirm that the published image exists in the target registry. Record the full image reference, source commit and successful build run. Use a versioned tag for the deployment so another build cannot silently change the selected image.
+
+For a library-only component, follow [publishing and promoting artefacts](../standards/artifactory/publishing.html); it does not need an application Helm release.
+
+Continue with [infrastructure and connectivity](infrastructure-and-connectivity.html), then the [deployment steps](index.html#1-select-the-image-build-route).
