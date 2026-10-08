@@ -1,6 +1,6 @@
 ---
 title: Using and customising charts
-last_reviewed_on: 2026-09-18
+last_reviewed_on: 2026-10-07
 review_in: 6 months
 weight: 3
 ---
@@ -33,7 +33,7 @@ The pieces that matter:
 - **Chart versions are variables**, resolved per environment, so environments can move to a new chart version independently.
 - Most charts are consumed straight from the OCI registry; the shared application charts are pulled and unpacked locally first by [helm_chart_pull.sh](https://github.com/hmcts/cpp-aks-deploy/blob/main/scripts/helm_chart_pull.sh) (so the pipeline can stamp the release's `appVersion`), which is why some entries reference `install/springboot-app` rather than an `oci://` URL.
 
-The deployment itself is run by the `CPP-AKS-DEPLOY` Azure DevOps pipeline — see [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html#pipeline-configuration) for the pipeline, its environments and its approval gates.
+The deployment itself is run by the `CPP-AKS-DEPLOY` Azure DevOps pipeline — see [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html#deploying-applications-to-crime-aks) for the pipeline, its environments and its approval gates.
 
 ## Consuming a chart with Flux
 

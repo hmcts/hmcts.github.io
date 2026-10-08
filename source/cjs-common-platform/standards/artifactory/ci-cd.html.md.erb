@@ -9,7 +9,7 @@ weight: 4
 
 Wiring an Azure DevOps pipeline to CPP Artifactory. In nearly every case this means extending a template from [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates/tree/main) rather than writing Maven or npm configuration yourself: the templates already handle credentials, the CA, caching and retries.
 
-## Extending the shared templates
+## Choosing a build template
 
 A consuming repository declares the template repository as a resource and extends a pipeline from it:
 
@@ -35,7 +35,8 @@ Pick the pipeline that matches what the repository produces.
 | A context service | `pipelines/context-validation.yaml` |
 | A UI library | `pipelines/ui-library-validation.yaml` |
 | A UI application | `pipelines/ui-validation.yaml` |
-| Terraform | `pipelines/terraform-ws-plan-and-apply.yaml` and friends |
+
+For Terraform pipelines, use the [Terraform dispatcher guidance](../azure-devops.html#using-cpp-azure-devops-templates).
 
 ## The steps that touch Artifactory
 
