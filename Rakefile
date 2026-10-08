@@ -3,8 +3,21 @@ require 'html-proofer'
 
 desc "Check for broken links in build/ with html-proofer"
 task :check_urls do
+    token = ENV.fetch('GH_TOKEN', '').strip
+    if token.empty?
+        # Fork and Dependabot pull requests get no secrets. Without a token, links into
+        # private hmcts repos 404, and so do public ones once the empty Authorization
+        # header is sent, so those pull requests fail on links they never touched.
+        # Every other GitHub Actions run has the token and must check external links.
+        if ENV['GITHUB_ACTIONS'] == 'true' && ENV['GITHUB_EVENT_NAME'] != 'pull_request'
+            abort "GH_TOKEN is not set for this #{ENV['GITHUB_EVENT_NAME']} run, so external links cannot be checked"
+        end
+        puts "GH_TOKEN is not set: skipping external links, internal links are still checked"
+    end
+
     proofer = HTMLProofer.check_directory("./build",
         {
+            :disable_external => token.empty?,
             :check_external_hash => false,
             :ignore_missing_alt => true,
             # 301 and 303 are redirects html-proofer reports as a timeout
@@ -29,7 +42,6 @@ task :check_urls do
             ]
         })
 
-    token = ENV.fetch('GH_TOKEN', nil)
     proofer.before_request do |request|
         if request.base_url.include?("https://github.com/hmcts/")
             request.options[:headers]["Authorization"] = "Bearer #{token}"
