@@ -23,7 +23,7 @@ A service that needs a new namespace also needs its namespace configuration, ide
 
 ## Secrets and identity
 
-Record which secrets the application needs and how it receives each one. CPP supports HashiCorp Vault lookups while Ansible renders deployment values and Azure Key Vault secrets mounted through the Secrets Store CSI integration. Follow the selected mechanism in [tools and configuration](../tools-and-configuration/index.html#secrets) and the [deployment instructions](index.html#5a-add-runtime-configuration).
+Record which secrets the application needs and how it receives each one. CPP supports HashiCorp Vault lookups while Ansible renders deployment values and Azure Key Vault secrets mounted through the Secrets Store CSI integration. Follow the selected mechanism in [tools and configuration](../tools-and-configuration/index.html#crime-aks-application-secrets) and the [deployment instructions](index.html#5a-add-runtime-configuration).
 
 For HashiCorp Vault, provision the secret path and deployment access before adding its lookup to the values file. For Azure Key Vault, provision the secret, workload identity, federated credential and Key Vault access before enabling its chart mappings. Flux's workload identity settings must be wired into both the Helm release and the stack configuration as its runbook describes.
 
