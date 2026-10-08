@@ -51,13 +51,27 @@ A minimal configuration for production would be:
 
 For other options, look at what existing applications use in the same file.
 
-Before sending a pull request to this repo ensure that:
+### TLS certificate
 
-- your DNS pull request has been merged,
-- your TLS certificate has been stored in vault, if you aren't sure then just create the pull request,
-the build will fail if it isn't present.
+You do not need to supply a certificate. By default Front Door issues and renews a managed
+certificate for your custom domain, and the pipeline adds the record that validates it to your DNS zone.
 
-Once the above is complete, send a pull request with your configuration change,
+A certificate from Key Vault is only used when an entry sets `ssl_mode = "AzureKeyVault"`. The
+certificate named in `certificate_name` must then already be in the platform's Key Vault, or the
+build fails. Many existing entries have `certificate_name` without `ssl_mode`; it has no effect there,
+so leave it out when you copy one. If you think you need a Key Vault certificate, ask in
+[#platops-help](https://hmcts-reform.slack.com/app_redirect?channel=platops-help).
+
+If your domain's DNS is hosted outside the HMCTS [public DNS](public-dns.html), the entry sets
+`hosted_externally = true` and the validation record has to be added with your DNS provider instead.
+Ask in #platops-help for the value.
+
+### Raise the pull request
+
+Make sure your [DNS pull request](public-dns.html) has been merged first. The build looks up the
+zone named in `dns_zone_name` and fails if it does not exist.
+
+Then send a pull request with your configuration change,
 you can ask for review in [#platops-code-review](https://hmcts-reform.slack.com/app_redirect?channel=platops-code-review).
 
 <hr>
