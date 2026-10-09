@@ -1,6 +1,6 @@
 ---
 title: Repository and build setup
-last_reviewed_on: 2026-09-30
+last_reviewed_on: 2026-10-09
 review_in: 6 months
 weight: 1
 ---
@@ -13,7 +13,7 @@ Complete [service onboarding](../onboarding/service.html) first. This page cover
 
 Agree the repository name and source-control location with the owning team. CPP has application repositories in both GitHub and Gerrit; the deployment repositories use GitHub. A new component does not need a repository in both systems.
 
-Create a GitHub repository in the HMCTS organisation and grant access through the owning GitHub team. For a Gerrit repository, request creation and access from Crime SRE / DevOps, the capability owner identified in the [Gerrit BCDR runbook](https://github.com/hmcts/platops-bcdr-runbooks/blob/master/source/domains/developer-enablement/gerrit-recovery.html.md.erb). Protect the default branch with reviewed changes and the checks from the component's own pipeline. Use the branch and check names configured in that repository.
+Create a GitHub repository in the HMCTS organisation and grant access through the owning GitHub team. For a Gerrit repository, request creation and access from PlatOps BAU. The [Gerrit BCDR runbook](https://github.com/hmcts/platops-bcdr-runbooks/blob/master/source/domains/developer-enablement/gerrit-recovery.html.md.erb) provides supporting recovery guidance. Protect the default branch with reviewed changes and the checks from the component's own pipeline. Use the branch and check names configured in that repository.
 
 Choose an existing CPP component with the same runtime as a reference for the project layout and build configuration. For example, [cpp-context-sjp](https://github.com/hmcts/cpp-context-sjp) shows a Java context service and its [Azure DevOps pipeline](https://github.com/hmcts/cpp-context-sjp/blob/main/azure-pipelines.yaml). Adapt the service name, package names, test modules and dependencies to the new component. The CNP application templates include CNP deployment configuration; they do not configure a CPP service.
 

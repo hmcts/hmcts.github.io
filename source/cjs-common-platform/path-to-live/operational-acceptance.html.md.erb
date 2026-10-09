@@ -1,0 +1,49 @@
+---
+title: Operational acceptance and release testing
+last_reviewed_on: 2026-10-09
+review_in: 6 months
+weight: 2
+---
+
+# <%= current_page.data.title %>
+
+Prepare the service's test instructions and results for Crime Release Management, AMS QA and the PlatOps BAU engineers implementing the CPP release. The [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note) records the implementation checks and who performs them.
+
+## Agree the change and validation scope
+
+Use **Infra Releases Chat on Teams** to coordinate the proposed change with Crime Release Management and the Crime product stakeholder. Describe the change and what needs validating, including whether NFT testing is needed as well as functional testing. Coordinate the testing assignment and slot through the AMS route below.
+
+## Arrange AMS QA testing
+
+Request AMS QA testing through **the CPP non-live release manager in the Infra Releases Chat Teams channel**. Describe the change and provide its non-live environment and stack, deployed image/configuration versions, test instructions and expected results.
+
+Coordinate the AMS QA assignment and testing slot with the release manager through that channel. Include any required NFT testing in the request so it can be coordinated with the NFT team. Record the agreed test date, assigned tester and results with the release evidence.
+
+Use the **AMS calendar** with the release coordinator to identify release support. Confirm PlatOps BAU availability and the assigned engineers through **Infra Releases Chat**. A calendar listing does not book a test or release; confirm the assignment and date with the coordinator.
+
+## Prove the change in non-live
+
+Give AMS QA the approved environment and stack, the deployed image/configuration versions and the functional test instructions. Record the results and defects for the release. Arrange NFT tests through the release process when they are part of the change's test scope.
+
+For operational evidence, provide:
+
+- the configured health URLs and their expected responses
+- a smoke test covering the service's intended API, event or user journey
+- integration tests for the dependencies changed by the release
+- links to the service logs, Dynatrace entities and alert configuration used for diagnosis
+- implementation, verification and rollback instructions for the service
+- the owning team and the support contact to use during release checks and incidents
+
+Record the environment in which each check was performed. A non-live result does not establish that PRP or PRD has the same connectivity, permissions or configuration.
+
+## Business testing of user journeys
+
+Business testing checks the user journeys affected by the change and is a separate activity from AMS testing. An AMS test result or a successful application smoke test does not replace the business-testing result.
+
+## Execute the PRP and PRD release checks
+
+The CPP release-note template includes PlatOps BAU pre-deployment checks, AKS pod checks, AMS smoke testing, release-specific post-deployment tests and Dynatrace observation. Add the service's actual commands, test URLs and expected results to the release note before implementation.
+
+AMS performs application smoke and release-specific testing; PlatOps BAU performs the platform and Dynatrace checks. The application team supplies its service-specific tests and helps interpret failures. Use the person assigned to each step in the approved release note for the implementation.
+
+Record the outcome against the test's implementation step in the CPP release note, including the environment, tester, time and links to logs or test results. Link that environment's Halo RFC from the release note so the change and its acceptance evidence can be traced together. If a test meets a recorded stop condition, inform the release manager and follow the approved rollback plan. Finish the release's [monitoring](monitoring-and-health.html) and [alerting](alerting.html) checks before requesting closure.

@@ -1,6 +1,6 @@
 ---
 title: Tools and configuration
-last_reviewed_on: 2026-10-07
+last_reviewed_on: 2026-10-09
 review_in: 6 months
 weight: 6
 ---
@@ -13,8 +13,8 @@ CPP has separate delivery tooling and environment configuration from the Cloud N
 |---|---|
 | Service source | The repository named by the service owner. Existing application repositories are not all in one source-control system. |
 | Central image builds for established context services | [cpp-docker-images](https://github.com/hmcts/cpp-docker-images/tree/main) |
-| Helmsman-managed CCM AKS image versions | [cpp.pipeline/aks-pipeline.versions.yml](https://codereview.mdv.cpp.nonlive/plugins/gitiles/cpp.pipeline/+/master/aks-pipeline.versions.yml) *(requires VPN and Azure credentials to access)* |
-| Helmsman-managed CCM AKS deployment | [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) |
+| CCM AKS image versions | [cpp.pipeline/aks-pipeline.versions.yml](https://codereview.mdv.cpp.nonlive/plugins/gitiles/cpp.pipeline/+/master/aks-pipeline.versions.yml) *(requires VPN and Azure credentials to access)* |
+| CCM AKS deployment | [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) |
 | Reusable Azure DevOps pipeline steps | [cpp-azure-devops-templates](https://github.com/hmcts/cpp-azure-devops-templates/tree/main) |
 | Reusable Kubernetes charts | [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main) |
 | AKS operational automation | [cpp-aks-ops](https://github.com/hmcts/cpp-aks-ops/tree/main) |
@@ -22,15 +22,17 @@ CPP has separate delivery tooling and environment configuration from the Cloud N
 | Legacy Terraform automation | [cpp-automation-terraform](https://github.com/hmcts/cpp-automation-terraform/tree/main) |
 | Build-agent and virtual-machine images | [cpp-packer-pipeline](https://github.com/hmcts/cpp-packer-pipeline/tree/main) |
 
+<span id="pipeline-configuration"></span>
+
 ## Deploying applications to Crime AKS
 
-CPP applications configured for this pipeline, including CCM can be deployed to Crime AKS clusters using Helmsman through the [`CPP-AKS-DEPLOY`](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary) pipeline.
+CPP applications configured for this pipeline, including CCM can be deployed to Crime AKS clusters using Helmsman through the [`cpp-aks-deploy`](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary) pipeline.
 
 Application entries and common, environment and stack values for deployment as well as pipeline configuration are maintained in the [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy) repository.
 
 The pipeline is defined in [aks-deploy.yaml](https://github.com/hmcts/cpp-aks-deploy/blob/main/aks-deploy.yaml). 
 
-`CPP-AKS-DEPLOY` pipeline supports `dev`, `sit`, `ste`, `nft`, `prp`, `prd`, and `prx`, selected through its environment parameter.
+`cpp-aks-deploy` pipeline supports `dev`, `sit`, `ste`, `nft`, `prp`, `prd`, and `prx`, selected through its environment parameter.
 
 The `deploy-service` determines whether the pipeline runs the Helmsman apply step after planning. A plan-only run can still perform earlier setup actions, including namespace-related Helm upgrades, so while it can be useful as a preview before applying your changes, do not treat it as entirely side-effect free.
 
@@ -38,9 +40,19 @@ The pipeline selects its live or non-live agent pool and credential variable gro
 
 Some established CPP components will use different Azure DevOps or Jenkins jobs. 
 
-Deploying services to virtual machines, Alfresco or AMP is done through completely separate deployment jobs and not `CPP-AKS-DEPLOY` - refer to relevant component release runbook.
+Deploying services to virtual machines, Alfresco or AMP is done through completely separate deployment jobs and not `cpp-aks-deploy` - refer to relevant component release runbook.
 
 Live deployments are governed by [Crime Release Management](https://hmcts.atlassian.net/wiki/display/RSTR/Crime+-+Release+Management).
+
+CCM applications have two deployment controllers: Helmsman through `cpp-aks-deploy`, and Flux through [`cpp-flux-config`](https://github.com/hmcts/cpp-flux-config). Select the controller for the service's environment and stack before changing deployment configuration:
+
+- [`apps/base/kustomization.yaml`](https://github.com/hmcts/cpp-flux-config/blob/main/apps/base/kustomization.yaml) includes `idam-integration-service` in every configured environment, including PRD.
+- [`apps/environments/ste/kustomization.yaml`](https://github.com/hmcts/cpp-flux-config/blob/main/apps/environments/ste/kustomization.yaml) adds `courtlistpublishing-service`, `listingcourtscheduler-service` and `gov-uk-notify-gateway-service` for STE only.
+- [`helmsman_set_default_variables.sh`](https://github.com/hmcts/cpp-aks-deploy/blob/main/scripts/helmsman_set_default_variables.sh) force-disables court-list publishing and listing-court scheduler on STE. It also disables court-list publishing on DEV CCM 01–10, SIT CCM 01, NFT CCM 01–02, PRP CCM 01 and PRD CCM 01.
+
+The court-list publishing guard names Flux as its controller on those non-STE stacks, but the current Flux environment manifests include that service only in STE. Resolve that discrepancy with Platform Operations before deploying it on a non-STE stack. Do not override the guard or assume that disabling Helmsman proves a Flux release exists.
+
+Trace the service through `apps/environments`, `apps/overlays/stacks` and `clusters` in `cpp-flux-config` to identify its target namespace and cluster. A service directory in `apps/base/services` alone does not select a deployment target. Follow [starting a new component](../new-component/index.html#2-select-the-deployment-route) for the two routes.
 
 ### Helmsman
 
@@ -159,6 +171,8 @@ Helmsman deployment described in [Deploying applications to Crime AKS](#deployin
 For an application-only change, select an existing chart and put the service configuration in [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy).
 
 Charts in `cpp-helm-chart` will only need to be modified when the application needs a reusable Kubernetes capability that the selected chart does not provide, individual service environment values should not be stored there.
+
+<span id="secrets"></span>
 
 ## Crime AKS application secrets
 

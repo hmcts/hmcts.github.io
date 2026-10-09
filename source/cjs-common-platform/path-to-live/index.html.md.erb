@@ -1,41 +1,78 @@
 ---
 title: Path to Live
-last_reviewed_on: 2026-09-30
+last_reviewed_on: 2026-10-09
 review_in: 6 months
 weight: 3
 ---
 
 # <%= current_page.data.title %>
 
-This page explains how a CCM AKS service joins a CPP release after it has been deployed and tested in an approved non-live stack. Crime Release Management controls the release; an application team does not deploy a new service to live on its own. Use the deployment controller recorded for the service and environment: Helmsman or Flux.
+This page explains how a CCM AKS service joins a CPP release after it has been deployed and tested in an approved non-live stack. Crime Release Management controls the release; an application team does not deploy a new service to live on its own. CCM applications use Helmsman through `cpp-aks-deploy` or Flux through `cpp-flux-config`. Check [the service's deployment controller for its environment and stack](../tools-and-configuration/index.html) before preparing the release steps.
+
+## Prepare the service for release
+
+Complete [starting a new component](../new-component/index.html) before entering this process. Use these CPP readiness guides to prepare the service-specific implementation and verification steps:
+
+- [Productionisation](productionisation.html): image and configuration versions, runtime dependencies, release approvals and rollback.
+- [Operational acceptance and release testing](operational-acceptance.html): AMS testing, separate business/user-journey testing, PlatOps BAU checks and release evidence.
+- [Shuttering](shutter.html): public entry-point closure, stack shutdown and restoration during a release.
+- [Monitoring and health](monitoring-and-health.html): CPP chart probes, Dynatrace and post-deployment checks.
+- [Alerting](alerting.html): alert ownership, delivery checks and release maintenance windows.
 
 ## 1. Prove the change in non-live
 
-- deploy the image tag in the non-live CCM environment and stack named by the environment owner, using either `CPP-AKS-DEPLOY` or the reviewed `cpp-flux-config` change
-- record the image tag and either the `cpp-aks-deploy` and `cpp.pipeline` branches plus pipeline run, or the `cpp-flux-config` commit plus Flux reconciliation result
-- give AMS QA the environment and test instructions for its functional testing
+- deploy the image tag in the non-live CCM environment and stack named by the environment owner, using the service's assigned controller
+- record the image tag and either the `cpp-aks-deploy` / `cpp.pipeline` branches and pipeline run, or the Flux configuration commit and reconciliation result
+- [arrange AMS QA testing through Infra Releases Chat](operational-acceptance.html#arrange-ams-qa-testing), supplying the environment and test instructions
 - arrange NFT testing through the release process if the release note contains an NFT test step
 
-CPP environments are shared. Obtain permission in the `Infra Releases Chat` Teams channel before a deployment or configuration change that can affect another user of the stack. The platform process lists DEV, STE, SIT and NFT as lower environments, but it does not require every change to visit all four. Record the environments and tests in the release note.
+CPP environments share infrastructure with ROTA, IDAM and other teams. Use [EA Environment management](https://hmcts.atlassian.net/wiki/spaces/EA/pages/278888544/EA+Environment+management) to identify the environment owner, then obtain agreement in the `Infra Releases Chat` Teams channel before a deployment or configuration change that can affect another user of the stack. Agree which components you can change; permission to work on one component does not cover the whole environment. The platform process lists DEV, STE, SIT and NFT as lower environments, but it does not require every change to visit all four. Record the environments and tests in the release note.
 
 ## 2. Join a managed CPP release
 
-Contact Crime Release Management. Work with the release manager to complete the [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note), update the release calendar and coordinate the participating teams.
+Contact **Crime Release Management through the Infra Releases Chat Teams channel**. Specify CPP and the environment being changed so the non-live or live release manager can coordinate the work. The release manager oversees the release: complete the [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note) with them, update the release calendar and coordinate the participating teams.
 
-Any production-affecting work requires an approved RFC. Start it while the non-live proof is being prepared. Put the following service-specific information in the release note and RFC:
+### Schedule testing and the release
+
+Use the following route to arrange testing and coordinate the release:
+
+1. Request AMS QA validation through **the CPP non-live release manager in Infra Releases Chat on Teams**. Supply the environment, deployed versions and test instructions, and agree the tester and testing slot. Include required NFT testing in the request.
+2. Use **Infra Releases Chat** to coordinate the shared-environment and Platform Operations work. The CPP non-live release manager coordinates that work through this channel; agreement to use a shared stack does not itself book a live release.
+3. Once the test results have been reviewed with Platform Operations and the participating stakeholders, work with the assigned **Crime release manager** to include it in the release note and update the **Release Calendar**. Record the agreed PRP/PRD implementation dates, testing steps and assigned engineers in the release note.
+4. **The release coordinator creates a Teams channel named for the release and date**, adding PlatOps BAU, Platform Operations, release managers and release support. Coordinate implementation in that release channel. Confirm the PlatOps BAU engineers assigned to the release through Infra Releases Chat and use the **AMS calendar** to identify release support.
+
+Confirm the release date and assignments with the release manager before queueing a deployment or merging a Flux release change. Start the environment-specific RFCs while preparing non-live evidence and agree their submission and approval deadlines with the release manager when booking the windows.
+
+[Business testing of the affected user journeys](operational-acceptance.html#business-testing-of-user-journeys) is separate from AMS testing.
+
+### Raise an RFC for each environment
+
+An **RFC (Request for Change)** is the change request raised in [HMCTS Halo](https://hmcts.haloitsm.com/). Sign in to Halo and raise a separate change request for **each** environment you will change:
+
+| Environment being changed | Required Halo change request |
+| --- | --- |
+| PRP | A PRP RFC |
+| PRX | A PRX RFC |
+| PRD | A PRD RFC |
+
+Never use one RFC for multiple environments. A release changing PRP and PRD requires two RFCs; a release also changing PRX requires three. This applies to both Helmsman and Flux deployments and to infrastructure or configuration changes in those environments.
+
+For each request, identify the CPP service, environment, stack, reason for the change and scheduled window. Put the following service-specific information in that environment's RFC and the CPP release note:
 
 - the exact image and configuration versions to deploy
 - the implementation steps and the owner of each step
-- the checks to run after PRP and PRD deployment
+- the checks to run after deployment in that environment
 - the point at which the release must stop and the exact rollback steps
 
 Do not copy rollback steps from another service. The current release-note template requires an explicit rollback plan for the change.
+
+Link each Halo RFC from the corresponding environment's implementation steps in the release note. Coordinate its approval and scheduled window with Crime Release Management. Before changing that environment, confirm that its RFC is approved and that each assigned implementer has the access needed to execute their steps. Specify in each RFC whether you will implement the change yourself or the release team will deploy it as part of the release. Approval of the PRP RFC does not authorise PRX or PRD work.
 
 ## 3. Deploy through PRP and PRD
 
 ### Helmsman-managed service
 
-For a Helmsman-managed CCM AKS service, the release runbook uses [`CPP-AKS-DEPLOY`](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary) for both PRP and PRD. Copy every parameter from the approved release note. The current template contains these fields:
+For a Helmsman-managed CCM AKS service, the release runbook uses [`cpp-aks-deploy`](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=333&_a=summary) for both PRP and PRD. Copy every parameter from the approved release note. The current template contains these fields:
 
 - a release branch from `cpp-aks-deploy`
 - `Environment` set to `prp` and `Stack` set to `prpccm01` for pre-production
@@ -49,13 +86,15 @@ The pipeline also accepts `prx`, but the current standard CPP release template d
 
 ### Flux-managed service
 
-Use reviewed changes in [`cpp-flux-config`](https://github.com/hmcts/cpp-flux-config/tree/main), not `CPP-AKS-DEPLOY`, to change the Flux-managed application or image tag. The PRD check in that repository requires the pull-request description to contain the RFC number, change window and rollback plan.
+Follow the [`cpp-flux-config` image-promotion runbook](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/deploy-images-across-environments.md). Record the target cluster, stack Kustomization, image-tag substitution and configuration commit in the release note. A cluster-wide tag change can affect several stacks; use a stack override when the approved change targets one stack.
 
-Put the PRP and PRD pull requests, merge or reconciliation step, exact image tag, verification and revert step in the CPP release note. The person assigned to each step performs it in the scheduled release window. A merge is the deployment instruction: Flux reconciles the cluster to the committed state.
+Obtain that environment's approved Halo RFC and merge the reviewed configuration change only in its scheduled window. The repository's onboarding runbook requires an RFC number, change window and rollback plan for PRD changes. Its `prd-check` workflow checks for those field headings in the PR body; a passing check does not establish that Halo approval has been granted. Verify the Flux Kustomization and HelmRelease are Ready, then complete the same application, AMS and PlatOps BAU checks as for a pipeline deployment. Record the rollback commit or image-tag change in the approved plan; do not run Helmsman against a Flux-managed release.
+
+A shared base change can reconcile into multiple environments. Before merging, trace every affected overlay and obtain a separate approved RFC and compatible window for each affected PRP, PRX and PRD environment. Use environment or stack overrides to keep a release change within its approved scope.
 
 ## 4. Verify and close or roll back
 
-The current release template requires the release teams to check AKS pods, run AMS smoke testing, run any service-specific tests and monitor Dynatrace. The application team must be available to interpret its logs and test results.
+The CPP release template includes AKS pod checks, AMS smoke testing, release-specific tests and Dynatrace monitoring. The application team must be available to interpret its logs and test results. Follow the [operational acceptance](operational-acceptance.html), [monitoring](monitoring-and-health.html) and [alerting](alerting.html) steps recorded for the release.
 
 If a stop condition in the release note is met, tell the release manager, stop progression and follow that release's rollback section. Do not start an unrecorded rollback from a workstation.
 

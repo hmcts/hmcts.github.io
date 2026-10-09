@@ -1,0 +1,34 @@
+---
+title: Alerting
+last_reviewed_on: 2026-10-09
+review_in: 6 months
+weight: 5
+---
+
+# <%= current_page.data.title %>
+
+Provide the alert configuration and response instructions for the service being released. A working health endpoint or a Kubernetes probe does not configure an alert recipient.
+
+## Verify the service's alerts
+
+For each alert used to support the service, record:
+
+- the monitored service, dependency or condition
+- the configured threshold, duration and severity
+- the alert definition or monitor link
+- the notification destination and the team responsible for responding
+- the investigation and recovery instructions used by that team
+
+Open the [CPP Dynatrace tenant](https://ebe20728.live.dynatrace.com) and identify the service's problem-detection configuration and notification route. For a Dynatrace Classic integration, inspect **Settings → Alerting → Problem alerting profiles** for the management-zone/event filters and **Settings → Integration → Problem notifications** for the linked profile and recipient. These are [Dynatrace's documented configuration locations](https://docs.dynatrace.com/docs/analyze-explore-automate/notifications-and-alerting/alerting-profiles); they do not establish which profile or destination CPP has configured for your service.
+
+A concrete delivery check for an existing Classic email or webhook integration is **Send test notification**. Arrange the test with the configured recipient, send it and record whether they received it, with the time and destination, against the alert-verification step in the CPP release note. Dynatrace documents this test for [email](https://docs.dynatrace.com/docs/analyze-explore-automate/notifications-and-alerting/problem-notifications/email-integration) and [webhook](https://docs.dynatrace.com/docs/analyze-explore-automate/notifications-and-alerting/problem-notifications/webhook-integration) integrations. A test notification verifies delivery, not whether the service's failure condition triggers a problem or matches the alerting profile. Do not introduce a fault into production to test detection.
+
+Give AMS and PlatOps BAU the alert and runbook links in the CPP release note. Name the responding team for each configured destination there; PlatOps BAU's release-monitoring role does not establish ownership of every application alert. Escalate a missing notification route or unowned alert to the release manager before implementation.
+
+## Release maintenance windows
+
+The [CPP release-note template](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note) records Dynatrace maintenance-window setup, pre-deployment checks and checks for alerts missed by the window. Record its affected services, start/end times and implementation owner in the approved release note.
+
+PlatOps BAU checks the maintenance-window timing before the release and checks the Dynatrace problems view during the work. An alert for a service intentionally stopped by the release can indicate that the window's scope or timing is wrong; investigate it rather than treating all alerts as expected.
+
+After restoration, complete the release's smoke and monitoring checks and investigate new alerts. The template specifies a ten-minute Dynatrace observation step before closure and cancellation of the maintenance window when the release finishes before its planned end. Confirm monitoring and notification delivery are active again before closing the release.
