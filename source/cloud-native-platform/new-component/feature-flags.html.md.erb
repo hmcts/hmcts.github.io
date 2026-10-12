@@ -1,6 +1,6 @@
 ---
-title: Feature flags
-last_reviewed_on: 2026-07-29
+title: Feature flags with LaunchDarkly
+last_reviewed_on: 2026-10-12
 review_in: 6 months
 weight: 22
 ---
@@ -9,25 +9,7 @@ weight: 22
 
 <%= warning_text('Optional — only if your component needs this. Feature flags are not a mandatory step in Starting a new component.') %>
 
-Feature flags are a software development and delivery technique that allows software teams to enable and disable parts of a codebase at the flip of a switch.
-Feature flags enable a team to deliver new features to use rapidly but safely.
-Feature flags also allow you to decouple code deployments from feature releases. You can make code changes in production while hiding those changes from users.
-
-### Trunk Based Development
-Trunk Based Development is a branching model in which developers create short-lived feature branches and merge back into the “trunk” branch, often called the master/main branch.
-It reduces the complexity of merging events and keeps code current by having fewer development lines and by doing small and frequent merges.
-Trunk based Development and Feature Flags together can be used for continuous delivery, delivering the features faster to market.
-Trunk Based Development uses Feature Flags as a mechanism to manage new feature releases. Feature flags allow developers to deploy incomplete features to production without releasing them to end-users.
-
-![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
-
-End to end Process:
-
-1. Developer creates and commits short lived feature branch with Feature flag off.
-2. Implements feature through iterations of small feature lifecycle.
-3. Code is continuously released.
-4. Retire feature toggle.
-
+For what feature flags are and how they pair with trunk-based development, see the HMCTS-wide [feature flags](/standards/practices/feature-flags.html) practice. This page covers LaunchDarkly, the feature flag service for services on the Cloud Native Platform.
 
 ### Accessing LaunchDarkly
 
@@ -49,5 +31,5 @@ See [hmcts/launchdarkly-terraform](https://github.com/hmcts/launchdarkly-terrafo
 
 We currently provide 'Test' and 'Production' environments by default within Launch Darkly. Flags are generally set to the same value in both 'Production' and the 'Test' environment, [flag targeting](https://launchdarkly.com/docs/guides/flags) is used to control rollout of flags to users across environments.
 
-If your team does require additional environments, you can do this by updating your teams [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61). 
+If your team does require additional environments, you can do this by updating your teams [terraform.tfvars](https://github.com/hmcts/launchdarkly-terraform/blob/896019ed1efdebdf9237b7811ab2b9585a7708f2/terraform.tfvars#L59-L61).
 It is not recommended to do this as targeting rules should be simpler to manage and ensure consistency across environments.

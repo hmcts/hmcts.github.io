@@ -1,6 +1,6 @@
 ---
 title: Publishing and promoting artefacts
-last_reviewed_on: 2026-09-22
+last_reviewed_on: 2026-10-12
 review_in: 6 months
 weight: 2
 ---
@@ -84,14 +84,16 @@ The major component tracks the Java version, so a `17.x` artefact is a Java 17 b
 
 Context services on `main` run a jgitflow release across two steps, [`release-start.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release-start.yaml) and [`release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml):
 
-1. `jgitflow:release-start` opens the release branch from the triggering commit.
-2. `jgitflow:release-finish` completes it, with `-DnoDeploy` (git-flow's own build/tag/merge, not an artefact push) and with the `sign-maven-gpg-plugin` profile active so the artefacts are GPG-signed by the `devops-team@hmcts.net` key.
+1. `jgitflow:release-start` opens the plugin's `dev/release-<version>` branch from the triggering commit, locally only (the pipeline sets `pushReleases=false`).
+2. `jgitflow:release-finish` completes it, with `-DnoDeploy` (the plugin's own build, tag and merge, not an artefact push) and with the `sign-maven-gpg-plugin` profile active so the artefacts are GPG-signed by the `devops-team@hmcts.net` key.
 3. The pipeline checks out `main` again, at the now-released, non-snapshot version, and inspects the effective POM for any remaining `SNAPSHOT`. If one is found, the build fails. A release cannot ship with a snapshot dependency.
-4. **A separate `mvn clean deploy` then runs**, deploying that release version to `libs-release-sp-azure`. This is the deploy `-DnoDeploy` in step 2 does not do: `jgitflow:release-finish` finishes the git-flow branching and tagging, and this later command is what actually publishes the artefact.
+4. **A separate `mvn clean deploy` then runs**, deploying that release version to `libs-release-sp-azure`. This is the deploy `-DnoDeploy` in step 2 does not do: `jgitflow:release-finish` finishes the plugin's local branching and tagging, and this later command is what actually publishes the artefact.
 5. The version on `main` is bumped for the next development iteration, committed as the `devops-team` user and pushed.
 6. The new version is written into `cpp.pipeline`, so the deployment configuration picks it up.
 
 Step 5 is why the pipelines check the last commit author and skip themselves when it is `devops-team@hmcts.net` or contains `azdevops`: without it, the pipeline's own version bump would trigger another run.
+
+jgitflow is used here as a versioning and tagging tool, not as a branching model. In the plugin's configuration `main` is the "develop" branch and `dev/release` is the "master" branch, and [`release_branch_fix.sh`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/scripts/release_branch_fix.sh) deletes and recreates `dev/release` from the build commit on every run, so the tag rather than the branch records what was released. The repositories follow the HMCTS [branching strategy](/standards/practices/branching.html): trunk-based, with `release/<version>` branches that are snapshots of `main`.
 
 The same template also handles `release/*` branches for context services, with its own branch-routed deploy (`main` → `libs-snapshot-sp-azure`, anything else → `team-libs-snapshot-sp-azure`) before bumping the version (a third routing rule, separate from both the one above and from `maven-deploy.yaml`'s). If you are tracing where a context-service artefact came from, check which of the three deploy points in `context-validation.yaml` actually ran for that build.
 

@@ -1,0 +1,32 @@
+---
+title: Feature flags
+last_reviewed_on: 2026-10-12
+review_in: 12 months
+weight: 9
+---
+
+# <%= current_page.data.title %>
+
+Feature flags are a software development and delivery technique that allows software teams to enable and disable parts of a codebase at the flip of a switch.
+Feature flags enable a team to deliver new features to users rapidly but safely.
+
+Feature flags also allow you to decouple code deployments from feature releases. You can make code changes in production while hiding those changes from users.
+
+## Feature flags and trunk-based development
+
+[Trunk-based development](branching.html) uses feature flags as the mechanism to manage new feature releases. Developers deploy incomplete features to production without releasing them to end users, which keeps branches short-lived and merges small.
+
+![Trunk based development with feature flags](/images/TBD_FeatureFlag.png)
+
+End to end process:
+
+1. Create a short-lived feature branch with the feature flag off.
+2. Implement the feature through iterations of small, merged changes.
+3. Release the code continuously; turn the flag on when the business is ready.
+4. Retire the feature flag.
+
+Agree before work begins whether a feature needs a flag, so that code can be deployed to production ahead of the business release, for example to allow time for staff training or for legislation to be announced. See [continuous delivery](../principles/continuous-delivery.html).
+
+## Platform tooling
+
+Services on the Cloud Native Platform use LaunchDarkly: see [feature flags with LaunchDarkly](/cloud-native-platform/new-component/feature-flags.html) for access, projects and environments.
