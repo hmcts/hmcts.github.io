@@ -1,17 +1,21 @@
 ---
-title: APIs
-last_reviewed_on: 2026-05-11
+title: API design
+last_reviewed_on: 2026-10-12
 review_in: 12 months
 weight: 3
+old_paths:
+  - /cloud-native-platform/standards/apis.html
 ---
 
 # <%= current_page.data.title %>
 
-### API Design and implementation
+## Design and implementation
 
 Use the [Zalando RESTful API Guidelines](https://opensource.zalando.com/restful-api-guidelines/) as the reference standard for API design.
 
 The source repository is [zalando/restful-api-guidelines](https://github.com/zalando/restful-api-guidelines).
+
+### HMCTS additions
 
 #### Personal data in URLs
 
@@ -23,7 +27,7 @@ via client, network, and server logs.
 Where personal data is required, transmit it in the request body or, where
 that is not possible (e.g. GET requests), in HTTP headers.
 
-### Versioning
+## Versioning
 
 Use content type negotiation or endpoint naming to version the API.
 
@@ -31,8 +35,12 @@ Do not make backward incompatible changes to existing endpoints.
 
 See the official guidance in the [TGL](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1611204737&__ncforminfo=TeykTRO7uMi-mDnly8SmjuKluB1u3rrwwlwGkfYwyuBtTvzhtdiq1QymGuTr5WAl0bULwsGc4_Kv4lvc4ja_Tf4s4wSlGOiC)
 
-### Documentation
+## Documentation
 
 Use [OpenAPI](https://swagger.io/specification/) for API documentation.
 
-Maintain a central repository of API documentation.
+Maintain a central repository of API documentation. On the Cloud Native Platform, publish your specification to the central [API docs](/cloud-native-platform/api-docs/) repository.
+
+## Previous HMCTS fork
+
+HMCTS previously maintained a fork of the Zalando guidelines, [hmcts/restful-api-standards](https://github.com/hmcts/restful-api-standards/blob/master/README.adoc). It was last updated in August 2020 and archived in January 2025. Its only HMCTS-specific rule, on personal data in URLs, is reproduced above; use the upstream guidelines for everything else. Links to the fork in older repositories still resolve, but should be updated to point here.
