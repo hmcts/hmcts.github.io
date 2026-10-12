@@ -1,0 +1,36 @@
+---
+title: Branching strategy
+last_reviewed_on: 2026-10-12
+review_in: 12 months
+weight: 7
+---
+
+# <%= current_page.data.title %>
+
+[Trunk-based development](https://trunkbaseddevelopment.com/) is the branching strategy for HMCTS repositories. It is what makes [continuous delivery](../principles/continuous-delivery.html) possible:
+
+- all changes integrate into the trunk (`main` or `master`)
+- if branches from the trunk are used:
+  - they originate from the trunk
+  - they re-integrate to the trunk through a [pull request](pull-requests.html)
+  - they are short-lived and removed after the merge
+
+Work that is not ready for users is merged behind a [feature flag](feature-flags.html) rather than held on a long-lived branch.
+
+Git-flow is [not recommended](https://nvie.com/posts/a-successful-git-branching-model/), even by its original author. Long-lived `develop`, `release` and `hotfix` branches delay integration and make every merge larger and riskier.
+
+## Release branches
+
+Some release processes need a branch that names exactly what was released. A release branch is compatible with trunk-based development when it is a frozen snapshot of the trunk:
+
+- it is cut from the trunk at release time
+- it takes no direct commits: a fix lands on the trunk first, and is cherry-picked to the release branch only if it must ship before the next release
+- it is treated like a tag, not as a line of development
+
+CJS Common Platform (CPP) works this way. Context services and `cpp-aks-deploy` cut a `release/<version>` branch from `main` for a CPP release and record it in the release note; the branch carries no commits of its own.
+
+A library that supports more than one major version at a time may keep a maintenance branch per major version, for example `release/<major>.x`. That is a [versioning](/standards/versioning/) concern rather than a branching one: day-to-day development still happens on the trunk.
+
+## Release tooling is not a branching model
+
+A release tool with "flow" in its name does not make a repository git-flow. CPP's Maven context services use the jgitflow plugin only to bump the version and tag the release on `main`; the plugin's working branches never leave the build agent. See [the release flow on `main`](/cjs-common-platform/standards/artifactory/publishing.html#the-release-flow-on-main).
