@@ -84,7 +84,7 @@ The major component tracks the Java version, so a `17.x` artefact is a Java 17 b
 
 Context services on `main` run a jgitflow release across two steps, [`release-start.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release-start.yaml) and [`release.yaml`](https://github.com/hmcts/cpp-azure-devops-templates/tree/main/steps/common/release.yaml):
 
-1. `jgitflow:release-start` opens the plugin's `dev/release-<version>` branch from the triggering commit, locally only (`-DpushReleases=false`).
+1. `jgitflow:release-start` opens the plugin's `dev/release-<version>` branch from the triggering commit, locally only (the pipeline sets `pushReleases=false`).
 2. `jgitflow:release-finish` completes it, with `-DnoDeploy` (the plugin's own build, tag and merge, not an artefact push) and with the `sign-maven-gpg-plugin` profile active so the artefacts are GPG-signed by the `devops-team@hmcts.net` key.
 3. The pipeline checks out `main` again, at the now-released, non-snapshot version, and inspects the effective POM for any remaining `SNAPSHOT`. If one is found, the build fails. A release cannot ship with a snapshot dependency.
 4. **A separate `mvn clean deploy` then runs**, deploying that release version to `libs-release-sp-azure`. This is the deploy `-DnoDeploy` in step 2 does not do: `jgitflow:release-finish` finishes the plugin's local branching and tagging, and this later command is what actually publishes the artefact.
