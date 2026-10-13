@@ -1,6 +1,6 @@
 ---
 title: Tools and configuration
-last_reviewed_on: 2026-10-09
+last_reviewed_on: 2026-10-13
 review_in: 6 months
 weight: 6
 ---
@@ -44,7 +44,7 @@ Deploying services to virtual machines, Alfresco or AMP is done through complete
 
 Live deployments are governed by [Crime Release Management](https://hmcts.atlassian.net/wiki/display/RSTR/Crime+-+Release+Management).
 
-CCM applications have two deployment controllers: Helmsman through `cpp-aks-deploy`, and Flux through [`cpp-flux-config`](https://github.com/hmcts/cpp-flux-config). Select the controller for the service's environment and stack before changing deployment configuration:
+CCM applications have two deployment controllers: Helmsman through `cpp-aks-deploy`, and Flux through [`cpp-flux-config`](https://github.com/hmcts/cpp-flux-config). Confirm which controller manages the service in the target environment and stack before changing deployment configuration:
 
 - [`apps/base/kustomization.yaml`](https://github.com/hmcts/cpp-flux-config/blob/main/apps/base/kustomization.yaml) includes `idam-integration-service` in every configured environment, including PRD.
 - [`apps/environments/ste/kustomization.yaml`](https://github.com/hmcts/cpp-flux-config/blob/main/apps/environments/ste/kustomization.yaml) adds `courtlistpublishing-service`, `listingcourtscheduler-service` and `gov-uk-notify-gateway-service` for STE only.
