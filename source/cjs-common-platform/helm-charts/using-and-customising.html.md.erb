@@ -1,6 +1,6 @@
 ---
 title: Using and customising charts
-last_reviewed_on: 2026-10-07
+last_reviewed_on: 2026-10-09
 review_in: 6 months
 weight: 3
 ---
@@ -33,11 +33,11 @@ The pieces that matter:
 - **Chart versions are variables**, resolved per environment, so environments can move to a new chart version independently.
 - Most charts are consumed straight from the OCI registry; the shared application charts are pulled and unpacked locally first by [helm_chart_pull.sh](https://github.com/hmcts/cpp-aks-deploy/blob/main/scripts/helm_chart_pull.sh) (so the pipeline can stamp the release's `appVersion`), which is why some entries reference `install/springboot-app` rather than an `oci://` URL.
 
-The deployment itself is run by the `CPP-AKS-DEPLOY` Azure DevOps pipeline — see [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html#deploying-applications-to-crime-aks) for the pipeline, its environments and its approval gates.
+The deployment itself is run by the `cpp-aks-deploy` Azure DevOps pipeline — see [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html#deploying-applications-to-crime-aks) for the pipeline, its environments and its approval gates.
 
 ## Consuming a chart with Flux
 
-The newer GitOps route. A service in [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) is a `HelmRelease` that names a chart and exact version from the shared OCI `HelmRepository`, with the service's values inline:
+A Flux-managed CCM service definition in [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) is a `HelmRelease` that names a chart and exact version from the shared OCI `HelmRepository`, with the service's values inline:
 
 ```yaml
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -60,7 +60,7 @@ spec:
       tag: "${my_service_image_tag}"
 ```
 
-A reviewed merge to `cpp-flux-config` is all a deployment takes — Flux reconciles the change into the clusters; there is no deploy pipeline to run. Which environments and stacks a service reaches is controlled by the repository's overlay structure. That repository's own docs are the reference for this route:
+Flux reconciles merged configuration into the clusters selected by the environment and stack overlays; it does not use `cpp-aks-deploy` to apply the HelmRelease. PRP, PRX and PRD each require a separate approved [Halo RFC](../path-to-live/index.html#raise-an-rfc-for-each-environment). Merge a release change only in its approved window, then verify reconciliation and application health. The repository's runbooks describe validation, review and promotion:
 
 - [onboard-a-service.md](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/onboard-a-service.md) — adding a service, including an automated Issue Form route for non-production
 - [deploy-images-across-environments.md](https://github.com/hmcts/cpp-flux-config/blob/main/docs/runbooks/deploy-images-across-environments.md) — promoting image versions

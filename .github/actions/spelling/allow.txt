@@ -317,6 +317,9 @@ SOGs
 sonarcloud
 sonarlint
 sonarqube
+SRE
+statefulsets
+productionisation
 spective
 spellcheck
 springboot
@@ -424,3 +427,11 @@ DSF
 mpd
 wif
 templatise
+ams
+BAU
+PlatOps
+courtlistpublishing
+listingcourtscheduler
+rfc
+RFCs
+HPAs

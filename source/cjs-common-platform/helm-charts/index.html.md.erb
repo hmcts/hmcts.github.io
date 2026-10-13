@@ -1,6 +1,6 @@
 ---
 title: Helm charts
-last_reviewed_on: 2026-09-30
+last_reviewed_on: 2026-10-09
 review_in: 6 months
 weight: 7
 ---
@@ -20,7 +20,7 @@ This section is the catalogue of those charts: what exists, what each one is for
 CPP has its own chart set alongside the Cloud Native Platform's, and the two follow different models:
 
 - **CNP**: every service repository contains its own small application chart, which depends on a centrally-maintained base chart such as `chart-java` — see the [CNP Helm charts section](/cloud-native-platform/standards/pipeline-libraries/helm-charts/index.html).
-- **CPP**: services do not have a chart of their own. A small set of shared [application charts](application-charts.html) (`springboot-app`, `wildfly-app`, and friends) is maintained centrally in `cpp-helm-chart`, and each service supplies only its **values** — from `cpp-aks-deploy` when deployed by Helmsman, or from a `cpp-flux-config` HelmRelease when deployed by Flux.
+- **CPP**: services do not have a chart of their own. A small set of shared [application charts](application-charts.html) (`springboot-app`, `wildfly-app`, and friends) is maintained centrally in `cpp-helm-chart`, and each CCM service supplies its **values** through `cpp-aks-deploy` and is deployed by Helmsman.
 
 The intent is the same in both models — services describe configuration, not Kubernetes YAML — but on CPP the chart templates themselves are shared, so a template improvement lands in `cpp-helm-chart` once and every consuming service picks it up on its next chart version bump.
 
@@ -35,12 +35,13 @@ Consumers always pin an exact chart version, so publishing a new version changes
 
 ## How charts are deployed
 
-Both deployment routes consume the same published charts:
+CCM applications consume the published charts through two controllers:
 
 - **Helmsman** — the established route for CCM services. [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) declares each release in its `helmsman.toml` files and renders per-environment values with Ansible.
-- **Flux** — the newer GitOps route, adopted recently for CCM applications. [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) declares a `HelmRelease` per service and Flux reconciles merged changes into the clusters.
 
-[Using and customising charts](using-and-customising.html) covers both routes in detail, and [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) explains which route a given service uses and which pipelines drive them.
+- **Flux** — [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) defines HelmReleases for selected CCM services, including `idam-integration-service`. Environment and stack overlays determine where each service is deployed. Check [deployment ownership and the Helmsman guard](../tools-and-configuration/index.html) before selecting a route.
+
+[Using and customising charts](using-and-customising.html) covers both routes in detail, and [Tools and configuration](/cjs-common-platform/tools-and-configuration/index.html) documents the CCM deployment pipeline.
 
 ## Related documentation
 

@@ -1,13 +1,13 @@
 ---
 title: Onboard a service
-last_reviewed_on: 2026-09-14
+last_reviewed_on: 2026-10-07
 review_in: 6 months
 weight: 12
 ---
 
 # <%= current_page.data.title %>
 
-This checklist is for a new service in a CPP CCM AKS stack. Current CCM services use either the Helmsman deployment route in `cpp-aks-deploy` or the GitOps route in `cpp-flux-config`. Record the route for each environment before creating deployment configuration.
+This checklist is for a new service in a CPP CCM AKS stack. CCM applications are managed in `cpp-aks-deploy` and deployed through Helmsman using `cpp-aks-deploy`.
 
 Do not use this checklist for a virtual-machine service, Alfresco or an AMP workload. Those workloads have different deployment jobs. Stop here until Platform Operations has supplied the exact runbook and deployment-job link.
 
@@ -29,7 +29,7 @@ Before continuing, obtain exact values for all of the following:
 - whether the image is built centrally by `cpp-docker-images` or by the service repository, and the exact build-job URL
 - the image repository and tag format produced by that build
 - the Helm chart the service will use; existing CCM application patterns include `springboot-app` and `wildfly-app`
-- whether the service is deployed by Helmsman from `cpp-aks-deploy` or by Flux from `cpp-flux-config` in each environment
+- the service configuration in `cpp-aks-deploy` and its image-version entry in `cpp.pipeline`
 - the first non-live environment and CCM stack, for example `dev` and `devccm08`
 - whether each application secret will be read from HashiCorp Vault during deployment or mounted from Azure Key Vault at runtime
 

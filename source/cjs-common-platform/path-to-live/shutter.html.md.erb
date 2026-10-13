@@ -1,0 +1,58 @@
+---
+title: Shuttering
+last_reviewed_on: 2026-10-09
+review_in: 6 months
+weight: 3
+---
+
+# <%= current_page.data.title %>
+
+CPP uses the word shuttering for both closing public entry points and stopping platform workloads. Record which actions the release needs, the services affected, their order and the person responsible for each action in the [CPP release note](https://hmcts.atlassian.net/wiki/spaces/RSTR/pages/267454320/CPP+x.x+Template+Release+Note).
+
+## Public entry points
+
+The CPP release-note template contains WAF shutter and unshutter steps for Common Platform, the API Gateway and Online Plea. PlatOps BAU performs those steps; the template asks for screenshots of the shuttered and restored URLs in the release channel.
+
+Use the release's WAF implementation instructions for the affected entry points. Verify the response seen by callers after shuttering, and verify the restored URL after reopening it. Scaling an AKS deployment to zero does not create a maintenance page at the WAF.
+
+## Stop and restart a stack
+
+The CPP pipelines are:
+
+- [cpp-full-environment-shutter](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=404) to stop selected platform resource types
+- [cpp-full-environment-start](https://dev.azure.com/hmcts-cpp/cpp-apps/_build?definitionId=402) to start them again
+
+The [shutter pipeline source](https://github.com/hmcts/cpp-azure-devops-templates/blob/main/pipelines/full-environment-shutter.yaml) exposes `platform`, `project`, `env`, `stack`, `resource_groups`, `runPAAS`, `runIAAS` and `runAKS`. Copy their values from the approved release note. The switches select different operations:
+
+| Switch | Operation in the shutter pipeline |
+|---|---|
+| `runAKS` | Runs the Kubernetes scale-down step for namespaces carrying the selected stack label. |
+| `runIAAS` | Runs the Ansible shutter/stop operations and powers off the selected virtual machines. |
+| `runPAAS` | Runs the PostgreSQL stop step. |
+
+The [AKS scale-down step](https://github.com/hmcts/cpp-azure-devops-templates/blob/main/steps/common/k8s-scale-down.yaml) selects namespaces using `stack=...`. The shutter pipeline passes no application filter or scale-target override: it directly scales all Deployments and StatefulSets in those namespaces to **zero**, ignoring HPAs for that operation. This is a stack operation, so its scope can include several services and namespaces. Confirm that scope before the run. The current pipeline has a manual approval stage for a live PRD shutdown.
+
+Record the expected replica counts and restoration steps in the release instructions. Direct Kubernetes scaling changes the live resources; it does not change the values in `cpp-aks-deploy`.
+
+### Check the restoration data before shutdown
+
+The [`cpp-aks-deploy` pipeline](https://github.com/hmcts/cpp-aks-deploy/blob/main/aks-deploy.yaml) writes a **`replica-tracking` ConfigMap** when `create_replica_configmap` is selected (the default). It creates the ConfigMap in each selected namespace where it finds replica data. For a workload without an HPA, it records the positive live replica count, falls back to a positive Helm `replicaCount`, then defaults to `1`. For a workload with an HPA and Helm autoscaling enabled, it records Helm's `autoscaling.minReplicas` instead. If an HPA exists but Helm autoscaling is not enabled, that function returns no count; check for missing workload entries rather than assuming all workloads were recorded.
+
+Before shuttering, check the ConfigMap in **each** namespace carrying the stack label:
+
+```sh
+kubectl get namespaces -l stack=prdccm01
+kubectl -n ns-prd-ccm-01 get configmap replica-tracking -o yaml
+```
+
+These commands show the PRD CCM 01 example; use the cluster, stack label and every namespace named in the approved release instructions. Compare the recorded workload names and counts with the expected restoration plan. The shutter pipeline does not create this ConfigMap: if it is missing, empty or incomplete, resolve the restoration data before shutdown.
+
+## Restore and verify
+
+Run the restoration steps in the order specified by the release note. Verify the resource startup results, expected replicas, pod readiness, application health, AMS smoke tests and the external URLs being reopened.
+
+The [AKS scale-up step](https://github.com/hmcts/cpp-azure-devops-templates/blob/main/steps/common/k8s-scale-up.yaml) restores workloads from `replica-tracking`. When a namespace has no scaling data, it logs a warning and **skips scaling and readiness checks for that namespace**. A completed start pipeline therefore does not prove that all workloads were restarted. Check the recorded counts and Ready pods in every affected namespace before reopening entry points. If data is missing, stop restoration and use the recovery steps agreed with the release manager; do not assume the step will restore a default count.
+
+The release template also contains conditional Artemis/Camunda checks when the environment is shuttered. Use the checks assigned to the affected release; do not reopen an entry point before its recorded restoration checks have passed.
+
+Configure the release's [Dynatrace maintenance window and alert checks](alerting.html#release-maintenance-windows). For the separate scheduled shutdown of non-live and PRP environments, see [auto shutdown](../live-service/auto-shutdown.html).

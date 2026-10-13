@@ -32,7 +32,7 @@ Typical delivery routes:
 | Target | Method | Environment model |
 | --- | --- | --- |
 | Virtual machine | Service-specific Terraform and Ansible pipelines | Delivery and operations are service-specific. Playbooks in `cpp-automation-ansible` and similar projects build a dynamic Azure inventory across all resource groups by default, or a selected list, then targets VMs using project, platform, tier, role, environment and stack tags. Tag values are component-specific, such as `ccm_dev` and `devccm03`; use the component release runbook for the supported target and release process. |
-| AKS | [CPP-AKS-DEPLOY](../tools-and-configuration/index.html#deploying-applications-to-crime-aks), Helm and Helmsman | The pipeline supports `dev`, `sit`, `ste`, `nft`, `prp`, `prd` and `prx`. A deployment selects an environment and stack, such as `devccm08`; the active cluster is resolved at runtime and the namespace is derived from those values. |
+| AKS | [cpp-aks-deploy](../tools-and-configuration/index.html#deploying-applications-to-crime-aks), Helm and Helmsman | The pipeline supports `dev`, `sit`, `ste`, `nft`, `prp`, `prd` and `prx`. A deployment selects an environment and stack, such as `devccm08`; the active cluster is resolved at runtime and the namespace is derived from those values. |
 
 For the shared template library, environment prefixes determine the live or non-live family, service connection, variable groups, Terraform backend and default VMSS agent pool.
 
@@ -165,4 +165,4 @@ variables:
     value: ubuntu-ado-agents-mpd
 ```
 
-For AKS deployments, use the `CPP-AKS-DEPLOY` process in [Tools and configuration](../tools-and-configuration/index.html#deploying-applications-to-crime-aks). For artefact publishing and build-specific template guidance, see the [CPP Artifactory CI/CD guide](artifactory/ci-cd.html).
+For AKS deployments, use the `cpp-aks-deploy` process in [Tools and configuration](../tools-and-configuration/index.html#deploying-applications-to-crime-aks). For artefact publishing and build-specific template guidance, see the [CPP Artifactory CI/CD guide](artifactory/ci-cd.html).

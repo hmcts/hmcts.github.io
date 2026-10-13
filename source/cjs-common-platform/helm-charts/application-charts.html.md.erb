@@ -1,13 +1,13 @@
 ---
 title: Application charts
-last_reviewed_on: 2026-09-18
+last_reviewed_on: 2026-10-09
 review_in: 6 months
 weight: 1
 ---
 
 # <%= current_page.data.title %>
 
-CPP services deploy through a small set of shared application charts in [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main). You do not write a chart for your service — you pick the chart that matches your service's shape and supply its values, either in [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main) (Helmsman) or in a [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main) HelmRelease (Flux). See [Using and customising charts](using-and-customising.html) for how those values reach the chart.
+CPP services deploy through shared application charts in [cpp-helm-chart](https://github.com/hmcts/cpp-helm-chart/tree/main). Helmsman-managed services supply values in [cpp-aks-deploy](https://github.com/hmcts/cpp-aks-deploy/tree/main); Flux-managed services supply HelmRelease values in [cpp-flux-config](https://github.com/hmcts/cpp-flux-config/tree/main). Both controllers deploy CCM applications. See [Using and customising charts](using-and-customising.html) for how those values reach the chart and [deployment ownership](../tools-and-configuration/index.html) for the environment and stack checks.
 
 | Chart | Purpose |
 |---|---|
@@ -129,7 +129,7 @@ Operational job charts, deployed when the corresponding task needs running rathe
 
 ## Real examples
 
-- **Flux**: every file under [`apps/base/services/`](https://github.com/hmcts/cpp-flux-config/tree/main/apps/base/services) in cpp-flux-config is a HelmRelease consuming one of these charts — `idam-integration-service` (springboot-app) is a good first read.
+- **Flux**: the service `helmrelease.yaml` files under [`apps/base/services/`](https://github.com/hmcts/cpp-flux-config/tree/main/apps/base/services) select these charts — `idam-integration-service` (springboot-app) is a good first read. Follow the environment and stack kustomizations to establish where a service is deployed.
 - **Helmsman**: the `[apps]` entries in [helmsman.toml](https://github.com/hmcts/cpp-aks-deploy/blob/main/helmsman.toml) in cpp-aks-deploy show every Helmsman-managed release, with values layered from `ansible/group_vars`.
 
 ## Related documentation

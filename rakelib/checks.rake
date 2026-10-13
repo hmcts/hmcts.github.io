@@ -48,6 +48,11 @@ CRITICAL_PAGES = %w[
   cjs-common-platform/new-component/repository-and-build.html
   cjs-common-platform/new-component/infrastructure-and-connectivity.html
   cjs-common-platform/path-to-live/index.html
+  cjs-common-platform/path-to-live/productionisation.html
+  cjs-common-platform/path-to-live/operational-acceptance.html
+  cjs-common-platform/path-to-live/shutter.html
+  cjs-common-platform/path-to-live/monitoring-and-health.html
+  cjs-common-platform/path-to-live/alerting.html
   cjs-common-platform/live-service/index.html
   cjs-common-platform/live-service/egress.html
   cjs-common-platform/live-service/auto-shutdown.html
