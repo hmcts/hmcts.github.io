@@ -1,6 +1,6 @@
 ---
 title: API design
-last_reviewed_on: 2026-10-12
+last_reviewed_on: 2026-10-15
 review_in: 12 months
 weight: 3
 old_paths:
@@ -19,7 +19,7 @@ The source repository is [zalando/restful-api-guidelines](https://github.com/zal
 
 #### Personal data in URLs
 
-In addition to the Zalando guidelines, HMCTS services **must not** transmit
+HMCTS services **must not** transmit
 [personal data](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/personal-information-what-is-it/what-is-personal-data/what-is-personal-data/)
 in URL paths or query strings. This information can be inadvertently exposed
 via client, network, and server logs.
@@ -43,4 +43,4 @@ Maintain a central repository of API documentation. On the Cloud Native Platform
 
 ## Previous HMCTS fork
 
-HMCTS previously maintained a fork of the Zalando guidelines, [hmcts/restful-api-standards](https://github.com/hmcts/restful-api-standards/blob/master/README.adoc). It was last updated in August 2020 and archived in January 2025. Its only HMCTS-specific rule, on personal data in URLs, is reproduced above; use the upstream guidelines for everything else. Links to the fork in older repositories still resolve, but should be updated to point here.
+HMCTS previously maintained a fork, [hmcts/restful-api-standards](https://github.com/hmcts/restful-api-standards/blob/master/README.adoc), last updated in August 2020 and archived in January 2025. Its only HMCTS-specific rule, personal data in URLs, is kept above. Links to the fork in older repositories still resolve but should be updated to point here.
