@@ -61,6 +61,9 @@ job:
 ```
 
 Do not deploy `latest` or other moving tags such as `stable` or `prod` to AKS.
+Azure Policy denies `latest` in AKS subscriptions where the deny assignment is
+active. Production and PTL scopes may be audit-only, so always set explicit image
+versions in Flux and do not rely on policy enforcement alone.
 
 Apply this rule to images your service builds and to third-party images. Review
 and test image updates through a pull request.
