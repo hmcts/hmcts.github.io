@@ -37,6 +37,39 @@ security updates until the pin is updated. We manage that cost with automation â
 [Renovate](renovate.html) raises the update pull requests, and low-risk updates
 can merge themselves.
 
+## Container images
+
+Reusable Helm charts may use `latest` as a default image value so each deployment
+can provide its own image version. We do not allow `latest` or any other moving
+tag to reach a workload deployed to AKS. Every AKS deployment must override each
+image value in its Flux configuration with a specific version tag or digest.
+This includes images declared by chart dependencies such as `chart-job`.
+
+For example, the chart can define a default:
+
+```yaml
+job:
+    image: latest
+```
+
+The Flux configuration for an AKS deployment must override the default with the
+selected image version. Flux image automation can update the tag:
+
+```yaml
+job:
+    image: prod-013b675-20212312340750 # {"$imagepolicy": "flux-system:imagePolicyName"}
+```
+
+Azure Policy denies `latest` where an AKS subscription has an active `Deny`
+assignment. Production and PTL assignments may be audit-only: they report
+violations but do not block them. The image-version requirement still applies;
+teams must not rely on policy enforcement alone.
+
+Apply this rule to images your service builds and to third-party images. Review
+and test image updates through a pull request.
+See [CI/CD security](/standards/practices/ci-cd-security.html)
+for guidance on pinning pipeline base images to digests.
+
 ## Release automation
 
 Shared repositories cut releases with
