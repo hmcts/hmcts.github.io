@@ -40,10 +40,10 @@ can merge themselves.
 ## Container images
 
 Reusable Helm charts may use `latest` as a default image value so each deployment
-can provide its own image version. Do not allow that default to reach a workload
-deployed to AKS. Set every image value in the Flux configuration to a specific
-version tag or digest, including images from chart dependencies such as
-`chart-job`.
+can provide its own image version. We do not allow `latest` or any other moving
+tag to reach a workload deployed to AKS. Every AKS deployment must override each
+image value in its Flux configuration with a specific version tag or digest.
+This includes images declared by chart dependencies such as `chart-job`.
 
 For example, the chart can define a default:
 
@@ -52,18 +52,18 @@ job:
     image: latest
 ```
 
-The Flux configuration for an AKS deployment must override it with the selected
-image version. Flux image automation can update the tag:
+The Flux configuration for an AKS deployment must override the default with the
+selected image version. Flux image automation can update the tag:
 
 ```yaml
 job:
     image: prod-013b675-20212312340750 # {"$imagepolicy": "flux-system:imagePolicyName"}
 ```
 
-Do not deploy `latest` or other moving tags such as `stable` or `prod` to AKS.
-Azure Policy denies `latest` in AKS subscriptions where the deny assignment is
-active. Production and PTL scopes may be audit-only, so always set explicit image
-versions in Flux and do not rely on policy enforcement alone.
+Azure Policy denies `latest` where an AKS subscription has an active `Deny`
+assignment. Production and PTL assignments may be audit-only: they report
+violations but do not block them. The image-version requirement still applies;
+teams must not rely on policy enforcement alone.
 
 Apply this rule to images your service builds and to third-party images. Review
 and test image updates through a pull request.
