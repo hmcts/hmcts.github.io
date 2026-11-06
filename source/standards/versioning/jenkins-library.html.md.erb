@@ -54,6 +54,10 @@ To test a library branch before it is released, reference the branch:
 ```
 
 Branches must first be added to the
-[allowed library branches list](https://github.com/hmcts/cnp-jenkins-library/blob/master/resources/uk/gov/hmcts/library/allowed-library-branches.yml)
+[allowed library branches list](https://github.com/hmcts/cnp-jenkins-config/blob/master/allowed-library-branches.yml)
 and that change merged, otherwise the pipeline will fail. Switch back to a
 pinned release once the change has been released.
+
+Temporary allow-list entries can define a `date_deadline`. Pipelines using the
+branch receive deprecation warnings before the deadline and fail after it has
+passed.
