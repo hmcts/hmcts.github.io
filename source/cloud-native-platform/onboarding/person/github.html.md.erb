@@ -1,6 +1,6 @@
 ---
 title: GitHub
-last_reviewed_on: 2026-07-29
+last_reviewed_on: 2026-11-06
 review_in: 6 months
 weight: 5
 ---
@@ -49,6 +49,25 @@ If you have been removed because you did not sign in using SSO within 30 days:
 2. If that does not restore access, ask someone in your team to add you back to the `DTS GitHub Access` Microsoft Entra ID group.
 
 Use the [Microsoft Entra ID groups](entra-id.html#microsoft-entra-id-groups) instructions when adding the group.
+
+### Cannot link SSO to a new GitHub account
+
+When changing GitHub accounts, you may receive an error similar to:
+
+> Your GitHub user account `<github-username>` is currently unlinked. However, you are attempting to authenticate using the `<HMCTS or Justice email address>` SAML identity, which is already linked to a different GitHub user account in the organization.
+
+GitHub does not automatically move a SAML identity from one GitHub account to another. The identity and any credentials authorised for HMCTS must first be revoked from the old account.
+
+To resolve this:
+
+1. If you still have access to the old GitHub account, review and revoke its HMCTS SSO-authorised credentials, including personal access tokens and SSH keys. See GitHub's guidance on [revoking your credentials](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/revoking-your-credentials). Revoking credentials may affect command-line access and automations that use them.
+2. Ask Platform Operations for help in [#platops-help](https://hmcts-reform.slack.com/archives/C8SR5CAMU), providing the old and new GitHub usernames.
+3. A Platform Operations organisation owner must open `https://github.com/orgs/hmcts/people/<old-github-username>/sso` and:
+   - revoke every credential authorised for the HMCTS organisation, including personal access tokens and SSH keys
+   - revoke the linked external SAML identity
+4. Sign out of the old GitHub account, sign in to the new account, then authenticate again using [HMCTS GitHub SSO](https://github.com/orgs/hmcts/sso).
+
+Revoking an SSO authorisation does not delete the underlying token or SSH key. However, if GitHub shows an SSH key as revoked, you cannot re-authorise that key for HMCTS. Generate a new SSH key, add it to your GitHub account and authorise it for HMCTS SSO. See GitHub's guidance on [authorising an SSH key for SSO](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-an-ssh-key-for-use-with-single-sign-on) and [managing a member's SAML access](https://docs.github.com/en/enterprise-cloud@latest/organizations/granting-access-to-your-organization-with-saml-single-sign-on/viewing-and-managing-a-members-saml-access-to-your-organization).
 
 ### Tenant account inactive or deleted
 
