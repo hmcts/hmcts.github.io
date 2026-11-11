@@ -95,7 +95,6 @@ Most of what you'd want to switch on is already a flag in the base chart, set as
 
 - **Key Vault secrets** — `keyVaults` maps a vault name to a list of secrets to mount, each with a `name` (the Key Vault secret name) and `alias` (the environment variable name your app sees).
 - **A bundled PostgreSQL instance** — `postgresql.enabled: true` turns on the `hmcts-postgresql` dependency that `chart-python` (and others) already declare, conditioned on exactly this flag.
-- **IDAM redirect URI registration for previews** — [chart-idam-pr](https://github.com/hmcts/chart-idam-pr) is a job that registers your `redirect_uri` with IDAM for a PR's preview environment, so OAuth callbacks work without manual setup per PR.
 
 Check your base chart's own README for the full set — see [Base charts](base-charts.html).
 
